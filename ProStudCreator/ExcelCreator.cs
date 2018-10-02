@@ -13,7 +13,7 @@ namespace ProStudCreator
     {
         private static readonly string SHEET_NAME = "Projects";
         private static readonly string MARKETING_SHEET_NAME = "_IP56_Informatikprojekte";
-
+        private static readonly string VERRECHNUNG_SHEET_NAME = "_Excel_Verrechnung"
         private static readonly string[] HEADERS =
         {
             "Abbreviation",
@@ -80,7 +80,13 @@ namespace ProStudCreator
             "Kunden-Adresse",
             "Interne DB-ID"
         };
+        private static readonly string[] VERRECHNUNG_HEADERS =
+        {
+            "Semester",
+            "Projekt-Nr.",
+            "Projekttittel*"
 
+        };
         // References
         // - http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
 
@@ -321,5 +327,29 @@ namespace ProStudCreator
 
             return address.ToString();
         }
-    }
+        public static void GenerateVerrechnungList(Stream outStream, IEnumerable<Project> _projects)
+        {
+            var workbook = new XSSFWorkbook();
+            var worksheet = workbook.CreateSheet(VERRECHNUNG_SHEET_NAME);
+
+            // Header
+            worksheet.CreateRow(0);
+            for (var i = 0; i < HEADERS.Length; i++)
+                worksheet.GetRow(0).CreateCell(i).SetCellValue(HEADERS[i]);
+
+            // Project entries
+            var projects = _projects.ToArray();
+
+            for (var i = 0; i < projects.Length; i++)
+            {
+                var row = worksheet.CreateRow(1 + i);
+                InsertProjectAsExcelRow(projects[i], row);
+            }
+
+            for (var i = 0; i < HEADERS.Length; i++)
+                worksheet.AutoSizeColumn(i);
+
+            // Save
+            workbook.Write(outStream);
+        }
 }

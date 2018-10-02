@@ -367,5 +367,16 @@ namespace ProStudCreator
             }
 
         }
+
+        protected void btnVerrechnungsExcel_Click(object sender, EventArgs e)
+        {
+            Response.Clear();
+            Response.ContentType = "application/Excel";
+            Response.AddHeader("content-disposition",
+                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Excel_Verrechnung");
+            ExcelCreator.GenerateVerrechnungList(Response.OutputStream, projectsToExport, db,
+                SelectedSemester.SelectedItem.Text);
+            Response.End();
+        }
     }
 }

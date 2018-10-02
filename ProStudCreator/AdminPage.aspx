@@ -138,6 +138,7 @@
                     
                     <div style="text-align: right;">
                         <asp:Button runat="server" ID="btnMarketingExport" OnClick="BtnMarketingExport_OnClick" CssClass="btn btn-default" Text="Export"></asp:Button>
+                        <asp:Button runat="server" ID="btnVerrechnungsExcel" OnClick="btnVerrechnungsExcel_Click" CssClass="btn btn-default" Text="Verrechnung" />
                     </div>
                 </div>
             </ContentTemplate>
