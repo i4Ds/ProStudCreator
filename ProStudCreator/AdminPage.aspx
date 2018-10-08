@@ -111,6 +111,8 @@
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="btnExcelExportCollapse" EventName="Click" />
                 <asp:PostBackTrigger ControlID="btnMarketingExport"/>
+                <asp:PostBackTrigger ControlID="btnBillingExport"/>
+
             </Triggers>
             <ContentTemplate>
                 <asp:Label runat="server" Font-Size="24px" Height="50px" Text="Excel-Export" CssClass="col-sm-4"></asp:Label>
@@ -137,8 +139,9 @@
                     </div>
                     
                     <div style="text-align: right;">
-                        <asp:Button runat="server" ID="btnMarketingExport" OnClick="BtnMarketingExport_OnClick" CssClass="btn btn-default" Text="Export"></asp:Button>
-                    </div>
+                        <asp:Button runat="server" ID="btnBillingExport" OnClick="BtnBillingExport_Click" CssClass="btn btn-default" Text="Verrechnung" Width="111px" />
+                        <asp:Button runat="server" ID="btnMarketingExport" OnClick="BtnMarketingExport_OnClick" CssClass="btn btn-default" Text="Export"></asp:Button>                        
+                        </div>
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>

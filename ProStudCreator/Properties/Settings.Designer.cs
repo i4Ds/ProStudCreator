@@ -33,5 +33,50 @@ namespace ProStudCreator.Properties {
                 return ((string)(this["aspnet_ProStudCreator_20140818043155ConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\aspnet-ProStu" +
+            "dCreator-20140818043155.mdf;Integrated Security=True")]
+        public string aspnet_ProStudCreator_20140818043155ConnectionString1 {
+            get {
+                return ((string)(this["aspnet_ProStudCreator_20140818043155ConnectionString1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDb)\\v11.0;AttachDbFilename=|DataDirectory|\\aspnet-ProStudCreato" +
+            "r-20140818043155.mdf;Initial Catalog=aspnet-ProStudCreator-20140818043155;Integr" +
+            "ated Security=True")]
+        public string aspnet_ProStudCreator_20140818043155ConnectionString2 {
+            get {
+                return ((string)(this["aspnet_ProStudCreator_20140818043155ConnectionString2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\ProStudDB.mdf" +
+            ";Integrated Security=True")]
+        public string ProStudDBConnectionString {
+            get {
+                return ((string)(this["ProStudDBConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Database1.mdf" +
+            ";Integrated Security=True")]
+        public string Database1ConnectionString {
+            get {
+                return ((string)(this["Database1ConnectionString"]));
+            }
+        }
     }
 }
