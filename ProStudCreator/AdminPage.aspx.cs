@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,7 +13,7 @@ namespace ProStudCreator
 {
     public class ProjectSingleTask
     {
-        public string project { get; set; }
+        public string Project { get; set; }
         public string TaskOrganiseExpert { get; set; }
         public string TaskOrganiseRoom { get; set; }
         public string TaskOrganiseDate { get; set; }
@@ -35,59 +36,57 @@ namespace ProStudCreator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (ShibUser.CanVisitAdminPage())
-            {
-                DivAdminProjects.Visible = ShibUser.CanPublishProject();
-                DivExcelExport.Visible = ShibUser.CanExportExcel();
-
-
-                if (!Page.IsPostBack)
-                {
-                    if (Session["SelectedAdminProjects"] == null)
-                    {
-                        radioSelectedProjects.SelectedIndex = 0;
-                        Session["SelectedAdminProjects"] = radioSelectedProjects.SelectedIndex;
-                    }
-                    else
-                    {
-                        radioSelectedProjects.SelectedIndex = (int)Session["SelectedAdminProjects"];
-                    }
-
-                    if (Session["AdminProjectCollapsed"] == null)
-                        CollapseAdminProjects(false);
-                    else
-                        CollapseAdminProjects((bool)Session["AdminProjectCollapsed"]);
-
-                    if (Session["ExcelExportCollapsed"] == null)
-                        CollapseExcelExport(false);
-                    else
-                        CollapseExcelExport((bool)Session["ExcelExportCollapsed"]);
-
-
-                    if (Session["AddInfoCollapsed"] == null)
-                        CollapseAddInfo(true);
-                    else
-                        CollapseAddInfo((bool)Session["AddInfoCollapsed"]);
-
-                }
-
-                CheckProjects.DataSource = GetSelectedProjects();
-                CheckProjects.DataBind();
-
-
-                gvDates.DataSource = CalculateDates();
-                gvDates.DataBind();
-
-                //----------- wozu?
-                //GVTasks.DataSource = AllTasks();
-                //GVTasks.DataBind();
-
-            }
-            else
+            if (!ShibUser.CanVisitAdminPage())
             {
                 Response.Redirect("error/AccessDenied.aspx");
                 Response.End();
             }
+
+            DivAdminProjects.Visible = ShibUser.CanPublishProject();
+            DivExcelExport.Visible = ShibUser.CanExportExcel();
+
+            
+            if (!Page.IsPostBack)
+            {
+                if (Session["SelectedAdminProjects"] == null)
+                {
+                    radioSelectedProjects.SelectedIndex = 0;
+                    Session["SelectedAdminProjects"] = radioSelectedProjects.SelectedIndex;
+                }
+                else
+                {
+                    radioSelectedProjects.SelectedIndex = (int)Session["SelectedAdminProjects"];
+                }
+
+                if (Session["AdminProjectCollapsed"] == null)
+                    CollapseAdminProjects(false);
+                else
+                    CollapseAdminProjects((bool)Session["AdminProjectCollapsed"]);
+
+                if (Session["ExcelExportCollapsed"] == null)
+                    CollapseExcelExport(false);
+                else
+                    CollapseExcelExport((bool)Session["ExcelExportCollapsed"]);
+
+
+                if (Session["AddInfoCollapsed"] == null)
+                    CollapseAddInfo(true);
+                else
+                    CollapseAddInfo((bool)Session["AddInfoCollapsed"]);
+
+            }
+
+            CheckProjects.DataSource = GetSelectedProjects();
+            CheckProjects.DataBind();
+
+
+            gvDates.DataSource = CalculateDates();
+            gvDates.DataBind();
+
+            //----------- wozu?
+            //GVTasks.DataSource = AllTasks();
+            //GVTasks.DataBind();
+
 
             Session["LastPage"] = "adminpage";
         }
@@ -159,7 +158,7 @@ namespace ProStudCreator
             {
                 yield return new { Name = $"{year % 100:D2}FS", StartDate = Semester.StartOfWeek(year, 8).ToString("yyyy-MM-dd"), EndDate = Semester.StartOfWeek(year, 24).AddDays(5).ToString("yyyy-MM-dd"), SubmissionUntil = Semester.StartOfWeek(year - 1, 47).AddDays(2).ToString("yyyy-MM-dd"), ProjectAllocation = $"Ende 01.{year}", SubmissionIP5 = Semester.StartOfWeek(year, 24).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP5Lang = Semester.StartOfWeek(year, 33).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP6 = Semester.StartOfWeek(year, 33).AddDays(4).ToString("dd.MM.yyyy"), DefenseStart = Semester.StartOfWeek(year, 36).ToString("dd.MM.yyyy"), DefenseEnd = Semester.StartOfWeek(year, 37).AddDays(4).ToString("dd.MM.yyyy"), Exhibition = "?", DayBeforeNext = Semester.StartOfWeek(year, 24).AddDays(6).ToString("yyyy-MM-dd") };
 
-                yield return new { Name = $"{year % 100:D2}HS", StartDate = Semester.StartOfWeek(year, 38).ToString("yyyy-MM-dd"), EndDate = Semester.StartOfWeek(year+1, 3).AddDays(5).ToString("yyyy-MM-dd"), SubmissionUntil = Semester.StartOfWeek(year, 21).AddDays(2).ToString("yyyy-MM-dd"), ProjectAllocation = $"Anfang 07.{year}", SubmissionIP5 = Semester.StartOfWeek(year+1, 3).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP5Lang = Semester.StartOfWeek(year+1, 12).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP6 = Semester.StartOfWeek(year+1, 12).AddDays(4).ToString("dd.MM.yyyy"), DefenseStart = Semester.StartOfWeek(year+1,16).ToString("dd.MM.yyyy"), DefenseEnd = Semester.StartOfWeek(year+1, 17).AddDays(4).ToString("dd.MM.yyyy"), Exhibition = "keine", DayBeforeNext = Semester.StartOfWeek(year + 1, 3).AddDays(6).ToString("yyyy-MM-dd") };
+                yield return new { Name = $"{year % 100:D2}HS", StartDate = Semester.StartOfWeek(year, 38).ToString("yyyy-MM-dd"), EndDate = Semester.StartOfWeek(year + 1, 3).AddDays(5).ToString("yyyy-MM-dd"), SubmissionUntil = Semester.StartOfWeek(year, 21).AddDays(2).ToString("yyyy-MM-dd"), ProjectAllocation = $"Anfang 07.{year}", SubmissionIP5 = Semester.StartOfWeek(year + 1, 3).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP5Lang = Semester.StartOfWeek(year + 1, 12).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP6 = Semester.StartOfWeek(year + 1, 12).AddDays(4).ToString("dd.MM.yyyy"), DefenseStart = Semester.StartOfWeek(year + 1, 16).ToString("dd.MM.yyyy"), DefenseEnd = Semester.StartOfWeek(year + 1, 17).AddDays(4).ToString("dd.MM.yyyy"), Exhibition = "keine", DayBeforeNext = Semester.StartOfWeek(year + 1, 3).AddDays(6).ToString("yyyy-MM-dd") };
             }
         }
 
@@ -244,23 +243,23 @@ namespace ProStudCreator
         {
             IEnumerable<Project> projectsToExport = null;
             //if (radioProjectStart.SelectedValue == "StartingProjects") //Projects which start in this Sem.
-                if (SelectedSemester.SelectedValue == "") //Alle Semester
-                {
-                    projectsToExport = db.Projects
-                        .Where(i => i.State == ProjectState.Published && i.IsMainVersion)
-                        .OrderBy(i => i.Semester.Name)
-                        .ThenBy(i => i.Department.DepartmentName)
-                        .ThenBy(i => i.ProjectNr);
-                }
-                else
-                {
-                    var semesterId = int.Parse(SelectedSemester.SelectedValue);
-                    projectsToExport = db.Projects
-                        .Where(i => i.SemesterId == semesterId && i.IsMainVersion && i.State == ProjectState.Published)
-                        .OrderBy(i => i.Semester.Name)
-                        .ThenBy(i => i.Department.DepartmentName)
-                        .ThenBy(i => i.ProjectNr);
-                }
+            if (SelectedSemester.SelectedValue == "") //Alle Semester
+            {
+                projectsToExport = db.Projects
+                    .Where(i => i.State == ProjectState.Published && i.IsMainVersion)
+                    .OrderBy(i => i.Semester.Name)
+                    .ThenBy(i => i.Department.DepartmentName)
+                    .ThenBy(i => i.ProjectNr);
+            }
+            else
+            {
+                var semesterId = int.Parse(SelectedSemester.SelectedValue);
+                projectsToExport = db.Projects
+                    .Where(i => i.SemesterId == semesterId && i.IsMainVersion && i.State == ProjectState.Published)
+                    .OrderBy(i => i.Semester.Name)
+                    .ThenBy(i => i.Department.DepartmentName)
+                    .ThenBy(i => i.ProjectNr);
+            }
             /*else if (radioProjectStart.SelectedValue == "EndingProjects") //Projects which end in this Sem.
                 if (SelectedSemester.SelectedValue == "") //Alle Semester
                 {
@@ -293,8 +292,10 @@ namespace ProStudCreator
             Response.ContentType = "application/Excel";
             Response.AddHeader("content-disposition",
                 $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_IP56_Informatikprojekte.xlsx");
+
+
             ExcelCreator.GenerateMarketingList(Response.OutputStream, projectsToExport, db,
-                SelectedSemester.SelectedItem.Text);
+            SelectedSemester.SelectedItem.Text);
             Response.End();
         }
 
@@ -367,5 +368,37 @@ namespace ProStudCreator
             }
 
         }
+
+        protected void BtnBillingExport_Click(object sender, EventArgs e)
+        {
+            IEnumerable<Project> projectsToExport = null;
+
+            if (SelectedSemester.SelectedValue == "") //Alle Semester
+            {
+                projectsToExport = db.Projects
+                    .Where(i => i.State == ProjectState.Published && i.IsMainVersion)
+                    .OrderByDescending(i => i.BillingStatus.Billable);
+            }
+            else
+            {
+                var semesterId = int.Parse(SelectedSemester.SelectedValue);
+                projectsToExport = db.Projects
+                    .Where(i => i.SemesterId == semesterId && i.IsMainVersion && i.State == ProjectState.Published)
+                    .OrderByDescending(i => i.BillingStatus.Billable);
+            }
+            Response.Clear();
+            Response.ContentType = "application/Excel";
+            Response.AddHeader("content-disposition",
+                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Verrechnungs_Excel.xlsx");
+
+
+            ExcelCreator.GenerateBillingList(Response.OutputStream, projectsToExport, db,
+            SelectedSemester.SelectedItem.Text);
+            Response.End();
+
+
+        }
     }
 }
+
+

@@ -56,8 +56,8 @@
     <Reference Include="i4Ds.LanguageToolkit, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\i4Ds.LanguageToolkit.1.3.0.0\lib\net45\i4Ds.LanguageToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\lib\NPOI-OfficeIntegration\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="itext-hyph-xml">
       <HintPath>..\lib\itext-hyph-xml.dll</HintPath>
@@ -87,18 +87,21 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI">
-      <HintPath>..\lib\NPOI-OfficeIntegration\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OOXML, Version=2.1.3.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+    <Reference Include="NPOI, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\NPOI-OfficeIntegration\NPOI.OOXML.dll</HintPath>
+      <HintPath>..\..\npoi\solution\Lib\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>..\lib\NPOI-OfficeIntegration\NPOI.OpenXml4Net.dll</HintPath>
+    <Reference Include="NPOI.OOXML, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\npoi\solution\Lib\NPOI.OOXML.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>..\lib\NPOI-OfficeIntegration\NPOI.OpenXmlFormats.dll</HintPath>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\npoi\solution\Lib\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\npoi\solution\Lib\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
@@ -178,6 +181,14 @@
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
     <Content Include="AdminPage.aspx" />
+    <Content Include="App_Data\Database1.mdf" />
+    <Content Include="App_Data\Database1_log.ldf">
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\ProStudDB.mdf" />
+    <Content Include="App_Data\ProStudDB_log.ldf">
+      <DependentUpon>ProStudDB.mdf</DependentUpon>
+    </Content>
     <Content Include="CheckAllTasks.aspx" />
     <Content Include="Content\CreateFilestream.sql" />
     <Content Include="Content\file.png" />
@@ -197,10 +208,6 @@
     <Content Include="ProjectFilesDownload.aspx" />
     <Content Include="ProjectInfoPage.aspx" />
     <Content Include="AddNewProject.aspx" />
-    <Content Include="App_Data\aspnet-ProStudCreator-20140818043155.mdf" />
-    <Content Include="App_Data\aspnet-ProStudCreator-20140818043155_log.ldf">
-      <DependentUpon>aspnet-ProStudCreator-20140818043155.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\doc.png" />
@@ -337,6 +344,9 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ProStudentCreatorDB.cs">
+      <DependentUpon>ProStudentCreatorDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="Translator.cs" />
     <Compile Include="ProjectFilesDownload.aspx.cs">
