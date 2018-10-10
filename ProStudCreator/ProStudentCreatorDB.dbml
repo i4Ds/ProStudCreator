@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="aspnet-ProStudCreator-20140818043155" Class="ProStudentCreatorDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-NKIG02J;Initial Catalog=aspnet-ProStudCreator-20140818043155;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="aspnet_ProStudCreator_20140818043155ConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True" SettingsObjectName="ProStudCreator.Properties.Settings" SettingsPropertyName="Database1ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Departments" Member="Departments">
     <Type Name="Department">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -51,6 +51,7 @@
       <Column Name="DisplayName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ShowAddressOnInfoPage" Type="System.Boolean" DbType="bit" CanBeNull="false" />
       <Column Name="RequiresProjectResults" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
+      <Column Name="Billable" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Association Name="BillingStatus_Project" Member="Projects" ThisKey="Id" OtherKey="BillingStatusID" Type="Project" />
     </Type>
   </Table>

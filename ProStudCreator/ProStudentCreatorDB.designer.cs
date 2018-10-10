@@ -66,7 +66,7 @@ namespace ProStudCreator
     #endregion
 		
 		public ProStudentCreatorDBDataContext() : 
-				base(global::ProStudCreator.Properties.Settings.Default.aspnet_ProStudCreator_20140818043155ConnectionString, mappingSource)
+				base(global::ProStudCreator.Properties.Settings.Default.Database1ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -1078,6 +1078,8 @@ namespace ProStudCreator
 		
 		private bool _RequiresProjectResults;
 		
+		private bool _Billable;
+		
 		private EntitySet<Project> _Projects;
 		
     #region Extensibility Method Definitions
@@ -1092,6 +1094,8 @@ namespace ProStudCreator
     partial void OnShowAddressOnInfoPageChanged();
     partial void OnRequiresProjectResultsChanging(bool value);
     partial void OnRequiresProjectResultsChanged();
+    partial void OnBillableChanging(bool value);
+    partial void OnBillableChanged();
     #endregion
 		
 		public BillingStatus()
@@ -1176,6 +1180,26 @@ namespace ProStudCreator
 					this._RequiresProjectResults = value;
 					this.SendPropertyChanged("RequiresProjectResults");
 					this.OnRequiresProjectResultsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Billable", DbType="bit NOT NULL")]
+		public bool Billable
+		{
+			get
+			{
+				return this._Billable;
+			}
+			set
+			{
+				if ((this._Billable != value))
+				{
+					this.OnBillableChanging(value);
+					this.SendPropertyChanging();
+					this._Billable = value;
+					this.SendPropertyChanged("Billable");
+					this.OnBillableChanged();
 				}
 			}
 		}
