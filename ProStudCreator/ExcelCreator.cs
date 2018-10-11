@@ -223,7 +223,6 @@ namespace ProStudCreator
             workbook.Write(outStream);
         }
 
-
         private static void ProjectToExcelMarketingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
             ICellStyle DateStyle)
         {
@@ -294,9 +293,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.ClientAddressCity ?? "");
             row.CreateCell(i++).SetCellValue(p.ClientReferenceNumber ?? "");
             row.CreateCell(i++).SetCellValue(GetClientAddress(p));
-            row.CreateCell(i++).SetCellValue(p.Id);
-
-            
+            row.CreateCell(i++).SetCellValue(p.Id);            
         }
          
         private static string GetLanguage(Project p)
