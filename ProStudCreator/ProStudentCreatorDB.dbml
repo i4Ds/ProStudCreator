@@ -42,7 +42,6 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Mail" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Unternehmen" Type="System.String" DbType="varchar(100)" CanBeNull="true" />
-      <Column Name="Paid" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Association Name="Expert_Project" Member="Projects" ThisKey="id" OtherKey="LogExpertID" Type="Project" />
     </Type>
   </Table>
