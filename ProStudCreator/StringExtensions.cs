@@ -428,59 +428,15 @@ namespace ProStudCreator
                 {
                     if (listUnordered.IsMatch(currentLine))
                     {
-                        if (i < lines.Length - 2)
+                        if(i<= 1)
                         {
-                            if (listUnordered.IsMatch(lines[i + 1]) && listUnordered.IsMatch(lines[i + 2]))
-                                isUnorderedList = true;
-                        }
-                        if (i > 0 && i < lines.Length - 1)
-                        {
-                            if (listUnordered.IsMatch(lines[i - 1]) && listUnordered.IsMatch(lines[i + 1]))
-                                isUnorderedList = true;
-                        }
-                        if (i >= 2)
-                        {
-                            if (listUnordered.IsMatch(lines[i - 1]) && listUnordered.IsMatch(lines[i - 2]))
-                                isUnorderedList = true;
-                        }
+                            if(!listUnordered.IsMatch(lines[i + 1]) && !listUnordered.IsMatch(lines[i - 1]))
+                                isUnorderedList = false;
+                        }                      
+                         isUnorderedList = true;                      
                     }
-                    else if (listAlpha.IsMatch(currentLine))
-                    {
-
-                        if (i < lines.Length - 2)
-                        {
-                            if (listAlpha.IsMatch(lines[i + 1]) && listAlpha.IsMatch(lines[i + 2]))
-                                isAlphaList = true;
-                        }
-                        if (i > 0 && i < lines.Length - 1)
-                        {
-                            if (listAlpha.IsMatch(lines[i - 1]) && listAlpha.IsMatch(lines[i + 1]))
-                                isAlphaList = true;
-                        }
-                        if (i >= 2)
-                        {
-                            if (listAlpha.IsMatch(lines[i - 1]) && listAlpha.IsMatch(lines[i - 2]))
-                                isAlphaList = true;
-                        }
-                    }
-                    else if (listNumeric.IsMatch(currentLine))
-                    {
-                        if (i < lines.Length - 2)
-                        {
-                            if (listNumeric.IsMatch(lines[i + 1]) && listNumeric.IsMatch(lines[i + 2]))
-                                isNumericList = true;
-                        }
-                        if (i > 0 && i < lines.Length - 1)
-                        {
-                            if (listNumeric.IsMatch(lines[i - 1]) && listNumeric.IsMatch(lines[i + 1]))
-                                isNumericList = true;
-                        }
-                        if (i >= 2)
-                            {
-                            if (listNumeric.IsMatch(lines[i - 1]) && listNumeric.IsMatch(lines[i - 2]))
-                                isNumericList = true;
-                        }
-                    }
+                    isAlphaList = listAlpha.IsMatch(currentLine);
+                    isNumericList = listNumeric.IsMatch(currentLine);               
                 }
                 if (isAlphaList)
                 {
