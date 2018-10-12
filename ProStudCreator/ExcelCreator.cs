@@ -74,6 +74,7 @@ namespace ProStudCreator
             "Anzahl Semester",
             "Durchführungssprache",
             "Experte",
+            "Experte Bezahlt",
             "Verteidigung-Datum",
             "Verteidigung-Raum",
             "Verrechungsstatus",
@@ -222,7 +223,6 @@ namespace ProStudCreator
             workbook.Write(outStream);
         }
 
-
         private static void ProjectToExcelMarketingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
             ICellStyle DateStyle)
         {
@@ -233,7 +233,6 @@ namespace ProStudCreator
                                    string.IsNullOrEmpty(p.ClientCompany)
                 ? ""
                 : p.ClientCompany + " Abt:" + p.ClientAddressDepartment;
-
             var i = 0;
             row.CreateCell(i++).SetCellValue(abbreviation);
             row.CreateCell(i++).SetCellValue(p.Department.DepartmentName);
@@ -280,6 +279,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(GetLanguage(p));
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
+            row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString()?? "");
             row.CreateCell(i++).SetCellValue(p.LogDefenceDate?.ToString() ?? "-");
             row.CreateCell(i++).SetCellValue(p.LogDefenceRoom ?? "-");
             row.CreateCell(i++).SetCellValue(p.BillingStatus?.DisplayName ?? "");
@@ -293,9 +293,9 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.ClientAddressCity ?? "");
             row.CreateCell(i++).SetCellValue(p.ClientReferenceNumber ?? "");
             row.CreateCell(i++).SetCellValue(GetClientAddress(p));
-            row.CreateCell(i++).SetCellValue(p.Id);
+            row.CreateCell(i++).SetCellValue(p.Id);            
         }
-
+         
         private static string GetLanguage(Project p)
         {
             if ((p.LogLanguageGerman ?? false) && !(p.LogLanguageEnglish ?? false))
