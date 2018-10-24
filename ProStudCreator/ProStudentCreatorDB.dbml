@@ -51,6 +51,7 @@
       <Column Name="DisplayName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ShowAddressOnInfoPage" Type="System.Boolean" DbType="bit" CanBeNull="false" />
       <Column Name="RequiresProjectResults" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
+      <Column Name="Billable" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Association Name="BillingStatus_Project" Member="Projects" ThisKey="Id" OtherKey="BillingStatusID" Type="Project" />
     </Type>
   </Table>

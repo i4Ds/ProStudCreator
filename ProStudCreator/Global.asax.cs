@@ -38,7 +38,17 @@ namespace ProStudCreator
             Application.Add("dummyRequest", "");
 
             TaskHandler.CheckAllTasks();
+
+            //Solves problem which  occures if you installed a different language on your Pc 
+            //with out it the Encoding may not work on every Pc.
+            ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage = System.Text.Encoding.Default.CodePage;
+
+
+            
+
         }
+
+
 
 
         private void RegisterChacheEntry()

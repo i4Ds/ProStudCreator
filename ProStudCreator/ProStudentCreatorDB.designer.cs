@@ -916,6 +916,8 @@ namespace ProStudCreator
 		
 		private string _Unternehmen;
 		
+		private bool _Paid;
+		
 		private EntitySet<Project> _Projects;
 		
     #region Extensibility Method Definitions
@@ -930,6 +932,8 @@ namespace ProStudCreator
     partial void OnMailChanged();
     partial void OnUnternehmenChanging(string value);
     partial void OnUnternehmenChanged();
+    partial void OnPaidChanging(bool value);
+    partial void OnPaidChanged();
     #endregion
 		
 		public Expert()
@@ -1018,6 +1022,26 @@ namespace ProStudCreator
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Paid", DbType="bit NOT NULL")]
+		public bool Paid
+		{
+			get
+			{
+				return this._Paid;
+			}
+			set
+			{
+				if ((this._Paid != value))
+				{
+					this.OnPaidChanging(value);
+					this.SendPropertyChanging();
+					this._Paid = value;
+					this.SendPropertyChanged("Paid");
+					this.OnPaidChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Expert_Project", Storage="_Projects", ThisKey="id", OtherKey="LogExpertID")]
 		public EntitySet<Project> Projects
 		{
@@ -1078,6 +1102,8 @@ namespace ProStudCreator
 		
 		private bool _RequiresProjectResults;
 		
+		private bool _Billable;
+		
 		private EntitySet<Project> _Projects;
 		
     #region Extensibility Method Definitions
@@ -1092,6 +1118,8 @@ namespace ProStudCreator
     partial void OnShowAddressOnInfoPageChanged();
     partial void OnRequiresProjectResultsChanging(bool value);
     partial void OnRequiresProjectResultsChanged();
+    partial void OnBillableChanging(bool value);
+    partial void OnBillableChanged();
     #endregion
 		
 		public BillingStatus()
@@ -1176,6 +1204,26 @@ namespace ProStudCreator
 					this._RequiresProjectResults = value;
 					this.SendPropertyChanged("RequiresProjectResults");
 					this.OnRequiresProjectResultsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Billable", DbType="bit NOT NULL")]
+		public bool Billable
+		{
+			get
+			{
+				return this._Billable;
+			}
+			set
+			{
+				if ((this._Billable != value))
+				{
+					this.OnBillableChanging(value);
+					this.SendPropertyChanging();
+					this._Billable = value;
+					this.SendPropertyChanged("Billable");
+					this.OnBillableChanged();
 				}
 			}
 		}

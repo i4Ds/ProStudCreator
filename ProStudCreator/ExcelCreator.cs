@@ -13,6 +13,15 @@ namespace ProStudCreator
     {
         private static readonly string SHEET_NAME = "Projects";
         private static readonly string MARKETING_SHEET_NAME = "_IP56_Informatikprojekte";
+        private static readonly string Billing_SHEET_NAME = "_Verrechnungs_Excel";
+
+        //cellstyls for  Billing_Excel
+        private static readonly int GREEN = 0;
+        private static readonly int GREEN_THICK = 1;
+        private static readonly int RED = 2;
+        private static readonly int RED_THICK = 3;
+        private static readonly int BORDER = 4;
+        private static readonly int BORDER_THICK = 5;
 
         private static readonly string[] HEADERS =
         {
@@ -65,6 +74,7 @@ namespace ProStudCreator
             "Anzahl Semester",
             "Durchführungssprache",
             "Experte",
+            "Experte Bezahlt",
             "Verteidigung-Datum",
             "Verteidigung-Raum",
             "Verrechungsstatus",
@@ -81,6 +91,24 @@ namespace ProStudCreator
             "Interne DB-ID"
         };
 
+        private static readonly string[] Billing_HEADER =
+        {
+            "Semester",
+            "Projekt-ID",
+            "Projekttittel*",
+            "Studierende*",
+            "Betreuer*",
+            "Projekt x*",
+            "Institut",
+            "Vertiefung",
+            "Vertrag",
+            "Experte (P6)",
+            "Auftraggeber*",
+            "Verrechnung*",
+            "",
+            "",
+        };       
+        
         // References
         // - http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
 
@@ -105,6 +133,10 @@ namespace ProStudCreator
 
             for (var i = 0; i < HEADERS.Length; i++)
                 worksheet.AutoSizeColumn(i);
+
+            NPOI.SS.Util.CellRangeAddress rangeadress = new NPOI.SS.Util.CellRangeAddress(0, 0, 0, HEADERS.Length - 1);
+
+            worksheet.SetAutoFilter(rangeadress);
 
             // Save
             workbook.Write(outStream);
@@ -132,7 +164,7 @@ namespace ProStudCreator
             row.CreateCell(10).SetCellValue(p.Reservation2Mail);
             row.CreateCell(11).SetCellValue(p.Id);
 
-            row.CreateCell(12).SetCellValue(p.PreviousProject!=null ? 1 : 0);
+            row.CreateCell(12).SetCellValue(p.PreviousProject != null ? 1 : 0);
             row.CreateCell(13).SetCellValue(p.LanguageGerman ? 1 : 0);
             row.CreateCell(14).SetCellValue(p.LanguageEnglish ? 1 : 0);
             row.CreateCell(15).SetCellValue(p.TypeAppWeb);
@@ -183,10 +215,13 @@ namespace ProStudCreator
             for (var i = 0; i < HEADERS.Length; i++)
                 worksheet.AutoSizeColumn(i);
 
+            NPOI.SS.Util.CellRangeAddress rangeadress = new NPOI.SS.Util.CellRangeAddress(0, 0, 0, MARKETING_HEADERS.Length - 1);
+
+            worksheet.SetAutoFilter(rangeadress);
+
             // Save
             workbook.Write(outStream);
         }
-
 
         private static void ProjectToExcelMarketingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
             ICellStyle DateStyle)
@@ -198,7 +233,6 @@ namespace ProStudCreator
                                    string.IsNullOrEmpty(p.ClientCompany)
                 ? ""
                 : p.ClientCompany + " Abt:" + p.ClientAddressDepartment;
-
             var i = 0;
             row.CreateCell(i++).SetCellValue(abbreviation);
             row.CreateCell(i++).SetCellValue(p.Department.DepartmentName);
@@ -208,7 +242,7 @@ namespace ProStudCreator
             cell1.SetCellValue(GetStartDate(p, db));
             var cell2 = row.CreateCell(i++);
             cell2.CellStyle = DateStyle;
-            if(p.GetDeliveryDate().HasValue)
+            if (p.GetDeliveryDate().HasValue)
                 cell2.SetCellValue(p.GetDeliveryDate().Value);
             row.CreateCell(i++).SetCellValue(p.ExhibitionBachelorThesis(db));
             row.CreateCell(i++).SetCellValue(p.LogStudent1Name ?? "");
@@ -245,6 +279,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(GetLanguage(p));
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
+            row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString()?? "");
             row.CreateCell(i++).SetCellValue(p.LogDefenceDate?.ToString() ?? "-");
             row.CreateCell(i++).SetCellValue(p.LogDefenceRoom ?? "-");
             row.CreateCell(i++).SetCellValue(p.BillingStatus?.DisplayName ?? "");
@@ -258,9 +293,9 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.ClientAddressCity ?? "");
             row.CreateCell(i++).SetCellValue(p.ClientReferenceNumber ?? "");
             row.CreateCell(i++).SetCellValue(GetClientAddress(p));
-            row.CreateCell(i++).SetCellValue(p.Id);
+            row.CreateCell(i++).SetCellValue(p.Id);            
         }
-
+         
         private static string GetLanguage(Project p)
         {
             if ((p.LogLanguageGerman ?? false) && !(p.LogLanguageEnglish ?? false))
@@ -288,7 +323,7 @@ namespace ProStudCreator
         {
             if (grade == null)
                 return -1;
-            return Math.Round((double) grade, 1);
+            return Math.Round((double)grade, 1);
         }
 
         private static string GetAbbreviationProject(Project p)
@@ -303,7 +338,6 @@ namespace ProStudCreator
         {
             return p.Semester?.StartDate ?? Semester.NextSemester(db).StartDate.Date;
         }
-
 
         private static string GetClientAddress(Project p)
         {
@@ -320,6 +354,192 @@ namespace ProStudCreator
             address.AppendLine(p.ClientAddressCity ?? "");
 
             return address.ToString();
+        }
+        public static void GenerateBillingList(Stream outStream, IEnumerable<Project> _projects,
+             ProStudentCreatorDBDataContext db, string semesterName)
+        {
+            var workbook = new XSSFWorkbook();
+            var worksheet = workbook.CreateSheet(Billing_SHEET_NAME);
+
+            List<ICellStyle> cellStyles = new List<ICellStyle>();
+
+            var cellStyleGreen = workbook.CreateCellStyle();
+            cellStyleGreen.FillForegroundColor = HSSFColor.BrightGreen.Index;
+            cellStyleGreen.BorderBottom = BorderStyle.Thin;
+            cellStyleGreen.BorderTop = BorderStyle.Thin;
+            cellStyleGreen.BorderRight = BorderStyle.Thin;
+            cellStyleGreen.BorderLeft = BorderStyle.Thin;
+            cellStyleGreen.FillPattern = FillPattern.SolidForeground;
+
+           var cellStyleGreenThick = workbook.CreateCellStyle();
+            cellStyleGreenThick.FillForegroundColor = HSSFColor.BrightGreen.Index;
+            cellStyleGreenThick.BorderBottom = BorderStyle.Thin;
+            cellStyleGreenThick.BorderTop = BorderStyle.Thick;
+            cellStyleGreenThick.BorderRight = BorderStyle.Thin;
+            cellStyleGreenThick.BorderLeft = BorderStyle.Thin;
+            cellStyleGreenThick.FillPattern = FillPattern.SolidForeground;
+
+            var cellStyleRed = workbook.CreateCellStyle();
+            cellStyleRed.FillForegroundColor = HSSFColor.Red.Index;
+            cellStyleRed.BorderBottom = BorderStyle.Thin;
+            cellStyleRed.BorderTop = BorderStyle.Thin;
+            cellStyleRed.BorderLeft = BorderStyle.Thin;
+            cellStyleRed.BorderRight = BorderStyle.Thin;
+            cellStyleRed.FillPattern = FillPattern.SolidForeground;
+
+            var cellStyleRedThick = workbook.CreateCellStyle();
+            cellStyleRedThick.FillForegroundColor = HSSFColor.Red.Index;
+            cellStyleRedThick.BorderBottom = BorderStyle.Thin;
+            cellStyleRedThick.BorderTop = BorderStyle.Thick;
+            cellStyleRedThick.BorderLeft = BorderStyle.Thin;
+            cellStyleRedThick.BorderRight = BorderStyle.Thin;
+            cellStyleRedThick.FillPattern = FillPattern.SolidForeground;
+
+            var border = workbook.CreateCellStyle();
+            border.BorderBottom = BorderStyle.Thin;
+            border.BorderTop = BorderStyle.Thin;
+            border.BorderLeft = BorderStyle.Thin;
+            border.BorderRight = BorderStyle.Thin;
+
+            var borderThick = workbook.CreateCellStyle();
+            borderThick.BorderBottom = BorderStyle.Thin;
+            borderThick.BorderTop = BorderStyle.Thick;
+            borderThick.BorderLeft = BorderStyle.Thin;
+            borderThick.BorderRight = BorderStyle.Thin;
+
+            cellStyles.Add(cellStyleGreen);
+            cellStyles.Add(cellStyleGreenThick);
+            cellStyles.Add(cellStyleRed);
+            cellStyles.Add(cellStyleRedThick);
+            cellStyles.Add(border);
+            cellStyles.Add(borderThick);
+            
+            var HeaderStyle = workbook.CreateCellStyle();
+            HeaderStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+            HeaderStyle.FillPattern = FillPattern.SolidForeground;
+
+            var DateStyle = workbook.CreateCellStyle();
+            DateStyle.DataFormat = workbook.CreateDataFormat().GetFormat("dd.MM.yyyy");
+
+            // Header
+
+            worksheet.CreateRow(0);
+            for (var i = 0; i < Billing_HEADER.Length; i++)
+            {
+                var cell = worksheet.GetRow(0).CreateCell(i);
+                cell.CellStyle = HeaderStyle;
+                cell.SetCellValue(Billing_HEADER[i]);
+                if (i < 11)
+                {
+                    NPOI.SS.Util.CellRangeAddress cellRangeAdress = new NPOI.SS.Util.CellRangeAddress(0, 2, i, i);
+                    cell.CellStyle.WrapText = true;
+                    worksheet.AddMergedRegion(cellRangeAdress);
+                }
+            }
+            // Project entries
+            var projects = _projects.ToArray();
+
+            for (var i = 0; i < projects.Length; i++)
+            {
+                var row = worksheet.CreateRow(3 + i);
+                ProjectToExcelBillingRow(projects[i], row, db, DateStyle, worksheet, workbook, cellStyles);
+            }
+
+            for (var i = 0; i < Billing_HEADER.Length; i++)
+                worksheet.AutoSizeColumn(i, true);
+         
+            //j = 11 because until the 11 column the Headers look the same 
+            //thats why it has to start filling in with the 11th column 
+            var j = 11;
+            var SecondHeaders = worksheet.CreateRow(1);
+            var SecondHeadersCells = worksheet.GetRow(1).CreateCell(j);
+
+            //Second Line
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("ja");
+
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("               ");
+
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleRed;
+            SecondHeadersCells.SetCellValue("Nein");
+
+            //j = 11 because until the 11 column the Headers look the same 
+            //thats why it has to start filling in with the 11th column 
+            SecondHeaders = worksheet.CreateRow(2);
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j);
+            j = 11;
+
+            //Third line 
+            SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("Kontaktperson");
+
+            SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("Rechnungsadresse");
+
+            SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleRed;
+            SecondHeadersCells.SetCellValue("Verrechenbar");
+
+            // Save
+            workbook.Write(outStream);
+        }
+        private static void ProjectToExcelBillingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
+            ICellStyle DateStyle, ISheet worksheet, IWorkbook workbook, List<ICellStyle> cellStyls)
+        {
+
+            var abbreviation = /*Semester.CurrentSemester.ToString() +*/ p.Semester + "_" +
+            p.Department.DepartmentName +
+            p.ProjectNr.ToString("D2");
+            var i = 0;
+
+            var students = p.LogStudent1Name + " / " + p.LogStudent2Name;
+
+            var adress = p.ClientAddressStreet +
+            p.ClientAddressPostcode + p.ClientAddressCity;
+
+            var rowcount = row.RowNum;
+            //Generates uncolored cells
+            var cellstyleIndex = (rowcount == 3) ? (BORDER_THICK) : (BORDER);
+
+            row.CreateCell(0).SetCellValue(p.Semester.Name);
+            row.CreateCell(1).SetCellValue(abbreviation);
+            row.CreateCell(2).SetCellValue(p.Name);
+            row.CreateCell(3).SetCellValue(students);
+            row.CreateCell(4).SetCellValue(p.Advisor1?.Name ?? "");
+            row.CreateCell(5).SetCellValue(p.POneType.Description);
+            row.CreateCell(6).SetCellValue(p.Department.DepartmentName);
+            row.CreateCell(7).SetCellValue("");
+            row.CreateCell(8).SetCellValue("");
+            row.CreateCell(9).SetCellValue(p.Advisor1?.Mail ?? "");
+
+            for (var cellcount = 0; cellcount < 10; cellcount++)
+            {
+                row.GetCell(i++).CellStyle = cellStyls[cellstyleIndex];
+            }
+
+            // Generates the special colerd cells needed            
+            var thinORthickindex = (p.BillingStatus.Billable) ? (GREEN) : (RED);
+            //rowcount==3 becaus, 3rd row = row with projects
+            if (rowcount == 3)
+            {
+                thinORthickindex = (p.BillingStatus.Billable) ? (GREEN_THICK) : (RED_THICK); ;
+            }
+
+            row.CreateCell(10).SetCellValue(p.ClientCompany);
+            row.CreateCell(11).SetCellValue(p.ClientPerson);
+            row.CreateCell(12).SetCellValue(adress);
+            row.CreateCell(13).SetCellValue(p.BillingStatus?.DisplayName ?? "");
+           
+            for (var cellcount = 10; cellcount < 14; cellcount++)
+            {
+                row.GetCell(i++).CellStyle = cellStyls[thinORthickindex];
+            }
         }
     }
 }
