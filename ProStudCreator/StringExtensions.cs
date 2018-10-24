@@ -367,13 +367,13 @@ namespace ProStudCreator
         {
             if (_paragraph is Chunk)
             {
-                var chk = (Chunk) (object) _paragraph;
+                var chk = (Chunk)(object)_paragraph;
                 chk.SetHyphenation(_hyph);
                 chk.Chunks.ToList().ForEach(c => c.Hyphenate(_hyph));
             }
             else if (_paragraph is Paragraph)
             {
-                var chk = (Paragraph) (object) _paragraph;
+                var chk = (Paragraph)(object)_paragraph;
 
                 //CLR CRASH: (!!!!)
                 //chk.Chunks.ToList().ForEach(c => c.Hyphenate(_hyph));
@@ -382,13 +382,13 @@ namespace ProStudCreator
             }
             else if (_paragraph is Anchor)
             {
-                var chk = (Anchor) (object) _paragraph;
+                var chk = (Anchor)(object)_paragraph;
                 chk.Chunks.ToList().ForEach(c => c.SetHyphenation(_hyph));
                 chk.Chunks.ToList().ForEach(c => c.Hyphenate(_hyph));
             }
             else if (_paragraph is List)
             {
-                var chk = (List) (object) _paragraph;
+                var chk = (List)(object)_paragraph;
                 chk.Chunks.ToList().ForEach(c => c.Hyphenate(_hyph));
             }
 
@@ -408,7 +408,7 @@ namespace ProStudCreator
             List currentList = null;
             var lines = _paragraph.Split('\n');
 
-            for(int i = 0;i < lines.Length; i++)
+            for (int i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
                 var para = new Paragraph();
@@ -428,58 +428,24 @@ namespace ProStudCreator
                 {
                     if (listUnordered.IsMatch(currentLine))
                     {
-                        if (i < lines.Length - 2)
-                        {
-                            if (listUnordered.IsMatch(lines[i + 1]) && listUnordered.IsMatch(lines[i + 2]))
-                                isUnorderedList = true;
-                        }
-                        if (i > 0 && i < lines.Length - 1)
-                        {
-                            if (listUnordered.IsMatch(lines[i - 1]) && listUnordered.IsMatch(lines[i + 1]))
-                                isUnorderedList = true;
-                        }
-                        if (i >= 2)
-                        {
-                            if (listUnordered.IsMatch(lines[i - 1]) && listUnordered.IsMatch(lines[i - 2]))
-                                isUnorderedList = true;
-                        }
+                        if (i < lines.Length - 1 && listUnordered.IsMatch(lines[i + 1]))
+                            isUnorderedList = true;
+                        if (i > 0 && listUnordered.IsMatch(lines[i - 1]))
+                            isUnorderedList = true;
                     }
                     else if (listAlpha.IsMatch(currentLine))
                     {
-
-                        if (i < lines.Length - 2)
-                        {
-                            if (listAlpha.IsMatch(lines[i + 1]) && listAlpha.IsMatch(lines[i + 2]))
-                                isAlphaList = true;
-                        }
-                        if (i > 0 && i < lines.Length - 1)
-                        {
-                            if (listAlpha.IsMatch(lines[i - 1]) && listAlpha.IsMatch(lines[i + 1]))
-                                isAlphaList = true;
-                        }
-                        if (i >= 2)
-                        {
-                            if (listAlpha.IsMatch(lines[i - 1]) && listAlpha.IsMatch(lines[i - 2]))
-                                isAlphaList = true;
-                        }
+                        if (i < lines.Length - 1 && listAlpha.IsMatch(lines[i + 1]))
+                            isAlphaList = true;
+                        if (i > 0 && listAlpha.IsMatch(lines[i - 1]))
+                            isAlphaList = true;
                     }
                     else if (listNumeric.IsMatch(currentLine))
                     {
-                        if (i < lines.Length - 2)
-                        {
-                            if (listNumeric.IsMatch(lines[i + 1]) && listNumeric.IsMatch(lines[i + 2]))
-                                isNumericList = true;
-                        }
-                        if (i > 0 && i < lines.Length - 1)
-                        {
-                            if (listNumeric.IsMatch(lines[i - 1]) && listNumeric.IsMatch(lines[i + 1]))
-                                isNumericList = true;
-                        }
-                        if (i >= 2)
-                            {
-                            if (listNumeric.IsMatch(lines[i - 1]) && listNumeric.IsMatch(lines[i - 2]))
-                                isNumericList = true;
-                        }
+                        if (i < lines.Length - 1 && listNumeric.IsMatch(lines[i + 1]))
+                            isNumericList = true;
+                        if (i > 0 && listNumeric.IsMatch(lines[i - 1]))
+                            isNumericList = true;
                     }
                 }
                 if (isAlphaList)
@@ -496,8 +462,8 @@ namespace ProStudCreator
                         currentList.PostSymbol = ")";
                         currentList.IndentationLeft = 5f;
                     }
-                
-                }else if (isUnorderedList)
+                }
+                else if (isUnorderedList)
                 {
                     currentLine = currentLine.TrimStart('*', '-', ' ');
 
@@ -507,18 +473,19 @@ namespace ProStudCreator
                         currentList.SetListSymbol("\u2022");
                         currentList.IndentationLeft = 5f;
                     }
-                } else if (isNumericList)
+                }
+                else if (isNumericList)
                 {
-                        var itemSymbol = int.Parse(listNumeric.Match(currentLine).Groups["index"].Value);
-                        listIndexOffset = itemSymbol - 1;
+                    var itemSymbol = int.Parse(listNumeric.Match(currentLine).Groups["index"].Value);
+                    listIndexOffset = itemSymbol - 1;
 
-                        currentLine = listNumeric.Replace(currentLine, "");
+                    currentLine = listNumeric.Replace(currentLine, "");
 
-                        if (currentList == null)
-                        {
-                            currentList = new List(true, false, 10f);
-                            currentList.IndentationLeft = 5f;
-                        }
+                    if (currentList == null)
+                    {
+                        currentList = new List(true, false, 10f);
+                        currentList.IndentationLeft = 5f;
+                    }
                 }
                 else
                 {
@@ -543,7 +510,7 @@ namespace ProStudCreator
                         para.Add(c);
                     else
                         //c.setLineHeight(-200);
-                        para.Add(new Anchor(c) {Reference = chk.URL});
+                        para.Add(new Anchor(c) { Reference = chk.URL });
                 }
 
                 if (currentList == null)

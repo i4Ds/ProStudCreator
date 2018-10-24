@@ -31,7 +31,10 @@
 <div class="container body-content" style="margin-top: 50px;">
     <div>
         <h2>Zugriff verweigert</h2>
-        <div class="alert alert-danger">Sie sind nicht berechtigt, auf die Webseite für Informatikprojekte zuzugreifen. Diese steht den Mitarbeitern der beiden Informatikinstituten zur Verfügung.</div>
+        <div class="alert alert-danger">Sie sind (noch) nicht berechtigt, auf diese Webseite zuzugreifen. Diese steht nur Mitarbeitenden der Informatikinstitute zur Verfügung.<br />
+            <br />
+            Accounts können bei <a href="mailto:<%: ProStudCreator.Global.WebAdmin %>"><%: ProStudCreator.Global.WebAdmin %></a> beantragt werden.
+        </div>
 
         <b>Angaben zum Fehler</b>
         <div class="well">
