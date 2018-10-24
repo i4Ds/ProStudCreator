@@ -916,8 +916,6 @@ namespace ProStudCreator
 		
 		private string _Unternehmen;
 		
-		private bool _Paid;
-		
 		private EntitySet<Project> _Projects;
 		
     #region Extensibility Method Definitions
@@ -932,8 +930,6 @@ namespace ProStudCreator
     partial void OnMailChanged();
     partial void OnUnternehmenChanging(string value);
     partial void OnUnternehmenChanged();
-    partial void OnPaidChanging(bool value);
-    partial void OnPaidChanged();
     #endregion
 		
 		public Expert()
@@ -1018,26 +1014,6 @@ namespace ProStudCreator
 					this._Unternehmen = value;
 					this.SendPropertyChanged("Unternehmen");
 					this.OnUnternehmenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Paid", DbType="bit NOT NULL")]
-		public bool Paid
-		{
-			get
-			{
-				return this._Paid;
-			}
-			set
-			{
-				if ((this._Paid != value))
-				{
-					this.OnPaidChanging(value);
-					this.SendPropertyChanging();
-					this._Paid = value;
-					this.SendPropertyChanged("Paid");
-					this.OnPaidChanged();
 				}
 			}
 		}

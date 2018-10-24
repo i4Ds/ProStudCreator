@@ -430,7 +430,7 @@ namespace ProStudCreator
             }
             else
             {
-                project.Submit();
+                project.Submit(db);
                 db.SubmitChanges();
                 project.SaveAsNewVersion(db);
                 Response.Redirect("projectlist");

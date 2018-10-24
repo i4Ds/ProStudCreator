@@ -926,8 +926,7 @@ namespace ProStudCreator
             }
             else
             {
-
-                project.Submit();
+                project.Submit(db);
                 project.SaveAsNewVersion(db);
                 Response.Redirect("projectlist");
             }
@@ -1239,7 +1238,7 @@ refusedReasonText.Text + "\n\n----------------------\nAutomatische Nachricht von
             if (project.DepartmentId != oldDepartmentId && project.ProjectNr > 0)
             {
                 project.ProjectNr = 0; // 'Remove' project number to allow finding a new one.
-                project.GenerateProjectNr(db);
+                project.AssignUniqueProjectNr(db);
             }
 
             if (project.Semester == null)

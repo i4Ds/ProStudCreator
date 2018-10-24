@@ -320,6 +320,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ProStudentCreatorDB.cs">
+      <DependentUpon>ProStudentCreatorDB.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Translator.cs" />
     <Compile Include="ProjectFilesDownload.aspx.cs">
       <DependentUpon>ProjectFilesDownload.aspx</DependentUpon>

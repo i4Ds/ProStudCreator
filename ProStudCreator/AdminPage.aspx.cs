@@ -45,7 +45,7 @@ namespace ProStudCreator
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
 
-            
+
             if (!Page.IsPostBack)
             {
                 if (Session["SelectedAdminProjects"] == null)
@@ -362,7 +362,7 @@ namespace ProStudCreator
             }
             else
             {
-                project.Submit();
+                project.Submit(db);
                 db.SubmitChanges();
                 Response.Redirect("projectlist");
             }
@@ -377,14 +377,18 @@ namespace ProStudCreator
             {
                 projectsToExport = db.Projects
                     .Where(i => i.State == ProjectState.Published && i.IsMainVersion)
-                    .OrderByDescending(i => i.BillingStatus.Billable);
+                    .OrderByDescending(i => i.BillingStatus.Billable)
+                    .ThenBy(i => i.ClientCompany)
+                    .ThenBy(i => i.ClientPerson);
             }
             else
             {
                 var semesterId = int.Parse(SelectedSemester.SelectedValue);
                 projectsToExport = db.Projects
                     .Where(i => i.SemesterId == semesterId && i.IsMainVersion && i.State == ProjectState.Published)
-                    .OrderByDescending(i => i.BillingStatus.Billable);
+                    .OrderByDescending(i => i.BillingStatus.Billable)
+                    .ThenBy(i => i.ClientCompany)
+                    .ThenBy(i => i.ClientPerson);
             }
             Response.Clear();
             Response.ContentType = "application/Excel";
@@ -392,11 +396,8 @@ namespace ProStudCreator
                 $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Verrechnungs_Excel.xlsx");
 
 
-            ExcelCreator.GenerateBillingList(Response.OutputStream, projectsToExport, db,
-            SelectedSemester.SelectedItem.Text);
+            ExcelCreator.GenerateBillingList(Response.OutputStream, projectsToExport, db, SelectedSemester.SelectedItem.Text);
             Response.End();
-
-
         }
     }
 }

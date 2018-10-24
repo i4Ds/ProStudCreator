@@ -371,11 +371,11 @@ namespace ProStudCreator
         ///     Submits user's project for approval by an admin.
         /// </summary>
         /// <param name="_p"></param>
-        public static void Submit(this Project _p)
+        public static void Submit(this Project _p, ProStudentCreatorDBDataContext _dbx)
         {
             _p.PublishedDate = DateTime.Now;
             _p.ModificationDate = DateTime.Now;
-            AssignUniqueProjectNr(_p);
+            AssignUniqueProjectNr(_p, _dbx);
             _p.State = ProjectState.Submitted;
         }
 
@@ -406,33 +406,8 @@ namespace ProStudCreator
         ///     Applies to projects after submission.
         /// </summary>
         /// <param name="_p"></param>
-        public static void AssignUniqueProjectNr(this Project _p)
+        public static void AssignUniqueProjectNr(this Project _p, ProStudentCreatorDBDataContext dbx)
         {
-            using (var dbx = new ProStudentCreatorDBDataContext())
-            {
-                var semesterStart = Semester.ActiveSemester(_p.PublishedDate, dbx).StartDate;
-                var semesterEnd = Semester.ActiveSemester(_p.PublishedDate, dbx).DayBeforeNextSemester;
-
-                // Get project numbers from this semester & same department
-                var nrs = (
-                    from p in dbx.Projects
-                    where p.PublishedDate >= semesterStart && p.PublishedDate <= semesterEnd
-                          && p.Id != _p.Id
-                          && (p.State == ProjectState.Published || p.State == ProjectState.Submitted)
-                          && p.Department == _p.Department
-                    select p.ProjectNr).ToArray();
-                if (_p.ProjectNr >= 100 || nrs.Contains(_p.ProjectNr) || _p.ProjectNr < 1)
-                {
-                    _p.ProjectNr = 1;
-                    while (nrs.Contains(_p.ProjectNr))
-                        _p.ProjectNr++;
-                }
-            }
-        }
-
-        public static void GenerateProjectNr(this Project _p, ProStudentCreatorDBDataContext dbx)
-        {
-
             var semesterStart = Semester.ActiveSemester(_p.PublishedDate, dbx).StartDate;
             var semesterEnd = Semester.ActiveSemester(_p.PublishedDate, dbx).DayBeforeNextSemester;
 
@@ -666,8 +641,7 @@ namespace ProStudCreator
     }
     public partial class Project
     {
-
-        public String StateColor
+        public string StateColor
         {
             get
             {
@@ -699,9 +673,8 @@ namespace ProStudCreator
         }
 
 
-        public String StateAsString
+        public string StateAsString
         {
-
             get
             {
                 switch (State)
@@ -725,8 +698,6 @@ namespace ProStudCreator
                         throw new Exception();
 
                 }
-
-
             }
         }
     }
