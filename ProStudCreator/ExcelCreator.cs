@@ -99,6 +99,8 @@ namespace ProStudCreator
             "Verrechnung",
             "",
             "",
+            "Mitglied AIHK",
+            "bezahlt"
         };       
         
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
@@ -365,9 +367,13 @@ namespace ProStudCreator
             cellStyleBorderThickTop.BorderLeft = BorderStyle.Thin;
             cellStyleBorderThickTop.BorderRight = BorderStyle.Thin;
 
-            var HeaderStyle = workbook.CreateCellStyle();
-            HeaderStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-            HeaderStyle.FillPattern = FillPattern.SolidForeground;
+            var cellStyleHeader = workbook.CreateCellStyle();
+            cellStyleHeader.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+            cellStyleHeader.FillPattern = FillPattern.SolidForeground;
+
+            var cellStyleHeaderYellow = workbook.CreateCellStyle();
+            cellStyleHeaderYellow.FillForegroundColor = HSSFColor.Yellow.Index;
+            cellStyleHeaderYellow.FillPattern = FillPattern.SolidForeground;
 
             var DateStyle = workbook.CreateCellStyle();
             DateStyle.DataFormat = workbook.CreateDataFormat().GetFormat("dd.MM.yyyy");
@@ -377,9 +383,9 @@ namespace ProStudCreator
             for (var i = 0; i < BillingHeader.Length; i++)
             {
                 var cell = worksheet.GetRow(0).CreateCell(i);
-                cell.CellStyle = HeaderStyle;
+                cell.CellStyle = i < 14 ? cellStyleHeader : cellStyleHeaderYellow;
                 cell.SetCellValue(BillingHeader[i]);
-                if (i < 11)
+                if (i < 11 || i > 13)
                 {
                     cell.CellStyle.WrapText = true;
                     worksheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 2, i, i));
@@ -415,28 +421,29 @@ namespace ProStudCreator
                     row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
 
                 row.CreateCell(13).SetCellValue(p.BillingStatus?.DisplayName ?? "");
+                row.CreateCell(14);
+                row.CreateCell(15);
 
 
                 //add border to the first few columns
                 for (var cellcount = 0; cellcount < 11; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
+                for (var cellcount = 14; cellcount < 16; cellcount++)
+                    row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
-
+                ICellStyle cellStyle;
                 if (p.BillingStatus != null)
                 {
                     //color the later columns, according to 
-                    var cellStyle = p.BillingStatus.Billable ? cellStyleGreen : cellStyleRed;
+                    cellStyle = p.BillingStatus.Billable ? cellStyleGreen : cellStyleRed;
                     if (row.RowNum == 3) //add thick border for row 3, after the header
                         cellStyle = p.BillingStatus.Billable ? cellStyleGreenThick : cellStyleRedThick;
-
-                    for (var cellcount = 11; cellcount < 14; cellcount++)
-                        row.GetCell(cellcount).CellStyle = cellStyle;
                 }
                 else
-                {
-                    for (var cellcount = 11; cellcount < 14; cellcount++)
-                        row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-                }
+                    cellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
+
+                for (var cellcount = 11; cellcount < 14; cellcount++)
+                    row.GetCell(cellcount).CellStyle = cellStyle;
             }
 
             //j = 11 because until the 11 column the Headers look the same 
