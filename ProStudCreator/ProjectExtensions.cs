@@ -505,11 +505,15 @@ namespace ProStudCreator
 
         public static bool WasDefenseHeld(this Project _p)
         {
-            var def = _p.GetDefenseDate();
-            if (def == null)
-                return false;
+            return _p.IsMainVersion && _p.LogGradeStudent1 != null && _p.BillingStatus?.RequiresProjectResults == true && _p.State == ProjectState.Published;
 
-            return _p.BillingStatus != null && _p.WebSummaryChecked && _p.IsMainVersion && _p.LogGradeStudent1 != null && def.Value.AddDays(1) < DateTime.Now;
+            //    return true;
+
+            //var def = _p.GetDefenseDate();
+            //if (def == null)
+            //    return false;
+
+            //return _p.BillingStatus != null && _p.IsMainVersion && _p.LogGradeStudent1 != null && def.Value.AddDays(1) < DateTime.Now;
         }
 
         public static DateTime? GetDefenseDate(this Project _p)
