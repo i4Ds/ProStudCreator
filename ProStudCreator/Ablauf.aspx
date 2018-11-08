@@ -63,7 +63,7 @@
         <ol>
             <li>Ein externer Auftraggeber (nie ein Student selbst) schickt <a class="pdf" href="Content/Externe_Projekteingabe.pdf">dieses Formular</a> an Markus Oehninger.</li>
             <li>Markus verteilt das Projekt ans I4DS, IMVS und IIT.</li>
-            <li>Dominik Gruntz (IMVS), Simon Felix (I4DS) oder Simon Schubiger (IIT) verteilen das Projekt an passende Betreuer.</li>
+            <li>Dominik Gruntz (IMVS), André Csillaghy (I4DS) oder Simon Schubiger (IIT) verteilen das Projekt an passende Betreuer.</li>
             <li>Die Betreuer erarbeiten einen Projektbeschrieb, zusammen mit dem externen Auftraggeber.</li>
             <li>Der fertige Projektbeschrieb wird über diese Plattform eingereicht und geprüft.</li>
         </ol>

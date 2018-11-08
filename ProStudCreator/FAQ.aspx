@@ -141,7 +141,7 @@
         <h4>Ich habe einen Fehler entdeckt oder einen Verbesserungsvorschlag. Wohin damit?</h4>
         <p>
             Bitte erfasse Dein Anliegen auf <a href="https://github.com/i4Ds/ProStudCreator/issues">https://github.com/i4Ds/ProStudCreator/issues</a>. Auf der Seite sind auch
-            alle bereits bekannten Probleme und Vorschläge aufgelistet. Alternativ können Vorschläge und Bugs an <a href="mailto:simon.felix@fhnw.ch">Simon</a> gemailt werden.
+            alle bereits bekannten Probleme und Vorschläge aufgelistet. Alternativ können Vorschläge und Bugs an <a href="mailto:simon.beck@fhnw.ch">Simon</a> gemailt werden.
         </p>
     </div>
 </asp:Content>

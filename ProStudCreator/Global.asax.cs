@@ -21,10 +21,10 @@ namespace ProStudCreator
         public static readonly TimeSpan AllowTitleChangesBeforeSubmission = TimeSpan.FromDays(11*7);
         public static readonly TimeSpan ExpectFinalPresentationAfterSubmissionForIP5 = TimeSpan.FromDays(3*7);
         public static readonly TimeSpan GradingDuration = TimeSpan.FromDays(3);
-        public static readonly string WebAdmin = "simon.felix@fhnw.ch";
+        public static readonly string WebAdmin = "simon.beck@fhnw.ch";
         public static readonly string GradeAdmin = "admin.technik@fhnw.ch";
         public static readonly string PayExpertAdmin = "hannelore.gerber@fhnw.ch";
-        public static readonly string InvoiceCustomersAdmin = "simon.felix@fhnw.ch"; // "hannelore.gerber@fhnw.ch";
+        public static readonly string InvoiceCustomersAdmin = "simon.beck@fhnw.ch"; // if active change to: "hannelore.gerber@fhnw.ch";
         public static readonly string MarKomAdmin = "jadwiga.gabrys@fhnw.ch";
 
         private void Application_Start(object sender, EventArgs e)
