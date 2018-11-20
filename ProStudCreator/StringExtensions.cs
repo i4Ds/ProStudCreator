@@ -403,7 +403,6 @@ namespace ProStudCreator
             var linkStyle = new Font(_font);
             linkStyle.Color = BaseColor.BLUE;
             linkStyle.SetStyle(Font.UNDERLINE);
-            linkStyle.Size = 8.1f;
 
             List currentList = null;
             var lines = _paragraph.Split('\n');
@@ -509,15 +508,17 @@ namespace ProStudCreator
                     if (chk.URL == null)
                         para.Add(c);
                     else
-                        //c.setLineHeight(-200);
-                        para.Add(new Anchor(c) { Reference = chk.URL });
+                    {
+                        c.SetAnchor(chk.URL);
+                        para.Add(c);
+                    }
                 }
 
                 if (currentList == null)
                 {
                     if (emptyLine.IsMatch(currentLine))
                         para.Add("\n");
-
+                    
                     para.SpacingAfter = 2f;
                     paragraphs.Add(para);
                 }
