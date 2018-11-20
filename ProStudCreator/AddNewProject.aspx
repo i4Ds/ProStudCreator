@@ -119,7 +119,7 @@
                 <div class="col-sm-9">
                     <asp:TextBox runat="server" ID="ProjectName" CssClass="form-control" MaxLength="80"></asp:TextBox>
                     <asp:Label runat="server" ID="ProjectNameLabel" CssClass="form-control" Visible="false" Style="overflow: auto; width: 75%;"></asp:Label>
-                    <asp:RequiredFieldValidator ID="ProjectNameValidator" ForeColor="Red" Display="Dynamic" ControlToValidate="ProjectName" runat="server" ErrorMessage="Bitte geben Sie einen Projektnamen an."></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="ProjectNameValidator" ForeColor="Red" Display="Dynamic" ControlToValidate="ProjectName" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie einen Projektnamen an."></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group">
@@ -139,7 +139,7 @@
                 <div class="col-sm-3"></div>
             </div>
             <div class="form-group">
-                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Nebenbetreuung"></asp:Label>
+                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Nebenbetreuung:"></asp:Label>
                 <div class="col-sm-3">
                     <asp:DropDownList runat="server" ID="dropAdvisor2" CssClass="form-control" DataValueField="Id" DataTextField="Name"></asp:DropDownList>
                     <asp:Label runat="server" ID="dropAdvisor2Label" CssClass="form-control" Visible="false"></asp:Label>
@@ -197,10 +197,11 @@
                             </div>
                         </div>
                         <div class="form-group" style="text-align: left">
-                            <asp:Label runat="server" Text="E-Mail Adresse" CssClass="control-label col-sm-3"></asp:Label>
+                            <asp:Label runat="server" Text="E-Mail Adresse:" CssClass="control-label col-sm-3"></asp:Label>
                             <div class="col-sm-6 col-md-7">
                                 <asp:TextBox runat="server" ID="txtClientEmail" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
                                 <asp:Label runat="server" ID="txtClientEmailLabel" CssClass="form-control" Visible="false"></asp:Label>
+                                <asp:RegularExpressionValidator ID="ClientEmailFormatValidator" ValidationExpression=".+@.+\..+" ForeColor="Red" Display="Dynamic" ControlToValidate="txtClientEmail" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie eine E-Mail mit Format 'xxx@yyy.zzz' an."></asp:RegularExpressionValidator>
                             </div>
                         </div>
                         <div class="form-group" style="text-align: left" runat="server" id="divClientDepartment">

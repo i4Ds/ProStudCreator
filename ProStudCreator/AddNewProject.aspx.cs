@@ -1122,6 +1122,7 @@ refusedReasonText.Text + "\n\n----------------------\nAutomatische Nachricht von
                 }
                 else
                 {
+                    project.ClientCompany = "";
                     project.ClientType = (int)ClientType.PrivatePerson;
                 }
                 project.ClientAddressTitle = drpClientTitle.SelectedItem.Text;
