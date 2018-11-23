@@ -33,8 +33,13 @@ namespace ProStudCreator
                 LastEditedBy = ShibUser.GetEmail(),
                 IsMainVersion = true
             };
-            _p.IsMainVersion = false;
+            //_p.IsMainVersion = false;
             _p.MapProject(project);
+
+            foreach (Project proj in db.Projects.Where(p => p.BaseVersionId == _p.BaseVersionId && p.IsMainVersion == true))
+            {
+                proj.IsMainVersion = false;
+            }
 
             db.Projects.InsertOnSubmit(project);
             db.SubmitChanges();

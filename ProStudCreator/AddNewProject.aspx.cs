@@ -65,6 +65,14 @@ namespace ProStudCreator
                 id = int.Parse(Request.QueryString["id"]);
                 project = db.Projects.Single(p => (int?)p.Id == id);
 
+                // if loaded page is not main version -> redirect outdated error
+                if (!project.IsMainVersion && Request.QueryString["showChanges"] == null)
+                {
+                    //var mainProject = db.Projects.Single(p => p.BaseVersionId == project.BaseVersionId && p.IsMainVersion);
+                    //Response.Redirect("~/AddNewProject.aspx?id=" + mainProject.Id);
+                    Response.Redirect("error/OutdatedData.aspx");
+                }
+
                 if (!project.UserCanEdit())
                 {
                     Response.Redirect("error/AccessDenied.aspx");
@@ -505,6 +513,9 @@ namespace ProStudCreator
         {
             if (Request.QueryString["showChanges"] != null)
             {
+                //disable pdf update for showChanges view
+                Pdfupdatetimer.Enabled = false;
+
                 PopulateHistoryGUI();
                 return;
             }

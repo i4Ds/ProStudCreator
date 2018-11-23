@@ -165,6 +165,7 @@
     <Content Include="Content\file.png" />
     <Content Include="Content\jpg.png" />
     <Content Include="Content\zip.png" />
+    <Content Include="error\OutdatedData.aspx" />
     <Content Include="pictures\danger.png" />
     <Content Include="pictures\datum.png" />
     <Content Include="pictures\datun_grau.png" />
@@ -314,6 +315,13 @@
       <DependentUpon>CheckAllTasks.aspx</DependentUpon>
     </Compile>
     <Compile Include="ClientType.cs" />
+    <Compile Include="error\OutdatedData.aspx.cs">
+      <DependentUpon>OutdatedData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="error\OutdatedData.aspx.designer.cs">
+      <DependentUpon>OutdatedData.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

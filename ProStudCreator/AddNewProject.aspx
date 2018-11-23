@@ -439,7 +439,7 @@
                     <asp:Button runat="server" ID="rollbackProject" Visible="false" Style="margin-right: 0px;" CssClass="btn btn-default rollbackMarginRight redButton" Text="Zurückziehen" OnClick="RollbackProject_Click" OnClientClick="return confirmSaving('Projekt wirklich zurückziehen?');"></asp:Button>
                     <asp:Button runat="server" ID="submitProject" Visible="false" Style="margin-right: 0px;" CssClass="btn btn-default greenButton" Text="Einreichen" OnClick="SubmitProject_Click" OnClientClick="return confirmSaving('Dieses Projekt einreichen?');"></asp:Button>
                     <asp:Button runat="server" AutoPostBack="true" ID="duplicateProject" Style="margin-right: 0px;" CssClass="btn btn-default" Text="Duplizieren" OnClick="DuplicatProject_Click" OnClientClick="return Confirm();" />
-                    <asp:Button runat="server" ID="saveCloseProject" OnClick="SaveCloseProjectButton" CssClass="btn btn-default" Text="Speichern & Schliessen" OnClientClick="hasUnsavedChanges = false;"></asp:Button>
+                    <asp:Button runat="server" ID="saveCloseProject" OnClick="SaveCloseProjectButton" CssClass="btn btn-default" Text="Speichern & Schliessen" OnClientClick="this.disabled = 'true'; hasUnsavedChanges = false;" UseSubmitBehavior="false"></asp:Button>
                     <asp:Button runat="server" ID="saveProject" OnClick="SaveProjectButton" CssClass="btn btn-default" Text="Zwischenspeichern" OnClientClick="hasUnsavedChanges = false;"></asp:Button>
                     <asp:Button runat="server" ID="cancelProject" CssClass="btn btn-default" TabIndex="5" Text="Abbrechen" OnClick="CancelNewProject_Click" CausesValidation="false"></asp:Button>
         </div>
