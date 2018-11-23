@@ -47,7 +47,7 @@ namespace ProStudCreator
         public static string GetEmail()
         {
 #if DEBUG
-            return "stephen.randles@fhnw.ch";
+            return Global.WebAdmin;
 #else
             string mail = HttpContext.Current.Request.Headers["mail"];
             string result;
@@ -66,7 +66,7 @@ namespace ProStudCreator
         public static string GetFirstName()
         {
 #if DEBUG
-            return "Stephen";
+            return Global.WebAdmin.Split('.')[0].First().ToString().ToUpper() + Global.WebAdmin.Split('.')[0].Substring(1);
 #else
             return HttpContext.Current.Request.Headers["givenName"];
 #endif
@@ -75,7 +75,7 @@ namespace ProStudCreator
         public static string GetLastName()
         {
 #if DEBUG
-            return "Randles";
+            return Global.WebAdmin.Split('.')[1].First().ToString().ToUpper() + Global.WebAdmin.Split('.')[1].Substring(1); ;
 #else
             return HttpContext.Current.Request.Headers["surname"];
 #endif
