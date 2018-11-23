@@ -95,7 +95,7 @@ namespace ProStudCreator
                     db.Tasks.InsertOnSubmit(new Task
                     {
                         ProjectId = project.Id,
-                        ResponsibleUser = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department),
+                        ResponsibleUser = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department),
                         FirstReminded = DateTime.Now,
                         TaskType = type,
                         Supervisor = db.UserDepartmentMap.Single(i => i.Mail == Global.WebAdmin)
@@ -491,7 +491,7 @@ namespace ProStudCreator
                     ResponsibleUser = project.Advisor1,
                     FirstReminded = DateTime.Now,
                     TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.DoubleCheckMarKomBrochureData),
-                    Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                    Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                 });
 
             db.SubmitChanges();
@@ -514,7 +514,7 @@ namespace ProStudCreator
                     ResponsibleUser = project.Advisor1,
                     FirstReminded = DateTime.Now,
                     TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.StartProject),
-                    Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                    Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                 });
 
             db.SubmitChanges();
@@ -538,7 +538,7 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.FinishProject),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
             }
 
@@ -559,7 +559,7 @@ namespace ProStudCreator
                             ResponsibleUser = project.Advisor1,
                             FirstReminded = DateTime.Now,
                             TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.RegisterGrades),
-                            Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                            Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                         });
 
             //mark registered tasks as done
@@ -584,7 +584,7 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.SetProjectLanguage),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -609,7 +609,7 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.CheckWebsummary),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -633,7 +633,7 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.CheckBillingStatus),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -658,7 +658,7 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.UploadResults),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsSupervisor && i.Department == project.Department)
+                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done

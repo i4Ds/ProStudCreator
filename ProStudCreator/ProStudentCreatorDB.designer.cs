@@ -4443,7 +4443,7 @@ namespace ProStudCreator
 		
 		private bool _CanBeAdvisor1;
 		
-		private bool _IsSupervisor;
+		private bool _IsDepartmentManager;
 		
 		private bool _IsActive;
 		
@@ -4487,8 +4487,8 @@ namespace ProStudCreator
     partial void OnNameChanged();
     partial void OnCanBeAdvisor1Changing(bool value);
     partial void OnCanBeAdvisor1Changed();
-    partial void OnIsSupervisorChanging(bool value);
-    partial void OnIsSupervisorChanged();
+    partial void OnIsDepartmentManagerChanging(bool value);
+    partial void OnIsDepartmentManagerChanged();
     partial void OnIsActiveChanging(bool value);
     partial void OnIsActiveChanged();
     partial void OnCanReserveProjectsChanging(bool value);
@@ -4749,22 +4749,22 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSupervisor", DbType="Bit NOT NULL")]
-		public bool IsSupervisor
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDepartmentManager", DbType="Bit NOT NULL")]
+		public bool IsDepartmentManager
 		{
 			get
 			{
-				return this._IsSupervisor;
+				return this._IsDepartmentManager;
 			}
 			set
 			{
-				if ((this._IsSupervisor != value))
+				if ((this._IsDepartmentManager != value))
 				{
-					this.OnIsSupervisorChanging(value);
+					this.OnIsDepartmentManagerChanging(value);
 					this.SendPropertyChanging();
-					this._IsSupervisor = value;
-					this.SendPropertyChanged("IsSupervisor");
-					this.OnIsSupervisorChanged();
+					this._IsDepartmentManager = value;
+					this.SendPropertyChanged("IsDepartmentManager");
+					this.OnIsDepartmentManagerChanged();
 				}
 			}
 		}

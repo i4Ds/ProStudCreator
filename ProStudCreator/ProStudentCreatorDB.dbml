@@ -198,7 +198,7 @@
       <Column Name="Id" Type="System.Int32" DbType="int" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="varchar(50)" CanBeNull="true" />
       <Column Name="CanBeAdvisor1" Type="System.Boolean" CanBeNull="false" />
-      <Column Name="IsSupervisor" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsDepartmentManager" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CanReserveProjects" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="UserDepartmentMap_Project" Member="Projects" ThisKey="Id" OtherKey="Advisor1Id" Type="Project" />
