@@ -296,12 +296,12 @@ namespace ProStudCreator
 
                                 if (urlStart > 0 && docEnd - 1 < word.Length)
                                 {
-                                    var prevChar = word[urlStart - 1];
                                     var lastChar = word[docEnd - 1];
                                     if (
-                                        prevChar == '(' && lastChar == ')'
-                                        || prevChar == '[' && lastChar == ']'
-                                        || prevChar == '{' && lastChar == '}')
+                                        lastChar == ')' ||
+                                        lastChar == ']' ||
+                                        lastChar == '}'
+                                        )
                                         docEnd--;
                                 }
 
