@@ -294,7 +294,10 @@ namespace ProStudCreator
                                 if (docShortener.IsMatch(word[docEnd - 1] + ""))
                                     docEnd--;
 
-                                if (urlStart > 0 && docEnd - 1 < word.Length)
+                                var doc = word.Substring(urlEnd, docEnd - urlEnd);
+                                var evenBrackets = (doc.Count(c => c == '(') - doc.Count(c => c == ')')) == 0;
+
+                                if (urlStart > 0 && docEnd - 1 < word.Length && !evenBrackets)
                                 {
                                     var lastChar = word[docEnd - 1];
                                     if (
