@@ -294,8 +294,12 @@ namespace ProStudCreator
                                 if (docShortener.IsMatch(word[docEnd - 1] + ""))
                                     docEnd--;
 
-                                var doc = word.Substring(urlEnd, docEnd - urlEnd);
-                                var evenBrackets = (doc.Count(c => c == '(') - doc.Count(c => c == ')')) == 0;
+                                var evenBrackets = true;
+                                if (docEnd - urlEnd > 0)
+                                {
+                                    var doc = word.Substring(urlEnd, docEnd - urlEnd);
+                                    evenBrackets = (doc.Count(c => c == '(') - doc.Count(c => c == ')')) == 0;
+                                }
 
                                 if (urlStart > 0 && docEnd - 1 < word.Length && !evenBrackets)
                                 {
