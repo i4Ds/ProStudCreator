@@ -1115,14 +1115,14 @@ refusedReasonText.Text + "\n\n----------------------\nAutomatische Nachricht von
             project.Name = ProjectName.Text.FixupParagraph();
 
             if (dropAdvisor1.SelectedValue == "ImpossibleValue")
-                project.Advisor1Id = null;
+                project.Advisor1 = null;
             else
-                project.Advisor1Id = int.Parse(dropAdvisor1.SelectedValue);
+                project.Advisor1 = db.UserDepartmentMap.Single(user => user.Id == int.Parse(dropAdvisor1.SelectedValue));
 
             if (dropAdvisor2.SelectedValue == "ImpossibleValue")
-                project.Advisor2Id = null;
+                project.Advisor2 = null;
             else
-                project.Advisor2Id = int.Parse(dropAdvisor2.SelectedValue);
+                project.Advisor2 = db.UserDepartmentMap.Single(user => user.Id == int.Parse(dropAdvisor2.SelectedValue));
 
             if (radioClientType.SelectedIndex != (int)ClientType.Internal)
             {
