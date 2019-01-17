@@ -47,7 +47,10 @@ namespace ProStudCreator
         public static string GetEmail()
         {
 #if DEBUG
-            return Global.WebAdmin;
+            //return "test.mitarbeiteri4ds@testmail.com";
+            //return "test.dozenti4ds@testmail.com";
+            //return "test.superuseri4ds@testmail.com";
+            return "simon.beck@fhnw.ch";
 #else
             string mail = HttpContext.Current.Request.Headers["mail"];
             string result;
@@ -66,7 +69,7 @@ namespace ProStudCreator
         public static string GetFirstName()
         {
 #if DEBUG
-            return Global.WebAdmin.Split('.')[0].First().ToString().ToUpper() + Global.WebAdmin.Split('.')[0].Substring(1);
+            return GetEmail().Split('.')[0].First().ToString().ToUpper() + GetEmail().Split('.')[0].Substring(1);
 #else
             return HttpContext.Current.Request.Headers["givenName"];
 #endif
@@ -75,7 +78,7 @@ namespace ProStudCreator
         public static string GetLastName()
         {
 #if DEBUG
-            return Global.WebAdmin.Split('.')[1].First().ToString().ToUpper() + Global.WebAdmin.Split('.')[1].Substring(1); ;
+            return GetEmail().Split('.')[1].First().ToString().ToUpper() + GetEmail().Split('.')[1].Substring(1); ;
 #else
             return HttpContext.Current.Request.Headers["surname"];
 #endif
@@ -129,7 +132,10 @@ namespace ProStudCreator
         public static bool CanExportExcel()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanExportExcel == true;
+            }
 #else
             if (HttpContext.Current.Items["CanExportExcel"] == null)
             {
@@ -147,7 +153,10 @@ namespace ProStudCreator
         public static bool CanPublishProject()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanPublishProject == true;
+            }
 #else
             if (HttpContext.Current.Items["CanPublishProject"] == null)
             {
@@ -165,7 +174,10 @@ namespace ProStudCreator
         public static bool CanReserveProjects()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanReserveProjects == true;
+            }
 #else
             if (HttpContext.Current.Items["CanReserveProjects"] == null)
             {
@@ -183,7 +195,10 @@ namespace ProStudCreator
         public static bool CanVisitAdminPage()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanVisitAdminPage == true;
+            }
 #else
             if (HttpContext.Current.Items["CanVisitAdminPage"] == null)
             {
@@ -201,7 +216,10 @@ namespace ProStudCreator
         public static bool CanSeeAllProjectsInProgress()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanSeeAllProjectsInProgress == true;
+            }
 #else
             if (HttpContext.Current.Items["CanSeeAllProjectsInProgress"] == null)
             {
@@ -219,7 +237,10 @@ namespace ProStudCreator
         public static bool CanEditAllProjects()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanEditAllProjects == true;
+            }
 #else
             if (HttpContext.Current.Items["CanEditAllProjects"] == null)
             {
@@ -237,7 +258,10 @@ namespace ProStudCreator
         public static bool CanSubmitAllProjects()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanSubmitAllProjects == true;
+            }
 #else
             if (HttpContext.Current.Items["CanSubmitAllProjects"] == null)
             {
@@ -255,7 +279,10 @@ namespace ProStudCreator
         public static bool CanSeeCreationDetails()
         {
 #if DEBUG
-            return true;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.CanSeeCreationDetails == true;
+            }
 #else
             if (HttpContext.Current.Items["CanSeeCreationDetails"] == null)
             {
