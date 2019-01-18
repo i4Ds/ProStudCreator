@@ -916,6 +916,10 @@ namespace ProStudCreator
 		
 		private string _Unternehmen;
 		
+		private string _Knowhow;
+		
+		private bool _Active;
+		
 		private EntitySet<Project> _Projects;
 		
     #region Extensibility Method Definitions
@@ -930,6 +934,10 @@ namespace ProStudCreator
     partial void OnMailChanged();
     partial void OnUnternehmenChanging(string value);
     partial void OnUnternehmenChanged();
+    partial void OnKnowhowChanging(string value);
+    partial void OnKnowhowChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
     #endregion
 		
 		public Expert()
@@ -938,7 +946,7 @@ namespace ProStudCreator
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int id
 		{
 			get
@@ -998,7 +1006,7 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Unternehmen", DbType="varchar(100)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Unternehmen", DbType="VarChar(100)")]
 		public string Unternehmen
 		{
 			get
@@ -1014,6 +1022,46 @@ namespace ProStudCreator
 					this._Unternehmen = value;
 					this.SendPropertyChanged("Unternehmen");
 					this.OnUnternehmenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Knowhow", DbType="VarChar(MAX)")]
+		public string Knowhow
+		{
+			get
+			{
+				return this._Knowhow;
+			}
+			set
+			{
+				if ((this._Knowhow != value))
+				{
+					this.OnKnowhowChanging(value);
+					this.SendPropertyChanging();
+					this._Knowhow = value;
+					this.SendPropertyChanged("Knowhow");
+					this.OnKnowhowChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
 				}
 			}
 		}

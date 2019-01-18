@@ -31,6 +31,24 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.TextBox ProjectTitle;
         
         /// <summary>
+        /// Topic1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image Topic1;
+        
+        /// <summary>
+        /// Topic2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image Topic2;
+        
+        /// <summary>
         /// ChangeTitleDate control.
         /// </summary>
         /// <remarks>
@@ -76,13 +94,13 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label Advisor2Name;
         
         /// <summary>
-        /// divExpert control.
+        /// DivExpert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divExpert;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExpert;
         
         /// <summary>
         /// ExpertName control.
@@ -92,6 +110,33 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ExpertName;
+        
+        /// <summary>
+        /// DivExpertAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExpertAdmin;
+        
+        /// <summary>
+        /// drpExpert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drpExpert;
+        
+        /// <summary>
+        /// ExpertMail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ExpertMail;
         
         /// <summary>
         /// lblProjectType control.

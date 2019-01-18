@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
@@ -63,6 +64,45 @@ namespace ProStudCreator
             //Project title
             ProjectTitle.Text = project.Name;
 
+            //Topic pictures
+            Topic1.ImageUrl = "pictures/projectTyp" + (project.TypeDesignUX
+                   ? "DesignUX"
+                   : (project.TypeHW
+                       ? "HW"
+                       : (project.TypeCGIP
+                           ? "CGIP"
+                           : (project.TypeMlAlg
+                               ? "MlAlg"
+                               : (project.TypeAppWeb
+                                   ? "AppWeb"
+                                   : (project.TypeDBBigData
+                                       ? "DBBigData"
+                                       : (project.TypeSysSec
+                                           ? "SysSec"
+                                           : (project.TypeSE ? "SE" : "Transparent")))))))) + ".png";
+            Topic2.ImageUrl = "pictures/projectTyp" + (project.TypeHW && project.TypeDesignUX
+                               ? "HW"
+                               : (project.TypeCGIP && (project.TypeDesignUX || project.TypeHW)
+                                   ? "CGIP"
+                                   : (project.TypeMlAlg && (project.TypeDesignUX || project.TypeHW || project.TypeCGIP)
+                                       ? "MlAlg"
+                                       : (project.TypeAppWeb &&
+                                          (project.TypeDesignUX || project.TypeHW || project.TypeCGIP || project.TypeMlAlg)
+                                           ? "AppWeb"
+                                           : (project.TypeDBBigData &&
+                                              (project.TypeDesignUX || project.TypeHW || project.TypeCGIP || project.TypeMlAlg ||
+                                               project.TypeAppWeb)
+                                               ? "DBBigData"
+                                               : (project.TypeSysSec &&
+                                                  (project.TypeDesignUX || project.TypeHW || project.TypeCGIP || project.TypeMlAlg ||
+                                                   project.TypeAppWeb || project.TypeDBBigData)
+                                                   ? "SysSec"
+                                                   : (project.TypeSE && (project.TypeDesignUX || project.TypeHW || project.TypeCGIP ||
+                                                                   project.TypeMlAlg || project.TypeAppWeb ||
+                                                                   project.TypeDBBigData || project.TypeSysSec)
+                                                       ? "SE"
+                                                       : "Transparent"))))))) + ".png";
+
             chkNDA.Checked = project.UnderNDA;
 
             //Set the Students
@@ -98,6 +138,24 @@ namespace ProStudCreator
             else
                 ExpertName.Text = "Noch nicht entschieden";
 
+            drpExpert.DataSource = db.Experts.Where(i => i.Active).OrderBy(a => a.Name).Select(x => 
+                new {
+                    Id = x.id,
+                    Mail = x.Mail,
+                    DropDownString = string.Format("{0} | {1}", x.Name,x.Knowhow).Replace(" ", HttpUtility.HtmlDecode("&nbsp;"))
+                }
+            );
+
+            drpExpert.DataValueField = "Id";
+            drpExpert.DataTextField = "DropDownString";
+            drpExpert.DataBind();
+            drpExpert.Items.Insert(0, new ListItem("-", "ImpossibleValue"));
+            drpExpert.SelectedValue = project.Expert?.id.ToString() ?? "ImpossibleValue";
+
+
+            ExpertMail.Text = !string.IsNullOrEmpty(project.LogExpertID.ToString())
+            ? "<a href=\"mailto:" + project.Expert.Mail + "\">Mail</a>"
+            : "";
 
             //Set the Projecttype
             if (project.LogProjectTypeID == null)
@@ -186,7 +244,9 @@ namespace ProStudCreator
                                     cbxWebSummaryChecked.Enabled = radioClientType.Enabled = txtClientCompany.Enabled = drpClientTitle.Enabled = txtClientName.Enabled = txtClientDepartment.Enabled = txtClientStreet.Enabled = txtClientPLZ.Enabled = txtClientCity.Enabled = txtClientReference.Enabled = txtClientEmail.Enabled = project.UserCanEditAfterStart();
 
 
-            divExpert.Visible = project.Expert != null;
+            DivExpert.Visible = project.Expert != null && !ShibUser.CanVisitAdminPage();
+            DivExpertAdmin.Visible = ShibUser.CanVisitAdminPage() && project.LogStudent1Mail != null && project.LogProjectTypeID == 2;
+
 
             divBachelor.Visible = project.LogProjectType?.P6 ?? false;
 
@@ -196,6 +256,13 @@ namespace ProStudCreator
 
             divFileUpload.Visible = ShibUser.GetEmail() == project.Advisor1?.Mail ||
                                     ShibUser.GetEmail() == project.Advisor2?.Mail || ShibUser.CanEditAllProjects();
+        }
+
+        public void DrpExpert_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ExpertMail.Text = drpExpert.SelectedIndex != 0
+                ? "<a href=\"mailto:" + db.Experts.FirstOrDefault(ex => ex.id == int.Parse(drpExpert.SelectedValue))?.Mail + "\">Mail</a>"
+                : "";
         }
 
         private ProjectSingleAttachment GetProjectSingleAttachment(Attachements attach)
@@ -340,6 +407,10 @@ namespace ProStudCreator
             if (project.UserCanEditAfterStart())
             {
                 project.Name = ProjectTitle.Text.FixupParagraph();
+
+                project.Expert = drpExpert.SelectedIndex == 0
+                    ? null
+                    : db.Experts.First(ex => ex.id == int.Parse(drpExpert.SelectedValue));
 
                 if (nbrGradeStudent1.Text != "")
                 {

@@ -10,6 +10,10 @@
                 <div class="col-sm-6">
                     <asp:TextBox runat="server" ID="ProjectTitle" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
                 </div>
+                <div class="col-sm-3">
+                    <asp:Image CssClass="img-rounded" ID="Topic1" Height="60px" runat="server"/>
+                    <asp:Image CssClass="img-rounded" ID="Topic2" Height="60px" runat="server"/>
+                </div>
             </div>
             <div class="form-group" style="text-align: left">
                 <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
@@ -25,13 +29,21 @@
                 <asp:Label runat="server" Text="Betreuung:" CssClass="control-label col-sm-3"></asp:Label>
                 <asp:Label runat="server" ID="Advisor1Name" CssClass="col-sm-3 alignbottom"></asp:Label>
                 <asp:Label runat="server" ID="Advisor2Name" CssClass="col-sm-3 alignbottom"></asp:Label>
-                <div runat="server" id="divExpert">
+                <div runat="server" id="DivExpert">
                     <br />
                     <br />
                     <asp:Label runat="server" Text="Experte:" CssClass="control-label col-sm-3"></asp:Label>
                     <asp:Label runat="server" ID="ExpertName" CssClass="col-sm-9 alignbottom"></asp:Label>
                 </div>
                 <br />
+                <br />
+                <div runat="server" id="DivExpertAdmin">
+                    <asp:Label runat="server" Text="Experte:" CssClass="control-label col-sm-3"></asp:Label>
+                    <div class="col-sm-6">
+                        <asp:DropDownList runat="server" ID="drpExpert" AutoPostBack="true" CssClass="form-control" OnSelectedIndexChanged="DrpExpert_SelectedIndexChanged"></asp:DropDownList>
+                    </div>
+                    <asp:Label runat="server" ID="ExpertMail" CssClass="col-sm-3 alignbottom"></asp:Label>
+                </div>
             </div>
             <hr />
             <div class="form-group">
