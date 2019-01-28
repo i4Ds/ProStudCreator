@@ -27,6 +27,7 @@ namespace ProStudCreator
                 " ",
                 "Projekteinreichung (extern)",
                 "Projekteinreichung (intern)",
+                "Anmeldung ProApp",
                 "Projektzuteilung",
                 "Abgabe IP5",
                 "Abgabe IP5 (Lang)",
@@ -40,8 +41,11 @@ namespace ProStudCreator
                 dt.Rows.Add(semester.Name,
                     $"{semester.StartDate.ToShortDateString()} bis {semester.EndDate.ToShortDateString()}",
                     semester.ProjectSubmissionUntil.AddDays(-7 * 6).ToShortDateString(),
-                    semester.ProjectSubmissionUntil.ToShortDateString(), semester.ProjectAllocation,
-                    semester.SubmissionIP5FullPartTime, semester.SubmissionIP5Accompanying,
+                    semester.ProjectSubmissionUntil.ToShortDateString(),
+                    semester.ProAppApplication,
+                    semester.ProjectAllocation,
+                    semester.SubmissionIP5FullPartTime,
+                    semester.SubmissionIP5Accompanying,
                     semester.SubmissionIP6Normal + "<br/>" + (semester.DefenseIP6Start == null
                         ? ""
                         : $"{semester.DefenseIP6Start} bis {semester.DefenseIP6End}"),

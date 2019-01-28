@@ -3702,6 +3702,8 @@ namespace ProStudCreator
 		
 		private string _DefenseIP6BEnd;
 		
+		private string _ProAppApplication;
+		
 		private EntitySet<Project> _Project;
 		
 		private EntitySet<Task> _Tasks;
@@ -3742,6 +3744,8 @@ namespace ProStudCreator
     partial void OnDefenseIP6BStartChanged();
     partial void OnDefenseIP6BEndChanging(string value);
     partial void OnDefenseIP6BEndChanged();
+    partial void OnProAppApplicationChanging(string value);
+    partial void OnProAppApplicationChanged();
     #endregion
 		
 		public Semester()
@@ -4067,6 +4071,26 @@ namespace ProStudCreator
 					this._DefenseIP6BEnd = value;
 					this.SendPropertyChanged("DefenseIP6BEnd");
 					this.OnDefenseIP6BEndChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProAppApplication", DbType="NVarChar(50)")]
+		public string ProAppApplication
+		{
+			get
+			{
+				return this._ProAppApplication;
+			}
+			set
+			{
+				if ((this._ProAppApplication != value))
+				{
+					this.OnProAppApplicationChanging(value);
+					this.SendPropertyChanging();
+					this._ProAppApplication = value;
+					this.SendPropertyChanged("ProAppApplication");
+					this.OnProAppApplicationChanged();
 				}
 			}
 		}
