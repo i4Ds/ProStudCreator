@@ -209,9 +209,12 @@ namespace ProStudCreator
             var lastSem = Semester.LastSemester(projectSemester, db);
             //var beforeLastSem = Semester.LastSemester(lastSem, db);
             dropPreviousProject.DataSource = db.Projects.Where(p =>
-                p.LogProjectType.P5 && !p.LogProjectType.P6
+                p.IsMainVersion
+                && p.LogProjectType.P5
+                && !p.LogProjectType.P6
                 && p.State == ProjectState.Published
-                && (p.SemesterId == projectSemester.Id || p.SemesterId == lastSem.Id && p.LogProjectDuration == 2));
+                && (p.SemesterId == projectSemester.Id /*|| p.SemesterId == lastSem.Id && p.LogProjectDuration == 2*/))
+                .OrderBy(p => p.Name);
             dropPreviousProject.DataBind();
             dropPreviousProject.Items.Insert(0, new ListItem("-", "dropPreviousProjectImpossibleValue"));
         }
