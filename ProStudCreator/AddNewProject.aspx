@@ -129,6 +129,10 @@
                     <asp:Label runat="server" ID="dropPreviousProjectLabel" CssClass="form-control" Style="width: 75%;" Visible="false"></asp:Label>
                 </div>
             </div>
+            <div class="form-group">
+                <asp:Label runat="server" CssClass="control-label col-sm-3" Text=""></asp:Label>
+                <asp:Label runat="server" ID="PreviousProjectInfoLabel" CssClass="col-sm-9" Text="Bewirkt die automatische Zuteilung des Teams des Vorgängerprojektes zu diesem IP6 Projekt!"></asp:Label>
+            </div>
             <hr />
             <div class="form-group">
                 <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Hauptbetreuung:"></asp:Label>
