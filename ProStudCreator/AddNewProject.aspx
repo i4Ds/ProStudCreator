@@ -298,7 +298,7 @@
                     <asp:CheckBox ID="DurationOneSemester" CssClass="checkbox" Text="Projekt muss in 1 Semester durchgeführt werden." Checked="true" runat="server" />
                 </div>
             </div>--%>
-            <asp:UpdatePanel ID="updatePriority" runat="server">
+            <asp:UpdatePanel ID="updatePriority" UpdateMode="Conditional" runat="server">
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
                 </Triggers>
