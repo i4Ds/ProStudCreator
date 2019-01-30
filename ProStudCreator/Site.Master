@@ -65,6 +65,11 @@
                             <img src="pictures/danger.png" height="32" width="32"/>
                         </div>
                     </div>
+                    <div runat="server" id="NavWebAdmin" class="display-inline">
+                        <a href="WebAdminPage.aspx" style="margin-left: 1%;">
+                            <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">DB</h2>
+                        </a>
+                    </div>
                 </div>
             </div>
             <%-- <div class="navbar-collapse collapse">

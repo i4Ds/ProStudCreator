@@ -71,6 +71,7 @@ namespace ProStudCreator
 
 
             NavAdmin.Visible = ShibUser.CanVisitAdminPage();
+            NavWebAdmin.Visible = ShibUser.GetEmail() == Global.WebAdmin;
         }
 
         public readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();

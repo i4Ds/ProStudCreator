@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
+    <Content Include="WebAdminPage.aspx" />
     <Content Include="AdminPage.aspx" />
     <Content Include="App_Data\Database1.mdf" />
     <Content Include="App_Data\Database1_log.ldf">
@@ -300,6 +301,13 @@
     </Compile>
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAdminPage.aspx.cs">
+      <DependentUpon>WebAdminPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebAdminPage.aspx.designer.cs">
+      <DependentUpon>WebAdminPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminPage.aspx.cs">
       <DependentUpon>AdminPage.aspx</DependentUpon>

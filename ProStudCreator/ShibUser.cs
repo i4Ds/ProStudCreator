@@ -50,7 +50,7 @@ namespace ProStudCreator
             //return "test.mitarbeiteri4ds@testmail.com";
             //return "test.dozenti4ds@testmail.com";
             //return "test.superuseri4ds@testmail.com";
-            return "simon.beck@fhnw.ch";
+            return Global.WebAdmin;
 #else
             string mail = HttpContext.Current.Request.Headers["mail"];
             string result;
