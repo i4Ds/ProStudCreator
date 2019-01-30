@@ -88,6 +88,15 @@
             });
         });
 
+        // should resolve the jumping issue during scrolling because of the pdf UpdatePanel
+        // https://forums.asp.net/post/1904273.aspx
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        prm.add_beginRequest(beginRequest);
+        function beginRequest()
+        {
+            prm._scrollPosition = null;
+        }
+
         $(window).on('beforeunload',
             function () {
                 if (hasUnsavedChanges) {
