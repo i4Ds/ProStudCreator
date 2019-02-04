@@ -7,6 +7,7 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Web;
 using NPOI.Util;
 
@@ -31,13 +32,24 @@ namespace ProStudCreator
             EnterAssignedStudents = 14,
             DoubleCheckMarKomBrochureData = 15,
             CheckBillingStatus = 16,
-            SetProjectLanguage = 17
+            SetProjectLanguage = 17,
+            SendThesisTitles = 18
         }
 
         private static readonly object TaskCheckLock = new object();
+#if !DEBUG
         private static DateTime NextTaskCheck = DateTime.Today.AddHours(19);
+#else
+        private static DateTime NextTaskCheck = DateTime.Today.AddHours(-25);
+#endif
 
-        public static void CheckAllTasks() //register all Methods which check for tasks here.
+        public static DateTime GetNextTaskCheck()
+        {
+            DateTime tmp = NextTaskCheck;
+            return tmp;
+        }
+
+        public static void CheckAllTasks()
         {
             //protect against reentrancy-problems. this lock is enough as long as the method runs in less than 24h
             lock (TaskCheckLock)
@@ -47,8 +59,28 @@ namespace ProStudCreator
                     return;
 
                 NextTaskCheck = now.Date.AddHours(24 + 19);
-            }
 
+                RunAllTasks(false);
+            }
+        }
+
+        public static void ForceCheckAllTasks()
+        {
+            if (Monitor.TryEnter(TaskCheckLock))
+            {
+                try
+                {
+                    RunAllTasks(true);
+                }
+                finally
+                {
+                    Monitor.Exit(TaskCheckLock);
+                }
+            }
+        }
+
+        private static void RunAllTasks(bool forced) //register all Methods which check for tasks here.
+        {
             using (var db = new ProStudentCreatorDBDataContext())
             {
                 CheckGradesRegistered(db);
@@ -64,6 +96,7 @@ namespace ProStudCreator
 
                 EnterAssignedStudents(db);
 
+                SendThesisTitlesToAdmin(db);
                 SendGradesToAdmin(db);
                 SendPayExperts(db);
 
@@ -74,6 +107,7 @@ namespace ProStudCreator
                 SendMarKomBrochure(db);
 
                 SendMailsToResponsibleUsers(db);
+                SendMailToWebAdmin(forced);
             }
         }
 
@@ -445,6 +479,134 @@ namespace ProStudCreator
             db.SubmitChanges();
         }
 
+        public static void SendThesisTitlesToAdmin(ProStudentCreatorDBDataContext db)
+        {
+            var type = db.TaskTypes.Single(t => t.Id == (int)Type.SendThesisTitles);
+            var currentSemester = Semester.CurrentSemester(db);
+            var activeTask = db.Tasks.SingleOrDefault(t => t.TaskType == type && t.Semester == currentSemester);
+            var nextSemester = Semester.NextSemester(db);
+            var nextSemesterTask = db.Tasks.SingleOrDefault(t => t.TaskType == type && t.Semester == nextSemester);
+
+            if (activeTask == null)
+            {
+                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                    ? dbDate : (DateTime?)null;
+
+                if (deliveryDateCurrentSemester == null)
+                {
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                    mail.To.Add(new MailAddress(Global.WebAdmin));
+                    mail.Subject = "ProStud Semesterdaten fehlen!";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append(
+                        "<div style=\"font-family: Arial\">" +
+                        "<p>Liebe/r WebAdmin<p>" +
+                        $"<p>Das Abgabedatum für die IP6 für Semester {currentSemester.Name} konnte nicht geladen werden.</p>" +
+                        "<p>Bitte überprüfe ob die Daten korrekt in der Datenbank eingetragen sind.</p>" +
+                        "<br/>" +
+                        "<p>Herzliche Grüsse,<br/>" +
+                        "ProStud-Team</p>" +
+                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                        "</div>"
+                        );
+
+                    mail.Body = mailMessage.ToString();
+                    SendMail(mail);
+                    return;
+                }
+
+                var dueDate = deliveryDateCurrentSemester - Global.AllowTitleChangesBeforeSubmission;
+
+                activeTask = new Task()
+                {
+                    TaskType = type,
+                    Semester = currentSemester,
+                    DueDate = dueDate
+                };
+                db.Tasks.InsertOnSubmit(activeTask);
+                db.SubmitChanges();
+            }
+
+            if (nextSemesterTask == null)
+            {
+                var deliveryDateNextSemester = DateTime.TryParseExact(nextSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDateNext)
+                    ? dbDateNext : (DateTime?)null;
+
+                var dueDateNext = (deliveryDateNextSemester == null) ? DateTime.MaxValue : deliveryDateNextSemester - Global.AllowTitleChangesBeforeSubmission;
+
+                nextSemesterTask = new Task()
+                {
+                    TaskType = type,
+                    Semester = nextSemester,
+                    DueDate = dueDateNext
+                };
+                db.Tasks.InsertOnSubmit(nextSemesterTask);
+                db.SubmitChanges();
+            }
+
+            if (!activeTask.Done && DateTime.Now > activeTask.DueDate)
+            {
+                activeTask.Done = true;
+
+                var thesisProjects = db.Projects.Where(p => p.IsMainVersion && p.State == (int)ProjectState.Published && p.Semester == currentSemester && p.LogProjectType.P6).OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+
+                if (thesisProjects.Any())
+                {
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                    mail.To.Add(new MailAddress(Global.WebAdmin)); //CHANGE THIS!
+                    mail.CC.Add(new MailAddress(Global.WebAdmin));
+                    mail.Subject = "Informatikprojekte P6: Thesis-Titel";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append(
+                        "<div style=\"font-family: Arial\">" +
+                        "<p>Liebe Ausbildungsadministration<p>" +
+                        $"<p>Die Thesis-Titel für das Semester {currentSemester.Name}</p>" +
+                        "<table>" +
+                        "<tr>" +
+                            "<th>Projekttitel</th>" +
+                            "<th>Betreuer</th>" +
+                            "<th>Mail1</th>" +
+                            "<th>Mail2</th>" +
+                        "</tr>");
+
+                    foreach (var p in thesisProjects)
+                    {
+                        if (p.LogStudent1Mail != null)
+                        {
+                            mailMessage.Append(
+                            "<tr>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.LogStudent1Mail)}</td>" +
+                                $"<td>{((p.LogStudent2Mail != null) ? HttpUtility.HtmlEncode(p.LogStudent2Mail) : "-")}</td>" +
+                            "</tr>"
+                            );
+                        }
+                    }
+
+                    mailMessage.Append(
+                        "</table>" +
+                        "<br/>" +
+                        "<p>Herzliche Grüsse,<br/>" +
+                        "ProStud-Team</p>" +
+                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                        "</div>"
+                        );
+
+                    mail.Body = mailMessage.ToString();
+                    SendMail(mail);
+                }
+            }
+
+            db.SubmitChanges();
+        }
+
         private static void InfoInsertNewSemesters(ProStudentCreatorDBDataContext db)
         {
             var targetDate = DateTime.Now.Date.AddMonths(18);
@@ -694,7 +856,14 @@ namespace ProStudCreator
                 foreach (var task in tasks)
                 {
                     if (task.DueDate != null && DateTime.Now.AddDays(3) > task.DueDate && task.Supervisor != null)
+                    {
                         mail.CC.Add(task.Supervisor.Mail);
+                    }
+                    else if (task.FirstReminded != null && task.Supervisor != null && task.TaskType.DaysBetweenReminds > 0 && (DateTime.Now - task.FirstReminded).Value.Days / task.TaskType.DaysBetweenReminds > 3 && task.TaskTypeId == 1)
+                    {
+                        mail.CC.Add(task.Supervisor.Mail);
+                    }
+
 
                     mailMessage.Append(task.Project != null ? "<li>" + $"{HttpUtility.HtmlEncode(task.TaskType.Description)} beim Projekt <a href=\"https://www.cs.technik.fhnw.ch/prostud/ProjectInfoPage?id={task.ProjectId}\">{HttpUtility.HtmlEncode(task.Project.Name)}</a></li>" : $"<li><a href=\"https://www.cs.technik.fhnw.ch/prostud/ \">{HttpUtility.HtmlEncode(task.TaskType.Description)}</a></li>");
                 }
@@ -722,6 +891,24 @@ namespace ProStudCreator
             }
         }
 
+        private static void SendMailToWebAdmin(bool forced)
+        {
+            var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+            mail.To.Add(new MailAddress(Global.WebAdmin));
+            mail.Subject = "TaskCheck has been run";
+            mail.IsBodyHtml = true;
+
+            var mailMessage = new StringBuilder();
+            mailMessage.Append("<div style=\"font-family: Arial\">");
+            mailMessage.Append(
+                $"<p>Time: {DateTime.Now}<p>" +
+                $"<p>Forced: {forced}<p>" +
+                $"<p>NextTaskCheck: {GetNextTaskCheck()}<p>");
+            mail.Body = mailMessage.ToString();
+
+            SendMail(mail);
+        }
+
         private static void SendMail(MailMessage mail)
         {
 #if !DEBUG
@@ -730,7 +917,15 @@ namespace ProStudCreator
                 smtpClient.Send(mail);
             }
 #else
-            Console.WriteLine($"Sending Mail(s) to: {mail.To.ToString()}");
+            using (var smtpClient = new SmtpClient())
+            {
+                mail.To.Clear();
+                mail.CC.Clear();
+                mail.Bcc.Clear();
+                mail.Subject = "DEBUG: " + mail.Subject;
+                mail.To.Add(Global.WebAdmin);
+                smtpClient.Send(mail);
+            }
 #endif
         }
     }
