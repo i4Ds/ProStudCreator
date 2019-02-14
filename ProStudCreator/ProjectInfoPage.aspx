@@ -72,39 +72,18 @@
             <div class="form-group">
                 <asp:Label runat="server" Text="Durchführungssprache:" CssClass="control-label col-sm-3"></asp:Label>
                 <div class="col-sm-3">
-                    <asp:DropDownList runat="server" DataValueField="Id" DataTextField="DisplayName" ID="drpLogLanguage" AutoPostBack="false" CssClass="form-control">
+                    <asp:DropDownList runat="server" DataValueField="Id" DataTextField="DisplayName" ID="drpLogLanguage" AutoPostBack="true" CssClass="form-control" OnSelectedIndexChanged="drpLogLanguage_SelectedIndexChanged">
                         <asp:ListItem Text="(Bitte Auswählen)" Value="0" />
                         <asp:ListItem Text="Englisch" Value="1" />
                         <asp:ListItem Text="Deutsch" Value="2" />
                     </asp:DropDownList>
                 </div>
             </div>
-            <div runat="server" visible="false" id="divGradeStudent1">
-                <br />
-                <div class="form-group">
-                    <asp:Label runat="server" Text="Note:" CssClass="control-label col-sm-3" ID="lblGradeStudent1"></asp:Label>
-                    <div class="col-sm-3">
-                        <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="nbrGradeStudent1" CssClass="form-control"></asp:TextBox>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group" id="divGradeStudent2" runat="server" visible="false">
-                <asp:Label runat="server" Text="Note:" ID="lblGradeStudent2" CssClass="control-label col-sm-3"></asp:Label>
-                <div class="col-sm-3">
-                    <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="nbrGradeStudent2" CssClass="form-control"></asp:TextBox>
-                </div>
-            </div>
-            <div class="form-group" style="text-align: left" runat="server" visible="false" id="divGradeWarning">
-                <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
-                <asp:Label runat="server" ID="Label1" CssClass="col-sm-6" Text="Hinweis: Noten werden unmittelbar an die Ausbildungsadministration weitergeleitet. Bitte NUR definitive Noten eintragen!"></asp:Label>
-            </div>
-            <br />
-
 
             <div class="form-group">
                 <asp:Label runat="server" Text="Websummary:" CssClass="control-label col-sm-3"></asp:Label>
                 <div class="col-sm-3">
-                    <asp:CheckBox runat="server" ID="cbxWebSummaryChecked" Text=" Websummary kontrolliert" CssClass="form-control" />
+                    <asp:CheckBox runat="server" ID="cbxWebSummaryChecked" Text=" Websummary kontrolliert" CssClass="form-control" AutoPostBack="true" OnCheckedChanged="cbxWebSummaryChecked_CheckedChanged" />
                 </div>
             </div>
             <br />
@@ -119,7 +98,39 @@
                 <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
                 <asp:Label runat="server" ID="Label2" CssClass="col-sm-6" Text="Hinweis: Für verrechenbare Projekte werden unmittelbar Rechnungen ausgelöst. Bitte NUR definitiven Status eintragen!"></asp:Label>
             </div>
+            <hr />
 
+            <asp:UpdatePanel UpdateMode="Conditional" runat="server" ID="updateGradeFields">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="drpLogLanguage" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="cbxWebSummaryChecked" EventName="CheckedChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="drpBillingstatus" EventName="SelectedIndexChanged" />
+                </Triggers>
+                <ContentTemplate>
+                    <div class="form-group" style="text-align: left" runat="server" visible="false" id="divGradeHint">
+                        <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
+                        <asp:Label runat="server" ID="Label3" CssClass="col-sm-6" Text="Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen."></asp:Label>
+                    </div>
+                    <div runat="server" visible="false" id="divGradeStudent1">
+                        <div class="form-group">
+                            <asp:Label runat="server" Text="Note:" CssClass="control-label col-sm-3" ID="lblGradeStudent1"></asp:Label>
+                            <div class="col-sm-3">
+                                <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="nbrGradeStudent1" CssClass="form-control"></asp:TextBox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divGradeStudent2" runat="server" visible="false">
+                        <asp:Label runat="server" Text="Note:" ID="lblGradeStudent2" CssClass="control-label col-sm-3"></asp:Label>
+                        <div class="col-sm-3">
+                            <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="nbrGradeStudent2" CssClass="form-control"></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: left" runat="server" visible="false" id="divGradeWarning">
+                        <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
+                        <asp:Label runat="server" ID="Label1" CssClass="col-sm-6" Text="Hinweis: Noten werden unmittelbar an die Ausbildungsadministration weitergeleitet. Bitte NUR definitive Noten eintragen!"></asp:Label>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
 
             <asp:PlaceHolder runat="server" ID="BillAddressPlaceholder">
                 <hr />

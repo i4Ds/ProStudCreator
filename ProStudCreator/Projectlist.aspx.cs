@@ -148,8 +148,8 @@ namespace ProStudCreator
                 }),
                 projectName = i.Name,
                 Institute = i.Department.DepartmentName,
-                p5 = i.POneType.P5 || i.PTwoType != null && i.PTwoType.P5,
-                p6 = i.POneType.P6 || i.PTwoType != null && i.PTwoType.P6,
+                p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || i.PTwoType != null && i.PTwoType.P5),
+                p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || i.PTwoType != null && i.PTwoType.P6),
                 projectType1 = "pictures/projectTyp" + (i.TypeDesignUX
                                    ? "DesignUX"
                                    : (i.TypeHW

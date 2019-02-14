@@ -193,20 +193,8 @@ namespace ProStudCreator
 
             drpLogLanguage.Items[0].Text = project.UserCanEditAfterStart() ? "(Bitte Auswählen)" : "Noch nicht entschieden";
 
-            //Set the Grades
-            nbrGradeStudent1.Text = project.LogGradeStudent1 == null
-                ? ""
-                : project?.LogGradeStudent1.Value.ToString("N1", CultureInfo.InvariantCulture);
-            nbrGradeStudent2.Text = project.LogGradeStudent2 == null
-                ? ""
-                : project?.LogGradeStudent2.Value.ToString("N1", CultureInfo.InvariantCulture);
-
             //web summary checked?
             cbxWebSummaryChecked.Checked = project.WebSummaryChecked;
-
-            //set the Labels to the Grades
-            lblGradeStudent1.Text = $"Note von {project.LogStudent1Name ?? "Student/in 1"}:";
-            lblGradeStudent2.Text = $"Note von {project.LogStudent2Name ?? "Student/in 2"}:";
 
             //fill the Billingstatus dropdown with Data
             drpBillingstatus.DataSource = db.BillingStatus.OrderBy(i => i.DisplayName);
@@ -216,6 +204,18 @@ namespace ProStudCreator
                     "ValueWhichNeverWillBeGivenByTheDB"));
             drpBillingstatus.SelectedValue = project?.BillingStatusID?.ToString() ??
                                              "ValueWhichNeverWillBeGivenByTheDB";
+
+            //set the Labels to the Grades
+            lblGradeStudent1.Text = $"Note von {project.LogStudent1Name ?? "Student/in 1"}:";
+            lblGradeStudent2.Text = $"Note von {project.LogStudent2Name ?? "Student/in 2"}:";
+
+            //Set the Grades
+            nbrGradeStudent1.Text = project.LogGradeStudent1 == null
+                ? ""
+                : project?.LogGradeStudent1.Value.ToString("N1", CultureInfo.InvariantCulture);
+            nbrGradeStudent2.Text = project.LogGradeStudent2 == null
+                ? ""
+                : project?.LogGradeStudent2.Value.ToString("N1", CultureInfo.InvariantCulture);
 
             //Set the data from the addressform
             radioClientType.SelectedIndex = project.ClientType;
@@ -243,7 +243,6 @@ namespace ProStudCreator
                                     chkNDA.Enabled = 
                                     cbxWebSummaryChecked.Enabled = radioClientType.Enabled = txtClientCompany.Enabled = drpClientTitle.Enabled = txtClientName.Enabled = txtClientDepartment.Enabled = txtClientStreet.Enabled = txtClientPLZ.Enabled = txtClientCity.Enabled = txtClientReference.Enabled = txtClientEmail.Enabled = project.UserCanEditAfterStart();
 
-
             DivExpert.Visible = project.Expert != null && !ShibUser.CanVisitAdminPage();
             DivExpertAdmin.Visible = ShibUser.CanVisitAdminPage() && project.LogStudent1Mail != null && project.LogProjectTypeID == 2;
 
@@ -256,6 +255,9 @@ namespace ProStudCreator
 
             divFileUpload.Visible = ShibUser.GetEmail() == project.Advisor1?.Mail ||
                                     ShibUser.GetEmail() == project.Advisor2?.Mail || ShibUser.CanEditAllProjects();
+
+            SetGradeFieldStatus();
+            updateGradeFields.Update();
         }
 
         public void DrpExpert_SelectedIndexChanged(object sender, EventArgs e)
@@ -385,6 +387,9 @@ namespace ProStudCreator
         
         protected void DrpBillingstatusChanged(object sender, EventArgs e)
         {
+            SetGradeFieldStatus();
+            updateGradeFields.Update();
+
             if (drpBillingstatus.SelectedValue == "ValueWhichNeverWillBeGivenByTheDB")
                 return;
 
@@ -394,7 +399,35 @@ namespace ProStudCreator
                 UpdateClientInfoFormVisibility();
             }
         }
-        
+
+        protected void drpLogLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetGradeFieldStatus();
+            updateGradeFields.Update();
+        }
+
+        protected void cbxWebSummaryChecked_CheckedChanged(object sender, EventArgs e)
+        {
+            SetGradeFieldStatus();
+            updateGradeFields.Update();
+        }
+
+        private bool CheckGradeFieldStatus()
+        {
+            return cbxWebSummaryChecked.Checked
+                && drpBillingstatus.SelectedIndex != 0
+                && drpLogLanguage.SelectedIndex != 0;
+        }
+
+        private void SetGradeFieldStatus()
+        {
+            if (project.UserCanEditAfterStart())
+            {
+                nbrGradeStudent1.Enabled = nbrGradeStudent2.Enabled = CheckGradeFieldStatus();
+                divGradeHint.Visible = !CheckGradeFieldStatus() && divGradeStudent1.Visible && divGradeStudent2.Visible;
+            }
+        }
+
 
         protected void BtnSaveBetween_OnClick(object sender, EventArgs e)
         {
@@ -411,24 +444,6 @@ namespace ProStudCreator
                 project.Expert = drpExpert.SelectedIndex == 0
                     ? null
                     : db.Experts.First(ex => ex.id == int.Parse(drpExpert.SelectedValue));
-
-                if (nbrGradeStudent1.Text != "")
-                {
-                    var old = project.LogGradeStudent1;
-                    project.LogGradeStudent1 = float.Parse(nbrGradeStudent1.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-
-                    if (old != project.LogGradeStudent1)
-                        project.GradeSentToAdmin = false;
-                }
-
-                if (nbrGradeStudent2.Text != "")
-                {
-                    var old = project.LogGradeStudent2;
-                    project.LogGradeStudent2 = float.Parse(nbrGradeStudent2.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-
-                    if (old != project.LogGradeStudent2)
-                        project.GradeSentToAdmin = false;
-                }
 
                 project.WebSummaryChecked = cbxWebSummaryChecked.Checked;
 
@@ -451,6 +466,38 @@ namespace ProStudCreator
                 project.BillingStatusID = drpBillingstatus.SelectedIndex == 0
                     ? (int?)null
                     : int.Parse(drpBillingstatus.SelectedValue);
+
+                if (nbrGradeStudent1.Text != "")
+                {
+                    if (!CheckGradeFieldStatus() && project.LogGradeStudent1 == null)
+                    {
+                        validationMessage = "Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen.";
+                    }
+                    else
+                    {
+                        var old = project.LogGradeStudent1;
+                        project.LogGradeStudent1 = float.Parse(nbrGradeStudent1.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+
+                        if (old != project.LogGradeStudent1)
+                            project.GradeSentToAdmin = false;
+                    }
+                }
+
+                if (nbrGradeStudent2.Text != "")
+                {
+                    if (!CheckGradeFieldStatus() && project.LogGradeStudent2 == null)
+                    {
+                        validationMessage = "Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen.";
+                    }
+                    else
+                    {
+                        var old = project.LogGradeStudent2;
+                        project.LogGradeStudent2 = float.Parse(nbrGradeStudent2.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+
+                        if (old != project.LogGradeStudent2)
+                            project.GradeSentToAdmin = false;
+                    }
+                }
 
                 project.UnderNDA = chkNDA.Checked;
 
