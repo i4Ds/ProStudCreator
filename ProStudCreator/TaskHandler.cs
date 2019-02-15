@@ -408,7 +408,7 @@ namespace ProStudCreator
             {
                 activeTask.LastReminded = DateTime.Now;
 
-                var updatedProjects = db.Projects.Where(p => p.IsMainVersion && p.State == (int)ProjectState.Published && !p.GradeSentToAdmin && (p.LogGradeStudent1 != null || p.LogGradeStudent2 != null) && p.BillingStatus != null && (p.LogLanguageEnglish == true || p.LogLanguageGerman == true)).OrderBy(p => p.Semester.StartDate).ThenBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+                var updatedProjects = db.Projects.Where(p => p.IsMainVersion && p.State == (int)ProjectState.Published && !p.GradeSentToAdmin && (p.LogGradeStudent1 != null || p.LogGradeStudent2 != null) && p.BillingStatus != null && (p.LogLanguageEnglish == true || p.LogLanguageGerman == true));
 
                 if (updatedProjects.Any())
                 {
@@ -433,33 +433,49 @@ namespace ProStudCreator
                             "<th>Projekttitel</th>" +
                         "</tr>");
 
+                    var rowsList = new List<Tuple<string, string, string, string, string, string>>();
+
                     foreach (var p in updatedProjects)
                     {
                         p.GradeSentToAdmin = true;
 
                         if (p.LogStudent1Mail != null && p.LogGradeStudent1 != null)
-                            mailMessage.Append(
-                            "<tr>" +
-                                $"<td>{HttpUtility.HtmlEncode(p.LogStudent1Mail)}</td>" +
-                                $"<td>{HttpUtility.HtmlEncode(p.LogGradeStudent1.Value.ToString("F1"))}</td>" +
-                                $"<td>{HttpUtility.HtmlEncode(p.LogProjectType.ExportValue)}</td>" +
-                                $"<td>{HttpUtility.HtmlEncode((p.LogLanguageGerman.Value ? "Deutsch" : "Englisch"))}</td>" +
-                                $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
-                                $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
-                            "</tr>"
-                            );
+                        {
+                            rowsList.Add(new Tuple<string, string, string, string, string, string>(
+                                p.LogStudent1Mail,
+                                p.LogGradeStudent1.Value.ToString("F1").Replace(',', '.'),
+                                p.LogProjectType.ExportValue,
+                                (p.LogLanguageGerman.Value ? "Deutsch" : "Englisch"),
+                                p.Advisor1.Mail,
+                                p.GetFullTitle()
+                            ));
+                        }
 
                         if (p.LogStudent2Mail != null && p.LogGradeStudent2 != null)
-                            mailMessage.Append(
-                                "<tr>" +
-                                    $"<td>{HttpUtility.HtmlEncode(p.LogStudent2Mail)}</td>" +
-                                    $"<td>{HttpUtility.HtmlEncode(p.LogGradeStudent2.Value.ToString("F1"))}</td>" +
-                                    $"<td>{HttpUtility.HtmlEncode(p.LogProjectType.ExportValue)}</td>" +
-                                    $"<td>{HttpUtility.HtmlEncode((p.LogLanguageGerman.Value ? "Deutsch" : "Englisch"))}</td>" +
-                                    $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
-                                    $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
-                                "</tr>"
-                                );
+                        {
+                            rowsList.Add(new Tuple<string, string, string, string, string, string>(
+                                p.LogStudent2Mail,
+                                p.LogGradeStudent2.Value.ToString("F1").Replace(',', '.'),
+                                p.LogProjectType.ExportValue,
+                                (p.LogLanguageGerman.Value ? "Deutsch" : "Englisch"),
+                                p.Advisor1.Mail,
+                                p.GetFullTitle()
+                            ));
+                        }
+                    }
+
+                    foreach(var row in rowsList.OrderBy(r => r.Item1))
+                    {
+                        mailMessage.Append(
+                        "<tr>" +
+                            $"<td>{HttpUtility.HtmlEncode(row.Item1)}</td>" +
+                            $"<td>{HttpUtility.HtmlEncode(row.Item2)}</td>" +
+                            $"<td>{HttpUtility.HtmlEncode(row.Item3)}</td>" +
+                            $"<td>{HttpUtility.HtmlEncode(row.Item4)}</td>" +
+                            $"<td>{HttpUtility.HtmlEncode(row.Item5)}</td>" +
+                            $"<td>{HttpUtility.HtmlEncode(row.Item6)}</td>" +
+                        "</tr>"
+                        );
                     }
 
                     mailMessage.Append(
