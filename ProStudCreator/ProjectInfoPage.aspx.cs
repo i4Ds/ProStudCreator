@@ -196,6 +196,15 @@ namespace ProStudCreator
             //web summary checked?
             cbxWebSummaryChecked.Checked = project.WebSummaryChecked;
 
+            lblWebsummaryLink.Text = !string.IsNullOrEmpty(project.Semester.Name)
+                ? project.LogProjectTypeID != null
+                    ? "<a target=\"_blank\" href=\"https://web.fhnw.ch/technik/projekte/i/" + (project.LogProjectTypeID == 1
+                        ? "ip5" + project.Semester.Name.Substring(0,2)
+                        : "bachelor" + project.Semester.Name.Substring(0, 2))
+                    + "\">Link</a>"
+                    : ""
+                : "";
+
             //fill the Billingstatus dropdown with Data
             drpBillingstatus.DataSource = db.BillingStatus.OrderBy(i => i.DisplayName);
             drpBillingstatus.DataBind();

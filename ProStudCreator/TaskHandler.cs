@@ -86,7 +86,7 @@ namespace ProStudCreator
                 CheckGradesRegistered(db);
                 CheckWebsummaryChecked(db);
                 CheckBillingStatus(db);
-                CheckUploadResults(db);
+                //CheckUploadResults(db);
                 CheckLanguageSet(db);
 
                 InfoStartProject(db);

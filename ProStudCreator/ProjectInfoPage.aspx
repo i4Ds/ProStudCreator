@@ -85,6 +85,7 @@
                 <div class="col-sm-3">
                     <asp:CheckBox runat="server" ID="cbxWebSummaryChecked" Text=" Websummary kontrolliert" CssClass="form-control" AutoPostBack="true" OnCheckedChanged="cbxWebSummaryChecked_CheckedChanged" />
                 </div>
+                <asp:Label runat="server" ID="lblWebsummaryLink" CssClass="col-sm-3 alignbottom">Link</asp:Label>
             </div>
             <br />
 
