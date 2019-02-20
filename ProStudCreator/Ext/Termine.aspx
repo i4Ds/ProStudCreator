@@ -59,7 +59,7 @@
                 <p>Titeländerungen von Informatikprojekten sind bis <%: (ProStudCreator.Global.AllowTitleChangesBeforeSubmission.Days/7) %> Wochen vor Abgabe möglich!</p>
                 <br/>
                 <p>
-                    <a href="../Content/Externe_Projekteingabe.pdf" class="pdf">Formular für Projekte von externen Auftraggebern.</a>
+                    <a href="../Content/Projekteingabe_Firma.pdf" target="_blank" class="pdf">Formular für Projekte von externen Auftraggebern.</a>
                 </p>
                 <p>
                     Handbuch und Vorlagen unter \\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene\
