@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +28,7 @@ namespace ProStudCreator.Ext
                 "Semester",
                 " ",
                 "Projekteinreichung",
+                "Info Veranstaltung",
                 "Anmeldung ProApp",
                 "Projektzuteilung",
                 "Abgabe IP5",
@@ -40,6 +42,7 @@ namespace ProStudCreator.Ext
                 dt.Rows.Add(semester.Name,
                     $"{semester.StartDate.ToShortDateString()} bis {semester.EndDate.ToShortDateString()}",
                     semester.ProjectSubmissionUntil.AddDays(-7 * 6).ToShortDateString(),
+                    semester.InfoEvent?.ToString("g", CultureInfo.CurrentCulture) ?? "?",
                     semester.ProAppApplication,
                     semester.ProjectAllocation,
                     semester.SubmissionIP5FullPartTime, 
