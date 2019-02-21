@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="aspnet-ProStudCreator-20140818043155" Class="ProStudentCreatorDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Database1" Class="ProStudentCreatorDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True" SettingsObjectName="ProStudCreator.Properties.Settings" SettingsPropertyName="Database1ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Departments" Member="Departments">
     <Type Name="Department">
@@ -143,7 +143,7 @@
       <Association Name="ProjectType_Project1" Member="PTwoType" ThisKey="P2TypeId" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
       <Association Name="ProjectTeamSize_Project" Member="POneTeamSize" ThisKey="P1TeamSizeId" OtherKey="Id" Type="ProjectTeamSize" IsForeignKey="true" />
       <Association Name="ProjectTeamSize_Project1" Member="PTwoTeamSize" ThisKey="P2TeamSizeId" OtherKey="Id" Type="ProjectTeamSize" IsForeignKey="true" />
-	  <Association Name="Semester_Project" Member="Semester" Storage="_Semesters" ThisKey="SemesterId" OtherKey="Id" Type="Semester" IsForeignKey="true" />
+  	  <Association Name="Semester_Project" Member="Semester" Storage="_Semesters" ThisKey="SemesterId" OtherKey="Id" Type="Semester" IsForeignKey="true" />
       <Association Name="ProjectType_Project2" Member="LogProjectType" ThisKey="LogProjectTypeID" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Project" Member="Advisor1" ThisKey="Advisor1Id" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Project1" Member="Advisor2" ThisKey="Advisor2Id" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
@@ -165,11 +165,14 @@
       <Column Name="ExhibitionBachelorThesis" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Name" Type="System.String" DbType="nchar(4)" CanBeNull="false" />
       <Column Name="DayBeforeNextSemester" Storage="_SemesterActiveUntil" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-	  <Column Name="DefenseIP6BStart" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DefenseIP6BStart" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="DefenseIP6BEnd" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="ProAppApplication" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GradeIP5Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GradeIP6Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="InfoEvent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Semester_Project" Member="Project" ThisKey="Id" OtherKey="SemesterId" Type="Project" />
-      <Association Name="Semester_Task" Member="Tasks" ThisKey="Id" OtherKey="SemesterId" Type="Task" />
+	  <Association Name="Semester_Task" Member="Tasks" ThisKey="Id" OtherKey="SemesterId" Type="Task" />
     </Type>
   </Table>
   <Table Name="dbo.Attachements" Member="Attachements">

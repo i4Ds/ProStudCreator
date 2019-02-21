@@ -38,7 +38,7 @@
         <elementListCompartment Id="f7f889f0-a534-490e-b4f0-1276119048e2" absoluteBounds="4.89, 2.835, 1.9700000000000002, 14.287394205729166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8 : 6.26044840494792); (6.875 : 6.26044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8 : 6.26044840494792); (6.875 : 6.26044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ProStudentCreatorDBDataContext/BillingStatus/BillingStatus_Project" />
       <nodes>
         <classShapeMoniker Id="a8c87231-a19b-4e72-8001-778d22e71273" />
@@ -181,16 +181,16 @@
         <classShapeMoniker Id="405e4684-a9d4-4455-b7c5-b5db4ed6d5d0" />
       </nodes>
     </associationConnector>
-    <classShape Id="51e7872e-7355-4b41-884a-16cd8bf2ef51" absoluteBounds="8.25, 7.625, 2, 4.0785139973958326">
+    <classShape Id="770d8644-8c5e-4f95-b011-f843b1d0c977" absoluteBounds="8, 7.625, 2, 4.6554182942708326">
       <DataClassMoniker Name="/ProStudentCreatorDBDataContext/Semester" />
       <nestedChildShapes>
-        <elementListCompartment Id="1c70e9ef-43ba-4935-b505-c162812318f8" absoluteBounds="8.265, 8.085, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="e541e797-1ff2-46e4-8fe8-81304766dba6" absoluteBounds="8.015, 8.085, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(9.25 : 11.7035139973958); (9.25 : 17.6023990885417); (3.375 : 17.6023990885417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(9 : 12.2804182942708); (9 : 17.6023990885417); (3.375 : 17.6023990885417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ProStudentCreatorDBDataContext/Semester/Semester_Task" />
       <nodes>
-        <classShapeMoniker Id="51e7872e-7355-4b41-884a-16cd8bf2ef51" />
+        <classShapeMoniker Id="770d8644-8c5e-4f95-b011-f843b1d0c977" />
         <classShapeMoniker Id="36c4b15b-4e4c-40c6-8838-575b0f4f1af1" />
       </nodes>
     </associationConnector>

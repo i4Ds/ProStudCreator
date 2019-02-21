@@ -3704,6 +3704,12 @@ namespace ProStudCreator
 		
 		private string _ProAppApplication;
 		
+		private System.DateTime _GradeIP5Deadline;
+		
+		private System.DateTime _GradeIP6Deadline;
+		
+		private System.Nullable<System.DateTime> _InfoEvent;
+		
 		private EntitySet<Project> _Project;
 		
 		private EntitySet<Task> _Tasks;
@@ -3746,6 +3752,12 @@ namespace ProStudCreator
     partial void OnDefenseIP6BEndChanged();
     partial void OnProAppApplicationChanging(string value);
     partial void OnProAppApplicationChanged();
+    partial void OnGradeIP5DeadlineChanging(System.DateTime value);
+    partial void OnGradeIP5DeadlineChanged();
+    partial void OnGradeIP6DeadlineChanging(System.DateTime value);
+    partial void OnGradeIP6DeadlineChanged();
+    partial void OnInfoEventChanging(System.Nullable<System.DateTime> value);
+    partial void OnInfoEventChanged();
     #endregion
 		
 		public Semester()
@@ -4091,6 +4103,66 @@ namespace ProStudCreator
 					this._ProAppApplication = value;
 					this.SendPropertyChanged("ProAppApplication");
 					this.OnProAppApplicationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeIP5Deadline", DbType="DateTime NOT NULL")]
+		public System.DateTime GradeIP5Deadline
+		{
+			get
+			{
+				return this._GradeIP5Deadline;
+			}
+			set
+			{
+				if ((this._GradeIP5Deadline != value))
+				{
+					this.OnGradeIP5DeadlineChanging(value);
+					this.SendPropertyChanging();
+					this._GradeIP5Deadline = value;
+					this.SendPropertyChanged("GradeIP5Deadline");
+					this.OnGradeIP5DeadlineChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GradeIP6Deadline", DbType="DateTime NOT NULL")]
+		public System.DateTime GradeIP6Deadline
+		{
+			get
+			{
+				return this._GradeIP6Deadline;
+			}
+			set
+			{
+				if ((this._GradeIP6Deadline != value))
+				{
+					this.OnGradeIP6DeadlineChanging(value);
+					this.SendPropertyChanging();
+					this._GradeIP6Deadline = value;
+					this.SendPropertyChanged("GradeIP6Deadline");
+					this.OnGradeIP6DeadlineChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InfoEvent", DbType="DateTime")]
+		public System.Nullable<System.DateTime> InfoEvent
+		{
+			get
+			{
+				return this._InfoEvent;
+			}
+			set
+			{
+				if ((this._InfoEvent != value))
+				{
+					this.OnInfoEventChanging(value);
+					this.SendPropertyChanging();
+					this._InfoEvent = value;
+					this.SendPropertyChanged("InfoEvent");
+					this.OnInfoEventChanged();
 				}
 			}
 		}
