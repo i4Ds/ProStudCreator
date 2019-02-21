@@ -7,6 +7,11 @@
             Submitted = 1,
             Rejected = 2,
             Published = 3,
-            Deleted = 4;
+            Ongoing = 4,
+            Finished = 5,
+            Canceled = 6,
+            ArchivedFinished = 7,
+            ArchivedCanceled = 8,
+            Deleted = 9;
     }
 }
