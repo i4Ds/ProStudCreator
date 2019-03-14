@@ -213,7 +213,7 @@ namespace ProStudCreator
 
         protected void NewProject_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddNewProject");
+            Response.Redirect("ProjectEditPage");
         }
 
         protected void ProjectRowClick(object sender, GridViewCommandEventArgs e)
@@ -259,7 +259,7 @@ namespace ProStudCreator
                         Response.Redirect(Request.RawUrl);
                         break;
                     case "editProject":
-                        Response.Redirect("AddNewProject?id=" + id);
+                        Response.Redirect("ProjectEditPage?id=" + id);
                         break;
                     case "submitProject":
                         //EinreichenButton_Click(id);

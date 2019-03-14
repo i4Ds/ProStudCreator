@@ -76,7 +76,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField ItemStyle-Wrap="false">
                                         <ItemTemplate>
-                                            <a title="Projekt bearbeiten" class="btn btn-default btnHeight glyphicon glyphicon-pencil" href="AddNewProject?id=<%# Item.id %>"></a>
+                                            <a title="Projekt bearbeiten" class="btn btn-default btnHeight glyphicon glyphicon-pencil" href="ProjectEditPage?id=<%# Item.id %>"></a>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField ItemStyle-Wrap="false">

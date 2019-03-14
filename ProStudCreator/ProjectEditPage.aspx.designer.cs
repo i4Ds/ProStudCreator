@@ -10,7 +10,7 @@
 namespace ProStudCreator {
     
     
-    public partial class AddNewProject {
+    public partial class ProjectEditPage {
         
         /// <summary>
         /// refuseProjectUpdatePanel control.

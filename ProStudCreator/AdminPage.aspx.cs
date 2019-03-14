@@ -211,7 +211,7 @@ namespace ProStudCreator
                     Response.Redirect(Request.RawUrl);
                     break;
                 case "editProject":
-                    Response.Redirect("AddNewProject?id=" + id);
+                    Response.Redirect("ProjectEditPage?id=" + id);
                     break;
                 case "submitProject":
                     //EinreichenButton_Click(id);

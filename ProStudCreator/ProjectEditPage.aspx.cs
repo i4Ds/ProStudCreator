@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace ProStudCreator
 {
-    public partial class AddNewProject : Page
+    public partial class ProjectEditPage : Page
     {
         public readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();
         private int? id;
@@ -74,7 +74,7 @@ namespace ProStudCreator
                 if (!pageProject.IsMainVersion && Request.QueryString["showChanges"] == null)
                 {
                     var main = db.Projects.Single(p => p.BaseVersionId == pageProject.BaseVersionId && p.IsMainVersion);
-                    Response.Redirect("~/AddNewProject.aspx?id=" + main.Id);
+                    Response.Redirect("~/ProjectEditPage.aspx?id=" + main.Id);
                     Response.End();
                 }
 
@@ -1300,11 +1300,11 @@ namespace ProStudCreator
                     var revertedProject = db.Projects.Single(p => p.Id == pid);
                     revertedProject.IsMainVersion = true;
                     db.SubmitChanges();
-                    Response.Redirect("~/AddNewProject.aspx?id=" + pid);
+                    Response.Redirect("~/ProjectEditPage.aspx?id=" + pid);
                     break;
                 case "showChanges":
                     var mainProject = db.Projects.Single(p => p.BaseVersionId == pageProject.BaseVersionId && p.IsMainVersion && p.State != ProjectState.Deleted).Id;
-                    Response.Redirect("~/AddNewProject.aspx?id=" + pid + "&showChanges=" + mainProject);
+                    Response.Redirect("~/ProjectEditPage.aspx?id=" + pid + "&showChanges=" + mainProject);
                     break;
                 default:
                     throw new Exception("Unknown command " + e.CommandName);
@@ -1319,7 +1319,7 @@ namespace ProStudCreator
             if (Page.IsValid)
             {
                 SaveProject(true);
-                Response.Redirect("AddNewProject?id=" + pageProject.Id);
+                Response.Redirect("ProjectEditPage?id=" + pageProject.Id);
             }
             saveProject.Enabled = true;
         }
@@ -1634,7 +1634,7 @@ namespace ProStudCreator
             string confirmValue = Request.Form["confirm_value"];
             if (confirmValue == "Yes")
             {
-                Response.Redirect("~/AddNewProject.aspx?id=" + duplicate.Id);
+                Response.Redirect("~/ProjectEditPage.aspx?id=" + duplicate.Id);
             }
         }
 

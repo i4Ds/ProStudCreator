@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Projekt bearbeiten" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="AddNewProject.aspx.cs" Inherits="ProStudCreator.AddNewProject" %>
+﻿<%@ Page Title="Projekt bearbeiten" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="ProjectEditPage.aspx.cs" Inherits="ProStudCreator.ProjectEditPage" %>
 
 <%@ Import Namespace="ProStudCreator" %>
 

@@ -180,7 +180,7 @@
     <Content Include="pictures\raum_grau.png" />
     <Content Include="ProjectFilesDownload.aspx" />
     <Content Include="ProjectInfoPage.aspx" />
-    <Content Include="AddNewProject.aspx" />
+    <Content Include="ProjectEditPage.aspx" />
     <Content Include="App_Data\aspnet-ProStudCreator-20140818043155.mdf" />
     <Content Include="App_Data\aspnet-ProStudCreator-20140818043155_log.ldf">
       <DependentUpon>aspnet-ProStudCreator-20140818043155.mdf</DependentUpon>
@@ -353,12 +353,12 @@
     <Compile Include="ProjectInfoPage.aspx.designer.cs">
       <DependentUpon>ProjectInfoPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AddNewProject.aspx.cs">
-      <DependentUpon>AddNewProject.aspx</DependentUpon>
+    <Compile Include="ProjectEditPage.aspx.cs">
+      <DependentUpon>ProjectEditPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AddNewProject.aspx.designer.cs">
-      <DependentUpon>AddNewProject.aspx</DependentUpon>
+    <Compile Include="ProjectEditPage.aspx.designer.cs">
+      <DependentUpon>ProjectEditPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
