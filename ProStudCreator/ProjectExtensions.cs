@@ -1002,15 +1002,18 @@ namespace ProStudCreator
                     return "#A9F5A9";
 
                 case ProjectState.Ongoing:
-                    return "#64ed64";
+                    return "#A9F5A9";
+                    //return "#64ed64";
 
                 case ProjectState.Finished:
                 case ProjectState.ArchivedFinished:
-                    return "#1adb1a";
+                    return "#A9F5A9";
+                    //return "#1adb1a";
 
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedCanceled:
-                    return "#e8463b";
+                    return "#A9F5A9";
+                    //return "#e8463b";
 
                 case ProjectState.Deleted:
                     return "#919191";
