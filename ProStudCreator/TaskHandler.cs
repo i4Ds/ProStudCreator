@@ -249,7 +249,6 @@ namespace ProStudCreator
 
             var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
             mail.To.Add(new MailAddress(Global.MarKomAdmin));
-            mail.CC.Add(new MailAddress(Global.WebAdmin));
             mail.Subject = "Informatikprojekte P6: Projektliste für Broschüre";
             mail.IsBodyHtml = true;
 
@@ -339,7 +338,6 @@ namespace ProStudCreator
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
                     mail.To.Add(new MailAddress(Global.PayExpertAdmin));
-                    mail.CC.Add(new MailAddress(Global.WebAdmin));
                     mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
                     mail.IsBodyHtml = true;
 
@@ -414,7 +412,6 @@ namespace ProStudCreator
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
                     mail.To.Add(new MailAddress(Global.GradeAdmin));
-                    mail.CC.Add(new MailAddress(Global.WebAdmin));
                     mail.Subject = "Informatikprojekte P5/P6: Neue Noten";
                     mail.IsBodyHtml = true;
 
@@ -573,8 +570,7 @@ namespace ProStudCreator
                 if (thesisProjects.Any())
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    mail.To.Add(new MailAddress(Global.WebAdmin)); //CHANGE THIS!
-                    mail.CC.Add(new MailAddress(Global.WebAdmin));
+                    mail.To.Add(new MailAddress(Global.GradeAdmin));
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel";
                     mail.IsBodyHtml = true;
 
@@ -859,7 +855,6 @@ namespace ProStudCreator
             {
                 var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
                 mail.To.Add(new MailAddress(user.Mail));
-                mail.CC.Add(new MailAddress(Global.WebAdmin));
                 mail.Subject = "Erinnerung von ProStud";
                 mail.IsBodyHtml = true;
 
@@ -925,11 +920,12 @@ namespace ProStudCreator
             SendMail(mail);
         }
 
-        private static void SendMail(MailMessage mail)
+        public static void SendMail(MailMessage mail)
         {
 #if !DEBUG
             using (var smtpClient = new SmtpClient())
             {
+                mail.CC.Add(new MailAddress(Global.WebAdmin));
                 smtpClient.Send(mail);
             }
 #else

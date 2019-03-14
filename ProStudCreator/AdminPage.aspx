@@ -41,9 +41,10 @@
                 </Triggers>
                 <ContentTemplate>
                     <div class="radioButtonSettingsAdmin" runat="server" id="divRadioProjects">
-                        <asp:RadioButtonList runat="server" ID="radioSelectedProjects" RepeatDirection="Horizontal" OnSelectedIndexChanged="RadioSelectedProjects_OnSelectedIndexChanged" AutoPostBack="True" CssClass="col-sm-5" TextAlign="Right">
+                        <asp:RadioButtonList runat="server" ID="radioSelectedProjects" RepeatDirection="Horizontal" OnSelectedIndexChanged="RadioSelectedProjects_OnSelectedIndexChanged" AutoPostBack="True" CssClass="col-sm-6" TextAlign="Right">
                             <asp:ListItem Value="toPublish">Projekte zur Freigabe</asp:ListItem>
                             <asp:ListItem Value="inProgress">Projekte in Bearbeitung</asp:ListItem>
+                            <asp:ListItem Value="allProjects">Alle Projekte</asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
                     <div style="text-align: right;">
@@ -65,17 +66,17 @@
                                     <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="projectType2" ItemStyle-Width="20px" />
                                     <asp:TemplateField ItemStyle-Wrap="false">
                                         <ItemTemplate>
+                                            <a title="PDF anzeigen" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank" href="PDF?dl=false&id=<%# Item.id %>"></a>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField ItemStyle-Wrap="false">
+                                        <ItemTemplate>
                                             <a title="Projekt Informationen" class="btn btn-default btnHeight glyphicon glyphicon-info-sign" href="ProjectInfoPage?id=<%# Item.id %>"></a>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField ItemStyle-Wrap="false">
                                         <ItemTemplate>
                                             <a title="Projekt bearbeiten" class="btn btn-default btnHeight glyphicon glyphicon-pencil" href="AddNewProject?id=<%# Item.id %>"></a>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField ItemStyle-Wrap="false">
-                                        <ItemTemplate>
-                                            <a title="PDF anzeigen" class="btn btn-default btnHeight glyphicon glyph-pdf" href="PDF?dl=false&id=<%# Item.id %>"></a>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField ItemStyle-Wrap="false">
@@ -179,8 +180,7 @@
                             <asp:Label runat="server" Text="Ansprechpersonen:" CssClass="control-label col-sm-3"></asp:Label>
                             <asp:Label runat="server" CssClass="col-sm-3 alignbottom">
                                 <a href="mailto:simon.beck@fhnw.ch" target="_blank">Simon Beck</a>,
-                                <a href="mailto:jonas.suter@fhnw.ch" target="_blank">Jonas Suter</a>, 
-                                <a href="mailto:stephen.randles@fhnw.ch" target="_blank">Stephen Randles</a>
+                                <a href="mailto:andre.csillaghy@fhnw.ch" target="_blank">André Csillaghy</a>
                             </asp:Label>
                         </div>
                         <hr />

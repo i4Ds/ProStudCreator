@@ -279,7 +279,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
-    <Content Include="Ext\Termine.aspx" />
+    <Content Include="ext\Termine.aspx" />
     <Content Include="Termine.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -414,11 +414,11 @@
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="Ext\Termine.aspx.cs">
+    <Compile Include="ext\Termine.aspx.cs">
       <DependentUpon>Termine.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Ext\Termine.aspx.designer.cs">
+    <Compile Include="ext\Termine.aspx.designer.cs">
       <DependentUpon>Termine.aspx</DependentUpon>
     </Compile>
     <Compile Include="TaskHandler.cs" />
@@ -440,6 +440,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\ProjectFiles\" />
+    <Folder Include="code\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

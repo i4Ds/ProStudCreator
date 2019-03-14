@@ -50,6 +50,7 @@ namespace ProStudCreator
             //return "test.mitarbeiteri4ds@testmail.com";
             //return "test.dozenti4ds@testmail.com";
             //return "test.superuseri4ds@testmail.com";
+            //return "test.superuserimvs@testmail.com";
             return Global.WebAdmin;
 #else
             string mail = HttpContext.Current.Request.Headers["mail"];
@@ -108,6 +109,44 @@ namespace ProStudCreator
             return GetFirstName() + " " + GetLastName();
         }
 
+        public static bool IsDepartmentManager(Department _d)
+        {
+#if DEBUG
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return IsDepartmentManager() && GetDepartment(db).Id == _d.Id;
+            }
+#else
+            if (HttpContext.Current.Items[$"IsDepartmentManager_{_d.DepartmentName}"] == null)
+            {
+                using (var db = new ProStudentCreatorDBDataContext())
+                {
+                    HttpContext.Current.Items[$"IsDepartmentManager_{_d.DepartmentName}"] = IsDepartmentManager() && GetDepartment(db).Id == _d.Id;
+                }
+            }
+            return (bool)HttpContext.Current.Items[$"IsDepartmentManager_{_d.DepartmentName}"];
+#endif
+        }
+
+        public static bool IsDepartmentManager()
+        {
+#if DEBUG
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                return db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.IsDepartmentManager == true;
+            }
+#else
+            if (HttpContext.Current.Items["IsDepartmentManager"] == null)
+            {
+                using (var db = new ProStudentCreatorDBDataContext())
+                {
+                    HttpContext.Current.Items["IsDepartmentManager"] =
+                        db.UserDepartmentMap.SingleOrDefault(u => u.Mail == ShibUser.GetEmail())?.IsDepartmentManager == true;
+                }
+            }
+            return (bool)HttpContext.Current.Items["IsDepartmentManager"];
+#endif
+        }
 
         public static Department GetDepartment()
         {

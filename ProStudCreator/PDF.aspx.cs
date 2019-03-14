@@ -16,7 +16,7 @@ namespace ProStudCreator
 
             var idPDF = db.Projects.Single(i => i.Id == id);
 
-            if (!(ShibUser.IsAuthenticated(db) || idPDF.State == ProjectState.Published))
+            if (!(ShibUser.IsAuthenticated(db) || idPDF.IsAtLeastPublished()))
             {
                 
                 Response.Redirect("error/AccessDenied.aspx");

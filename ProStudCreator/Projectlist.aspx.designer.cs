@@ -49,6 +49,69 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Button filterBtn;
         
         /// <summary>
+        /// colExInProgress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExInProgress;
+        
+        /// <summary>
+        /// colExSubmitted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExSubmitted;
+        
+        /// <summary>
+        /// colExRejected control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExRejected;
+        
+        /// <summary>
+        /// colExPublished control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExPublished;
+        
+        /// <summary>
+        /// colExOngoing control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExOngoing;
+        
+        /// <summary>
+        /// colExFinished control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExFinished;
+        
+        /// <summary>
+        /// colExCanceled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button colExCanceled;
+        
+        /// <summary>
         /// AllProjectsAsPDF control.
         /// </summary>
         /// <remarks>

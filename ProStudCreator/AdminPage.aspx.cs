@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -107,11 +104,10 @@ namespace ProStudCreator
                           Server.HtmlEncode(i.Advisor2.Name).Replace(" ", "&nbsp;") + "</a>"
                         : ""
                 }),
-                ProjectNr = (i.ProjectNr == 0 ? " " : i.ProjectNr.ToString("D2")),
                 projectName = i.Name,
                 Institute = i.Department.DepartmentName,
-                p5 = i.POneType.P5 || i.PTwoType != null && i.PTwoType.P5,
-                p6 = i.POneType.P6 || i.PTwoType != null && i.PTwoType.P6,
+                p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || (i.PTwoType?.P5 ?? false)),
+                p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || (i.PTwoType?.P6 ?? false)),
                 projectType1 = "pictures/projectTyp" + (i.TypeDesignUX
                                    ? "DesignUX"
                                    : (i.TypeHW
@@ -148,7 +144,8 @@ namespace ProStudCreator
                                                                        i.TypeMlAlg || i.TypeAppWeb ||
                                                                        i.TypeDBBigData || i.TypeSysSec)
                                                            ? "SE"
-                                                           : "Transparent"))))))) + ".png"
+                                                           : "Transparent"))))))) + ".png",
+                ProjectNr = i.ProjectNr != 0 ? i.ProjectNr.ToString("D2") : " "
             };
         }
 
@@ -166,24 +163,30 @@ namespace ProStudCreator
         {
             var depId = ShibUser.GetDepartment(db).Id;
 
-            if (radioSelectedProjects.SelectedValue == "inProgress")
+            switch(radioSelectedProjects.SelectedValue)
             {
-                var lastSemStartDate = Semester.LastSemester(db).StartDate;
-                return db.Projects.Where(p =>
-                    /*p.DepartmentId == depId &&*/ p.IsMainVersion &&
-                    p.ModificationDate > lastSemStartDate &&
-                    (p.State == ProjectState.InProgress || p.State == ProjectState.Submitted || p.State == ProjectState.Rejected))
-                    .OrderBy(i => i.Department.DepartmentName)
-                    .ThenBy(i => i.ProjectNr)
-                    .Select(i => GetProjectSingleElement(i));
-            }
-            else
-            {
-                return db.Projects
-                    .Where(item => item.State == ProjectState.Submitted && item.IsMainVersion && (int?)item.DepartmentId == depId)
-                    .OrderBy(i => i.Department.DepartmentName)
-                    .ThenBy(i => i.ProjectNr)
-                    .Select(i => GetProjectSingleElement(i));
+                case "inProgress":
+                    return db.Projects.Where(p => p.IsMainVersion
+                                               && (p.State == ProjectState.InProgress || p.State == ProjectState.Submitted || p.State == ProjectState.Rejected))
+                                      .OrderBy(i => i.Department.DepartmentName)
+                                      .ThenBy(i => i.ProjectNr)
+                                      .Select(i => GetProjectSingleElement(i));
+                case "toPublish":
+                    return db.Projects.Where(p => p.State == ProjectState.Submitted
+                                               && p.IsMainVersion
+                                               && p.DepartmentId == depId)
+                                      .OrderBy(i => i.Advisor1.Mail)
+                                      .ThenBy(i => i.ProjectNr)
+                                      .Select(i => GetProjectSingleElement(i));
+                case "allProjects":
+                    return db.Projects.Where(p => p.State != ProjectState.Deleted
+                                               && p.IsMainVersion)
+                                      .OrderBy(i => i.DepartmentId)
+                                      .ThenBy(i => i.State)
+                                      .ThenBy(i => i.ProjectNr)
+                                      .Select(i => GetProjectSingleElement(i));
+                default:
+                    throw new Exception($"Unexpected radioSelectedProjects.SelectedValue '{radioSelectedProjects.SelectedValue}'");
             }
         }
 
@@ -211,7 +214,7 @@ namespace ProStudCreator
                     Response.Redirect("AddNewProject?id=" + id);
                     break;
                 case "submitProject":
-                    EinreichenButton_Click(id);
+                    //EinreichenButton_Click(id);
                     break;
                 default:
                     throw new Exception("Unknown command " + e.CommandName);
@@ -246,7 +249,8 @@ namespace ProStudCreator
             if (SelectedSemester.SelectedValue == "") //Alle Semester
             {
                 projectsToExport = db.Projects
-                    .Where(i => i.State == ProjectState.Published && i.IsMainVersion)
+                    .Where(i => (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
                     .OrderBy(i => i.Semester.Name)
                     .ThenBy(i => i.Department.DepartmentName)
                     .ThenBy(i => i.ProjectNr);
@@ -255,7 +259,9 @@ namespace ProStudCreator
             {
                 var semesterId = int.Parse(SelectedSemester.SelectedValue);
                 projectsToExport = db.Projects
-                    .Where(i => i.SemesterId == semesterId && i.IsMainVersion && i.State == ProjectState.Published)
+                    .Where(i => i.SemesterId == semesterId
+                             && (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
                     .OrderBy(i => i.Semester.Name)
                     .ThenBy(i => i.Department.DepartmentName)
                     .ThenBy(i => i.ProjectNr);
@@ -306,29 +312,25 @@ namespace ProStudCreator
             CheckProjects.DataBind();
 
         }
+
         protected void CheckProjects_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType != DataControlRowType.DataRow) return;
             var project = db.Projects.Single(item => item.Id == ((ProjectSingleElement)e.Row.DataItem).id);
 
-            Color? col = null;
-            switch (project.State)
+            if (!project.UserCanEdit())
             {
-                case ProjectState.Published:
-                    col = ColorTranslator.FromHtml("#A9F5A9");
-                    e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
-                    break;
-                case ProjectState.Rejected:
-                    col = ColorTranslator.FromHtml("#F5A9A9");
-                    break;
-                case ProjectState.Submitted:
-                    col = ColorTranslator.FromHtml("#ffcc99");
-                    e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
-                    break;
+                var x = e.Row.Cells[e.Row.Cells.Count - 4].Controls;
+                e.Row.Cells[e.Row.Cells.Count - 3].Controls.OfType<DataBoundLiteralControl>().First().Visible = false; //edit
+                e.Row.Cells[e.Row.Cells.Count - 2].Controls.OfType<LinkButton>().First().Visible = false; //delete
             }
-            if (!col.HasValue) return;
+
+            //TODO: decide wether to keep this button or not
+            e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
+
+            Color col = ColorTranslator.FromHtml(project.StateColor);
             foreach (TableCell cell in e.Row.Cells)
-                cell.BackColor = col.Value;
+                cell.BackColor = col;
         }
 
         protected void BtnAdminProjectsCollapse_OnClick(object sender, EventArgs e)
@@ -346,6 +348,7 @@ namespace ProStudCreator
             CollapseAddInfo(!(bool)Session["AddInfoCollapsed"]);
         }
 
+        /*
         protected void EinreichenButton_Click(int id)
         {
             Project project = db.Projects.Single(p => p.Id == id);
@@ -368,6 +371,7 @@ namespace ProStudCreator
             }
 
         }
+        */
 
         protected void BtnBillingExport_Click(object sender, EventArgs e)
         {
@@ -376,7 +380,8 @@ namespace ProStudCreator
             if (SelectedSemester.SelectedValue == "") //Alle Semester
             {
                 projectsToExport = db.Projects
-                    .Where(i => i.State == ProjectState.Published && i.IsMainVersion)
+                    .Where(i => (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
                     .OrderByDescending(i => i.BillingStatus.Billable)
                     .ThenBy(i => i.ClientCompany)
                     .ThenBy(i => i.ClientPerson);
@@ -385,7 +390,9 @@ namespace ProStudCreator
             {
                 var semesterId = int.Parse(SelectedSemester.SelectedValue);
                 projectsToExport = db.Projects
-                    .Where(i => i.SemesterId == semesterId && i.IsMainVersion && i.State == ProjectState.Published)
+                    .Where(i => i.SemesterId == semesterId
+                             && (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
                     .OrderByDescending(i => i.BillingStatus.Billable)
                     .ThenBy(i => i.ClientCompany)
                     .ThenBy(i => i.ClientPerson);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,29 +26,51 @@ namespace ProStudCreator
 
         public static string GetFullTitle(this Project _p) => $"{_p.Semester.Name}_{_p.Department.DepartmentName}{_p.ProjectNr:D2}: {_p.Name}";
 
-        public static Project SaveAsNewVersion(this Project _p, ProStudentCreatorDBDataContext db)
+
+        public static Project CopyProject(this Project _p)
         {
-            Project project = new Project
-            {
-                ModificationDate = DateTime.Now,
-                LastEditedBy = ShibUser.GetEmail(),
-                IsMainVersion = true
-            };
-            //_p.IsMainVersion = false;
-            _p.MapProject(project);
+            Project copy = new Project();
+            _p.MapProject(copy);
+            copy.ModificationDate = _p.ModificationDate;
+            copy.LastEditedBy = _p.LastEditedBy;
+            copy.IsMainVersion = false;
+            return copy;
+        }
+
+        public static void SaveProjectAsMainVersion(this Project _p, ProStudentCreatorDBDataContext db)
+        {
+            _p.ModificationDate = DateTime.Now;
+            _p.LastEditedBy = ShibUser.GetEmail();
 
             foreach (Project proj in db.Projects.Where(p => p.BaseVersionId == _p.BaseVersionId && p.IsMainVersion == true))
             {
                 proj.IsMainVersion = false;
             }
 
-            db.Projects.InsertOnSubmit(project);
+            _p.IsMainVersion = true;
             db.SubmitChanges();
-
-            return project;
-
         }
-        public static Project DuplicateAndUseAsTemplate(this Project _p, ProStudentCreatorDBDataContext db)
+
+        public static Project CopyAndUseCopyAsMainVersion(this Project _p, ProStudentCreatorDBDataContext db)
+        {
+            Project copy = new Project();
+            _p.MapProject(copy);
+            copy.ModificationDate = DateTime.Now;
+            copy.LastEditedBy = ShibUser.GetEmail();
+
+            foreach (Project proj in db.Projects.Where(p => p.BaseVersionId == _p.BaseVersionId && p.IsMainVersion == true))
+            {
+                proj.IsMainVersion = false;
+            }
+
+            copy.IsMainVersion = true;
+
+            db.Projects.InsertOnSubmit(copy);
+            db.SubmitChanges();
+            return copy;
+        }
+
+        public static Project DuplicateProject(this Project _p, ProStudentCreatorDBDataContext db)
         {
             var duplicate = _p.Duplicate(db);
             duplicate.BaseVersionId = duplicate.Id;
@@ -56,11 +79,13 @@ namespace ProStudCreator
             duplicate.Reservation1Name = "";
             duplicate.Reservation2Name = "";
             duplicate.State = ProjectState.InProgress;
-            _p.ClearLog(db);
+            duplicate.ClearLog(db);
             duplicate.IsMainVersion = true;
+            duplicate.Name += " (Duplikat)";
             db.SubmitChanges();
             return duplicate;
         }
+
         public static void ClearLog(this Project _p, ProStudentCreatorDBDataContext db)
         {
             _p.LogDefenceDate = null;
@@ -80,6 +105,7 @@ namespace ProStudCreator
             _p.LogStudent2Name = null;
             db.SubmitChanges();
         }
+
         public static bool IsModified(this Project p1, Project p2)
         {
 
@@ -102,14 +128,12 @@ namespace ProStudCreator
             var stateAsString = nameof(Project.StateAsString);
             var creator = nameof(Project.Creator);
             var semester = nameof(Project.Semester);
-            var semesterid = nameof(Project.SemesterId);
             var pOneType = nameof(Project.POneType);
             var pTwoType = nameof(Project.PTwoType);
             var pOneTypeTeamSize = nameof(Project.POneTeamSize);
             var pTwoTypeTeamSize = nameof(Project.PTwoTeamSize);
             var advisor1 = nameof(Project.Advisor1);
             var advisor2 = nameof(Project.Advisor2);
-
 
             exclusionList.Add(pid);
             exclusionList.Add(modDate);
@@ -126,13 +150,16 @@ namespace ProStudCreator
             exclusionList.Add(stateAsString);
             exclusionList.Add(creator);
             exclusionList.Add(semester);
-            exclusionList.Add(semesterid);
             exclusionList.Add(pOneType);
             exclusionList.Add(pTwoType);
             exclusionList.Add(pOneTypeTeamSize);
             exclusionList.Add(pTwoTypeTeamSize);
             exclusionList.Add(advisor1);
             exclusionList.Add(advisor2);
+
+            //don't check picture
+            var pic = nameof(Project.Picture);
+            exclusionList.Add(pic);
 
             foreach (PropertyInfo pi in typeof(Project).GetProperties())
             {
@@ -190,8 +217,10 @@ namespace ProStudCreator
             if (_p.ClientMail.Trim().Length != 0 && !_p.ClientMail.IsValidEmail())
                 validationMessage = "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
 
+            /*
             if ((!_p.Advisor1?.Name.IsValidName()) ?? true)
                 validationMessage = "Bitte wählen Sie einen Hauptbetreuer aus.";
+            */
 
             var numAssignedTypes = 0;
             if (projectTypes == null)
@@ -208,7 +237,7 @@ namespace ProStudCreator
             if (_p.OverOnePage)
                 validationMessage = "Der Projektbeschrieb passt nicht auf eine A4-Seite. Bitte kürzen Sie die Beschreibung.";
 
-            if (!ShibUser.CanSubmitAllProjects() && ShibUser.GetEmail() != _p.Advisor1?.Mail)
+            if (!ShibUser.CanSubmitAllProjects() && !_p.UserHasAdvisor1Rights())
                 validationMessage = "Nur Hauptbetreuer können Projekte einreichen.";
 
             if (_p.Reservation1Mail.Trim().Length != 0 && _p.Reservation1Name.Trim().Length == 0)
@@ -276,7 +305,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 90; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 91; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -360,6 +389,7 @@ namespace ProStudCreator
             target.UnderNDA = _p.UnderNDA;
             target.WebSummaryChecked = _p.WebSummaryChecked;
             target.GradeSentToAdmin = _p.GradeSentToAdmin;
+            target.Notes = _p.Notes;
         }
 
         public static Project CreateNewProject(ProStudentCreatorDBDataContext db)
@@ -370,40 +400,6 @@ namespace ProStudCreator
             project.ModificationDate = DateTime.Now;
             project.LastEditedBy = ShibUser.GetEmail();
             return project;
-        }
-
-        /// <summary>
-        ///     Submits user's project for approval by an admin.
-        /// </summary>
-        /// <param name="_p"></param>
-        public static void Submit(this Project _p, ProStudentCreatorDBDataContext _dbx)
-        {
-            _p.PublishedDate = DateTime.Now;
-            _p.ModificationDate = DateTime.Now;
-            AssignUniqueProjectNr(_p, _dbx);
-            _p.State = ProjectState.Submitted;
-        }
-
-        /// <summary>
-        ///     Publishes a project after submission. Admin only.
-        /// </summary>
-        /// <param name="_p"></param>
-        public static void Publish(this Project _p, ProStudentCreatorDBDataContext _dbx)
-        {
-            _p.PublishedDate = DateTime.Now;
-            _p.ModificationDate = DateTime.Now;
-            _p.State = ProjectState.Published;
-            _p.Semester = _dbx.Semester.OrderBy(x => x.StartDate).First(x => x.StartDate > DateTime.Now);
-            _dbx.SubmitChanges();
-        }
-
-        /// <summary>
-        ///     Rejects a project after submission. Admin only.
-        /// </summary>
-        /// <param name="_p"></param>
-        public static void Reject(this Project _p)
-        {
-            _p.State = ProjectState.Rejected;
         }
 
         /// <summary>
@@ -431,34 +427,6 @@ namespace ProStudCreator
                     _p.ProjectNr++;
             }
 
-        }
-
-        /// <summary>
-        ///     Sets project state to deleted so it's no longer listed. Admin only.
-        /// </summary>
-        /// <param name="_p"></param>
-        public static void Delete(this Project _p)
-        {
-            _p.ModificationDate = DateTime.Now;
-            _p.State = ProjectState.Deleted;
-        }
-
-        /// <summary>
-        ///     Rolls back project into editable state.
-        /// </summary>
-        /// <param name="_p"></param>
-        public static void Unsubmit(this Project _p)
-        {
-            _p.State = ProjectState.InProgress;
-        }
-
-        /// <summary>
-        ///     Revokes project state from 'published' to 'submitted'. Admin only.
-        /// </summary>
-        /// <param name="_p"></param>
-        public static void Unpublish(this Project _p)
-        {
-            _p.State = ProjectState.Submitted;
         }
 
         #endregion
@@ -507,6 +475,30 @@ namespace ProStudCreator
         public static string Student2LastName(this Project _p) => _p.LogStudent2Name == null ? null : string.Join(" ", _p.LogStudent2Name.Split(' ').Skip(1).ToArray());
 
 
+        public static bool RightAmountOfTopics(this Project _p)
+        {
+            var topics = _p.GetProjectTypeBools();
+            var c = topics.Where(b => b).Count();
+            return (c == 1 || c == 2);
+        }
+
+        public static bool MinimalClientInformationProvided(this Project _p)
+        {
+            if (_p.ClientType == (int)ClientType.Internal) return true;
+            if (string.IsNullOrWhiteSpace(_p.ClientMail)) return false;
+            if (_p.ClientType == (int)ClientType.Company && string.IsNullOrWhiteSpace(_p.ClientCompany)) return false;
+            return true;
+        }
+
+        public static bool IsAtLeastPublished(this Project _p)
+        {
+            return _p.State == ProjectState.Published
+                || _p.State == ProjectState.Ongoing
+                || _p.State == ProjectState.Finished
+                || _p.State == ProjectState.Canceled
+                || _p.State == ProjectState.ArchivedFinished
+                || _p.State == ProjectState.ArchivedCanceled;
+        }
 
         public static bool WasDefenseHeld(this Project _p)
         {
@@ -576,26 +568,288 @@ namespace ProStudCreator
             return gradeDate <= DateTime.Now;
         }
 
-        public static string StateColor(this Project p)
+        #endregion
+
+        #region State Transitions
+
+        /// <summary>
+        ///     Submits user's project for approval by an admin.
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Submit(this Project _p, ProStudentCreatorDBDataContext _dbx)
         {
-            switch (p.State)
+            if (!CheckTransitionSubmit(_p)) HandleInvalidState(_p, "Submit");
+            
+            _p.ModificationDate = DateTime.Now;
+            AssignUniqueProjectNr(_p, _dbx);
+            _p.State = ProjectState.Submitted;
+        }
+
+        /// <summary>
+        ///     Rolls back project into editable state.
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Unsubmit(this Project _p)
+        {
+            if (!CheckTransitionUnsubmit(_p)) HandleInvalidState(_p, "Unsubmit");
+
+            _p.State = ProjectState.InProgress;
+        }
+
+        /// <summary>
+        ///     Rejects a project after submission. Admin only.
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Reject(this Project _p)
+        {
+            if (!CheckTransitionReject(_p)) HandleInvalidState(_p, "Reject");
+
+            _p.State = ProjectState.Rejected;
+        }
+
+        /// <summary>
+        ///     Publishes a project after submission. Admin only.
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Publish(this Project _p)
+        {
+            if (!CheckTransitionPublish(_p)) HandleInvalidState(_p, "Publish");
+            
+            _p.PublishedDate = DateTime.Now;
+            _p.ModificationDate = DateTime.Now;
+            _p.State = ProjectState.Published;
+        }
+
+        /// <summary>
+        ///     Starts the project e.g. the students are working on it
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Kickoff(this Project _p)
+        {
+            if (!CheckTransitionKickoff(_p)) HandleInvalidState(_p, "Kickoff");
+
+            _p.ModificationDate = DateTime.Now;
+            _p.State = ProjectState.Ongoing;
+        }
+
+        /// <summary>
+        ///     Finish the project
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Finish(this Project _p)
+        {
+            if (!CheckTransitionFinish(_p)) HandleInvalidState(_p, "Finish");
+
+            _p.ModificationDate = DateTime.Now;
+            _p.State = ProjectState.Finished;
+        }
+
+        /// <summary>
+        ///     Cancel the project
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Cancel(this Project _p)
+        {
+            if (!CheckTransitionCancel(_p)) HandleInvalidState(_p, "Cancel");
+
+            _p.ModificationDate = DateTime.Now;
+            _p.State = ProjectState.Canceled;
+        }
+
+        /// <summary>
+        ///     Archive the project after everything is done
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Archive(this Project _p)
+        {
+            if (!CheckTransitionArchive(_p)) HandleInvalidState(_p, "Archive");
+
+            if (_p.State == ProjectState.Finished) _p.State = ProjectState.ArchivedFinished;
+            if (_p.State == ProjectState.Canceled) _p.State = ProjectState.ArchivedCanceled;
+            _p.ModificationDate = DateTime.Now;
+        }
+
+        /// <summary>
+        ///     Sets project state to deleted so it's no longer listed. Admin only.
+        /// </summary>
+        /// <param name="_p"></param>
+        public static void Delete(this Project _p)
+        {
+            if (!CheckTransitionDelete(_p)) HandleInvalidState(_p, "Delete");
+
+            _p.ModificationDate = DateTime.Now;
+            _p.State = ProjectState.Deleted;
+        }
+
+        #endregion
+
+        #region Transition Checks
+
+        public static bool CheckTransitionSubmit(this Project _p)
+        {
+            // Permission
+            return UserHasAdvisor1Rights(_p)
+                // Name
+                && !string.IsNullOrWhiteSpace(_p.Name)
+                // Advisor1
+                && _p.Advisor1 != null
+                // 1-2 Topics
+                && _p.RightAmountOfTopics()
+                // Client Information (Depending on ClientType)
+                && _p.MinimalClientInformationProvided()
+                // Reservation (Depending on PreviousProject)
+                && (_p.PreviousProject == null || (_p.PreviousProject != null && _p.Reservation1Mail == _p.PreviousProject.LogStudent1Mail && _p.Reservation2Mail == _p.PreviousProject.LogStudent2Mail));
+        }
+
+        public static bool CheckTransitionUnsubmit(this Project _p)
+        {
+            // Permission
+            return UserHasCreatorRights(_p);
+        }
+
+        public static bool CheckTransitionReject(this Project _p)
+        {
+            // Permission
+            return UserHasDepartmentManagerRights(_p)
+                // Ablehnungsgrund
+                && !string.IsNullOrWhiteSpace(_p.Ablehnungsgrund);
+        }
+
+        public static bool CheckTransitionPublish(this Project _p)
+        {
+            // Permission
+            return UserHasDepartmentManagerRights(_p)
+                // Name
+                && !string.IsNullOrWhiteSpace(_p.Name)
+                // Advisor1
+                && _p.Advisor1 != null
+                // 1-2 Topics
+                && _p.RightAmountOfTopics()
+                // Client Information (Depending on ClientType)
+                && _p.MinimalClientInformationProvided()
+                // Reservation (Depending on PreviousProject)
+                && (_p.PreviousProject == null || (_p.PreviousProject != null && _p.Reservation1Mail == _p.PreviousProject.LogStudent1Mail && _p.Reservation2Mail == _p.PreviousProject.LogStudent2Mail));
+        }
+
+        public static bool CheckTransitionKickoff(this Project _p)
+        {
+            // Permission
+            return UserHasDepartmentManagerRights(_p)
+                // ProjectType
+                && (_p.LogProjectType.P5 || _p.LogProjectType.P6)
+                // ProjectDuration
+                && _p.LogProjectDuration.HasValue
+                // Student1Name
+                && !string.IsNullOrWhiteSpace(_p.LogStudent1Name)
+                // Student1Mail
+                && !string.IsNullOrWhiteSpace(_p.LogStudent1Mail);
+        }
+
+        public static bool CheckTransitionFinish(this Project _p)
+        {
+            // Permission
+            return UserHasAdvisor1Rights(_p)
+                // - Language
+                && ((_p.LogLanguageEnglish.HasValue && (bool)_p.LogLanguageEnglish) || (_p.LogLanguageGerman.HasValue && (bool)_p.LogLanguageGerman))
+                // - Client Information (Depending on ClientType)
+                && _p.MinimalClientInformationProvided()
+                // - GradeStudent1
+                && _p.LogGradeStudent1.HasValue
+                // - GradeStudent2
+                && (string.IsNullOrWhiteSpace(_p.LogStudent2Mail) || (!string.IsNullOrWhiteSpace(_p.LogStudent2Mail) && _p.LogGradeStudent2.HasValue))
+                // - WebSummaryChecked
+                && _p.WebSummaryChecked
+                // - Expert
+                && (!_p.LogProjectType.P6 || (_p.LogProjectType.P6 && _p.Expert != null));
+        }
+
+        public static bool CheckTransitionCancel(this Project _p)
+        {
+            // Permission
+            return UserHasAdvisor1Rights(_p)
+                // - GradeStudent1
+                && _p.LogGradeStudent1.HasValue
+                // - GradeStudent2
+                && (string.IsNullOrWhiteSpace(_p.LogStudent2Mail) || (!string.IsNullOrWhiteSpace(_p.LogStudent2Mail) && _p.LogGradeStudent2.HasValue))
+                // - BillingStatus
+                && _p.BillingStatus != null;
+        }
+
+        public static bool CheckTransitionArchive(this Project _p)
+        {
+            switch (_p.State)
             {
-                case ProjectState.InProgress:
-                    return "#EFF3FB";
+                case ProjectState.Finished:
+                    // ExpertPaid
+                    return _p.LogExpertPaid
+                    // GradeSentToAdmin
+                    && _p.GradeSentToAdmin;
 
-                case ProjectState.Published:
-                    return "#A9F5A9";
-
-                case ProjectState.Rejected:
-                    return "#F5A9A9";
-
-                case ProjectState.Submitted:
-                    return "#ffcc99";
+                case ProjectState.Canceled:
+                    // GradeSentToAdmin
+                    return _p.GradeSentToAdmin;
 
                 default:
-                    return "";
+                    return false;
             }
+        }
+        public static bool CheckTransitionDelete(this Project _p)
+        {
+            // Permission
+            return UserHasDepartmentManagerRights(_p) || ((_p.State == ProjectState.InProgress || _p.State == ProjectState.Submitted || _p.State == ProjectState.Rejected) && UserHasCreatorRights(_p));
+        }
 
+        #endregion
+
+        #region Roles
+
+        public static bool UserIsCreator(this Project _p)
+        {
+            return ShibUser.GetEmail() == _p.Creator;
+        }
+
+        public static bool UserIsAdvisor2(this Project _p)
+        {
+            return ShibUser.GetEmail() == _p.Advisor2?.Mail;
+        }
+
+        public static bool UserIsAdvisor1(this Project _p)
+        {
+            return ShibUser.GetEmail() == _p.Advisor1?.Mail;
+        }
+
+        public static bool UserIsDepartmentManager(this Project _p)
+        {
+            return ShibUser.IsDepartmentManager(_p.Department);
+        }
+
+        public static bool UserIsOwner(this Project _p)
+        {
+            return _p.UserIsCreator() || _p.UserIsAdvisor2() || _p.UserIsAdvisor1();
+        }
+
+        #endregion
+
+        #region Rights
+
+        public static bool UserHasDepartmentManagerRights(this Project _p)
+        {
+            return UserIsDepartmentManager(_p) || ShibUser.GetEmail() == Global.WebAdmin;
+        }
+
+        public static bool UserHasAdvisor1Rights(this Project _p)
+        {
+            return UserIsAdvisor1(_p) || UserHasDepartmentManagerRights(_p);
+        }
+
+        public static bool UserHasAdvisor2Rights(this Project _p)
+        {
+            return UserIsAdvisor2(_p) || UserHasAdvisor1Rights(_p);
+        }
+
+        public static bool UserHasCreatorRights(this Project _p)
+        {
+            return UserIsCreator(_p) || UserHasAdvisor2Rights(_p);
         }
 
         #endregion
@@ -604,80 +858,210 @@ namespace ProStudCreator
 
         public static bool UserCanEdit(this Project _p)
         {
-            return ShibUser.CanEditAllProjects() || _p.UserIsOwner() &&
-                   (_p.State == ProjectState.InProgress || _p.State == ProjectState.Rejected ||
-                    _p.State == ProjectState.Submitted);
-        }
+            if (ShibUser.CanEditAllProjects()) return true;
 
-        public static bool UserIsOwner(this Project _p)
-        {
-            return _p.Creator == ShibUser.GetEmail() || _p.ClientMail == ShibUser.GetEmail() ||
-                   _p.Advisor1?.Mail == ShibUser.GetEmail() || _p.Advisor2?.Mail == ShibUser.GetEmail();
+            switch (_p.State)
+            {
+                case ProjectState.InProgress:
+                case ProjectState.Submitted:
+                case ProjectState.Rejected:
+                    return _p.UserHasCreatorRights();
+                case ProjectState.Published:
+                case ProjectState.Ongoing:
+                case ProjectState.Finished:
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedFinished:
+                case ProjectState.ArchivedCanceled:
+                    return _p.UserHasDepartmentManagerRights();
+                default:
+                    return false;
+            }
         }
 
         public static bool UserCanEditAfterStart(this Project _p)
         {
-            return ShibUser.CanEditAllProjects() || _p.UserIsOwner();
+            if (ShibUser.CanEditAllProjects()) return true;
+
+            switch (_p.State)
+            {
+                case ProjectState.InProgress:
+                case ProjectState.Submitted:
+                case ProjectState.Rejected:
+                    return _p.UserHasDepartmentManagerRights();
+                case ProjectState.Published:
+                case ProjectState.Ongoing:
+                case ProjectState.Finished:
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedFinished:
+                case ProjectState.ArchivedCanceled:
+                    return _p.UserHasAdvisor2Rights();
+                default:
+                    return false;
+            }
+        }
+
+        public static bool UserCanSubmit(this Project _p)
+        {
+            return (_p.State == ProjectState.InProgress || _p.State == ProjectState.Rejected)
+                && (ShibUser.CanSubmitAllProjects() || _p.UserHasAdvisor1Rights());
+        }
+
+        public static bool UserCanUnsubmit(this Project _p)
+        {
+            return _p.State == ProjectState.Submitted
+                && (ShibUser.CanSubmitAllProjects() || _p.UserHasAdvisor1Rights());
         }
 
         public static bool UserCanPublish(this Project _p)
         {
-            return _p.State == ProjectState.Submitted && ShibUser.CanPublishProject();
+            return _p.State == ProjectState.Submitted
+                && (ShibUser.CanPublishProject() || _p.UserHasDepartmentManagerRights());
         }
 
         public static bool UserCanUnpublish(this Project _p)
         {
-            return _p.State == ProjectState.Published && ShibUser.CanPublishProject();
+            return _p.State == ProjectState.Published
+                && (ShibUser.CanPublishProject() || _p.UserHasDepartmentManagerRights());
         }
 
         public static bool UserCanReject(this Project _p)
         {
             return (_p.State == ProjectState.Submitted || _p.State == ProjectState.Published)
-                   && ShibUser.CanPublishProject();
+                && (ShibUser.CanPublishProject() || _p.UserHasDepartmentManagerRights());
         }
 
-        public static bool UserCanSubmit(this Project _p)
+        public static bool UserCanKickoff(this Project _p)
         {
-            return _p.UserCanEdit() && (_p.State == ProjectState.InProgress || _p.State == ProjectState.Rejected);
+            return _p.State == ProjectState.Published
+                && _p.UserHasDepartmentManagerRights();
         }
 
-        public static bool UserCanUnsubmit(this Project _p)
+        public static bool UserCanFinish(this Project _p)
         {
-            return _p.UserCanEdit() && _p.State == ProjectState.Submitted;
+            return _p.State == ProjectState.Ongoing
+                && _p.UserHasAdvisor1Rights();
+        }
+
+        public static bool UserCanCancel(this Project _p)
+        {
+            return _p.State == ProjectState.Ongoing
+                && _p.UserHasAdvisor1Rights();
+        }
+
+        public static bool UserCanDelete(this Project _p)
+        {
+            return (_p.State == ProjectState.InProgress || _p.State == ProjectState.Submitted || _p.State == ProjectState.Rejected)
+                && _p.UserHasCreatorRights();
+
         }
 
         #endregion
+
+        public static void HandleInvalidState(Project _p, string msg)
+        {
+#if !DEBUG
+            using (var smtpClient = new SmtpClient())
+            {
+                var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                mail.To.Add(new MailAddress(Global.WebAdmin));
+                mail.Subject = "InvalidStateError";
+                mail.IsBodyHtml = true;
+
+                var mailMessage = new StringBuilder();
+                mailMessage.Append("<div style=\"font-family: Arial\">");
+                mailMessage.Append(
+                    $"<p>Time: {DateTime.Now}<p>" +
+                    $"<p>User: {ShibUser.GetEmail()}<p>" +
+                    $"<p>Project: {_p.GetFullTitle()}<p>" +
+                    $"<p>ProjectNr: {_p.Id}<p>" +
+                    $"<p>Message: {msg}<p>"
+                );
+                mail.Body = mailMessage.ToString();
+                smtpClient.Send(mail);
+            }
+#endif
+            throw new InvalidOperationException(msg);
+        }
     }
     public partial class Project
     {
+        public static string GetStateColor(int _state)
+        {
+            switch (_state)
+            {
+                case ProjectState.InProgress:
+                    return "#CEECF5";
+
+                case ProjectState.Submitted:
+                    return "#ffcc99";
+
+                case ProjectState.Rejected:
+                    return "#F5A9A9";
+
+                case ProjectState.Published:
+                    return "#A9F5A9";
+
+                case ProjectState.Ongoing:
+                    return "#64ed64";
+
+                case ProjectState.Finished:
+                case ProjectState.ArchivedFinished:
+                    return "#1adb1a";
+
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedCanceled:
+                    return "#e8463b";
+
+                case ProjectState.Deleted:
+                    return "#919191";
+
+                default:
+                    throw new Exception();
+
+            }
+        }
+
+        public static string GetStateAsString(int _state)
+        {
+            switch (_state)
+            {
+                case ProjectState.InProgress:
+                    return "In Bearbeitung";
+
+                case ProjectState.Submitted:
+                    return "Eingereicht";
+
+                case ProjectState.Rejected:
+                    return "Abgelehnt";
+
+                case ProjectState.Published:
+                    return "Veröffentlicht";
+
+                case ProjectState.Ongoing:
+                    return "In Durchführung";
+
+                case ProjectState.Finished:
+                case ProjectState.ArchivedFinished:
+                    return "Abgeschlossen";
+
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedCanceled:
+                    return "Abgebrochen";
+
+                case ProjectState.Deleted:
+                    return "Gelöscht";
+
+                default:
+                    throw new Exception();
+
+            }
+        }
+
         public string StateColor
         {
             get
             {
-                switch (State)
-                {
-                    case ProjectState.InProgress:
-                        return "#EFF3FB";
-
-                    case ProjectState.Published:
-                        return "#A9F5A9";
-
-
-                    case ProjectState.Rejected:
-                        return "#F5A9A9";
-
-
-                    case ProjectState.Submitted:
-                        return "#ffcc99";
-
-
-                    case ProjectState.Deleted:
-                        return "#F5A9A9";
-
-                    default:
-                        throw new Exception();
-
-                }
+                return Project.GetStateColor(State);
             }
         }
 
@@ -686,27 +1070,7 @@ namespace ProStudCreator
         {
             get
             {
-                switch (State)
-                {
-                    case ProjectState.InProgress:
-                        return "In Bearbeitung";
-
-                    case ProjectState.Published:
-                        return "Veröffentlicht";
-
-                    case ProjectState.Rejected:
-                        return "Abgelehnt";
-
-                    case ProjectState.Submitted:
-                        return "Eingereicht";
-
-                    case ProjectState.Deleted:
-                        return "Gelöscht";
-
-                    default:
-                        throw new Exception();
-
-                }
+                return Project.GetStateAsString(State);
             }
         }
     }

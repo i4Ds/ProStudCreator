@@ -121,6 +121,33 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator ProjectNameValidator;
         
         /// <summary>
+        /// dropSemester control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropSemester;
+        
+        /// <summary>
+        /// dropSemesterLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label dropSemesterLabel;
+        
+        /// <summary>
+        /// updatePreviousProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePreviousProject;
+        
+        /// <summary>
         /// dropPreviousProject control.
         /// </summary>
         /// <remarks>
@@ -184,13 +211,13 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label dropAdvisor2Label;
         
         /// <summary>
-        /// Department control.
+        /// dropDepartment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Department;
+        protected global::System.Web.UI.WebControls.DropDownList dropDepartment;
         
         /// <summary>
         /// DepartmentLabel control.
@@ -200,6 +227,105 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DepartmentLabel;
+        
+        /// <summary>
+        /// dropLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropLanguage;
+        
+        /// <summary>
+        /// updatePriority control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePriority;
+        
+        /// <summary>
+        /// dropPOneType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropPOneType;
+        
+        /// <summary>
+        /// POneTypeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label POneTypeLabel;
+        
+        /// <summary>
+        /// dropPOneTeamSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropPOneTeamSize;
+        
+        /// <summary>
+        /// POneTeamSizeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label POneTeamSizeLabel;
+        
+        /// <summary>
+        /// divPriorityTwo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPriorityTwo;
+        
+        /// <summary>
+        /// dropPTwoType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropPTwoType;
+        
+        /// <summary>
+        /// PTwoTypeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PTwoTypeLabel;
+        
+        /// <summary>
+        /// dropPTwoTeamSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropPTwoTeamSize;
+        
+        /// <summary>
+        /// PTwoTeamSizeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PTwoTeamSizeLabel;
         
         /// <summary>
         /// updateClient control.
@@ -508,105 +634,6 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label Reservation2MailLabel;
         
         /// <summary>
-        /// Language control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Language;
-        
-        /// <summary>
-        /// updatePriority control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePriority;
-        
-        /// <summary>
-        /// POneType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList POneType;
-        
-        /// <summary>
-        /// POneTypeLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label POneTypeLabel;
-        
-        /// <summary>
-        /// POneTeamSize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList POneTeamSize;
-        
-        /// <summary>
-        /// POneTeamSizeLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label POneTeamSizeLabel;
-        
-        /// <summary>
-        /// divPriorityTwo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPriorityTwo;
-        
-        /// <summary>
-        /// PTwoType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PTwoType;
-        
-        /// <summary>
-        /// PTwoTypeLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PTwoTypeLabel;
-        
-        /// <summary>
-        /// PTwoTeamSize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PTwoTeamSize;
-        
-        /// <summary>
-        /// PTwoTeamSizeLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PTwoTeamSizeLabel;
-        
-        /// <summary>
         /// DesignUX control.
         /// </summary>
         /// <remarks>
@@ -848,6 +875,24 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label RemarksContentLabel;
+        
+        /// <summary>
+        /// NotesContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NotesContent;
+        
+        /// <summary>
+        /// NotesContentLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label NotesContentLabel;
         
         /// <summary>
         /// ValidationSummary1 control.

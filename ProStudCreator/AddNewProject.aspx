@@ -128,16 +128,31 @@
                 <div class="col-sm-9">
                     <asp:TextBox runat="server" ID="ProjectName" CssClass="form-control" MaxLength="80"></asp:TextBox>
                     <asp:Label runat="server" ID="ProjectNameLabel" CssClass="form-control" Visible="false" Style="overflow: auto; width: 75%;"></asp:Label>
-                    <asp:RequiredFieldValidator ID="ProjectNameValidator" ForeColor="Red" Display="Dynamic" ControlToValidate="ProjectName" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie einen Projektnamen an."></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="ProjectNameValidator" ForeColor="Red" Display="Dynamic" ControlToValidate="ProjectName" runat="server" enableclientscript="false" SetFocusOnError="true" ErrorMessage="Bitte geben Sie einen Projektnamen an."></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="form-group">
-                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Vorgängerprojekt:"></asp:Label>
+                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Semester:"></asp:Label>
                 <div class="col-sm-9">
-                    <asp:DropDownList runat="server" ID="dropPreviousProject" DataValueField="Id" DataTextField="Name" AutoPostBack="true" CausesValidation="false" CssClass="form-control dropPreviousProject" OnSelectedIndexChanged="DropPreviousProject_SelectedIndexChanged" />
-                    <asp:Label runat="server" ID="dropPreviousProjectLabel" CssClass="form-control" Style="width: 75%;" Visible="false"></asp:Label>
+                    <asp:DropDownList runat="server" ID="dropSemester" DataValueField="Id" DataTextField="Name" AutoPostBack="true" CausesValidation="false" CssClass="form-control dropPreviousProject" OnSelectedIndexChanged="DropSemester_SelectedIndexChanged" />
+                    <asp:Label runat="server" ID="dropSemesterLabel" CssClass="form-control" Style="width: 75%;" Visible="false"></asp:Label>
                 </div>
             </div>
+
+            <asp:UpdatePanel ID="updatePreviousProject" UpdateMode="Conditional" runat="server">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="dropSemester" EventName="SelectedIndexChanged" />
+                </Triggers>
+                <ContentTemplate>
+                    <div class="form-group">
+                        <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Vorgängerprojekt:"></asp:Label>
+                        <div class="col-sm-9">
+                            <asp:DropDownList runat="server" ID="dropPreviousProject" DataValueField="Id" DataTextField="Name" AutoPostBack="true" CausesValidation="false" CssClass="form-control dropPreviousProject" OnSelectedIndexChanged="DropPreviousProject_SelectedIndexChanged" />
+                            <asp:Label runat="server" ID="dropPreviousProjectLabel" CssClass="form-control" Style="width: 75%;" Visible="false"></asp:Label>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
             <div class="form-group">
                 <asp:Label runat="server" CssClass="control-label col-sm-3" Text=""></asp:Label>
                 <asp:Label runat="server" ID="PreviousProjectInfoLabel" CssClass="col-sm-9" Text="Bewirkt die automatische Zuteilung des Teams des Vorgängerprojektes zu diesem IP6 Projekt!"></asp:Label>
@@ -162,13 +177,62 @@
             <div class="form-group">
                 <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Institut:"></asp:Label>
                 <div class="col-sm-3">
-                    <asp:DropDownList runat="server" DataValueField="Id" DataTextField="DepartmentName" ID="Department" CssClass="form-control"></asp:DropDownList>
+                    <asp:DropDownList runat="server" DataValueField="Id" DataTextField="DepartmentName" ID="dropDepartment" CssClass="form-control"></asp:DropDownList>
                     <asp:Label runat="server" ID="DepartmentLabel" CssClass="form-control" Visible="false"></asp:Label>
                 </div>
             </div>
             <hr />
+            <div class="form-group">
+                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Sprache:"></asp:Label>
+                <div class="col-sm-3">
+                    <asp:DropDownList runat="server" ID="dropLanguage" DataValueField="Id" DataTextField="Description" CssClass="form-control">
+                        <asp:ListItem Text="Deutsch oder Englisch" />
+                        <asp:ListItem Text="Nur Deutsch" />
+                        <asp:ListItem Text="Nur Englisch" />
+                    </asp:DropDownList>
+                </div>
+            </div>
+            <%-- <div class="form-group">
+                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Dauer:"></asp:Label>
+                <div class="col-sm-6">
+                    <asp:CheckBox ID="DurationOneSemester" CssClass="checkbox" Text="Projekt muss in 1 Semester durchgeführt werden." Checked="true" runat="server" />
+                </div>
+            </div>--%>
+            <asp:UpdatePanel ID="updatePriority" UpdateMode="Conditional" runat="server">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="dropSemester" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
+                </Triggers>
+                <ContentTemplate>
+                    <div class="form-group">
+                        <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Priorität 1:"></asp:Label>
+                        <div class="col-sm-3">
+                            <asp:DropDownList runat="server" ID="dropPOneType" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" />
+                            <asp:Label runat="server" ID="POneTypeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
+                        </div>
+                        <div class="col-sm-3">
+                            <asp:DropDownList runat="server" ID="dropPOneTeamSize" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" OnSelectedIndexChanged="TeamSize_SelectedIndexChanged" AutoPostBack="true" />
+                            <asp:Label runat="server" ID="POneTeamSizeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <div class="form-group" runat="server" id="divPriorityTwo">
+                        <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Priorität 2:"></asp:Label>
+                        <div class="col-sm-3">
+                            <asp:DropDownList runat="server" ID="dropPTwoType" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" />
+                            <asp:Label runat="server" ID="PTwoTypeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
+                        </div>
+                        <div class="col-sm-3">
+                            <asp:DropDownList runat="server" ID="dropPTwoTeamSize" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" OnSelectedIndexChanged="TeamSize_SelectedIndexChanged" AutoPostBack="true" />
+                            <asp:Label runat="server" ID="PTwoTeamSizeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <hr />
             <asp:UpdatePanel UpdateMode="Conditional" runat="server" ID="updateClient">
                 <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="dropSemester" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="radioClientType" EventName="SelectedIndexChanged" />
                 </Triggers>
@@ -263,8 +327,9 @@
 
             <asp:UpdatePanel runat="server" UpdateMode="Conditional" ID="updateReservation">
                 <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="POneTeamSize" EventName="SelectedIndexChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="PTwoTeamSize" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPOneTeamSize" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPTwoTeamSize" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropSemester" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
                 </Triggers>
                 <ContentTemplate>
@@ -295,53 +360,6 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
             <hr />
-            <div class="form-group">
-                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Sprache:"></asp:Label>
-                <div class="col-sm-3">
-                    <asp:DropDownList runat="server" ID="Language" DataValueField="Id" DataTextField="Description" CssClass="form-control">
-                        <asp:ListItem Text="Deutsch oder Englisch" />
-                        <asp:ListItem Text="Nur Deutsch" />
-                        <asp:ListItem Text="Nur Englisch" />
-                    </asp:DropDownList>
-                </div>
-            </div>
-            <%-- <div class="form-group">
-                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Dauer:"></asp:Label>
-                <div class="col-sm-6">
-                    <asp:CheckBox ID="DurationOneSemester" CssClass="checkbox" Text="Projekt muss in 1 Semester durchgeführt werden." Checked="true" runat="server" />
-                </div>
-            </div>--%>
-            <asp:UpdatePanel ID="updatePriority" UpdateMode="Conditional" runat="server">
-                <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
-                </Triggers>
-                <ContentTemplate>
-                    <div class="form-group">
-                        <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Priorität 1:"></asp:Label>
-                        <div class="col-sm-3">
-                            <asp:DropDownList runat="server" ID="POneType" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" />
-                            <asp:Label runat="server" ID="POneTypeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
-                        </div>
-                        <div class="col-sm-3">
-                            <asp:DropDownList runat="server" ID="POneTeamSize" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" OnSelectedIndexChanged="TeamSize_SelectedIndexChanged" AutoPostBack="true" />
-                            <asp:Label runat="server" ID="POneTeamSizeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
-                        </div>
-                        <div class="col-sm-3"></div>
-                    </div>
-                    <div class="form-group" runat="server" id="divPriorityTwo">
-                        <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Priorität 2:"></asp:Label>
-                        <div class="col-sm-3">
-                            <asp:DropDownList runat="server" ID="PTwoType" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" />
-                            <asp:Label runat="server" ID="PTwoTypeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
-                        </div>
-                        <div class="col-sm-3">
-                            <asp:DropDownList runat="server" ID="PTwoTeamSize" DataValueField="Id" DataTextField="Description" CssClass="form-control" Width="200px" OnSelectedIndexChanged="TeamSize_SelectedIndexChanged" AutoPostBack="true" />
-                            <asp:Label runat="server" ID="PTwoTeamSizeLabel" CssClass="form-control ellipsisLabel" Width="250px" Visible="false"></asp:Label>
-                        </div>
-                    </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-            <hr />
             <asp:UpdatePanel runat="server" class="form-group" UpdateMode="Conditional">
                 <ContentTemplate>
                     <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Themengebiet:"></asp:Label>
@@ -352,14 +370,8 @@
                         <asp:ImageButton CssClass="img-rounded" ID="MlAlg" Height="60px" runat="server" ToolTip="Mathematik, Algorithmen, Machine Learning, Data Mining, ..." ImageUrl="pictures/projectTypMlAlgUnchecked.png" OnClick="MlAlg_Click" CausesValidation="false" />
                         <asp:ImageButton CssClass="img-rounded" ID="AppWeb" Height="60px" runat="server" ToolTip="Mobile Apps, Webentwicklung, ..." ImageUrl="pictures/projectTypAppWebUnchecked.png" OnClick="AppWeb_Click" CausesValidation="false" />
                         <asp:ImageButton CssClass="img-rounded" ID="DBBigData" Height="60px" runat="server" ToolTip="Datenbanken, Big Data, Data Spaces, ..." ImageUrl="pictures/projectTypDBBigDataUnchecked.png" OnClick="DBBigData_Click" CausesValidation="false" />
-                        <% if (ShibUser.IsAdmin() || ShibUser.GetDepartment().IMVS)
-                            { %>
                         <asp:ImageButton CssClass="img-rounded" ID="SysSec" Height="60px" runat="server" ToolTip="ITSM, Networks, Security, ..." ImageUrl="pictures/projectTypSysSecUnchecked.png" OnClick="SysSec_Click" CausesValidation="false" />
-                        <% } %>
-                        <% if (ShibUser.IsAdmin() || ShibUser.GetDepartment().IMVS || ShibUser.GetDepartment().IIT)
-                            { %>
                         <asp:ImageButton CssClass="img-rounded" ID="SE" Height="60px" runat="server" ToolTip="Software Engineering, Testing, Tooling, Architectures, Requirements Engineering, ..." ImageUrl="pictures/projectTypSEUnchecked.png" OnClick="SE_Click" CausesValidation="false" />
-                        <% } %>
                     </div>
                     <asp:Timer runat="server" Interval="60000" Enabled="true" />
                 </ContentTemplate>
@@ -431,7 +443,13 @@
                     <asp:Label runat="server" ID="RemarksContentLabel" CssClass="form-control" Style="overflow: auto; height: 300px;" Visible="false"></asp:Label>
                 </div>
             </div>
-
+            <div class="form-group">
+                <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Interne Notizen:"></asp:Label>
+                <div class="col-sm-9">
+                    <asp:TextBox runat="server" ID="NotesContent" CssClass="form-control" placeholder="Notizen (werden nicht auf dem PDF angezeigt)" TextMode="MultiLine"></asp:TextBox>
+                    <asp:Label runat="server" ID="NotesContentLabel" CssClass="form-control" Style="overflow: auto; height: 300px;" Visible="false"></asp:Label>
+                </div>
+            </div>
             <div class="form-group">
                 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowMessageBox="true" ShowSummary="true" />
             </div>
@@ -451,9 +469,9 @@
                     <asp:Button runat="server" ID="refuseProject" Visible="false" Style="margin-right: 0px;" CssClass="btn btn-default refuseProject" Width="113px" Text="Ablehnen" OnClick="RefuseProject_Click"></asp:Button>
                     <asp:Button runat="server" ID="rollbackProject" Visible="false" Style="margin-right: 0px;" CssClass="btn btn-default rollbackMarginRight redButton" Text="Zurückziehen" OnClick="RollbackProject_Click" OnClientClick="return confirmSaving('Projekt wirklich zurückziehen?');"></asp:Button>
                     <asp:Button runat="server" ID="submitProject" Visible="false" Style="margin-right: 0px;" CssClass="btn btn-default greenButton" Text="Einreichen" OnClick="SubmitProject_Click" OnClientClick="return confirmSaving('Dieses Projekt einreichen?');"></asp:Button>
-                    <asp:Button runat="server" AutoPostBack="true" ID="duplicateProject" Style="margin-right: 0px;" CssClass="btn btn-default" Text="Duplizieren" OnClick="DuplicatProject_Click" OnClientClick="return Confirm();" />
+                    <asp:Button runat="server" AutoPostBack="true" ID="duplicateProject" Style="margin-right: 0px;" CssClass="btn btn-default" Text="Duplizieren" OnClick="DuplicateProject_Click" OnClientClick="return Confirm();" />
                     <asp:Button runat="server" ID="saveCloseProject" OnClick="SaveCloseProjectButton" CssClass="btn btn-default" Text="Speichern & Schliessen" OnClientClick="this.disabled = 'true'; hasUnsavedChanges = false;" UseSubmitBehavior="false"></asp:Button>
-                    <asp:Button runat="server" ID="saveProject" OnClick="SaveProjectButton" CssClass="btn btn-default" Text="Zwischenspeichern" OnClientClick="hasUnsavedChanges = false;"></asp:Button>
+                    <asp:Button runat="server" ID="saveProject" OnClick="SaveProjectButton" CssClass="btn btn-default" Text="Zwischenspeichern" OnClientClick="this.disabled = 'true'; hasUnsavedChanges = false;" UseSubmitBehavior="false"></asp:Button>
                     <asp:Button runat="server" ID="cancelProject" CssClass="btn btn-default" TabIndex="5" Text="Abbrechen" OnClick="CancelNewProject_Click" CausesValidation="false"></asp:Button>
         </div>
     </div>

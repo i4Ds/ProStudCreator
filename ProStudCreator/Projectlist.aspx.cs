@@ -4,14 +4,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web.Services;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using iTextSharp.text;
-using NPOI.OpenXmlFormats.Vml;
 using ListItem = System.Web.UI.WebControls.ListItem;
-using System.Text.RegularExpressions;
 
 namespace ProStudCreator
 {
@@ -46,8 +42,7 @@ namespace ProStudCreator
             dropSemester.DataBind();
             dropSemester.Items.Insert(0, new ListItem("Alle Semester", "allSemester"));
             dropSemester.Items.Insert(1, new ListItem("――――――――――――――――", "."));
-            dropSemester.SelectedValue = db.Semester.Where(s => s.StartDate > DateTime.Now).OrderBy(s => s.StartDate)
-                .First().Id.ToString();
+            dropSemester.SelectedValue = Semester.NextSemester(db).Id.ToString();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -61,29 +56,39 @@ namespace ProStudCreator
             }
             else
             {
-                whichOwner.SelectedValue = (string) Session["SelectedOwner"]; 
-                dropSemester.SelectedValue = (string) Session["SelectedSemester"];
+                whichOwner.SelectedValue = (string)Session["SelectedOwner"];
+                dropSemester.SelectedValue = (string)Session["SelectedSemester"];
             }
 
-
-            AllProjects.DataSource = FilterRelevantProjects(projects)
-                .Select(i => GetProjectSingleElement(i));
+            AllProjects.DataSource = UpdateGridView().Select(i => GetProjectSingleElement(i));
             AllProjects.DataBind();
 
             //Disabling the "-----" element in the Dropdownlist. So the item "Alle Semester" is separated from the rest
             dropSemester.Items.FindByValue(".").Attributes.Add("disabled", "disabled");
 
-            if (!ShibUser.CanSeeAllProjectsInProgress())
-            {
-                var item = whichOwner.Items.FindByValue("NotOwnEdited");
-                if (item != null)
-                    whichOwner.Items.Remove(item);
-            }
+            colExInProgress.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.InProgress));
+            colExSubmitted.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Submitted));
+            colExRejected.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Rejected));
+            colExPublished.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Published));
+            colExOngoing.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Ongoing));
+            colExFinished.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Finished));
+            colExCanceled.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Canceled));
 
 
             Session["LastPage"] = "projectlist";
         }
 
+        private IQueryable<Project> UpdateGridView()
+        {
+            if (filterText.Text == "") return FilterRelevantProjects(projects);
+
+            var searchString = filterText.Text;
+            var filteredProjects = FilterRelevantProjects(
+                projects.Where(p => (p.Reservation1Name.Contains(searchString) || p.Reservation2Name.Contains(searchString) || p.LogStudent1Name.Contains(searchString) || p.LogStudent2Name.Contains(searchString))
+                                  && p.IsMainVersion))
+                        .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+            return filteredProjects;
+        }
 
         private IQueryable<Project> FilterRelevantProjects(IQueryable<Project> allProjects)
         {
@@ -93,38 +98,31 @@ namespace ProStudCreator
                 case "OwnProjects":
                     if (dropSemester.SelectedValue == "allSemester")
                     {
-                        projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() ||
-                                                           p.Advisor2.Mail == ShibUser.GetEmail() ||
-                                                           p.Advisor1.Mail == ShibUser.GetEmail()) &&
-                                                          p.State != ProjectState.Deleted && p.IsMainVersion)
-                            .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+                        projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() || p.Advisor1.Mail == ShibUser.GetEmail() || p.Advisor2.Mail == ShibUser.GetEmail()) 
+                                                     && p.State != ProjectState.Deleted
+                                                     && p.IsMainVersion)
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
                     }
 
                     else
                     {
-                        var nextSemesterSelected = int.Parse(dropSemester.SelectedValue) ==
-                                                   Semester.NextSemester(db).Id;
-                        projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() ||
-                                                           p.Advisor1.Mail == ShibUser.GetEmail() ||
-                                                           p.Advisor2.Mail == ShibUser.GetEmail())
-                                                          && p.State != ProjectState.Deleted && p.IsMainVersion
-                                                          && (p.Semester.Id == int.Parse(dropSemester.SelectedValue) &&
-                                                              p.State == ProjectState.Published ||
-                                                              nextSemesterSelected && p.Semester == null && p.IsMainVersion ||
-                                                              p.State != ProjectState.Deleted && p.IsMainVersion && p.State !=
-                                                              ProjectState.Published &&
-                                                              nextSemesterSelected))
-                            .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+                        projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() || p.Advisor1.Mail == ShibUser.GetEmail() || p.Advisor2.Mail == ShibUser.GetEmail())
+                                                     && p.State != ProjectState.Deleted
+                                                     && p.IsMainVersion
+                                                     && p.Semester.Id == int.Parse(dropSemester.SelectedValue))
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
                     }
                     break;
                 case "AllProjects":
                     if (dropSemester.SelectedValue == "allSemester")
-                        projects = projects.Where(p => p.State == ProjectState.Published && p.IsMainVersion)
-                            .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+                        projects = projects.Where(p => (p.State == ProjectState.Published || p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled)
+                                                     && p.IsMainVersion)
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
                     else
-                        projects = projects.Where(p => p.State == ProjectState.Published && p.IsMainVersion &&
-                                                          p.Semester.Id == int.Parse(dropSemester.SelectedValue))
-                            .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+                        projects = projects.Where(p => (p.State == ProjectState.Published || p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled)
+                                                     && p.IsMainVersion
+                                                     && p.Semester.Id == int.Parse(dropSemester.SelectedValue))
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
                     break;
             }
             return projects;
@@ -148,8 +146,8 @@ namespace ProStudCreator
                 }),
                 projectName = i.Name,
                 Institute = i.Department.DepartmentName,
-                p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || i.PTwoType != null && i.PTwoType.P5),
-                p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || i.PTwoType != null && i.PTwoType.P6),
+                p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || (i.PTwoType?.P5 ?? false)),
+                p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || (i.PTwoType?.P6 ?? false)),
                 projectType1 = "pictures/projectTyp" + (i.TypeDesignUX
                                    ? "DesignUX"
                                    : (i.TypeHW
@@ -197,40 +195,19 @@ namespace ProStudCreator
             {
                 var project = db.Projects.Single(item => item.Id == ((ProjectSingleElement) e.Row.DataItem).id);
 
-                if (project.State == ProjectState.Published)
+                if (!project.UserCanEdit())
                 {
-                    if (!ShibUser.CanEditAllProjects())
-                    {
-                        e.Row.Cells[e.Row.Cells.Count - 4].Visible = false; //edit
-                        e.Row.Cells[e.Row.Cells.Count - 2].Visible = false; //delete
-                    }
-                }
-                else if (!project.UserCanEdit())
-                {
-                    e.Row.Cells[e.Row.Cells.Count - 4].Visible = false; //edit
-                    e.Row.Cells[e.Row.Cells.Count - 2].Visible = false; //delete
+                    var x = e.Row.Cells[e.Row.Cells.Count - 4].Controls;
+                    e.Row.Cells[e.Row.Cells.Count - 3].Controls.OfType<DataBoundLiteralControl>().First().Visible = false; //edit
+                    e.Row.Cells[e.Row.Cells.Count - 2].Controls.OfType<LinkButton>().First().Visible = false; //delete
                 }
 
-                Color? col = null;
-                if (project.State == ProjectState.Published)
-                {
-                    col = ColorTranslator.FromHtml("#A9F5A9");
-                    e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
-                }
-                    
+                //TODO: decide wether to keep this button or not
+                e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
 
-                else if (project.State == ProjectState.Rejected)
-                {
-                    col = ColorTranslator.FromHtml("#F5A9A9");
-                }
-                else if (project.State == ProjectState.Submitted)
-                {
-                    e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
-                    col = ColorTranslator.FromHtml("#ffcc99");
-                }
-                if (col.HasValue)
-                    foreach (TableCell cell in e.Row.Cells)
-                        cell.BackColor = col.Value;
+                Color col = ColorTranslator.FromHtml(project.StateColor);
+                foreach (TableCell cell in e.Row.Cells)
+                    cell.BackColor = col;
             }
         }
 
@@ -243,46 +220,25 @@ namespace ProStudCreator
         {
             if (e.CommandName == "Sort")
             {
+                List<ProjectSingleElement> sortedProjects = UpdateGridView().Select(i => GetProjectSingleElement(i)).ToList();
+
                 switch (e.CommandArgument)
                 {
-
                     case "Advisor":
-                        List<ProjectSingleElement> sortedProjects;
-                        if (filterText.Text != "")
-                            sortedProjects = FilterRelevantProjects(UpdateGridView()).Select(i => GetProjectSingleElement(i)).ToList();
-                        else
-                            sortedProjects = FilterRelevantProjects(projects).Select(i => GetProjectSingleElement(i)).ToList();
                         AllProjects.DataSource = sortedProjects.OrderBy(p => p.advisorName.Contains("?")).ThenBy(p => p.advisorName);
                         break;
                     case "Institute":
-                        if (filterText.Text != "")
-                            sortedProjects = FilterRelevantProjects(UpdateGridView()).Select(i => GetProjectSingleElement(i)).ToList();
-                        else
-                            sortedProjects = FilterRelevantProjects(projects).Select(i => GetProjectSingleElement(i)).ToList();
                         AllProjects.DataSource = sortedProjects.OrderBy(p => p.Institute);
                         break;
                     case "projectName":
-                        if (filterText.Text != "")
-                            sortedProjects = FilterRelevantProjects(UpdateGridView()).Select(i => GetProjectSingleElement(i)).ToList();
-                        else
-                            sortedProjects = FilterRelevantProjects(projects).Select(i => GetProjectSingleElement(i)).ToList();
                         AllProjects.DataSource = sortedProjects.OrderBy(p => p.projectName);
                         break;
                     case "P5":
-                        if (filterText.Text != "")
-                            sortedProjects = FilterRelevantProjects(UpdateGridView()).Select(i => GetProjectSingleElement(i)).ToList();
-                        else
-                            sortedProjects = FilterRelevantProjects(projects).Select(i => GetProjectSingleElement(i)).ToList();
                         AllProjects.DataSource = sortedProjects.OrderByDescending(p => p.p5);
                         break;
                     case "P6":
-                        if (filterText.Text != "")
-                            sortedProjects = FilterRelevantProjects(UpdateGridView()).Select(i => GetProjectSingleElement(i)).ToList();
-                        else
-                            sortedProjects = FilterRelevantProjects(projects).Select(i => GetProjectSingleElement(i)).ToList();
                         AllProjects.DataSource = sortedProjects.OrderByDescending(p => p.p6);
                         break;
-
                 }
             }
             else
@@ -306,13 +262,12 @@ namespace ProStudCreator
                         Response.Redirect("AddNewProject?id=" + id);
                         break;
                     case "submitProject":
-                        EinreichenButton_Click(id);
+                        //EinreichenButton_Click(id);
                         break;
                     default:
                         throw new Exception("Unknown command " + e.CommandName);
                 }
             }
-
         }
 
         protected void AllProjectsAsPDF_Click(object sender, EventArgs e)
@@ -344,9 +299,7 @@ namespace ProStudCreator
                     {
                         document.Dispose();
                     }
-                    catch
-                    {
-                    }
+                    catch { }
                 }
                 catch (Exception)
                 {
@@ -354,9 +307,7 @@ namespace ProStudCreator
                     {
                         document.Dispose();
                     }
-                    catch
-                    {
-                    }
+                    catch { }
                     throw;
                 }
                 Response.End();
@@ -395,16 +346,7 @@ namespace ProStudCreator
             Response.End();
         }
 
-        private IQueryable<Project> UpdateGridView()
-        {
-            if (filterText.Text =="")return FilterRelevantProjects(projects);
-            
-            var searchString =  filterText.Text;
-            var filteredProjects = FilterRelevantProjects(projects.Where(p => (p.Reservation1Name.Contains(searchString) || p.Reservation2Name.Contains(searchString) || p.LogStudent1Name.Contains(searchString) || p.LogStudent2Name.Contains(searchString)) && p.IsMainVersion))
-                .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
-            return filteredProjects;
-        }
-       protected void FilterButton_Click(object sender, EventArgs e)
+        protected void FilterButton_Click(object sender, EventArgs e)
         {
             projects = UpdateGridView();
             AllProjects.DataSource = projects
@@ -412,7 +354,7 @@ namespace ProStudCreator
             AllProjects.DataBind();
         }
 
-        
+        /*
         protected void EinreichenButton_Click(int id)
         {
             Project project = db.Projects.Single(p => p.Id == id);
@@ -420,7 +362,7 @@ namespace ProStudCreator
             if (validationMessage != "")
             {
                 var sb = new StringBuilder();
-                sb.Append("<script type = 'text/javascript'>");
+                sb.Append("<script type='text/javascript'>");
                 sb.Append("window.onload=function(){");
                 sb.Append("alert('");
                 sb.Append(validationMessage);
@@ -430,13 +372,15 @@ namespace ProStudCreator
             }
             else
             {
+                throw new Exception("has changed");
                 project.Submit(db);
                 db.SubmitChanges();
-                project.SaveAsNewVersion(db);
+                project.CopyAndUseCopyAsMainVersion(db);
                 Response.Redirect("projectlist");
             }
-
         }
+        */
+
         protected void AllProjects_Sorting(object sender, GridViewSortEventArgs e)
         {
             AllProjects.DataBind();

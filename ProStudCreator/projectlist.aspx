@@ -39,17 +39,17 @@
                     <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="projectType2" ItemStyle-Width="20px"/>
                     <asp:TemplateField ItemStyle-Wrap="false">
                         <ItemTemplate>
+                            <a title="PDF anzeigen" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank" href="PDF?dl=false&id=<%# Item.id %>"></a>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField ItemStyle-Wrap="false">
+                        <ItemTemplate>
                             <a  class="btn btn-default btnHeight glyphicon glyphicon-info-sign" href="ProjectInfoPage?id=<%# Item.id %>"></a>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField ItemStyle-Wrap="false">
                         <ItemTemplate>
                             <a title="Projekt bearbeiten" class="btn btn-default btnHeight glyphicon glyphicon-pencil" href="AddNewProject?id=<%# Item.id %>"></a>
-                        </ItemTemplate>
-                    </asp:TemplateField> 
-                    <asp:TemplateField ItemStyle-Wrap="false">
-                        <ItemTemplate>
-                            <a title="PDF anzeigen" class="btn btn-default btnHeight glyphicon glyph-pdf" href="PDF?dl=false&id=<%# Item.id %>"></a>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField ItemStyle-Wrap="false">
@@ -76,15 +76,20 @@
             </asp:GridView>
         </div>
         <div style="font-size: 70%">
-            <asp:Button runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#CEECF5"/>
-            <%--
-            <asp:Button runat="server" Enabled="false" CssClass="btn btn-default btnHeight"/>--%> = In Bearbeitung&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#A9F5A9"/>
-            = Veröffentlicht&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#F5A9A9"/>
-            = Abgelehnt&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#ffcc99"/>
+            <asp:Button id="colExInProgress" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#CEECF5"/>
+            = In Bearbeitung&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExSubmitted" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#ffcc99"/>
             = Eingereicht&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExRejected" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#F5A9A9"/>
+            = Abgelehnt&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExPublished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#A9F5A9"/>
+            = Veröffentlicht&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExOngoing" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#64ed64"/>
+            = In Durchführung&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExFinished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#1adb1a"/>
+            = Abgeschlossen&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExCanceled" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#e8463b"/>
+            = Abgebrochen&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div style="margin-top: 16px;">
             <asp:Button runat="server" ID="NewProject" CssClass="btn btn-default buttonFont" Text="Neues Projekt" OnClick="NewProject_Click"/>
