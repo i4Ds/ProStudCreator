@@ -4,7 +4,7 @@
     <div class="well usernSettings">
         <h3>Durchführung eines Projektes</h3>
         <ol>
-            <li>Passe die grau hinterlegte Gewichtung im <a href="Content/Bewertungsbogen_P56_HS18.xlsx" class="xls">Bewertungsbogen</a> an.
+            <li>Passe die grau hinterlegte Gewichtung im <a href="Content/Bewertungsbogen Projekte 5 und 6.xlsx" class="xls">Bewertungsbogen</a> an.
             </li>
             <li>Schreibe bei Semesterbeginn den Studierenden und Verlange die Organisation eines Kickoff-Meetings.</li>
             <li>Informiere die Studierenden über folgende Punkte beim Kickoff-Meeting:
@@ -14,7 +14,7 @@
                     <li>Terminplan besprechen (Abgabetermin, Ausstellung, Projektwoche, Präsentation/Verteidigung, z.B. Inhaltsverzeichnis der Doku nach einem Drittel, ...)</li>
                     <li>Ein Hinweis, dass auf dem Netzwerkshare (\\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene) Unterlagen zu finden sind.</li>
                     <li>Optional: <a href="Content/P5_P6_Guide_20180914.pdf" class="pdf">Guide von Marco Soldati für IP5 und IP6</a>, <a href="Content/Leitfaden_Berichte_4.01.pdf" class="pdf">Offizieller Leitfaden für Berichte</a>, <a href="Content/Vorlage_Bericht_17.dotx" class="doc">Offizielle Vorlage für Berichte</a></li>
-                    <li>Besprich den <a href="Content/Bewertungsbogen_P56_HS18.xlsx" class="xls">Bewertungsbogen</a> mit den Studierenden</li>
+                    <li>Besprich den <a href="Content/Bewertungsbogen Projekte 5 und 6.xlsx" class="xls">Bewertungsbogen</a> mit den Studierenden</li>
                     <li>Die Studierenden müssen in den ersten Wochen eine Projektvereinbarung verfassen. Eine Vorlage dafür
                         existiert nicht. Die Projektvereinbarung umfasst 1-2 Seiten und enthält folgende Punkte:
                         <ul>
@@ -35,7 +35,7 @@
                     <li>IP6: Die Schlusspräsentation (Raum, Termin, Experte/-in) wird von uns organisiert. Details sind auf der Projekt-Infoseite ersichtlich. Die Studierenden schicken ihre Arbeit an den Experten, in elektronischer oder Papier-Form, je nach Wunsch des Experten.</li>
                 </ul>
             </li>
-            <li>Fülle nach der Projektabgabe den <a href="Content/Bewertungsbogen_P56_HS18.xlsx" class="xls">Bewertungsbogen</a> aus.</li>
+            <li>Fülle nach der Projektabgabe den <a href="Content/Bewertungsbogen Projekte 5 und 6.xlsx" class="xls">Bewertungsbogen</a> aus.</li>
             <li>Lade Kollegen (_D_A18_47_Mitarbeitende_IIT@adm.mx.ds.fhnw.ch; _D_A18_41_Mitarbeitende_I4DS@adm.mx.ds.fhnw.ch; _D_A18_39_Mitarbeitende_IMVS@adm.mx.ds.fhnw.ch) und andere interessierte Gasthörer zur Schlusspräsentation ein.</li>
             <li>Schlusspräsentation mit ca. 30 Minuten Präsentation, und ca. 30 Minuten Fragen von Betreuern, Experten (IP6) und interessierten Gästen.</li>
             <li>Notenbesprechung mit den Experten (IP6), ggf. Anpassung der Bewertung. Pro Student/-in soll eine <i>individuelle</i> Note festgelegt werden. Noten >5.8 müssen an die SGL gemeldet werden.</li>
