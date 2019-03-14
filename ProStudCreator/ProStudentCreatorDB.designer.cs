@@ -1450,6 +1450,8 @@ namespace ProStudCreator
 		
 		private bool _GradeSentToAdmin;
 		
+		private string _Notes;
+		
 		private EntitySet<Project> _Projects;
 		
 		private EntitySet<Attachements> _Attachements;
@@ -1630,6 +1632,8 @@ namespace ProStudCreator
     partial void OnWebSummaryCheckedChanged();
     partial void OnGradeSentToAdminChanging(bool value);
     partial void OnGradeSentToAdminChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
     #endregion
 		
 		public Project()
@@ -3156,6 +3160,26 @@ namespace ProStudCreator
 					this._GradeSentToAdmin = value;
 					this.SendPropertyChanged("GradeSentToAdmin");
 					this.OnGradeSentToAdminChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="NVarChar(MAX)", CanBeNull=false)]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
 				}
 			}
 		}

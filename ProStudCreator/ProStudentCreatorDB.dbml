@@ -132,6 +132,7 @@
       <Column Name="UnderNDA" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Column Name="WebSummaryChecked" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Column Name="GradeSentToAdmin" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="false" />
       <Association Name="Project_Project" Member="Projects" ThisKey="Id" OtherKey="PreviousProjectID" Type="Project" />
       <Association Name="Project_Attachements" Member="Attachements" ThisKey="Id" OtherKey="ProjectId" Type="Attachements" />
       <Association Name="Project_Task" Member="Tasks" ThisKey="Id" OtherKey="ProjectId" Type="Task" />
@@ -143,13 +144,13 @@
       <Association Name="ProjectType_Project1" Member="PTwoType" ThisKey="P2TypeId" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
       <Association Name="ProjectTeamSize_Project" Member="POneTeamSize" ThisKey="P1TeamSizeId" OtherKey="Id" Type="ProjectTeamSize" IsForeignKey="true" />
       <Association Name="ProjectTeamSize_Project1" Member="PTwoTeamSize" ThisKey="P2TeamSizeId" OtherKey="Id" Type="ProjectTeamSize" IsForeignKey="true" />
-  	  <Association Name="Semester_Project" Member="Semester" Storage="_Semesters" ThisKey="SemesterId" OtherKey="Id" Type="Semester" IsForeignKey="true" />
+      <Association Name="Semester_Project" Member="Semester" Storage="_Semesters" ThisKey="SemesterId" OtherKey="Id" Type="Semester" IsForeignKey="true" />
       <Association Name="ProjectType_Project2" Member="LogProjectType" ThisKey="LogProjectTypeID" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Project" Member="Advisor1" ThisKey="Advisor1Id" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Project1" Member="Advisor2" ThisKey="Advisor2Id" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
     </Type>
   </Table>
-    <Table Name="" Member="Semester">
+  <Table Name="" Member="Semester">
     <Type Name="Semester">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="false" />
@@ -172,7 +173,7 @@
       <Column Name="GradeIP6Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="InfoEvent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Semester_Project" Member="Project" ThisKey="Id" OtherKey="SemesterId" Type="Project" />
-	  <Association Name="Semester_Task" Member="Tasks" ThisKey="Id" OtherKey="SemesterId" Type="Task" />
+      <Association Name="Semester_Task" Member="Tasks" ThisKey="Id" OtherKey="SemesterId" Type="Task" />
     </Type>
   </Table>
   <Table Name="dbo.Attachements" Member="Attachements">
