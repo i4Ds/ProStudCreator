@@ -1585,7 +1585,6 @@ namespace ProStudCreator
             var selValue = dropPreviousProject.SelectedValue;
 
             FillDropPreviousProject(false);
-            updatePreviousProject.Update();
 
             if (selValue != dropPreviousProjectImpossibleValue)
             {
@@ -1595,9 +1594,11 @@ namespace ProStudCreator
                 updatePriority.Update();
                 DisplayReservations();
                 updateReservation.Update();
-                DisplayClient(false);
+                DisplayClient(pageProject==null);
                 updateClient.Update();
             }
+            
+            updatePreviousProject.Update();
         }
 
         protected void RadioClientType_SelectedIndexChanged(object sender, EventArgs e)
