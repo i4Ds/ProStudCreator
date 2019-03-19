@@ -225,8 +225,8 @@ namespace ProStudCreator
             {
                 submitProject.Visible = pageProject.UserCanSubmit();
                 if ((pageProject.State == ProjectState.InProgress || pageProject.State == ProjectState.Rejected)
-                    && (pageProject.UserIsAdvisor2() || pageProject.UserIsCreator()
-                    && !pageProject.UserHasAdvisor1Rights()))
+                    && (pageProject.UserIsAdvisor2() || pageProject.UserIsCreator())
+                    && !pageProject.UserHasAdvisor1Rights())
                 {
                     submitProject.Visible = true;
                     submitProject.Enabled = false;
@@ -241,7 +241,7 @@ namespace ProStudCreator
 
         private void FillDropSemester(bool isNewProject)
         {
-            dropSemester.DataSource = db.Semester.Where(s => s.EndDate > DateTime.Now).OrderBy(s => s.StartDate);
+            dropSemester.DataSource = db.Semester.OrderBy(s => s.StartDate);
             dropSemester.DataBind();
             if (isNewProject)
             {
@@ -257,16 +257,24 @@ namespace ProStudCreator
         {
             var projectSemester = db.Semester.Single(s => s.Id.ToString() == dropSemester.SelectedValue);
             var lastSem = Semester.LastSemester(projectSemester, db);
-            dropPreviousProject.DataSource = db.Projects.Where(p =>
-                    p.IsMainVersion
-                &&  p.LogProjectType.P5
-                && !p.LogProjectType.P6
-                && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.ArchivedFinished)
-                && (p.SemesterId == lastSem.Id))
-                .OrderBy(p => p.Name);
+            if (lastSem != null)
+            {
+                dropPreviousProject.DataSource = db.Projects.Where(p =>
+                        p.IsMainVersion
+                    &&  p.LogProjectType.P5
+                    && !p.LogProjectType.P6
+                    && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.ArchivedFinished)
+                    && (p.SemesterId == lastSem.Id))
+                    .OrderBy(p => p.Name);
+            }
+            else
+            {
+                dropPreviousProject.DataSource = new List<Semester>();
+            }
             dropPreviousProject.DataBind();
             dropPreviousProject.Items.Insert(0, new ListItem("-", dropPreviousProjectImpossibleValue));
-            if (isNewProject)
+
+            if (isNewProject || lastSem == null)
             {
                 dropPreviousProject.SelectedValue = dropPreviousProjectImpossibleValue;
             }
@@ -1370,6 +1378,10 @@ namespace ProStudCreator
             //Advisor1
             if (dropAdvisor1.SelectedValue == dropAdvisor1ImpossibleValue)
                 return "Bitte wählen Sie einen Hauptbetreuer aus.";
+
+            //Semester
+            if (dropSemester.SelectedValue != Semester.CurrentSemester(db).Id.ToString() && dropSemester.SelectedValue != Semester.NextSemester(db).Id.ToString())
+                return "Nur Projekte für das aktuelle oder das nächste Semester können veröffentlicht werden.";
 
             //1-2 selected ProjectTopics
             var numAssignedTypes = 0;

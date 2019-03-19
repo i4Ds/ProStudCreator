@@ -77,7 +77,7 @@ namespace ProStudCreator
 
         public static Semester ActiveSemester(DateTime date, ProStudentCreatorDBDataContext db)
         {
-            return db.Semester.Single(s => date >= s.StartDate && date < s.DayBeforeNextSemester);
+            return db.Semester.SingleOrDefault(s => date >= s.StartDate && date < s.DayBeforeNextSemester);
         }
 
         public bool IsSpringSemester()
