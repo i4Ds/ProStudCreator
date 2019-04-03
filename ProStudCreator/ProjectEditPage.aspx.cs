@@ -241,6 +241,12 @@ namespace ProStudCreator
 
         private void FillDropSemester(bool isNewProject)
         {
+            if (ShibUser.GetEmail() != Global.WebAdmin)
+            {
+                DivSemester.Visible = false;
+                return;
+            }
+
             dropSemester.DataSource = db.Semester.OrderBy(s => s.StartDate);
             dropSemester.DataBind();
             if (isNewProject)
@@ -249,13 +255,23 @@ namespace ProStudCreator
             }
             else
             {
-                dropSemester.SelectedValue = pageProject.Semester.Id.ToString();
+                dropSemester.SelectedValue = pageProject?.Semester?.Id.ToString() ?? Semester.NextSemester(db).Id.ToString();
             }
         }
 
         private void FillDropPreviousProject(bool isNewProject)
         {
-            var projectSemester = db.Semester.Single(s => s.Id.ToString() == dropSemester.SelectedValue);
+            Semester projectSemester;
+
+            if (DivSemester.Visible)
+            {
+                projectSemester = db.Semester.Single(s => s.Id.ToString() == dropSemester.SelectedValue);
+            }
+            else
+            {
+                projectSemester = Semester.NextSemester(db);
+            }
+
             var lastSem = Semester.LastSemester(projectSemester, db);
             if (lastSem != null)
             {
@@ -586,7 +602,10 @@ namespace ProStudCreator
             project.Name = ProjectName.Text.FixupParagraph();
 
             //Semester
-            project.Semester = db.Semester.Single(s => s.Id == int.Parse(dropSemester.SelectedValue));
+            if (DivSemester.Visible)
+            {
+                project.Semester = db.Semester.Single(s => s.Id == int.Parse(dropSemester.SelectedValue));
+            }
 
             //Previous Project
             if (dropPreviousProject.SelectedValue == dropPreviousProjectImpossibleValue)
@@ -1380,7 +1399,7 @@ namespace ProStudCreator
                 return "Bitte wählen Sie einen Hauptbetreuer aus.";
 
             //Semester
-            if (dropSemester.SelectedValue != Semester.CurrentSemester(db).Id.ToString() && dropSemester.SelectedValue != Semester.NextSemester(db).Id.ToString())
+            if (DivSemester.Visible && dropSemester.SelectedValue != Semester.CurrentSemester(db).Id.ToString() && dropSemester.SelectedValue != Semester.NextSemester(db).Id.ToString())
                 return "Nur Projekte für das aktuelle oder das nächste Semester können veröffentlicht werden.";
 
             //1-2 selected ProjectTopics
@@ -1449,7 +1468,7 @@ namespace ProStudCreator
 
             if (string.IsNullOrWhiteSpace(validationMessage))
             {
-                pageProject.Publish();
+                pageProject.Publish(db);
                 db.SubmitChanges();
 
                 var mailMessage = new MailMessage();
@@ -1516,7 +1535,7 @@ namespace ProStudCreator
         {
             SaveProject(true);
             pageProject.Ablehnungsgrund = refusedReasonText.Text;
-            pageProject.Reject();
+            pageProject.Reject(db);
             db.SubmitChanges();
 
             MailMessage mailMessage = new MailMessage();
@@ -1553,7 +1572,7 @@ namespace ProStudCreator
             }
 
             SaveProject(true);
-            pageProject.Unsubmit();
+            pageProject.Unsubmit(db);
             db.SubmitChanges();
             Response.Redirect(Session["LastPage"] == null ? "projectlist" : (string)Session["LastPage"]);
         }

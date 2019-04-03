@@ -206,7 +206,7 @@ namespace ProStudCreator
                     break;
                 case "deleteProject":
                     var project = db.Projects.Single(i => i.Id == id);
-                    project.Delete();
+                    project.Delete(db);
                     db.SubmitChanges();
                     Response.Redirect(Request.RawUrl);
                     break;

@@ -16,7 +16,7 @@
         <ul ID="TasksExperts" runat="server"></ul>
         <h3>Tasks: Thesis Titel an Ausbildungsadministration senden</h3>
         <ul ID="TasksTitles" runat="server"></ul>
-        <h3>Tasks: Projekt Informationen ergänzen</h3>
+        <h3>Tasks: Projekte abschliessen</h3>
         <ul ID="TasksProjects" runat="server"></ul>
     </div>
 </asp:Content>

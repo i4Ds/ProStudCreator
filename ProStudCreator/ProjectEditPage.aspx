@@ -53,7 +53,6 @@
             } else {
                 currentObject.style.borderColor = '#ccc';
             }
-
         }
 
         // Attach event handlers once page is loaded
@@ -131,7 +130,7 @@
                     <asp:RequiredFieldValidator ID="ProjectNameValidator" ForeColor="Red" Display="Dynamic" ControlToValidate="ProjectName" runat="server" enableclientscript="false" SetFocusOnError="true" ErrorMessage="Bitte geben Sie einen Projektnamen an."></asp:RequiredFieldValidator>
                 </div>
             </div>
-            <div class="form-group">
+            <div runat="server" class="form-group" ID="DivSemester">
                 <asp:Label runat="server" CssClass="control-label col-sm-3" Text="Semester:"></asp:Label>
                 <div class="col-sm-9">
                     <asp:DropDownList runat="server" ID="dropSemester" DataValueField="Id" DataTextField="Name" AutoPostBack="true" CausesValidation="false" CssClass="form-control dropPreviousProject" OnSelectedIndexChanged="DropSemester_SelectedIndexChanged" />

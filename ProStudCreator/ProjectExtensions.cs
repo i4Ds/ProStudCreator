@@ -568,6 +568,69 @@ namespace ProStudCreator
             return gradeDate <= DateTime.Now;
         }
 
+        public static DateTime GetGradeDeliveryDate(this Project _p, ProStudentCreatorDBDataContext db)
+        {
+            if (_p.LogProjectType.P5 && _p.LogProjectType.P6)
+            {
+                throw new InvalidOperationException("Cannot get grade delivery date for Project with unknown type.");
+            }
+
+            if (_p.LogDefenceDate.HasValue)
+            {
+                //Defense Date is set
+                return _p.LogDefenceDate.Value + Global.GradingDuration;
+            }
+            else
+            {
+                //No defense date set -> take end date of defense time span
+                if (_p.LogProjectType.P5)
+                {
+                    //P5
+                    DateTime? submissionDate;
+
+                    if (_p.LogProjectDuration == 1)
+                    {
+                        //Normal duration
+                        submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                            ? dbDate
+                            : (DateTime?)null;
+                    }
+                    else if (_p.LogProjectDuration == 2)
+                    {
+                        //Long duration
+                        submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5Accompanying, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                            ? dbDate
+                            : (DateTime?)null;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("LogProjectDuration must be 1 or 2");
+                    }
+
+                    if (!submissionDate.HasValue)
+                        throw new InvalidOperationException($"No SubmissionIP5 date found for {_p.Semester.Name}.");
+
+                    return submissionDate.Value + Global.ExpectFinalPresentationAfterSubmissionForIP5;
+                }
+                else if (_p.LogProjectType.P6)
+                {
+                    //P6
+                    var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbdate)
+                        ? dbdate
+                        : (DateTime?)null;
+
+                    if (!endOfDefenseTimeSpan.HasValue)
+                        throw new InvalidOperationException($"No DefenseIP6End date found for {_p.Semester.Name}.");
+
+                    return endOfDefenseTimeSpan.Value + Global.GradingDuration;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot get grade delivery date for Project with unknown type.");
+                }
+            }
+        }
+
         #endregion
 
         #region State Transitions
@@ -576,109 +639,119 @@ namespace ProStudCreator
         ///     Submits user's project for approval by an admin.
         /// </summary>
         /// <param name="_p"></param>
-        public static void Submit(this Project _p, ProStudentCreatorDBDataContext _dbx)
+        public static void Submit(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionSubmit(_p)) HandleInvalidState(_p, "Submit");
             
             _p.ModificationDate = DateTime.Now;
-            AssignUniqueProjectNr(_p, _dbx);
+            AssignUniqueProjectNr(_p, _db);
             _p.State = ProjectState.Submitted;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Rolls back project into editable state.
         /// </summary>
         /// <param name="_p"></param>
-        public static void Unsubmit(this Project _p)
+        public static void Unsubmit(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionUnsubmit(_p)) HandleInvalidState(_p, "Unsubmit");
 
             _p.State = ProjectState.InProgress;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Rejects a project after submission. Admin only.
         /// </summary>
         /// <param name="_p"></param>
-        public static void Reject(this Project _p)
+        public static void Reject(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionReject(_p)) HandleInvalidState(_p, "Reject");
 
             _p.State = ProjectState.Rejected;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Publishes a project after submission. Admin only.
         /// </summary>
         /// <param name="_p"></param>
-        public static void Publish(this Project _p)
+        public static void Publish(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionPublish(_p)) HandleInvalidState(_p, "Publish");
-            
+
+            _p.Semester = Semester.NextSemester(_db);
             _p.PublishedDate = DateTime.Now;
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Published;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Starts the project e.g. the students are working on it
         /// </summary>
         /// <param name="_p"></param>
-        public static void Kickoff(this Project _p)
+        public static void Kickoff(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionKickoff(_p)) HandleInvalidState(_p, "Kickoff");
 
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Ongoing;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Finish the project
         /// </summary>
         /// <param name="_p"></param>
-        public static void Finish(this Project _p)
+        public static void Finish(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionFinish(_p)) HandleInvalidState(_p, "Finish");
 
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Finished;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Cancel the project
         /// </summary>
         /// <param name="_p"></param>
-        public static void Cancel(this Project _p)
+        public static void Cancel(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionCancel(_p)) HandleInvalidState(_p, "Cancel");
 
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Canceled;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Archive the project after everything is done
         /// </summary>
         /// <param name="_p"></param>
-        public static void Archive(this Project _p)
+        public static void Archive(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionArchive(_p)) HandleInvalidState(_p, "Archive");
 
             if (_p.State == ProjectState.Finished) _p.State = ProjectState.ArchivedFinished;
             if (_p.State == ProjectState.Canceled) _p.State = ProjectState.ArchivedCanceled;
             _p.ModificationDate = DateTime.Now;
+            _db.SubmitChanges();
         }
 
         /// <summary>
         ///     Sets project state to deleted so it's no longer listed. Admin only.
         /// </summary>
         /// <param name="_p"></param>
-        public static void Delete(this Project _p)
+        public static void Delete(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionDelete(_p)) HandleInvalidState(_p, "Delete");
 
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Deleted;
+            _db.SubmitChanges();
         }
 
         #endregion
@@ -688,7 +761,7 @@ namespace ProStudCreator
         public static bool CheckTransitionSubmit(this Project _p)
         {
             // Permission
-            return UserHasAdvisor1Rights(_p)
+            return _p.UserCanSubmit()
                 // Name
                 && !string.IsNullOrWhiteSpace(_p.Name)
                 // Advisor1
@@ -710,7 +783,7 @@ namespace ProStudCreator
         public static bool CheckTransitionReject(this Project _p)
         {
             // Permission
-            return UserHasDepartmentManagerRights(_p)
+            return _p.UserCanReject()
                 // Ablehnungsgrund
                 && !string.IsNullOrWhiteSpace(_p.Ablehnungsgrund);
         }
@@ -718,7 +791,7 @@ namespace ProStudCreator
         public static bool CheckTransitionPublish(this Project _p)
         {
             // Permission
-            return UserHasDepartmentManagerRights(_p)
+            return _p.UserCanPublish()
                 // Name
                 && !string.IsNullOrWhiteSpace(_p.Name)
                 // Advisor1
@@ -734,7 +807,7 @@ namespace ProStudCreator
         public static bool CheckTransitionKickoff(this Project _p)
         {
             // Permission
-            return UserHasDepartmentManagerRights(_p)
+            return _p.UserCanKickoff()
                 // ProjectType
                 && (_p.LogProjectType.P5 || _p.LogProjectType.P6)
                 // ProjectDuration
@@ -748,7 +821,7 @@ namespace ProStudCreator
         public static bool CheckTransitionFinish(this Project _p)
         {
             // Permission
-            return UserHasAdvisor1Rights(_p)
+            return _p.UserCanFinish()
                 // - Language
                 && ((_p.LogLanguageEnglish.HasValue && (bool)_p.LogLanguageEnglish) || (_p.LogLanguageGerman.HasValue && (bool)_p.LogLanguageGerman))
                 // - Client Information (Depending on ClientType)
@@ -766,7 +839,7 @@ namespace ProStudCreator
         public static bool CheckTransitionCancel(this Project _p)
         {
             // Permission
-            return UserHasAdvisor1Rights(_p)
+            return _p.UserCanCancel()
                 // - GradeStudent1
                 && _p.LogGradeStudent1.HasValue
                 // - GradeStudent2
@@ -796,7 +869,7 @@ namespace ProStudCreator
         public static bool CheckTransitionDelete(this Project _p)
         {
             // Permission
-            return UserHasDepartmentManagerRights(_p) || ((_p.State == ProjectState.InProgress || _p.State == ProjectState.Submitted || _p.State == ProjectState.Rejected) && UserHasCreatorRights(_p));
+            return _p.UserCanDelete();
         }
 
         #endregion
@@ -818,9 +891,9 @@ namespace ProStudCreator
             return ShibUser.GetEmail() == _p.Advisor1?.Mail;
         }
 
-        public static bool UserIsDepartmentManager(this Project _p)
+        public static bool UserIsDepartmentManager()
         {
-            return ShibUser.IsDepartmentManager(_p.Department);
+            return ShibUser.IsDepartmentManager();
         }
 
         public static bool UserIsOwner(this Project _p)
@@ -834,7 +907,7 @@ namespace ProStudCreator
 
         public static bool UserHasDepartmentManagerRights(this Project _p)
         {
-            return UserIsDepartmentManager(_p) || ShibUser.GetEmail() == Global.WebAdmin;
+            return UserIsDepartmentManager() || ShibUser.GetEmail() == Global.WebAdmin;
         }
 
         public static bool UserHasAdvisor1Rights(this Project _p)
@@ -858,43 +931,19 @@ namespace ProStudCreator
 
         public static bool UserCanEdit(this Project _p)
         {
-            if (ShibUser.CanEditAllProjects()) return true;
-
             switch (_p.State)
             {
                 case ProjectState.InProgress:
                 case ProjectState.Submitted:
                 case ProjectState.Rejected:
-                    return _p.UserHasCreatorRights();
+                    return _p.UserHasCreatorRights() || ShibUser.CanEditAllProjects();
                 case ProjectState.Published:
+                    return _p.UserHasDepartmentManagerRights();
                 case ProjectState.Ongoing:
                 case ProjectState.Finished:
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedFinished:
                 case ProjectState.ArchivedCanceled:
-                    return _p.UserHasDepartmentManagerRights();
-                default:
-                    return false;
-            }
-        }
-
-        public static bool UserCanEditAfterStart(this Project _p)
-        {
-            if (ShibUser.CanEditAllProjects()) return true;
-
-            switch (_p.State)
-            {
-                case ProjectState.InProgress:
-                case ProjectState.Submitted:
-                case ProjectState.Rejected:
-                    return _p.UserHasDepartmentManagerRights();
-                case ProjectState.Published:
-                case ProjectState.Ongoing:
-                case ProjectState.Finished:
-                case ProjectState.Canceled:
-                case ProjectState.ArchivedFinished:
-                case ProjectState.ArchivedCanceled:
-                    return _p.UserHasAdvisor2Rights();
                 default:
                     return false;
             }
@@ -951,7 +1000,8 @@ namespace ProStudCreator
         public static bool UserCanDelete(this Project _p)
         {
             return (_p.State == ProjectState.InProgress || _p.State == ProjectState.Submitted || _p.State == ProjectState.Rejected)
-                && _p.UserHasCreatorRights();
+                && _p.UserHasCreatorRights()
+                || (_p.State == ProjectState.Published && _p.UserHasDepartmentManagerRights());
 
         }
 
@@ -1002,18 +1052,15 @@ namespace ProStudCreator
                     return "#A9F5A9";
 
                 case ProjectState.Ongoing:
-                    return "#A9F5A9";
-                    //return "#64ed64";
+                    return "#64ed64";
 
                 case ProjectState.Finished:
                 case ProjectState.ArchivedFinished:
-                    return "#A9F5A9";
-                    //return "#1adb1a";
+                    return "#7ccb7c";
 
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedCanceled:
-                    return "#A9F5A9";
-                    //return "#e8463b";
+                    return "#ffa185";
 
                 case ProjectState.Deleted:
                     return "#919191";

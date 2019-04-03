@@ -28,7 +28,25 @@ namespace ProStudCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ProjectTitle;
+        protected global::System.Web.UI.WebControls.Label ProjectTitle;
+        
+        /// <summary>
+        /// DivProjectTitleAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivProjectTitleAdmin;
+        
+        /// <summary>
+        /// ProjectTitleAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ProjectTitleAdmin;
         
         /// <summary>
         /// Topic1 control.
@@ -58,22 +76,13 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label ChangeTitleDate;
         
         /// <summary>
-        /// Student1Name control.
+        /// LabelState control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Student1Name;
-        
-        /// <summary>
-        /// Student2Name control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Student2Name;
+        protected global::System.Web.UI.WebControls.Label LabelState;
         
         /// <summary>
         /// Advisor1Name control.
@@ -94,103 +103,238 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label Advisor2Name;
         
         /// <summary>
-        /// DivExpert control.
+        /// DivStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExpert;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivStudents;
         
         /// <summary>
-        /// ExpertName control.
+        /// Student1Name control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ExpertName;
+        protected global::System.Web.UI.WebControls.Label Student1Name;
         
         /// <summary>
-        /// DivExpertAdmin control.
+        /// Student2Name control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExpertAdmin;
+        protected global::System.Web.UI.WebControls.Label Student2Name;
         
         /// <summary>
-        /// drpExpert control.
+        /// DivStudentsAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpExpert;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivStudentsAdmin;
         
         /// <summary>
-        /// ExpertMail control.
+        /// Student1NameAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ExpertMail;
+        protected global::System.Web.UI.WebControls.TextBox Student1NameAdmin;
         
         /// <summary>
-        /// lblProjectType control.
+        /// Student1MailAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblProjectType;
+        protected global::System.Web.UI.WebControls.TextBox Student1MailAdmin;
         
         /// <summary>
-        /// ProjectDelivery control.
+        /// Student2NameAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ProjectDelivery;
+        protected global::System.Web.UI.WebControls.TextBox Student2NameAdmin;
         
         /// <summary>
-        /// divPresentation control.
+        /// Student2MailAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPresentation;
+        protected global::System.Web.UI.WebControls.TextBox Student2MailAdmin;
         
         /// <summary>
-        /// lblProjectEndPresentation control.
+        /// DivType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblProjectEndPresentation;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivType;
         
         /// <summary>
-        /// ProjectEndPresentation control.
+        /// LabelProjectType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ProjectEndPresentation;
+        protected global::System.Web.UI.WebControls.Label LabelProjectType;
         
         /// <summary>
-        /// divBachelor control.
+        /// DivTypeAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBachelor;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivTypeAdmin;
+        
+        /// <summary>
+        /// DropType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropType;
+        
+        /// <summary>
+        /// DropDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDuration;
+        
+        /// <summary>
+        /// DivDelivery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivDelivery;
+        
+        /// <summary>
+        /// LabelProjectDelivery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelProjectDelivery;
+        
+        /// <summary>
+        /// DivPresentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivPresentation;
+        
+        /// <summary>
+        /// LabelProjectEndPresentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelProjectEndPresentation;
+        
+        /// <summary>
+        /// LabelPresentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelPresentation;
+        
+        /// <summary>
+        /// DivPresentationAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivPresentationAdmin;
+        
+        /// <summary>
+        /// LabelProjectEndPresentationAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelProjectEndPresentationAdmin;
+        
+        /// <summary>
+        /// TextBoxLabelPresentationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxLabelPresentationDate;
+        
+        /// <summary>
+        /// PresentationDateFormatValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator PresentationDateFormatValidator;
+        
+        /// <summary>
+        /// TextBoxLabelPresentationTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxLabelPresentationTime;
+        
+        /// <summary>
+        /// RegularExpressionValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
+        
+        /// <summary>
+        /// TextBoxLabelPresentationRoom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxLabelPresentationRoom;
+        
+        /// <summary>
+        /// DivBachelor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivBachelor;
         
         /// <summary>
         /// lblAussstellungBachelorthese control.
@@ -211,13 +355,103 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label ProjectExhibition;
         
         /// <summary>
-        /// drpLogLanguage control.
+        /// DivExpert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpLogLanguage;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExpert;
+        
+        /// <summary>
+        /// LabelExpertName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelExpertName;
+        
+        /// <summary>
+        /// DivExpertAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExpertAdmin;
+        
+        /// <summary>
+        /// DropExpert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropExpert;
+        
+        /// <summary>
+        /// UpdateExpertMail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateExpertMail;
+        
+        /// <summary>
+        /// LabelExpertMail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelExpertMail;
+        
+        /// <summary>
+        /// DivLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivLanguage;
+        
+        /// <summary>
+        /// LabelLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelLanguage;
+        
+        /// <summary>
+        /// DivLanguageAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivLanguageAdmin;
+        
+        /// <summary>
+        /// DropLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropLanguage;
+        
+        /// <summary>
+        /// DivWebSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivWebSummary;
         
         /// <summary>
         /// cbxWebSummaryChecked control.
@@ -229,22 +463,49 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.CheckBox cbxWebSummaryChecked;
         
         /// <summary>
-        /// lblWebsummaryLink control.
+        /// LabelWebsummaryLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWebsummaryLink;
+        protected global::System.Web.UI.WebControls.Label LabelWebsummaryLink;
         
         /// <summary>
-        /// drpBillingstatus control.
+        /// DivBillingStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpBillingstatus;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivBillingStatus;
+        
+        /// <summary>
+        /// LabelBillingStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelBillingStatus;
+        
+        /// <summary>
+        /// DivBillingStatusAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivBillingStatusAdmin;
+        
+        /// <summary>
+        /// DropBillingStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropBillingStatus;
         
         /// <summary>
         /// Label2 control.
@@ -256,94 +517,94 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// updateGradeFields control.
+        /// UpdateGradeFields control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updateGradeFields;
+        protected global::System.Web.UI.UpdatePanel UpdateGradeFields;
         
         /// <summary>
-        /// divGradeHint control.
+        /// DivGradeStudent1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divGradeHint;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivGradeStudent1;
         
         /// <summary>
-        /// Label3 control.
+        /// LabelGradeStudent1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.WebControls.Label LabelGradeStudent1;
         
         /// <summary>
-        /// divGradeStudent1 control.
+        /// NumGradeStudent1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divGradeStudent1;
+        protected global::System.Web.UI.WebControls.Label NumGradeStudent1;
         
         /// <summary>
-        /// lblGradeStudent1 control.
+        /// NumGradeStudent1Admin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGradeStudent1;
+        protected global::System.Web.UI.WebControls.TextBox NumGradeStudent1Admin;
         
         /// <summary>
-        /// nbrGradeStudent1 control.
+        /// DivGradeStudent2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox nbrGradeStudent1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivGradeStudent2;
         
         /// <summary>
-        /// divGradeStudent2 control.
+        /// LabelGradeStudent2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divGradeStudent2;
+        protected global::System.Web.UI.WebControls.Label LabelGradeStudent2;
         
         /// <summary>
-        /// lblGradeStudent2 control.
+        /// NumGradeStudent2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGradeStudent2;
+        protected global::System.Web.UI.WebControls.Label NumGradeStudent2;
         
         /// <summary>
-        /// nbrGradeStudent2 control.
+        /// NumGradeStudent2Admin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox nbrGradeStudent2;
+        protected global::System.Web.UI.WebControls.TextBox NumGradeStudent2Admin;
         
         /// <summary>
-        /// divGradeWarning control.
+        /// DivGradeWarning control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divGradeWarning;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivGradeWarning;
         
         /// <summary>
         /// Label1 control.
@@ -400,40 +661,76 @@ namespace ProStudCreator {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientCompany;
         
         /// <summary>
-        /// txtClientCompany control.
+        /// LabelClientCompany control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientCompany;
+        protected global::System.Web.UI.WebControls.Label LabelClientCompany;
         
         /// <summary>
-        /// drpClientTitle control.
+        /// txtClientCompanyAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpClientTitle;
+        protected global::System.Web.UI.WebControls.TextBox txtClientCompanyAdmin;
         
         /// <summary>
-        /// txtClientName control.
+        /// LabelClientTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientName;
+        protected global::System.Web.UI.WebControls.Label LabelClientTitle;
         
         /// <summary>
-        /// txtClientEmail control.
+        /// drpClientTitleAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientEmail;
+        protected global::System.Web.UI.WebControls.DropDownList drpClientTitleAdmin;
+        
+        /// <summary>
+        /// LabelClientName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelClientName;
+        
+        /// <summary>
+        /// txtClientNameAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClientNameAdmin;
+        
+        /// <summary>
+        /// LabelClientEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelClientEmail;
+        
+        /// <summary>
+        /// txtClientEmailAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClientEmailAdmin;
         
         /// <summary>
         /// divClientDepartment control.
@@ -445,49 +742,94 @@ namespace ProStudCreator {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientDepartment;
         
         /// <summary>
-        /// txtClientDepartment control.
+        /// LabelClientDepartment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientDepartment;
+        protected global::System.Web.UI.WebControls.Label LabelClientDepartment;
         
         /// <summary>
-        /// txtClientStreet control.
+        /// txtClientDepartmentAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientStreet;
+        protected global::System.Web.UI.WebControls.TextBox txtClientDepartmentAdmin;
         
         /// <summary>
-        /// txtClientPLZ control.
+        /// LabelClientStreet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientPLZ;
+        protected global::System.Web.UI.WebControls.Label LabelClientStreet;
         
         /// <summary>
-        /// txtClientCity control.
+        /// txtClientStreetAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientCity;
+        protected global::System.Web.UI.WebControls.TextBox txtClientStreetAdmin;
         
         /// <summary>
-        /// txtClientReference control.
+        /// LabelClientPLZ control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtClientReference;
+        protected global::System.Web.UI.WebControls.Label LabelClientPLZ;
+        
+        /// <summary>
+        /// txtClientPLZAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClientPLZAdmin;
+        
+        /// <summary>
+        /// LabelClientCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelClientCity;
+        
+        /// <summary>
+        /// txtClientCityAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClientCityAdmin;
+        
+        /// <summary>
+        /// LabelClientReference control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelClientReference;
+        
+        /// <summary>
+        /// txtClientReferenceAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClientReferenceAdmin;
         
         /// <summary>
         /// chkNDA control.
@@ -497,6 +839,33 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNDA;
+        
+        /// <summary>
+        /// BtnFinishProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnFinishProject;
+        
+        /// <summary>
+        /// BtnCancelProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnCancelProject;
+        
+        /// <summary>
+        /// BtnKickoffProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnKickoffProject;
         
         /// <summary>
         /// BtnSaveChanges control.

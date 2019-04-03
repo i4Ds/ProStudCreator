@@ -3,10 +3,12 @@ using System.Data;
 using System.Data.Linq;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -17,12 +19,15 @@ namespace ProStudCreator
 {
     public partial class ProjectInfoPage : Page
     {
-        public static bool OverRide = false;
         private readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();
         private int? id;
-        private Project project;
-
-        private ProjectTypes type = ProjectTypes.NotDefined;
+        private Project pageProject;
+        
+        private readonly string dropTypeImpossibleValue = "dropTypeImpossibleValue";
+        private readonly string dropDurationImpossibleValue = "dropDurationImpossibleValue";
+        private readonly string dropExpertImpossibleValue = "dropExpertImpossibleValue";
+        private readonly string dropBillingStatusImpossibleValue = "dropBillingStatusImpossibleValue";
+        private readonly string dropLanguageImpossibleValue = "dropLanguageImpossibleValue";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,11 +35,11 @@ namespace ProStudCreator
             if (Request.QueryString["id"] != null)
             {
                 id = int.Parse(Request.QueryString["id"]);
-                project = db.Projects.Single(p => (int?)p.Id == id);
-                if (!project.IsMainVersion)
+                pageProject = db.Projects.Single(p => p.Id == id);
+                if (!pageProject.IsMainVersion)
                 {
-                    project = db.Projects.Single(p => p.BaseVersionId == project.BaseVersionId && p.IsMainVersion);
-                    Response.Redirect(@"~/ProjectInfoPage?id=" + project.Id);
+                    pageProject = db.Projects.Single(p => p.BaseVersionId == pageProject.BaseVersionId && p.IsMainVersion);
+                    Response.Redirect(@"~/ProjectInfoPage?id=" + pageProject.Id);
                     return;
                 }
                 divDownloadBtn.Visible = false;
@@ -46,235 +51,1216 @@ namespace ProStudCreator
                 Response.End();
             }
 
-            gridProjectAttachs.DataSource = db.Attachements.Where(item => item.ProjectId == project.Id && !item.Deleted)
+            gridProjectAttachs.DataSource = db.Attachements.Where(item => item.ProjectId == pageProject.Id && !item.Deleted)
                 .Select(i => GetProjectSingleAttachment(i));
             gridProjectAttachs.DataBind();
 
             if (Page.IsPostBack)
             {
                 id = int.Parse(Request.QueryString["id"]);
-                project = db.Projects.Single(p => (int?)p.Id == id);
+                pageProject = db.Projects.Single(p => (int?)p.Id == id);
                 return;
             }
 
+            else
+            {
+                UpdateUIFromProjectObject();
+            }
+        }
 
-            //set the Semester if it isn't set already
-            project.Semester = project.Semester ?? Semester.NextSemester(db);
+        #region Form
 
-            //Project title
-            ProjectTitle.Text = project.Name;
+        private void UpdateUIFromProjectObject()
+        {
+            //Name
+            DisplayName();
 
-            //Topic pictures
-            Topic1.ImageUrl = "pictures/projectTyp" + (project.TypeDesignUX
-                   ? "DesignUX"
-                   : (project.TypeHW
-                       ? "HW"
-                       : (project.TypeCGIP
-                           ? "CGIP"
-                           : (project.TypeMlAlg
-                               ? "MlAlg"
-                               : (project.TypeAppWeb
-                                   ? "AppWeb"
-                                   : (project.TypeDBBigData
-                                       ? "DBBigData"
-                                       : (project.TypeSysSec
-                                           ? "SysSec"
-                                           : (project.TypeSE ? "SE" : "Transparent")))))))) + ".png";
-            Topic2.ImageUrl = "pictures/projectTyp" + (project.TypeHW && project.TypeDesignUX
-                               ? "HW"
-                               : (project.TypeCGIP && (project.TypeDesignUX || project.TypeHW)
-                                   ? "CGIP"
-                                   : (project.TypeMlAlg && (project.TypeDesignUX || project.TypeHW || project.TypeCGIP)
-                                       ? "MlAlg"
-                                       : (project.TypeAppWeb &&
-                                          (project.TypeDesignUX || project.TypeHW || project.TypeCGIP || project.TypeMlAlg)
-                                           ? "AppWeb"
-                                           : (project.TypeDBBigData &&
-                                              (project.TypeDesignUX || project.TypeHW || project.TypeCGIP || project.TypeMlAlg ||
-                                               project.TypeAppWeb)
-                                               ? "DBBigData"
-                                               : (project.TypeSysSec &&
-                                                  (project.TypeDesignUX || project.TypeHW || project.TypeCGIP || project.TypeMlAlg ||
-                                                   project.TypeAppWeb || project.TypeDBBigData)
-                                                   ? "SysSec"
-                                                   : (project.TypeSE && (project.TypeDesignUX || project.TypeHW || project.TypeCGIP ||
-                                                                   project.TypeMlAlg || project.TypeAppWeb ||
-                                                                   project.TypeDBBigData || project.TypeSysSec)
-                                                       ? "SE"
-                                                       : "Transparent"))))))) + ".png";
+            //State
+            LabelState.Text = pageProject.StateAsString;
 
-            chkNDA.Checked = project.UnderNDA;
+            //Topics
+            DisplayProjectTopics();
 
-            //Set the Students
-            Student1Name.Text = !string.IsNullOrEmpty(project.LogStudent1Name)
-                ? "<a href=\"mailto:" + project.LogStudent1Mail + "\">" +
-                  Server.HtmlEncode(project.LogStudent1Name).Replace(" ", "&nbsp;") + "</a>"
+            //Advisor
+            Advisor1Name.Text = pageProject.Advisor1 != null
+                ? $"<a href=\"mailto:{pageProject.Advisor1.Mail}\">{Server.HtmlEncode(pageProject.Advisor1.Name).Replace(" ", "&nbsp;")}</a>"
                 : "?";
-            Student2Name.Text = !string.IsNullOrEmpty(project.LogStudent2Name)
-                ? "<a href=\"mailto:" + project.LogStudent2Mail + "\">" +
-                  Server.HtmlEncode(project.LogStudent2Name).Replace(" ", "&nbsp;") + "</a>"
+            Advisor2Name.Text = pageProject.Advisor2 != null
+                ? $"<a href=\"mailto:{pageProject.Advisor2.Mail}\">{Server.HtmlEncode(pageProject.Advisor2.Name).Replace(" ", "&nbsp;")}</a>"
                 : "";
 
-            //Set the Advisor
-            Advisor1Name.Text = project.Advisor1 != null
-                ? "<a href=\"mailto:" + project.Advisor1?.Mail + "\">" +
-                  Server.HtmlEncode(project.Advisor1.Name).Replace(" ", "&nbsp;") + "</a>"
-                : "?";
-            Advisor2Name.Text = project.Advisor2 != null
-                ? "<a href=\"mailto:" + project.Advisor2.Mail + "\">" +
-                  Server.HtmlEncode(project.Advisor2.Name).Replace(" ", "&nbsp;") + "</a>"
-                : "";
+            //Students
+            DisplayStudents();
 
+            //Type and duration
+            DisplayTypeAndDuration();
 
-            //Set the Expert
-            if (project.LogProjectType != null)
-                if (!project.LogProjectType.P5 && project.LogProjectType.P6)
-                    ExpertName.Text = !string.IsNullOrEmpty(project.LogExpertID.ToString())
-                        ? "<a href=\"mailto:" + project.Expert.Mail + "\">" +
-                          Server.HtmlEncode(project.Expert.Name).Replace(" ", "&nbsp;") + "</a>"
-                        : "Noch nicht entschieden";
-                else
-                    ExpertName.Text = "Noch nicht entschieden";
-            else
-                ExpertName.Text = "Noch nicht entschieden";
+            //Delivery
+            LabelProjectDelivery.Text = pageProject.GetDeliveryDate()?.ToString("dd.MM.yyyy") ?? "?";
 
-            drpExpert.DataSource = db.Experts.Where(i => i.Active).OrderBy(a => a.Name).Select(x => 
-                new {
-                    Id = x.id,
-                    Mail = x.Mail,
-                    DropDownString = string.Format("{0} | {1}", x.Name,x.Knowhow).Replace(" ", HttpUtility.HtmlDecode("&nbsp;"))
-                }
-            );
+            //Presentation
+            DisplayPresentation();
 
-            drpExpert.DataValueField = "Id";
-            drpExpert.DataTextField = "DropDownString";
-            drpExpert.DataBind();
-            drpExpert.Items.Insert(0, new ListItem("-", "ImpossibleValue"));
-            drpExpert.SelectedValue = project.Expert?.id.ToString() ?? "ImpossibleValue";
+            //Expert
+            DisplayExpert();
 
+            //Language
+            DisplayLanguage();
 
-            ExpertMail.Text = !string.IsNullOrEmpty(project.LogExpertID.ToString())
-            ? "<a href=\"mailto:" + project.Expert.Mail + "\">Mail</a>"
-            : "";
+            //WebSummary
+            cbxWebSummaryChecked.Checked = pageProject.WebSummaryChecked;
+            cbxWebSummaryChecked.Enabled = pageProject.State == ProjectState.Ongoing && pageProject.UserHasAdvisor2Rights();
 
-            //Set the Projecttype
-            if (project.LogProjectTypeID == null)
-            {
-                lblProjectType.Text = "?";
-                type = ProjectTypes.NotDefined;
-            }
-            else if (project.LogProjectType.P5 && !project.LogProjectType.P6)
-            {
-                lblProjectType.Text = "IP5" + (project.LogProjectDuration==2 ? " (Lang)":"");
-                type = ProjectTypes.IP5;
-            }
-            else if (!project.LogProjectType.P5 && project.LogProjectType.P6)
-            {
-                lblProjectType.Text = "IP6" + (project.LogProjectDuration == 2 ? " (Lang)" : "");
-                type = ProjectTypes.IP6;
-            }
-            else
-                throw new Exception();
-
-            //Sets the DeliveryInfos
-            SetProjectDeliveryLabels();
-
-            //Set the Exhibition date? of the Bachelorthesis
-            ProjectExhibition.Text = project.ExhibitionBachelorThesis(db);
-
-            //Set the LogLanguage
-            if (project.LogLanguageEnglish != null && project.LogLanguageGerman != null)
-                if (project.LogLanguageEnglish.Value && !project.LogLanguageGerman.Value)
-                    drpLogLanguage.SelectedValue = "1";
-                else
-                    drpLogLanguage.SelectedValue = "2";
-            else
-                drpLogLanguage.SelectedValue = "0";
-
-            drpLogLanguage.Items[0].Text = project.UserCanEditAfterStart() ? "(Bitte Auswählen)" : "Noch nicht entschieden";
-
-            //web summary checked?
-            cbxWebSummaryChecked.Checked = project.WebSummaryChecked;
-
-            lblWebsummaryLink.Text = !string.IsNullOrEmpty(project.Semester.Name)
-                ? project.LogProjectTypeID != null
-                    ? "<a target=\"_blank\" href=\"https://web.fhnw.ch/technik/projekte/i/" + (project.LogProjectTypeID == 1
-                        ? "ip5" + project.Semester.Name.Substring(0,2)
-                        : "bachelor" + project.Semester.Name.Substring(0, 2))
+            LabelWebsummaryLink.Text = !string.IsNullOrEmpty(pageProject?.Semester?.Name ?? null)
+                ? pageProject.LogProjectTypeID != null
+                    ? "<a target=\"_blank\" href=\"https://web.fhnw.ch/technik/projekte/i/" + (pageProject.LogProjectTypeID == 1
+                        ? "ip5" + pageProject.Semester.Name.Substring(0, 2)
+                        : "bachelor" + pageProject.Semester.Name.Substring(0, 2))
                     + "\">Link</a>"
                     : ""
                 : "";
 
-            //fill the Billingstatus dropdown with Data
-            drpBillingstatus.DataSource = db.BillingStatus.OrderBy(i => i.DisplayName);
-            drpBillingstatus.DataBind();
-            drpBillingstatus.Items.Insert(0,
-                new ListItem(project.UserCanEditAfterStart() ? "(Bitte Auswählen)" : "Noch nicht eingetragen",
-                    "ValueWhichNeverWillBeGivenByTheDB"));
-            drpBillingstatus.SelectedValue = project?.BillingStatusID?.ToString() ??
-                                             "ValueWhichNeverWillBeGivenByTheDB";
+            //BillingStatus
+            DisplayBillingStatus();
+
+            //Grades
+            DisplayGrades();
+
+            //Client
+            DisplayClient();
+
+            //Buttons
+            DisplayButtons();
+
+            //Attachments
+            divFileUpload.Visible = pageProject.UserHasAdvisor2Rights();
+        }
+
+        private void DisplayName()
+        {
+            ProjectTitle.Visible = DivProjectTitleAdmin.Visible = false;
+            ProjectTitle.Text = ProjectTitleAdmin.Text = pageProject.Name;
+
+            var deliveryDate = pageProject.GetDeliveryDate();
+
+            if (deliveryDate.HasValue)
+            {
+                if (pageProject.CanEditTitle())
+                {
+                    if (pageProject.LogProjectType?.P5 == true)
+                        ChangeTitleDate.Text = "";
+                    else
+                        ChangeTitleDate.Text = $"Titeländerung noch bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).AddDays(-2).ToString("dd.MM.yyyy")} möglich!";
+                }
+                else
+                    ChangeTitleDate.Text = $"Titeländerung war nur bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).AddDays(-2).ToString("dd.MM.yyyy")} möglich!";
+            }
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Published:
+                    if (pageProject.UserHasDepartmentManagerRights() && pageProject.CanEditTitle())
+                    {
+                        DivProjectTitleAdmin.Visible = true;
+                    }
+                    else
+                    {
+                        ProjectTitle.Visible = true;
+                    }
+                    break;
+                case ProjectState.Ongoing:
+                    if (pageProject.UserHasAdvisor2Rights() && pageProject.CanEditTitle())
+                    {
+                        DivProjectTitleAdmin.Visible = true;
+                    }
+                    else
+                    {
+                        ProjectTitle.Visible = true;
+                    }
+                    break;
+                default:
+                    ProjectTitle.Visible = true;
+                    break;
+            }
+        }
+
+        private void DisplayProjectTopics()
+        {
+            Topic1.ImageUrl = "pictures/projectTyp" + (pageProject.TypeDesignUX
+                   ? "DesignUX"
+                   : (pageProject.TypeHW
+                       ? "HW"
+                       : (pageProject.TypeCGIP
+                           ? "CGIP"
+                           : (pageProject.TypeMlAlg
+                               ? "MlAlg"
+                               : (pageProject.TypeAppWeb
+                                   ? "AppWeb"
+                                   : (pageProject.TypeDBBigData
+                                       ? "DBBigData"
+                                       : (pageProject.TypeSysSec
+                                           ? "SysSec"
+                                           : (pageProject.TypeSE ? "SE" : "Transparent")))))))) + ".png";
+            Topic2.ImageUrl = "pictures/projectTyp" + (pageProject.TypeHW && pageProject.TypeDesignUX
+                               ? "HW"
+                               : (pageProject.TypeCGIP && (pageProject.TypeDesignUX || pageProject.TypeHW)
+                                   ? "CGIP"
+                                   : (pageProject.TypeMlAlg && (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP)
+                                       ? "MlAlg"
+                                       : (pageProject.TypeAppWeb &&
+                                          (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP || pageProject.TypeMlAlg)
+                                           ? "AppWeb"
+                                           : (pageProject.TypeDBBigData &&
+                                              (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP || pageProject.TypeMlAlg ||
+                                               pageProject.TypeAppWeb)
+                                               ? "DBBigData"
+                                               : (pageProject.TypeSysSec &&
+                                                  (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP || pageProject.TypeMlAlg ||
+                                                   pageProject.TypeAppWeb || pageProject.TypeDBBigData)
+                                                   ? "SysSec"
+                                                   : (pageProject.TypeSE && (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP ||
+                                                                   pageProject.TypeMlAlg || pageProject.TypeAppWeb ||
+                                                                   pageProject.TypeDBBigData || pageProject.TypeSysSec)
+                                                       ? "SE"
+                                                       : "Transparent"))))))) + ".png";
+        }
+
+        private void DisplayStudents()
+        {
+            DivStudents.Visible = DivStudentsAdmin.Visible = false;
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Published:
+                    if (pageProject.UserHasDepartmentManagerRights())
+                    {
+                        //show textboxes to input students
+                        Student1NameAdmin.Text = pageProject.LogStudent1Name ?? "";
+                        Student1MailAdmin.Text = pageProject.LogStudent1Mail ?? "";
+                        Student2NameAdmin.Text = pageProject.LogStudent2Name ?? "";
+                        Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
+                        DivStudentsAdmin.Visible = true;
+                    } else
+                    {
+                        //show ?
+                        Student1Name.Text = "?";
+                        Student2Name.Text = "?";
+                        DivStudents.Visible = true;
+                    }
+                    break;
+                case ProjectState.Ongoing:
+                case ProjectState.Finished:
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedFinished:
+                case ProjectState.ArchivedCanceled:
+                    //show student labels
+                    Student1Name.Text = $"<a href=\"mailto:{pageProject.LogStudent1Mail}\">{Server.HtmlEncode(pageProject.LogStudent1Name).Replace(" ", "&nbsp;")}</a>";
+                    Student2Name.Text = !string.IsNullOrEmpty(pageProject.LogStudent2Name)
+                        ? $"<a href=\"mailto:{pageProject.LogStudent2Mail}\">{Server.HtmlEncode(pageProject.LogStudent2Name).Replace(" ", "&nbsp;")}</a>"
+                        : "";
+                    DivStudents.Visible = true;
+                    break;
+                default:
+                    //show ?
+                    Student1Name.Text = "?";
+                    Student2Name.Text = "?";
+                    DivStudents.Visible = true;
+                    break;
+            }
+        }
+
+        private void DisplayTypeAndDuration()
+        {
+            DivType.Visible = DivTypeAdmin.Visible = false;
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Published:
+                    if (pageProject.UserHasDepartmentManagerRights())
+                    {
+                        //show dropdowns
+                        FillDropType();
+                        DropDuration.SelectedValue = pageProject.LogProjectDuration?.ToString() ?? dropDurationImpossibleValue;
+                        DivTypeAdmin.Visible = true;
+
+                        //TODO: Set DropDuration.visible depending on DropType
+                    }
+                    else
+                    {
+                        //show ?
+                        LabelProjectType.Text = "?";
+                        DivType.Visible = true;
+                    }
+                    break;
+                case ProjectState.Ongoing:
+                case ProjectState.Finished:
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedFinished:
+                case ProjectState.ArchivedCanceled:
+                    //show type with duration
+                    if (pageProject.LogProjectType.P5 && !pageProject.LogProjectType.P6)
+                    {
+                        LabelProjectType.Text = "IP5" + (pageProject.LogProjectDuration == 2 ? " (Lang)" : "");
+                    }
+                    else if (!pageProject.LogProjectType.P5 && pageProject.LogProjectType.P6)
+                    {
+                        LabelProjectType.Text = "IP6"/* + (pageProject.LogProjectDuration == 2 ? " (Lang)" : "")*/;
+                    }
+                    else
+                    {
+                        LabelProjectType.Text = "?";
+                    }
+                    DivType.Visible = true;
+                    break;
+                default:
+                    //show ?
+                    LabelProjectType.Text = "?";
+                    DivType.Visible = true;
+                    break;
+            }
+        }
+
+        private void FillDropType()
+        {
+            DropType.DataSource = db.ProjectTypes.Where(t => t.P5 != t.P6).OrderBy(t => t.Id);
+            DropType.DataBind();
+            DropType.Items.Insert(0, new ListItem("(Bitte Auswählen)", dropTypeImpossibleValue));
+            DropType.SelectedValue = pageProject.LogProjectType?.Id.ToString() ?? dropTypeImpossibleValue;
+        }
+
+        private void DisplayPresentation()
+        {
+            DivPresentation.Visible = DivPresentationAdmin.Visible = DivBachelor.Visible = false;
+
+            if (pageProject.LogProjectType?.P6 ?? false && !(pageProject.LogProjectType?.P5 ?? false))
+            {
+                //P6
+                LabelProjectEndPresentation.Text = LabelProjectEndPresentationAdmin.Text = "Verteidigung:";
+                ProjectExhibition.Text = pageProject.ExhibitionBachelorThesis(db);
+                DivBachelor.Visible = !string.IsNullOrWhiteSpace(ProjectExhibition.Text);
+            }
+            else
+            {
+                //P5
+                LabelProjectEndPresentation.Text = LabelProjectEndPresentationAdmin.Text = "Schlusspräsentation:";
+            }
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Ongoing:
+                    if (pageProject.UserHasAdvisor2Rights())
+                    {
+                        if (pageProject.LogDefenceDate.HasValue)
+                        {
+                            var defenceDate = pageProject.LogDefenceDate.Value;
+                            TextBoxLabelPresentationDate.Text = defenceDate.ToString("dd.MM.yyyy");
+                            TextBoxLabelPresentationTime.Text = defenceDate.ToString("HH:mm");
+                            TextBoxLabelPresentationRoom.Text = pageProject.LogDefenceRoom;
+                        }
+                        DivPresentationAdmin.Visible = true;
+                    }
+                    else
+                    {
+                        if (pageProject.LogDefenceDate.HasValue)
+                        {
+                            var defenceDate = pageProject.LogDefenceDate.Value;
+                            LabelPresentation.Text = $"{defenceDate.ToString("dd.MM.yyyy HH:mm")}{(pageProject.LogDefenceRoom != null ? ", Raum: " + pageProject.LogDefenceRoom : "")}";
+                        }
+                        else
+                        {
+                            LabelPresentation.Text = "?";
+                        }
+                        DivPresentation.Visible = true;
+                    }
+                    break;
+                case ProjectState.Finished:
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedFinished:
+                case ProjectState.ArchivedCanceled:
+                default:
+                    if (pageProject.LogDefenceDate.HasValue)
+                    {
+                        var defenceDate = pageProject.LogDefenceDate.Value;
+                        LabelPresentation.Text = $"{defenceDate.ToString("dd.MM.yyyy HH:mm")}{(pageProject.LogDefenceRoom != null ? ", Raum: " + pageProject.LogDefenceRoom : "")}";
+                    }
+                    else
+                    {
+                        LabelPresentation.Text = "?";
+                    }
+                    DivPresentation.Visible = true;
+                    break;
+            }
+        }
+
+        private void DisplayExpert()
+        {
+            DivExpert.Visible = DivExpertAdmin.Visible = false;
+
+            if (pageProject.LogProjectType?.P6 ?? false && !(pageProject.LogProjectType?.P5 ?? false))
+            {
+                switch (pageProject.State)
+                {
+                    case ProjectState.Ongoing:
+                        if (pageProject.UserHasDepartmentManagerRights())
+                        {
+                            DropExpert.DataSource = db.Experts.Where(i => i.Active).OrderBy(a => a.Name).Select(x =>
+                                new {
+                                    Id = x.id,
+                                    Mail = x.Mail,
+                                    DropDownString = string.Format("{0} | {1}", x.Name, x.Knowhow).Replace(" ", HttpUtility.HtmlDecode("&nbsp;"))
+                                }
+                            );
+
+                            DropExpert.DataValueField = "Id";
+                            DropExpert.DataTextField = "DropDownString";
+                            DropExpert.DataBind();
+                            DropExpert.Items.Insert(0, new ListItem("-", dropExpertImpossibleValue));
+                            DropExpert.SelectedValue = pageProject.Expert?.id.ToString() ?? dropExpertImpossibleValue;
+                            
+                            SetExpertMail();
+
+                            DivExpertAdmin.Visible = true;
+                        }
+                        else
+                        {
+                            LabelExpertName.Text = !string.IsNullOrEmpty(pageProject.LogExpertID.ToString())
+                                ? $"<a href=\"mailto:{pageProject.Expert.Mail}\">{Server.HtmlEncode(pageProject.Expert.Name).Replace(" ", "&nbsp;")}</a>"
+                                : "Noch nicht entschieden";
+                            DivExpert.Visible = true;
+                        }
+                        break;
+                    default:
+                        LabelExpertName.Text = !string.IsNullOrWhiteSpace(pageProject.LogExpertID.ToString())
+                            ? $"<a href=\"mailto:{pageProject.Expert.Mail}\">{Server.HtmlEncode(pageProject.Expert.Name).Replace(" ", "&nbsp;")}</a>"
+                            : "?";
+                        DivExpert.Visible = true;
+                        break;
+                }
+
+
+            }
+        }
+
+        private void SetExpertMail()
+        {
+            LabelExpertMail.Text = DropExpert.SelectedIndex != 0
+                ? "<a href=\"mailto:" + db.Experts.SingleOrDefault(ex => ex.id == int.Parse(DropExpert.SelectedValue))?.Mail + "\">Mail</a>"
+                : "";
+        }
+
+        private void DisplayLanguage()
+        {
+            DivLanguage.Visible = DivLanguageAdmin.Visible = false;
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Ongoing:
+                    if (pageProject.UserHasAdvisor2Rights())
+                    {
+                        if (pageProject.LogLanguageEnglish != null && pageProject.LogLanguageGerman != null)
+                            if (pageProject.LogLanguageEnglish.Value && !pageProject.LogLanguageGerman.Value)
+                                DropLanguage.SelectedValue = "1";
+                            else if (!pageProject.LogLanguageEnglish.Value && pageProject.LogLanguageGerman.Value)
+                                DropLanguage.SelectedValue = "2";
+                            else
+                                DropLanguage.SelectedValue = "0";
+                        else
+                            DropLanguage.SelectedValue = "0";
+                        DivLanguageAdmin.Visible = true;
+                    }
+                    else
+                    {
+                        if (pageProject.LogLanguageEnglish != null && pageProject.LogLanguageGerman != null)
+                            if (pageProject.LogLanguageEnglish.Value && !pageProject.LogLanguageGerman.Value)
+                                LabelLanguage.Text = "Englisch";
+                            else if (!pageProject.LogLanguageEnglish.Value && pageProject.LogLanguageGerman.Value)
+                                DropLanguage.SelectedValue = "Deutsch";
+                            else
+                                DropLanguage.SelectedValue = "Noch nicht festgelegt";
+                        else
+                            DropLanguage.SelectedValue = "Noch nicht festgelegt";
+                        DivLanguage.Visible = true;
+                    }
+                    break;
+                default:
+                    if (pageProject.LogLanguageEnglish != null && pageProject.LogLanguageGerman != null)
+                        if (pageProject.LogLanguageEnglish.Value && !pageProject.LogLanguageGerman.Value)
+                            LabelLanguage.Text = "Englisch";
+                        else if (!pageProject.LogLanguageEnglish.Value && pageProject.LogLanguageGerman.Value)
+                            LabelLanguage.Text = "Deutsch";
+                        else
+                            LabelLanguage.Text = "Noch nicht festgelegt";
+                    else
+                        DropLanguage.SelectedValue = "Noch nicht festgelegt";
+                    DivLanguage.Visible = true;
+                    break;
+            }
+        }
+
+        private void DisplayBillingStatus()
+        {
+            DivBillingStatus.Visible = DivBillingStatusAdmin.Visible = false;
+            LabelBillingStatus.ForeColor = System.Drawing.Color.Empty;
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Ongoing:
+                    if (pageProject.UserHasAdvisor1Rights())
+                    {
+                        DropBillingStatus.DataSource = db.BillingStatus.Where(bs => bs.RequiresProjectResults).OrderBy(i => i.DisplayName);
+                        DropBillingStatus.DataBind();
+                        DropBillingStatus.Items.Insert(0, new ListItem("(Bitte Auswählen)", dropBillingStatusImpossibleValue));
+                        DropBillingStatus.SelectedValue = pageProject.BillingStatusID?.ToString() ?? dropBillingStatusImpossibleValue;
+
+                        DivBillingStatusAdmin.Visible = true;
+                    }
+                    else
+                    {
+                        if (pageProject.UserIsAdvisor2() && pageProject.BillingStatus == null)
+                        {
+                            LabelBillingStatus.Text = "Der Verrechnungsstatus kann nur vom Hauptbetreuer gesetzt werden.";
+                            LabelBillingStatus.ForeColor = System.Drawing.Color.Red;
+                        }
+                        else
+                        {
+                            LabelBillingStatus.Text = pageProject.BillingStatus?.DisplayName ?? "?";
+                        }
+                        DivBillingStatus.Visible = true;
+                    }
+                    break;
+                default:
+                    LabelBillingStatus.Text = pageProject.BillingStatus?.DisplayName ?? "?";
+                    DivBillingStatus.Visible = true;
+                    break;
+            }
+        }
+
+        private void DisplayGrades()
+        {
+            NumGradeStudent1.Visible = NumGradeStudent2.Visible = NumGradeStudent1Admin.Visible = NumGradeStudent2Admin.Visible = DivGradeWarning.Visible = false;
+            NumGradeStudent1.ForeColor = System.Drawing.Color.Empty;
+            NumGradeStudent2.ForeColor = System.Drawing.Color.Empty;
 
             //set the Labels to the Grades
-            lblGradeStudent1.Text = $"Note von {project.LogStudent1Name ?? "Student/in 1"}:";
-            lblGradeStudent2.Text = $"Note von {project.LogStudent2Name ?? "Student/in 2"}:";
+            LabelGradeStudent1.Text = $"Note von {pageProject.LogStudent1Name ?? "Student/in 1"}:";
+            LabelGradeStudent2.Text = $"Note von {pageProject.LogStudent2Name ?? "Student/in 2"}:";
 
-            //Set the Grades
-            nbrGradeStudent1.Text = project.LogGradeStudent1 == null
-                ? ""
-                : project?.LogGradeStudent1.Value.ToString("N1", CultureInfo.InvariantCulture);
-            nbrGradeStudent2.Text = project.LogGradeStudent2 == null
-                ? ""
-                : project?.LogGradeStudent2.Value.ToString("N1", CultureInfo.InvariantCulture);
+            switch (pageProject.State)
+            {
+                case ProjectState.Ongoing:
+                    if (pageProject.UserHasAdvisor1Rights())
+                    {
+                        NumGradeStudent1Admin.Text = pageProject.LogGradeStudent1?.ToString("N1", CultureInfo.InvariantCulture) ?? "";
+                        NumGradeStudent2Admin.Text = pageProject.LogGradeStudent2?.ToString("N1", CultureInfo.InvariantCulture) ?? "";
 
-            //Set the data from the addressform
-            radioClientType.SelectedIndex = project.ClientType;
-            txtClientCompany.Text = project.ClientCompany;
-            drpClientTitle.SelectedValue = project.ClientAddressTitle == "Herr" ? "1" : "2";
-            txtClientName.Text = project.ClientPerson;
-            txtClientDepartment.Text = project.ClientAddressDepartment;
-            txtClientStreet.Text = project.ClientAddressStreet;
-            txtClientPLZ.Text = project.ClientAddressPostcode;
-            txtClientCity.Text = project.ClientAddressCity;
-            txtClientReference.Text = project.ClientReferenceNumber;
-            txtClientEmail.Text = project.ClientMail;
+                        SetGradeFieldStatus();
+                        UpdateGradeFields.Update();
+                    }
+                    else
+                    {
+                        NumGradeStudent1.Text = pageProject.LogGradeStudent1?.ToString("N1", CultureInfo.InvariantCulture) ?? "?";
+                        NumGradeStudent2.Text = pageProject.LogGradeStudent2?.ToString("N1", CultureInfo.InvariantCulture) ?? "?";
 
-            UpdateClientInfoFormVisibility();
+                        if (pageProject.UserIsAdvisor2() && pageProject.LogGradeStudent1 == null)
+                        {
+                            NumGradeStudent1.Text = "Noten können nur vom Hauptbetreuer gesetzt werden.";
+                            NumGradeStudent1.ForeColor = System.Drawing.Color.Red;
+                        }
+                        if (pageProject.UserIsAdvisor2() && pageProject.LogGradeStudent2 == null)
+                        {
+                            NumGradeStudent2.Text = "Noten können nur vom Hauptbetreuer gesetzt werden.";
+                            NumGradeStudent2.ForeColor = System.Drawing.Color.Red;
+                        }
+                        
+                        NumGradeStudent1.Visible = NumGradeStudent2.Visible = true;
+                    }
+                    break;
+                default:
+                    NumGradeStudent1.Text = pageProject.LogGradeStudent1?.ToString("N1", CultureInfo.InvariantCulture) ?? "?";
+                    NumGradeStudent2.Text = pageProject.LogGradeStudent2?.ToString("N1", CultureInfo.InvariantCulture) ?? "?";
+                    NumGradeStudent1.Visible = NumGradeStudent2.Visible = true;
+                    break;
+            }
 
-            //disable for unauthorized Users
-            ProjectTitle.Enabled = project.UserCanEditAfterStart() && project.CanEditTitle();
+            DivGradeStudent1.Visible = true;
+            DivGradeStudent2.Visible = !string.IsNullOrEmpty(pageProject.LogStudent2Mail);
 
-            drpLogLanguage.Enabled =
-                nbrGradeStudent1.Enabled =
-                    nbrGradeStudent2.Enabled =
-                        BtnSaveBetween.Enabled =
-                            BtnSaveChanges.Enabled =
-                                drpBillingstatus.Enabled =
-                                    chkNDA.Enabled = 
-                                    cbxWebSummaryChecked.Enabled = radioClientType.Enabled = txtClientCompany.Enabled = drpClientTitle.Enabled = txtClientName.Enabled = txtClientDepartment.Enabled = txtClientStreet.Enabled = txtClientPLZ.Enabled = txtClientCity.Enabled = txtClientReference.Enabled = txtClientEmail.Enabled = project.UserCanEditAfterStart();
-
-            DivExpert.Visible = project.Expert != null && !ShibUser.CanVisitAdminPage();
-            DivExpertAdmin.Visible = ShibUser.CanVisitAdminPage() && project.LogStudent1Mail != null && project.LogProjectTypeID == 2;
-
-
-            divBachelor.Visible = project.LogProjectType?.P6 ?? false;
-
-            divGradeStudent1.Visible = !string.IsNullOrEmpty(project.LogStudent1Name);
-            divGradeStudent2.Visible = !string.IsNullOrEmpty(project.LogStudent2Name);
-            divGradeWarning.Visible = !string.IsNullOrEmpty(project.LogStudent1Name) || !string.IsNullOrEmpty(project.LogStudent2Name);
-
-            divFileUpload.Visible = ShibUser.GetEmail() == project.Advisor1?.Mail ||
-                                    ShibUser.GetEmail() == project.Advisor2?.Mail || ShibUser.CanEditAllProjects();
-
-            SetGradeFieldStatus();
-            updateGradeFields.Update();
         }
+
+        private void DisplayClient()
+        {
+            UpdateClientInfo();
+            UpdateClientVisibility();
+        }
+
+        private void DisplayButtons()
+        {
+            BtnSaveBetween.Visible = BtnSaveChanges.Visible = true;
+            BtnFinishProject.Visible = BtnCancelProject.Visible = BtnKickoffProject.Visible = false;
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Published:
+                    BtnSaveBetween.Enabled = BtnSaveChanges.Enabled = pageProject.UserHasDepartmentManagerRights();
+                    BtnKickoffProject.Visible = true;
+                    BtnKickoffProject.Enabled = pageProject.UserHasDepartmentManagerRights();
+                    break;
+                case ProjectState.Ongoing:
+                    BtnSaveBetween.Enabled = BtnSaveChanges.Enabled = pageProject.UserHasAdvisor2Rights();
+                    BtnFinishProject.Visible = true;
+                    BtnFinishProject.Enabled = pageProject.UserHasAdvisor1Rights();
+                    BtnCancelProject.Visible = true;
+                    BtnCancelProject.Enabled = pageProject.UserHasAdvisor1Rights();
+                    break;
+                default:
+                    BtnSaveBetween.Enabled = BtnSaveChanges.Enabled = BtnFinishProject.Enabled = BtnCancelProject.Enabled = BtnKickoffProject.Enabled = false;
+                    break;
+            }
+
+            BtnFinishProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Finished));
+            BtnCancelProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Canceled));
+            BtnKickoffProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Ongoing));
+        }
+
+        #endregion
+
+        #region Events
 
         public void DrpExpert_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ExpertMail.Text = drpExpert.SelectedIndex != 0
-                ? "<a href=\"mailto:" + db.Experts.FirstOrDefault(ex => ex.id == int.Parse(drpExpert.SelectedValue))?.Mail + "\">Mail</a>"
-                : "";
+            SetExpertMail();
         }
+
+        protected void BtnFinishProject_OnClick(object sender, EventArgs e)
+        {
+            var validationMessageSave = GenerateValidationMessageForSave();
+            if (validationMessageSave == null)
+            {
+                var validationMessageFinish = GenerateValidationMessageForFinish();
+                if (validationMessageFinish == null)
+                {
+                    SaveChanges();
+                    pageProject.ModificationDate = DateTime.Now;
+                    pageProject.LastEditedBy = ShibUser.GetEmail();
+                    pageProject.Finish(db);
+                    Response.Redirect("Projectlist");
+                }
+                else
+                {
+                    ReturnAlert(validationMessageFinish);
+                }
+            }
+            else
+            {
+                ReturnAlert(validationMessageSave);
+            }
+        }
+
+        protected void BtnCancelProject_OnClick(object sender, EventArgs e)
+        {
+            var validationMessageCancel = GenerateValidationMessageForCancel();
+            if (validationMessageCancel == null)
+            {
+                pageProject.ModificationDate = DateTime.Now;
+                pageProject.LastEditedBy = ShibUser.GetEmail();
+                pageProject.LogGradeStudent1 = 1;
+                if (pageProject.LogStudent2Mail != null) pageProject.LogGradeStudent2 = 1;
+                pageProject.BillingStatus = db.BillingStatus.Single(bs => bs.DisplayName == "Abgebrochen");
+                pageProject.Cancel(db);
+                Response.Redirect("Projectlist");
+            }
+            else
+            {
+                ReturnAlert(validationMessageCancel);
+            }
+        }
+
+        protected void BtnKickoffProject_OnClick(object sender, EventArgs e)
+        {
+            var validationMessageSave = GenerateValidationMessageForSave();
+            if (validationMessageSave == null)
+            {
+                var validationMessageKickoff = GenerateValidationMessageForKickoff();
+                if (validationMessageKickoff == null)
+                {
+                    SaveChanges();
+                    pageProject.ModificationDate = DateTime.Now;
+                    pageProject.LastEditedBy = ShibUser.GetEmail();
+                    pageProject.Kickoff(db);
+                    Response.Redirect("Projectlist");
+                }
+                else
+                {
+                    ReturnAlert(validationMessageKickoff);
+                }
+            }
+            else
+            {
+                ReturnAlert(validationMessageSave);
+            }
+        }
+
+        protected void BtnSaveChanges_OnClick(object sender, EventArgs e)
+        {
+            var validationMessage = GenerateValidationMessageForSave();
+
+            if (validationMessage == null)
+            {
+                SaveChanges();
+                pageProject.ModificationDate = DateTime.Now;
+                pageProject.LastEditedBy = ShibUser.GetEmail();
+                db.SubmitChanges();
+                Response.Redirect("Projectlist");
+            }
+            else
+            {
+                ReturnAlert(validationMessage);
+            }
+        }
+
+        protected void BtnCancel_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("Projectlist");
+        }
+
+        protected void DropBillingStatusChanged(object sender, EventArgs e)
+        {
+            SetGradeFieldStatus();
+            UpdateGradeFields.Update();
+
+            var billingStatus = DropBillingStatus.Visible
+                ? DropBillingStatus.SelectedValue != dropBillingStatusImpossibleValue
+                    ? db.BillingStatus.Single(bs => bs.Id == int.Parse(DropBillingStatus.SelectedValue))
+                    : null
+                : pageProject.BillingStatus;
+
+            if (billingStatus == null) return;
+
+            if (billingStatus.ShowAddressOnInfoPage && radioClientType.SelectedIndex == (int)ClientType.Internal)
+            {
+                radioClientType.SelectedIndex = (int)ClientType.Company;
+                UpdateClientVisibility();
+            }
+        }
+
+        protected void DropLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetGradeFieldStatus();
+            UpdateGradeFields.Update();
+        }
+
+        protected void cbxWebSummaryChecked_CheckedChanged(object sender, EventArgs e)
+        {
+            SetGradeFieldStatus();
+            UpdateGradeFields.Update();
+        }
+
+        private bool CheckGradeFieldStatus()
+        {
+            return cbxWebSummaryChecked.Checked
+                && DropBillingStatus.SelectedValue != dropBillingStatusImpossibleValue
+                && DropLanguage.SelectedIndex != 0;
+        }
+
+        private void SetGradeFieldStatus()
+        {
+            if (pageProject.State == ProjectState.Ongoing && pageProject.UserHasAdvisor1Rights())
+            {
+                if (CheckGradeFieldStatus())
+                {
+                    NumGradeStudent1.Visible = NumGradeStudent2.Visible = false;
+                    NumGradeStudent1Admin.Visible = NumGradeStudent2Admin.Visible = true;
+                }
+                else
+                {
+                    NumGradeStudent1Admin.Visible = NumGradeStudent2Admin.Visible = false;
+                    NumGradeStudent1.Visible = NumGradeStudent2.Visible = true;
+                    NumGradeStudent1.Text = "Die Noten können erst eingetragen werden, wenn die Felder: WebSummary, Verrechnungsstatus und Sprache ausgefüllt sind.";
+                    NumGradeStudent2.Text = "Die Noten können erst eingetragen werden, wenn die Felder: WebSummary, Verrechnungsstatus und Sprache ausgefüllt sind.";
+                    NumGradeStudent1.ForeColor = System.Drawing.Color.Red;
+                    NumGradeStudent2.ForeColor = System.Drawing.Color.Red;
+                }
+
+                DivGradeWarning.Visible = true;
+            }
+            else
+            {
+                DivGradeWarning.Visible = false;
+            }
+        }
+
+        protected void BtnSaveBetween_OnClick(object sender, EventArgs e)
+        {
+            var validationMessage = GenerateValidationMessageForSave();
+
+            if (validationMessage == null)
+            {
+                SaveChanges();
+                pageProject.ModificationDate = DateTime.Now;
+                pageProject.LastEditedBy = ShibUser.GetEmail();
+                db.SubmitChanges();
+                Response.Redirect("ProjectInfoPage?id=" + pageProject.Id);
+            }
+            else
+            {
+                ReturnAlert(validationMessage);
+            }
+        }
+
+        protected void RadioClientType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateClientVisibility();
+        }
+
+        private void UpdateClientInfo()
+        {
+            radioClientType.SelectedIndex = pageProject.ClientType;
+            LabelClientCompany.Text = txtClientCompanyAdmin.Text = pageProject.ClientCompany ?? "";
+            LabelClientTitle.Text = pageProject.ClientAddressTitle ?? "";
+            drpClientTitleAdmin.SelectedValue = pageProject.ClientAddressTitle == "Herr" ? "1" : "2";
+            LabelClientName.Text = txtClientNameAdmin.Text = pageProject.ClientPerson ?? "";
+            LabelClientEmail.Text = !string.IsNullOrWhiteSpace(pageProject.ClientMail)
+                ? $"<a href=\"mailto:{pageProject.ClientMail}\">{Server.HtmlEncode(pageProject.ClientMail).Replace(" ", "&nbsp;")}</a>"
+                : "";
+            txtClientEmailAdmin.Text = pageProject.ClientMail ?? "";
+            LabelClientDepartment.Text = txtClientDepartmentAdmin.Text = pageProject.ClientAddressDepartment ?? "";
+            LabelClientStreet.Text = txtClientStreetAdmin.Text = pageProject.ClientAddressStreet ?? "";
+            LabelClientPLZ.Text = txtClientPLZAdmin.Text = pageProject.ClientAddressPostcode ?? "";
+            LabelClientCity.Text = txtClientCityAdmin.Text = pageProject.ClientAddressCity ?? "";
+            LabelClientReference.Text = txtClientReferenceAdmin.Text = pageProject.ClientReferenceNumber ?? "";
+            chkNDA.Checked = pageProject.UnderNDA;
+        }
+
+        private void UpdateClientVisibility()
+        {
+            LabelClientCompany.Visible = txtClientCompanyAdmin.Visible =
+                LabelClientTitle.Visible = drpClientTitleAdmin.Visible =
+                    LabelClientName.Visible = txtClientNameAdmin.Visible =
+                        LabelClientEmail.Visible = txtClientEmailAdmin.Visible =
+                            LabelClientDepartment.Visible = txtClientDepartmentAdmin.Visible =
+                                LabelClientStreet.Visible = txtClientStreetAdmin.Visible =
+                                    LabelClientPLZ.Visible = txtClientPLZAdmin.Visible =
+                                        LabelClientCity.Visible = txtClientCityAdmin.Visible =
+                                            LabelClientReference.Visible = txtClientReferenceAdmin.Visible = false;
+
+            switch (pageProject.State)
+            {
+                case ProjectState.Ongoing:
+                    if (pageProject.UserHasAdvisor2Rights())
+                    {
+                        txtClientCompanyAdmin.Visible =
+                            drpClientTitleAdmin.Visible =
+                                txtClientNameAdmin.Visible =
+                                    txtClientEmailAdmin.Visible =
+                                        txtClientDepartmentAdmin.Visible =
+                                            txtClientStreetAdmin.Visible =
+                                                txtClientPLZAdmin.Visible =
+                                                    txtClientCityAdmin.Visible =
+                                                        txtClientReferenceAdmin.Visible = true;
+                        radioClientType.Enabled = true;
+                        chkNDA.Enabled = true;
+                    }
+                    else
+                    {
+                        LabelClientCompany.Visible =
+                            LabelClientTitle.Visible =
+                                LabelClientName.Visible =
+                                    LabelClientEmail.Visible =
+                                        LabelClientDepartment.Visible =
+                                            LabelClientStreet.Visible =
+                                                LabelClientPLZ.Visible =
+                                                    LabelClientCity.Visible =
+                                                        LabelClientReference.Visible = true;
+                        radioClientType.Enabled = false;
+                        chkNDA.Enabled = false;
+                    }
+                    break;
+                default:
+                    LabelClientCompany.Visible =
+                        LabelClientTitle.Visible =
+                            LabelClientName.Visible =
+                                LabelClientEmail.Visible =
+                                    LabelClientDepartment.Visible =
+                                        LabelClientStreet.Visible =
+                                            LabelClientPLZ.Visible =
+                                                LabelClientCity.Visible =
+                                                    LabelClientReference.Visible = true;
+                    radioClientType.Enabled = false;
+                    chkNDA.Enabled = false;
+                    break;
+            }
+
+            switch (radioClientType.SelectedValue)
+            {
+                case "Intern":
+                    divClientForm.Visible = false;
+                    break;
+                case "Company":
+                    divClientForm.Visible = true;
+                    divClientCompany.Visible = true;
+                    divClientDepartment.Visible = true;
+                    break;
+                case "PrivatePerson":
+                    divClientForm.Visible = true;
+                    divClientCompany.Visible = false;
+                    divClientDepartment.Visible = false;
+                    break;
+                default:
+                    throw new Exception($"Unexpected radioClientType {radioClientType.SelectedValue}");
+            }
+        }
+
+        #endregion
+
+        #region Save
+
+        private void SaveChanges()
+        {
+            switch(pageProject.State)
+            {
+                case ProjectState.Published:
+
+                    if (pageProject.UserHasDepartmentManagerRights())
+                    {
+                        //Name
+                        pageProject.Name = ProjectTitleAdmin.Text.FixupParagraph();
+
+                        //Students
+                        pageProject.LogStudent1Name = string.IsNullOrWhiteSpace(Student1NameAdmin.Text)
+                            ? null
+                            : Student1NameAdmin.Text;
+                        pageProject.LogStudent1Mail = string.IsNullOrWhiteSpace(Student1MailAdmin.Text)
+                            ? null
+                            : Student1MailAdmin.Text;
+                        pageProject.LogStudent2Name = string.IsNullOrWhiteSpace(Student2NameAdmin.Text)
+                            ? null
+                            : Student2NameAdmin.Text;
+                        pageProject.LogStudent2Mail = string.IsNullOrWhiteSpace(Student2MailAdmin.Text)
+                            ? null
+                            : Student2MailAdmin.Text;
+
+                        //Type and duration
+                        pageProject.LogProjectType = DropType.SelectedValue == dropTypeImpossibleValue
+                            ? null
+                            : db.ProjectTypes.Single(t => t.Id == int.Parse(DropType.SelectedValue));
+
+                        pageProject.LogProjectDuration = DropDuration.SelectedValue == dropDurationImpossibleValue
+                            ? (byte?)null
+                            : byte.Parse(DropDuration.SelectedValue);
+
+                    }
+                    break;
+                case ProjectState.Ongoing:
+
+                    if (pageProject.UserHasAdvisor2Rights())
+                    {
+                        //Name
+                        if (ProjectTitleAdmin.Visible)
+                        {
+                            pageProject.Name = ProjectTitleAdmin.Text.FixupParagraph();
+                        }
+
+                        //Presentation
+                        if (string.IsNullOrWhiteSpace(TextBoxLabelPresentationDate.Text) && string.IsNullOrWhiteSpace(TextBoxLabelPresentationTime.Text))
+                        {
+                            pageProject.LogDefenceDate = (DateTime?)null;
+                        }
+                        else
+                        {
+                            pageProject.LogDefenceDate = DateTime.ParseExact($"{TextBoxLabelPresentationDate.Text} {TextBoxLabelPresentationTime.Text}", "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                        }
+
+                        pageProject.LogDefenceRoom = string.IsNullOrWhiteSpace(TextBoxLabelPresentationRoom.Text)
+                            ? null
+                            : TextBoxLabelPresentationRoom.Text;
+                        
+
+                        //Language
+                        switch (DropLanguage.SelectedValue)
+                        {
+                            case "1":
+                                pageProject.LogLanguageEnglish = true;
+                                pageProject.LogLanguageGerman = false;
+                                break;
+                            case "2":
+                                pageProject.LogLanguageEnglish = false;
+                                pageProject.LogLanguageGerman = true;
+                                break;
+                            default:
+                                pageProject.LogLanguageGerman = null;
+                                pageProject.LogLanguageEnglish = null;
+                                break;
+                        }
+
+                        //WebSummary
+                        pageProject.WebSummaryChecked = cbxWebSummaryChecked.Checked;
+
+                        //Client
+                        pageProject.ClientType = radioClientType.SelectedIndex;
+                        pageProject.ClientCompany = txtClientCompanyAdmin.Text;
+                        pageProject.ClientAddressTitle = drpClientTitleAdmin.SelectedValue == "1" ? "Herr" : "Frau";
+                        pageProject.ClientPerson = txtClientNameAdmin.Text;
+                        pageProject.ClientMail = txtClientEmailAdmin.Text;
+                        pageProject.ClientAddressDepartment = txtClientDepartmentAdmin.Text == "" ? null : txtClientDepartmentAdmin.Text;
+                        pageProject.ClientAddressStreet = txtClientStreetAdmin.Text == "" ? null : txtClientStreetAdmin.Text;
+                        pageProject.ClientAddressPostcode = txtClientPLZAdmin.Text == "" ? null : txtClientPLZAdmin.Text;
+                        pageProject.ClientAddressCity = txtClientCityAdmin.Text == "" ? null : txtClientCityAdmin.Text;
+                        pageProject.ClientReferenceNumber = txtClientReferenceAdmin.Text == "" ? null : txtClientReferenceAdmin.Text;
+
+                        pageProject.UnderNDA = chkNDA.Checked;
+
+                    }
+
+                    if (pageProject.UserHasAdvisor1Rights())
+                    {
+                        //BillingStatus
+                        pageProject.BillingStatus = DropBillingStatus.SelectedIndex == 0
+                            ? null
+                            : db.BillingStatus.Single(b => b.Id == int.Parse(DropBillingStatus.SelectedValue));
+
+                        //Grades
+                        if (!string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text) && CheckGradeFieldStatus() && pageProject.LogGradeStudent1 == null)
+                        {
+                            pageProject.LogGradeStudent1 = float.Parse(NumGradeStudent1Admin.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text) && CheckGradeFieldStatus() && pageProject.LogGradeStudent2 == null)
+                        {
+                            pageProject.LogGradeStudent2 = float.Parse(NumGradeStudent2Admin.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                        }
+                    }
+
+                    if (pageProject.UserHasDepartmentManagerRights())
+                    {
+                        //Expert
+                        if (pageProject.LogProjectType.P6)
+                        {
+                            pageProject.Expert = DropExpert.SelectedIndex == 0
+                                ? null
+                                : db.Experts.First(ex => ex.id == int.Parse(DropExpert.SelectedValue));
+                        }
+                    }
+                    break;
+                default:
+                    throw new UnauthorizedAccessException();
+            }
+        }
+
+        private string GenerateValidationMessageForSave()
+        {
+            switch(pageProject.State)
+            {
+                case ProjectState.Published:
+                    return null;
+                    
+                case ProjectState.Ongoing:
+                    //Presentation
+                    if (string.IsNullOrWhiteSpace(TextBoxLabelPresentationDate.Text) ^ string.IsNullOrWhiteSpace(TextBoxLabelPresentationTime.Text))
+                    {
+                        return "Bitte füllen Sie das Präsentationsdatum und die Präsentationszeit aus.";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(TextBoxLabelPresentationDate.Text) && !string.IsNullOrWhiteSpace(TextBoxLabelPresentationTime.Text))
+                    {
+                        if(!DateTime.TryParseExact($"{TextBoxLabelPresentationDate.Text} {TextBoxLabelPresentationTime.Text}", "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date))
+                            return "Bitte geben Sie ein valides Präsentationsdatum an.";
+
+                        if (date < pageProject.Semester?.StartDate || date > pageProject.Semester?.StartDate + TimeSpan.FromDays(360))
+                            return "Bitte geben Sie ein valides Präsentationsdatum an.";
+                    }
+
+                    //Client
+                    if (radioClientType.SelectedValue != "Intern" && (txtClientCompanyAdmin.Text + txtClientNameAdmin.Text == "" || txtClientStreetAdmin.Text == "" || txtClientPLZAdmin.Text == "" || txtClientCityAdmin.Text == "" || txtClientEmailAdmin.Text == ""))
+                    {
+                        return "Bitte füllen Sie alle Pflichtfelder aus.";
+                    }
+
+                    //BillingStatus
+                    if (DivBillingStatusAdmin.Visible)
+                    {
+                        var billingStatus = DropBillingStatus.SelectedIndex == 0
+                            ? null
+                            : db.BillingStatus.Single(b => b.Id == int.Parse(DropBillingStatus.SelectedValue));
+
+                        if (billingStatus?.ShowAddressOnInfoPage == true && pageProject.ClientType == (int)ClientType.Internal)
+                        {
+                            return "Dieser Verrechnungsstatus ist nur bei externen Auftraggebern verfügbar.";
+                        }
+                    }
+
+                    //Grades
+                    if (!CheckGradeFieldStatus())
+                    {
+                        if (pageProject.LogGradeStudent1 != null && !string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text))
+                        {
+                            return "Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen.";
+                        }
+
+                        if (pageProject.LogGradeStudent2 != null && !string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text))
+                        {
+                            return "Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen.";
+                        }
+                    }
+                    break;
+                default:
+                    return "In diesem Projektstatus sind keine Änderungen erlaubt.";
+            }
+
+            return null;
+        }
+
+        private string GenerateValidationMessageForKickoff()
+        {
+            //Type
+            if (DropType.SelectedValue == dropTypeImpossibleValue)
+                return "Bitte wählen Sie eine Projektart aus.";
+
+            //Duration
+            if (DropDuration.SelectedValue == dropDurationImpossibleValue)
+                return "Bitte wählen Sie eine Projektdauer aus.";
+
+            //Long IP6 ar no longer possible
+            if (db.ProjectTypes.Single(t => t.Id == int.Parse(DropType.SelectedValue)).P6 && int.Parse(DropDuration.SelectedValue) == 2)
+                return "Ein langes IP6 wird nicht mehr angeboten. Bitte wählen Sie \"Normal\"";
+
+            //Students
+            var stud1Name = Student1NameAdmin.Text;
+            var stud1Mail = Student1MailAdmin.Text;
+            var stud2Name = Student2NameAdmin.Text;
+            var stud2Mail = Student2MailAdmin.Text;
+
+            Regex studentMailRegex1 = new Regex(@".*\..*@students\.fhnw\.ch");
+            Regex studentMailRegex2 = new Regex(@".*\..*@fhnw\.ch");
+
+            if (stud1Mail.Trim().Length != 0 && stud1Name.Trim().Length == 0)
+                return "Bitte geben Sie den Namen der ersten Person an (Vorname Nachname).";
+
+            if (stud1Name.Trim().Length != 0 && stud1Mail.Trim().Length == 0)
+                return "Bitte geben Sie die E-Mail-Adresse der ersten Person an.";
+
+            if (stud1Mail.Trim().Length != 0 && stud1Name.Trim().Length != 0)
+            {
+                System.Text.RegularExpressions.Match match1 = studentMailRegex1.Match(stud1Mail);
+                System.Text.RegularExpressions.Match match2 = studentMailRegex2.Match(stud1Mail);
+                if (!match1.Success && !match2.Success)
+                    return "Bitte geben Sie eine gültige E-Mail-Adresse der ersten Person an. (vorname.nachname@students.fhnw.ch oder vorname.nachname@fhnw.ch)";
+            }
+
+            if (stud2Mail.Trim().Length != 0 && stud2Name.Trim().Length == 0)
+                return "Bitte geben Sie den Namen der zweiten Person an (Vorname Nachname).";
+
+            if (stud2Name.Trim().Length != 0 && stud2Mail.Trim().Length == 0)
+                return "Bitte geben Sie die E-Mail-Adresse der zweiten Person an.";
+
+            if (stud2Mail.Trim().Length != 0 && stud2Name.Trim().Length != 0)
+            {
+                System.Text.RegularExpressions.Match match1 = studentMailRegex1.Match(stud2Mail);
+                System.Text.RegularExpressions.Match match2 = studentMailRegex2.Match(stud2Mail);
+                if (!match1.Success && !match2.Success)
+                    return "Bitte geben Sie eine gültige E-Mail-Adresse der zweiten Person an. (vorname.nachname@students.fhnw.ch oder vorname.nachname@fhnw.ch)";
+            }
+
+            return null;
+        }
+
+        private string GenerateValidationMessageForFinish()
+        {
+            //Expert
+            if (pageProject.LogProjectType.P6)
+            {
+                if (pageProject.UserHasDepartmentManagerRights() && DropExpert.SelectedValue == dropExpertImpossibleValue)
+                {
+                    return "Bitte wählen Sie einen Experten aus.";
+                }
+
+                if (!pageProject.UserHasDepartmentManagerRights() && pageProject.Expert == null)
+                {
+                    return "Um das Projekt abzuschliessen muss der Experte gesetzt sein.";
+                }
+            }
+
+            //Language
+            if (DropLanguage.SelectedValue == dropLanguageImpossibleValue)
+                return "Bitte geben Sie die Durchführungssprache an.";
+
+            //WebSummary
+            if (!cbxWebSummaryChecked.Checked)
+                return "Bitte prüfen Sie das WebSummary";
+
+            //BillingStatus
+            if (DropBillingStatus.SelectedValue == dropBillingStatusImpossibleValue)
+                return "Bitte geben Sie den Verrechnungsstatus an.";
+
+            //Grades
+            if (pageProject.LogStudent1Mail != null)
+            {
+                if (string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text))
+                    return $"Bitte geben Sie die Note von {pageProject.LogStudent1Name} an.";
+
+                if (float.TryParse(NumGradeStudent1Admin.Text.Replace(",", "."), NumberStyles.Float, CultureInfo.InvariantCulture, out float grade))
+                {
+                    if (grade < 1 || grade > 6)
+                        return "Bitte geben Sie eine Note im Bereich 1-6 an.";
+                }
+                else
+                {
+                    return "Bitte geben Sie die Note korrekt an (z.B. 4 oder 4.5)";
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("No Student1 in State Ongoing is not allowed");
+            }
+
+            if (pageProject.LogStudent2Mail != null)
+            {
+                if (string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text))
+                    return $"Bitte geben Sie die Note von {pageProject.LogStudent2Name} an.";
+
+                if (float.TryParse(NumGradeStudent2Admin.Text.Replace(",", "."), NumberStyles.Float, CultureInfo.InvariantCulture, out float grade))
+                {
+                    if (grade < 1 || grade > 6)
+                        return "Bitte geben Sie eine Note im Bereich 1-6 an.";
+                }
+                else
+                {
+                    return "Bitte geben Sie die Note korrekt an (z.B. 4 oder 4.5)";
+                }
+            }
+            
+            //Client
+            if (radioClientType.SelectedIndex != (int)ClientType.Internal)
+            {
+                if (string.IsNullOrWhiteSpace(txtClientEmailAdmin.Text))
+                    return "Bitte geben Sie die E-Mail des Kunden an.";
+
+                if (radioClientType.SelectedIndex == (int)ClientType.Company && string.IsNullOrWhiteSpace(txtClientCompanyAdmin.Text))
+                    return "Bitte geben Sie den Namen des Unternehmen an.";
+            }
+            
+            return null;
+        }
+
+        private string GenerateValidationMessageForCancel()
+        {
+            return null;
+        }
+
+        private void ReturnAlert(string message)
+        {
+            var sb = new StringBuilder();
+            sb.Append("<script type = 'text/javascript'>");
+            sb.Append("window.onload=function(){");
+            sb.Append("alert('");
+            sb.Append(message);
+            sb.Append("')};");
+            sb.Append("</script>");
+            ClientScript.RegisterClientScriptBlock(GetType(), "alert", sb.ToString());
+        }
+
+        #endregion
+
+        #region Attachments
 
         private ProjectSingleAttachment GetProjectSingleAttachment(Attachements attach)
         {
@@ -325,264 +1311,9 @@ namespace ProStudCreator
             return Math.Round(size / ((float)1024 * 1024 * 1024), 2) + " GB";
         }
 
-
-        private void SetProjectDeliveryLabels()
-        {
-            ProjectEndPresentation.Text = "?";
-
-            if (type == ProjectTypes.IP5) //IP5 1/" Semester
-            {
-                lblProjectEndPresentation.Text = "Schlusspräsentation:";
-                ProjectEndPresentation.Text =
-                    "Die Studierenden sollen die Schlusspräsentation (Termin, Ort, Auftraggeber) selbständig organisieren.";
-            }
-            else if (project.LogProjectDuration == 1 && type == ProjectTypes.IP6) //IP6 1 Semester
-            {
-                lblProjectEndPresentation.Text = "Verteidigung:";
-                ProjectEndPresentation.Text = project.Semester.DefenseIP6Start + " - " + project.Semester.DefenseIP6End;
-            }
-            else if (project.LogProjectDuration == 2 && type == ProjectTypes.IP6) //IP6 2 Semester
-            {
-                lblProjectEndPresentation.Text = "Verteidigung:";
-                ProjectEndPresentation.Text = project.Semester.DefenseIP6BStart + " - " + project.Semester.DefenseIP6BEnd;
-            }
-            else
-            {
-                lblProjectEndPresentation.Text = "Schlusspräsentation:";
-            }
-
-            var deliveryDate = project.GetDeliveryDate();
-            ProjectDelivery.Text = deliveryDate?.ToString("dd.MM.yyyy") ?? "?";
-
-            if (deliveryDate.HasValue)
-            {
-                if (project.CanEditTitle())
-                {
-                    if (project.LogProjectType?.P5 == true)
-                        ChangeTitleDate.Text = "";
-                    else
-                        ChangeTitleDate.Text = $"Titeländerung noch bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).AddDays(-2).ToString("dd.MM.yyyy")} möglich!";
-                }
-                else
-                    ChangeTitleDate.Text = $"Titeländerung war nur bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).AddDays(-2).ToString("dd.MM.yyyy")} möglich!";
-            }
-
-            ProjectEndPresentation.Text = (project.LogDefenceDate?.ToString() ?? "") +
-                                        (project.LogDefenceRoom != null ? ", Raum: " + project?.LogDefenceRoom : "");
-        }
-
-        private void ReturnAlert(string message)
-        {
-            var sb = new StringBuilder();
-            sb.Append("<script type = 'text/javascript'>");
-            sb.Append("window.onload=function(){");
-            sb.Append("alert('");
-            sb.Append(message);
-            sb.Append("')};");
-            sb.Append("</script>");
-            ClientScript.RegisterClientScriptBlock(GetType(), "alert", sb.ToString());
-        }
-
-        protected void BtnSaveChanges_OnClick(object sender, EventArgs e)
-        {
-            SaveChanges("Projectlist");
-        }
-
-        protected void BtnCancel_OnClick(object sender, EventArgs e)
-        {
-            Response.Redirect("Projectlist");
-        }
-
-        
-        protected void DrpBillingstatusChanged(object sender, EventArgs e)
-        {
-            SetGradeFieldStatus();
-            updateGradeFields.Update();
-
-            if (drpBillingstatus.SelectedValue == "ValueWhichNeverWillBeGivenByTheDB")
-                return;
-
-            if (db.BillingStatus.Single(bs => bs.Id == int.Parse(drpBillingstatus.SelectedValue)).ShowAddressOnInfoPage && radioClientType.SelectedIndex == (int)ClientType.Internal)
-            {
-                radioClientType.SelectedIndex = (int)ClientType.Company;
-                UpdateClientInfoFormVisibility();
-            }
-        }
-
-        protected void drpLogLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetGradeFieldStatus();
-            updateGradeFields.Update();
-        }
-
-        protected void cbxWebSummaryChecked_CheckedChanged(object sender, EventArgs e)
-        {
-            SetGradeFieldStatus();
-            updateGradeFields.Update();
-        }
-
-        private bool CheckGradeFieldStatus()
-        {
-            return cbxWebSummaryChecked.Checked
-                && drpBillingstatus.SelectedIndex != 0
-                && drpLogLanguage.SelectedIndex != 0;
-        }
-
-        private void SetGradeFieldStatus()
-        {
-            if (project.UserCanEditAfterStart())
-            {
-                nbrGradeStudent1.Enabled = nbrGradeStudent2.Enabled = CheckGradeFieldStatus();
-                divGradeHint.Visible = !CheckGradeFieldStatus() && divGradeStudent1.Visible && divGradeStudent2.Visible;
-            }
-        }
-
-
-        protected void BtnSaveBetween_OnClick(object sender, EventArgs e)
-        {
-            SaveChanges("ProjectInfoPage?id=" + project.Id);
-        }
-
-        private void SaveChanges(string redirectTo)
-        {
-            string validationMessage = null;
-            if (project.UserCanEditAfterStart())
-            {
-                project.Name = ProjectTitle.Text.FixupParagraph();
-
-                project.Expert = drpExpert.SelectedIndex == 0
-                    ? null
-                    : db.Experts.First(ex => ex.id == int.Parse(drpExpert.SelectedValue));
-
-                project.WebSummaryChecked = cbxWebSummaryChecked.Checked;
-
-                switch (drpLogLanguage.SelectedValue)
-                {
-                    case "1":
-                        project.LogLanguageEnglish = true;
-                        project.LogLanguageGerman = false;
-                        break;
-                    case "2":
-                        project.LogLanguageEnglish = false;
-                        project.LogLanguageGerman = true;
-                        break;
-                    default:
-                        project.LogLanguageGerman = null;
-                        project.LogLanguageEnglish = null;
-                        break;
-                }
-
-                project.BillingStatusID = drpBillingstatus.SelectedIndex == 0
-                    ? (int?)null
-                    : int.Parse(drpBillingstatus.SelectedValue);
-
-                if (nbrGradeStudent1.Text != "")
-                {
-                    if (!CheckGradeFieldStatus() && project.LogGradeStudent1 == null)
-                    {
-                        validationMessage = "Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen.";
-                    }
-                    else
-                    {
-                        var old = project.LogGradeStudent1;
-                        project.LogGradeStudent1 = float.Parse(nbrGradeStudent1.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-
-                        if (old != project.LogGradeStudent1)
-                            project.GradeSentToAdmin = false;
-                    }
-                }
-
-                if (nbrGradeStudent2.Text != "")
-                {
-                    if (!CheckGradeFieldStatus() && project.LogGradeStudent2 == null)
-                    {
-                        validationMessage = "Bitte füllen Sie die Felder Websummary, Durchführungssprache und Verrechnungsstatus aus, um die Noten einzutragen.";
-                    }
-                    else
-                    {
-                        var old = project.LogGradeStudent2;
-                        project.LogGradeStudent2 = float.Parse(nbrGradeStudent2.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-
-                        if (old != project.LogGradeStudent2)
-                            project.GradeSentToAdmin = false;
-                    }
-                }
-
-                project.UnderNDA = chkNDA.Checked;
-
-                //this sould always be under the project.BillingstatusId statement
-                if (radioClientType.SelectedValue != "Intern" && (txtClientCompany.Text + txtClientName.Text == "" || txtClientStreet.Text == "" || txtClientPLZ.Text == "" || txtClientCity.Text == "" || txtClientEmail.Text == ""))
-                {
-                    validationMessage = "Bitte füllen Sie alle Pflichtfelder aus.";
-                }
-                else
-                {
-                    project.ClientType = radioClientType.SelectedIndex;
-                    project.ClientCompany = txtClientCompany.Text;
-                    project.ClientAddressTitle = drpClientTitle.SelectedValue == "1" ? "Herr" : "Frau";
-                    project.ClientPerson = txtClientName.Text;
-                    project.ClientMail = txtClientEmail.Text;
-                    project.ClientAddressDepartment = txtClientDepartment.Text == "" ? null : txtClientDepartment.Text;
-                    project.ClientAddressStreet = txtClientStreet.Text == "" ? null : txtClientStreet.Text;
-                    project.ClientAddressPostcode = txtClientPLZ.Text == "" ? null : txtClientPLZ.Text;
-                    project.ClientAddressCity = txtClientCity.Text == "" ? null : txtClientCity.Text;
-                    project.ClientReferenceNumber = txtClientReference.Text == "" ? null : txtClientReference.Text;
-                }
-
-                if (project.BillingStatus?.ShowAddressOnInfoPage == true && project.ClientType==(int)ClientType.Internal)
-                {
-                    validationMessage = "Dieser Verrechnungsstatus ist nur bei externen Auftraggebern verfügbar.";
-                }
-
-                if (validationMessage == null)
-                {
-                    project.Name = ProjectTitle.Text.FixupParagraph();
-                    project.ModificationDate = DateTime.Now;
-                    project.LastEditedBy = ShibUser.GetEmail();
-                    db.SubmitChanges();
-                    Response.Redirect(redirectTo);
-                }
-                else
-                {
-                    ReturnAlert(validationMessage);
-                }
-            }
-            else
-            {
-                throw new UnauthorizedAccessException();
-            }
-        }
-
-        protected void RadioClientType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateClientInfoFormVisibility();
-        }
-
-        private void UpdateClientInfoFormVisibility()
-        {
-            switch (radioClientType.SelectedValue)
-            {
-                case "Intern":
-                    divClientForm.Visible = false;
-                    break;
-                case "Company":
-                    divClientForm.Visible = true;
-                    divClientCompany.Visible = true;
-                    divClientDepartment.Visible = true;
-                    break;
-                case "PrivatePerson":
-                    divClientForm.Visible = true;
-                    divClientCompany.Visible = false;
-                    divClientDepartment.Visible = false;
-                    break;
-                default:
-                    throw new Exception($"Unexpected radioClientType {radioClientType.SelectedValue}");
-            }
-        }
-
         protected void OnUploadComplete(object sender, AjaxFileUploadEventArgs e)
         {
-            using(var s = e.GetStreamContents())
+            using (var s = e.GetStreamContents())
                 if (db.Attachements.Any(a => a.ProjectId.ToString() == Request.QueryString["id"] && a.FileName == e.FileName && !a.Deleted))
                 {
                     SaveFileInDb(db.Attachements.Single(a => a.ProjectId.ToString() == Request.QueryString["id"] && a.FileName == e.FileName && !a.Deleted), s);
@@ -624,7 +1355,6 @@ namespace ProStudCreator
 
             return attach;
         }
-
 
         private void SaveFileInDb(Attachements attach, Stream file)
         {
@@ -702,7 +1432,7 @@ namespace ProStudCreator
             db.SubmitChanges();
 
 
-            gridProjectAttachs.DataSource = db.Attachements.Where(item => item.ProjectId == project.Id && !item.Deleted)
+            gridProjectAttachs.DataSource = db.Attachements.Where(item => item.ProjectId == pageProject.Id && !item.Deleted)
                 .Select(i => GetProjectSingleAttachment(i));
             gridProjectAttachs.DataBind();
 
@@ -716,16 +1446,9 @@ namespace ProStudCreator
             Response.Redirect("ProjectFilesDownload?guid=" + (Guid)gridProjectAttachs.SelectedValue);
         }
 
-        private enum ProjectTypes
-        {
-            IP5,
-            IP6,
-            NotDefined
-        }
-
         protected void DownloadFiles_OnClick(object sender, EventArgs e)
         {
-            var attachments = db.Attachements.Where(item => item.ProjectId == project.Id && !item.Deleted).ToList();
+            var attachments = db.Attachements.Where(item => item.ProjectId == pageProject.Id && !item.Deleted).ToList();
 
             if (!ShibUser.IsAuthenticated(db))
             {
@@ -790,7 +1513,7 @@ namespace ProStudCreator
                 Response.Clear();
                 Response.ClearHeaders();
                 Response.ClearContent();
-                Response.AddHeader("Content-Disposition", "attachment; filename=\"" + project.Name + ".zip" + "\"");
+                Response.AddHeader("Content-Disposition", "attachment; filename=\"" + pageProject.Name + ".zip" + "\"");
                 Response.AddHeader("Content-Length", totalSize.ToString());
                 Response.ContentType = "text/plain";
                 memoryStream.WriteTo(Response.OutputStream);
@@ -798,6 +1521,8 @@ namespace ProStudCreator
                 Response.End();
             }
         }
+
+        #endregion
     }
     public class StreamToZipDataSource : IStaticDataSource
     {

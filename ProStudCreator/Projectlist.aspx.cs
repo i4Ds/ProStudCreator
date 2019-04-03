@@ -101,7 +101,7 @@ namespace ProStudCreator
                         projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() || p.Advisor1.Mail == ShibUser.GetEmail() || p.Advisor2.Mail == ShibUser.GetEmail()) 
                                                      && p.State != ProjectState.Deleted
                                                      && p.IsMainVersion)
-                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.State).ThenBy(p => p.ProjectNr);
                     }
 
                     else
@@ -109,20 +109,21 @@ namespace ProStudCreator
                         projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() || p.Advisor1.Mail == ShibUser.GetEmail() || p.Advisor2.Mail == ShibUser.GetEmail())
                                                      && p.State != ProjectState.Deleted
                                                      && p.IsMainVersion
-                                                     && p.Semester.Id == int.Parse(dropSemester.SelectedValue))
-                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
+                                                     && (p.Semester.Id == int.Parse(dropSemester.SelectedValue))
+                                                        || p.State < ProjectState.Published)
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.State).ThenBy(p => p.ProjectNr);
                     }
                     break;
                 case "AllProjects":
                     if (dropSemester.SelectedValue == "allSemester")
                         projects = projects.Where(p => (p.State == ProjectState.Published || p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled)
                                                      && p.IsMainVersion)
-                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
+                                           .OrderBy(p => p.Semester.StartDate).ThenBy(p => p.Department.DepartmentName).ThenBy(p => p.State).ThenBy(p => p.ProjectNr);
                     else
                         projects = projects.Where(p => (p.State == ProjectState.Published || p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled)
                                                      && p.IsMainVersion
                                                      && p.Semester.Id == int.Parse(dropSemester.SelectedValue))
-                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ThenBy(p => p.State);
+                                           .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.State).ThenBy(p => p.ProjectNr);
                     break;
             }
             return projects;
@@ -199,8 +200,9 @@ namespace ProStudCreator
                 {
                     var x = e.Row.Cells[e.Row.Cells.Count - 4].Controls;
                     e.Row.Cells[e.Row.Cells.Count - 3].Controls.OfType<DataBoundLiteralControl>().First().Visible = false; //edit
-                    e.Row.Cells[e.Row.Cells.Count - 2].Controls.OfType<LinkButton>().First().Visible = false; //delete
                 }
+                
+                e.Row.Cells[e.Row.Cells.Count - 2].Controls.OfType<LinkButton>().First().Visible = project.UserCanDelete(); //delete
 
                 //TODO: decide wether to keep this button or not
                 e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
@@ -254,7 +256,7 @@ namespace ProStudCreator
                         break;
                     case "deleteProject":
                         var project = db.Projects.Single(i => i.Id == id);
-                        project.Delete();
+                        project.Delete(db);
                         db.SubmitChanges();
                         Response.Redirect(Request.RawUrl);
                         break;
