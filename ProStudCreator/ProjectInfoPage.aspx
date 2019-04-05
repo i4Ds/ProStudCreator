@@ -54,6 +54,10 @@
                 <asp:Label runat="server" ID="LabelState" CssClass="col-sm-3 alignbottom"></asp:Label>
                 <br />
                 <br />
+                <asp:Label runat="server" Text="Semester:" CssClass="control-label col-sm-3"></asp:Label>
+                <asp:Label runat="server" ID="LabelSemester" CssClass="col-sm-3 alignbottom"></asp:Label>
+                <br />
+                <br />
             </div>
             <hr />
 
@@ -141,7 +145,7 @@
                     <div class="form-group">
                         <div class="col-sm-3">
                             <asp:TextBox runat="server" ID="TextBoxLabelPresentationTime" CssClass="col-sm-9 form-control" placeholder="Zeit (HH:mm)"></asp:TextBox>
-                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]" ForeColor="Red" Display="Dynamic" ControlToValidate="TextBoxLabelPresentationTime" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie die Zeit im Format 'HH:mm' an."></asp:RegularExpressionValidator>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="([[0][0-9]|[1][0-9]|[2][0-3]):[0-5][0-9]" ForeColor="Red" Display="Dynamic" ControlToValidate="TextBoxLabelPresentationTime" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie die Zeit im Format 'HH:mm' an."></asp:RegularExpressionValidator>
                         </div>
                     </div>
                     <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
@@ -252,7 +256,7 @@
                     </div>
                     <div class="form-group" style="text-align: left" runat="server" visible="false" id="DivGradeWarning">
                         <asp:Label runat="server" CssClass="control-label col-sm-3"></asp:Label>
-                        <asp:Label runat="server" ID="Label1" CssClass="col-sm-6" Text="Hinweis: Noten werden unmittelbar an die Ausbildungsadministration weitergeleitet. Bitte NUR definitive Noten eintragen!"></asp:Label>
+                        <asp:Label runat="server" ID="Label1" CssClass="col-sm-6" Text="Hinweis: Bitte das Projekt nach dem Eintragen der Noten abschliessen, damit die Noten an die Administration gesendet werden können."></asp:Label>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

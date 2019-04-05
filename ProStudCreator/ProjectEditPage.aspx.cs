@@ -21,6 +21,7 @@ namespace ProStudCreator
         private bool imageDeleted = false;
         //private Binary picture;
 
+        private readonly string dropSemesterImpossibleValue = "dropSemesterImpossibleValue";
         private readonly string dropPreviousProjectImpossibleValue = "dropPreviousProjectImpossibleValue";
         private readonly string dropAdvisor1ImpossibleValue = "dropAdvisor1ImpossibleValue";
         private readonly string dropAdvisor2ImpossibleValue = "dropAdvisor2ImpossibleValue";
@@ -241,21 +242,24 @@ namespace ProStudCreator
 
         private void FillDropSemester(bool isNewProject)
         {
-            if (ShibUser.GetEmail() != Global.WebAdmin)
+            if (ShibUser.GetEmail() == Global.WebAdmin && (pageProject?.State ?? 0) <= ProjectState.Published)
             {
-                DivSemester.Visible = false;
-                return;
-            }
+                dropSemester.DataSource = db.Semester.OrderBy(s => s.StartDate);
+                dropSemester.DataBind();
+                dropSemester.Items.Insert(0, new ListItem("-", dropSemesterImpossibleValue));
 
-            dropSemester.DataSource = db.Semester.OrderBy(s => s.StartDate);
-            dropSemester.DataBind();
-            if (isNewProject)
-            {
-                dropSemester.SelectedValue = Semester.NextSemester(db).Id.ToString();
+                if (isNewProject)
+                {
+                    dropSemester.SelectedValue = Semester.NextSemester(db).Id.ToString();
+                }
+                else
+                {
+                    dropSemester.SelectedValue = pageProject?.Semester?.Id.ToString() ?? dropSemesterImpossibleValue;
+                }
             }
             else
             {
-                dropSemester.SelectedValue = pageProject?.Semester?.Id.ToString() ?? Semester.NextSemester(db).Id.ToString();
+                DivSemester.Visible = false;
             }
         }
 
@@ -263,7 +267,7 @@ namespace ProStudCreator
         {
             Semester projectSemester;
 
-            if (DivSemester.Visible)
+            if (DivSemester.Visible && dropSemester.SelectedValue != dropSemesterImpossibleValue)
             {
                 projectSemester = db.Semester.Single(s => s.Id.ToString() == dropSemester.SelectedValue);
             }
@@ -604,7 +608,14 @@ namespace ProStudCreator
             //Semester
             if (DivSemester.Visible)
             {
-                project.Semester = db.Semester.Single(s => s.Id == int.Parse(dropSemester.SelectedValue));
+                if (dropSemester.SelectedValue == dropSemesterImpossibleValue)
+                {
+                    project.Semester = null;
+                }
+                else
+                {
+                    project.Semester = db.Semester.Single(s => s.Id == int.Parse(dropSemester.SelectedValue));
+                }
             }
 
             //Previous Project
@@ -1399,7 +1410,7 @@ namespace ProStudCreator
                 return "Bitte wählen Sie einen Hauptbetreuer aus.";
 
             //Semester
-            if (DivSemester.Visible && dropSemester.SelectedValue != Semester.CurrentSemester(db).Id.ToString() && dropSemester.SelectedValue != Semester.NextSemester(db).Id.ToString())
+            if (DivSemester.Visible && dropSemester.SelectedValue != dropSemesterImpossibleValue && dropSemester.SelectedValue != Semester.CurrentSemester(db).Id.ToString() && dropSemester.SelectedValue != Semester.NextSemester(db).Id.ToString())
                 return "Nur Projekte für das aktuelle oder das nächste Semester können veröffentlicht werden.";
 
             //1-2 selected ProjectTopics

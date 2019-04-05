@@ -669,6 +669,7 @@ namespace ProStudCreator
         {
             if (!CheckTransitionReject(_p)) HandleInvalidState(_p, "Reject");
 
+            _p.Semester = null;
             _p.State = ProjectState.Rejected;
             _db.SubmitChanges();
         }
@@ -681,7 +682,7 @@ namespace ProStudCreator
         {
             if (!CheckTransitionPublish(_p)) HandleInvalidState(_p, "Publish");
 
-            _p.Semester = Semester.NextSemester(_db);
+            if (_p.Semester == null) _p.Semester = Semester.NextSemester(_db);
             _p.PublishedDate = DateTime.Now;
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Published;
@@ -1052,11 +1053,11 @@ namespace ProStudCreator
                     return "#A9F5A9";
 
                 case ProjectState.Ongoing:
-                    return "#64ed64";
+                    return "#7ff07f";
 
                 case ProjectState.Finished:
                 case ProjectState.ArchivedFinished:
-                    return "#7ccb7c";
+                    return "#7fd77f";
 
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedCanceled:

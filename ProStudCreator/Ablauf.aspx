@@ -40,8 +40,9 @@
             <li>Schlusspräsentation mit ca. 30 Minuten Präsentation, und ca. 30 Minuten Fragen von Betreuern, Experten (IP6) und interessierten Gästen.</li>
             <li>Notenbesprechung mit den Experten (IP6), ggf. Anpassung der Bewertung. Pro Student/-in soll eine <i>individuelle</i> Note festgelegt werden. Noten >5.8 müssen an die SGL gemeldet werden.</li>
             <li>Auf der Projekt-Infoseite die Note, Verrechenbarkeit und Sprache des Projekts eintragen. Dort auch alle Projektartefakte (Doku, Code, ...) hochladen.</li>
-            <li><b>NEU: Den Bewertungsbogen den Studierenden schicken, aber ohne Kommentare (Spalte G).</b></li>
-            <li><b>NEU: Du machst mit den Studierenden eine Schlusssitzung.</b> An der Sitzung soll die Bewertung besprochen und die Arbeit reflektiert werden, um den Lerneffekt zu erhöhen.</li>
+            <li><b>NEU: Zum Schluss das Projekt im ProStud abschliessen.</b></li>
+            <li>Den Bewertungsbogen den Studierenden schicken, aber ohne Kommentare (Spalte G).</li>
+            <li>NEU: Du machst mit den Studierenden eine Schlusssitzung. An der Sitzung soll die Bewertung besprochen und die Arbeit reflektiert werden, um den Lerneffekt zu erhöhen.</li>
         </ol>
     </div>
 

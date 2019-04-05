@@ -58,12 +58,75 @@ namespace ProStudCreator {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl TasksTitles;
         
         /// <summary>
-        /// TasksProjects control.
+        /// LabelLastSem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TasksProjects;
+        protected global::System.Web.UI.WebControls.Label LabelLastSem;
+        
+        /// <summary>
+        /// LastSemIP5Normal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LastSemIP5Normal;
+        
+        /// <summary>
+        /// LastSemIP5Long control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LastSemIP5Long;
+        
+        /// <summary>
+        /// LastSemIP6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LastSemIP6;
+        
+        /// <summary>
+        /// LabelCurrSem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelCurrSem;
+        
+        /// <summary>
+        /// CurrSemIP5Normal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CurrSemIP5Normal;
+        
+        /// <summary>
+        /// CurrSemIP5Long control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CurrSemIP5Long;
+        
+        /// <summary>
+        /// CurrSemIP6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CurrSemIP6;
     }
 }

@@ -78,6 +78,9 @@ namespace ProStudCreator
             //State
             LabelState.Text = pageProject.StateAsString;
 
+            //Semester
+            LabelSemester.Text = pageProject.Semester?.Name ?? "?";
+
             //Topics
             DisplayProjectTopics();
 
@@ -608,9 +611,9 @@ namespace ProStudCreator
                 case ProjectState.Ongoing:
                     BtnSaveBetween.Enabled = BtnSaveChanges.Enabled = pageProject.UserHasAdvisor2Rights();
                     BtnFinishProject.Visible = true;
-                    BtnFinishProject.Enabled = pageProject.UserHasAdvisor1Rights();
+                    BtnFinishProject.Enabled = pageProject.UserHasAdvisor2Rights();
                     BtnCancelProject.Visible = true;
-                    BtnCancelProject.Enabled = pageProject.UserHasAdvisor1Rights();
+                    BtnCancelProject.Enabled = pageProject.UserHasAdvisor2Rights();
                     break;
                 default:
                     BtnSaveBetween.Enabled = BtnSaveChanges.Enabled = BtnFinishProject.Enabled = BtnCancelProject.Enabled = BtnKickoffProject.Enabled = false;
@@ -775,8 +778,8 @@ namespace ProStudCreator
                 {
                     NumGradeStudent1Admin.Visible = NumGradeStudent2Admin.Visible = false;
                     NumGradeStudent1.Visible = NumGradeStudent2.Visible = true;
-                    NumGradeStudent1.Text = "Die Noten können erst eingetragen werden, wenn die Felder: WebSummary, Verrechnungsstatus und Sprache ausgefüllt sind.";
-                    NumGradeStudent2.Text = "Die Noten können erst eingetragen werden, wenn die Felder: WebSummary, Verrechnungsstatus und Sprache ausgefüllt sind.";
+                    NumGradeStudent1.Text = "Die Noten können erst eingetragen werden, wenn die Felder: Websummary, Verrechnungsstatus und Durchführungssprache ausgefüllt sind.";
+                    NumGradeStudent2.Text = "Die Noten können erst eingetragen werden, wenn die Felder: Websummary, Verrechnungsstatus und Durchführungssprache ausgefüllt sind.";
                     NumGradeStudent1.ForeColor = System.Drawing.Color.Red;
                     NumGradeStudent2.ForeColor = System.Drawing.Color.Red;
                 }
@@ -1165,6 +1168,12 @@ namespace ProStudCreator
 
         private string GenerateValidationMessageForFinish()
         {
+            //Permission
+            if (!pageProject.UserHasAdvisor1Rights())
+            {
+                return "Nur Hauptbetreuer können das Projekt abschliessen.";
+            }
+
             //Expert
             if (pageProject.LogProjectType.P6)
             {
@@ -1243,6 +1252,12 @@ namespace ProStudCreator
 
         private string GenerateValidationMessageForCancel()
         {
+            //Permission
+            if (!pageProject.UserHasAdvisor1Rights())
+            {
+                return "Nur Hauptbetreuer können das Projekt abbrechen.";
+            }
+
             return null;
         }
 

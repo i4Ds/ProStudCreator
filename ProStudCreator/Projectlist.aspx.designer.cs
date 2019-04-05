@@ -49,6 +49,60 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Button filterBtn;
         
         /// <summary>
+        /// DivProjectStatistics control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivProjectStatistics;
+        
+        /// <summary>
+        /// LabelNumProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNumProjects;
+        
+        /// <summary>
+        /// LabelNumRunningProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNumRunningProjects;
+        
+        /// <summary>
+        /// LabelIP5Normal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelIP5Normal;
+        
+        /// <summary>
+        /// LabelIP5Long control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelIP5Long;
+        
+        /// <summary>
+        /// LabelIP6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelIP6;
+        
+        /// <summary>
         /// colExInProgress control.
         /// </summary>
         /// <remarks>

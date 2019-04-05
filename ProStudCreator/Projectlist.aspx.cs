@@ -22,6 +22,7 @@ namespace ProStudCreator
         public string projectType2 { get; set; }
         public bool p5 { get; set; }
         public bool p6 { get; set; }
+        public bool lng { get; set; }
     }
 
     public partial class Projectlist : Page
@@ -74,6 +75,26 @@ namespace ProStudCreator
             colExFinished.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Finished));
             colExCanceled.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Canceled));
 
+            //Statistics
+            if (ShibUser.GetEmail() == Global.WebAdmin && whichOwner.SelectedValue == "AllProjects")
+            {
+                var refProj = FilterRelevantProjects(projects);
+                LabelNumProjects.Text = $"Anzahl Projekte: {refProj.Count()}";
+                var runningProj = refProj.Where(p => p.State >= 4 && p.State < 9);
+                LabelNumRunningProjects.Text = $"Anzahl Laufender Projekte: {runningProj.Count()}";
+                var ip5n = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
+                LabelIP5Normal.Text = $"IP5: {ip5n.Where(p => p.State >= 5).Count()}/{ip5n.Count()}";
+                var ip5l = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
+                LabelIP5Long.Text = $"IP5 Lang: {ip5l.Where(p => p.State >= 5).Count()}/{ip5l.Count()}";
+                var ip6 = runningProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
+                LabelIP6.Text = $"IP6: {ip6.Where(p => p.State >= 5).Count()}/{ip6.Count()}";
+
+                DivProjectStatistics.Visible = true;
+            }
+            else
+            {
+                DivProjectStatistics.Visible = false;
+            }
 
             Session["LastPage"] = "projectlist";
         }
@@ -109,8 +130,8 @@ namespace ProStudCreator
                         projects = projects.Where(p => (p.Creator == ShibUser.GetEmail() || p.Advisor1.Mail == ShibUser.GetEmail() || p.Advisor2.Mail == ShibUser.GetEmail())
                                                      && p.State != ProjectState.Deleted
                                                      && p.IsMainVersion
-                                                     && (p.Semester.Id == int.Parse(dropSemester.SelectedValue))
-                                                        || p.State < ProjectState.Published)
+                                                     && (p.Semester.Id == int.Parse(dropSemester.SelectedValue)
+                                                        || p.State < ProjectState.Published))
                                            .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.State).ThenBy(p => p.ProjectNr);
                     }
                     break;
@@ -149,6 +170,7 @@ namespace ProStudCreator
                 Institute = i.Department.DepartmentName,
                 p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || (i.PTwoType?.P5 ?? false)),
                 p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || (i.PTwoType?.P6 ?? false)),
+                lng = i.LogProjectDuration == (byte)2,
                 projectType1 = "pictures/projectTyp" + (i.TypeDesignUX
                                    ? "DesignUX"
                                    : (i.TypeHW
@@ -236,10 +258,13 @@ namespace ProStudCreator
                         AllProjects.DataSource = sortedProjects.OrderBy(p => p.projectName);
                         break;
                     case "P5":
-                        AllProjects.DataSource = sortedProjects.OrderByDescending(p => p.p5);
+                        AllProjects.DataSource = sortedProjects.OrderByDescending(p => p.p5).ThenBy(p => p.lng);
                         break;
                     case "P6":
                         AllProjects.DataSource = sortedProjects.OrderByDescending(p => p.p6);
+                        break;
+                    case "Long":
+                        AllProjects.DataSource = sortedProjects.OrderByDescending(p => p.lng);
                         break;
                 }
             }
