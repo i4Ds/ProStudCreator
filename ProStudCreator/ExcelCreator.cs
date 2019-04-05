@@ -67,6 +67,7 @@ namespace ProStudCreator
             "Durchführungssprache",
             "Experte",
             "Experte Bezahlt",
+            "Automatische Auszahlung",
             "Verteidigung-Datum",
             "Verteidigung-Raum",
             "Verrechungsstatus",
@@ -254,7 +255,8 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(GetLanguage(p));
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
-            row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString()?? "");
+            row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString() ?? "");
+            row.CreateCell(i++).SetCellValue(p.Expert?.AutomaticPayout.ToString() ?? "");
             row.CreateCell(i++).SetCellValue(p.LogDefenceDate?.ToString() ?? "-");
             row.CreateCell(i++).SetCellValue(p.LogDefenceRoom ?? "-");
             row.CreateCell(i++).SetCellValue(p.BillingStatus?.DisplayName ?? "");
