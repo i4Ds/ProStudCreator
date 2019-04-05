@@ -24,7 +24,27 @@
             </span>
         </div>
         <br/>
+        <br/>
         <hr/>
+        <div runat="server" id="DivProjectStatistics">
+            <div class="col-sm-2">
+                <asp:Label runat="server" ID="LabelNumProjects"></asp:Label>
+            </div>
+            <div class="col-sm-3">
+                <asp:Label runat="server" ID="LabelNumRunningProjects"></asp:Label>
+            </div>
+            <div class="col-sm-2">
+                <asp:Label runat="server" ID="LabelIP5Normal"></asp:Label>
+            </div>
+            <div class="col-sm-2">
+                <asp:Label runat="server" ID="LabelIP5Long"></asp:Label>
+            </div>
+            <div class="col-sm-2">
+                <asp:Label runat="server" ID="LabelIP6"></asp:Label>
+            </div>
+            <br/>
+            <hr/>
+        </div>
         <div class="well" style="background-color: #ffffff; margin-top: 10px;">
             <asp:GridView ID="AllProjects" ItemType="ProStudCreator.ProjectSingleElement" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowCommand="ProjectRowClick" OnRowDataBound="AllProjects_RowDataBound" AllowSorting="True" OnSorting="AllProjects_Sorting">
                 <%--<AlternatingRowStyle BackColor="White" />--%>
@@ -34,6 +54,7 @@
                     <asp:BoundField DataField="ProjectNr" HeaderText="#" SortExpression="ProjectNr"/>
                     <asp:BoundField DataField="projectName" HeaderText="Projektname" SortExpression="projectName" ItemStyle-Width="100%"/>
                     <asp:CheckBoxField HeaderText="P5" DataField="p5" SortExpression="P5"/>
+                    <asp:CheckBoxField HeaderText="Lang" DataField="lng" SortExpression="Long"/>
                     <asp:CheckBoxField HeaderText="P6" DataField="p6" SortExpression="P6"/>
                     <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="projectType1" HeaderText="Themen" ItemStyle-Width="20px"/>
                     <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="projectType2" ItemStyle-Width="20px"/>
