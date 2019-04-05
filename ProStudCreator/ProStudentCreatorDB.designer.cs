@@ -920,6 +920,8 @@ namespace ProStudCreator
 		
 		private bool _Active;
 		
+		private bool _AutomaticPayout;
+		
 		private EntitySet<Project> _Projects;
 		
     #region Extensibility Method Definitions
@@ -938,6 +940,8 @@ namespace ProStudCreator
     partial void OnKnowhowChanged();
     partial void OnActiveChanging(bool value);
     partial void OnActiveChanged();
+    partial void OnAutomaticPayoutChanging(bool value);
+    partial void OnAutomaticPayoutChanged();
     #endregion
 		
 		public Expert()
@@ -1062,6 +1066,26 @@ namespace ProStudCreator
 					this._Active = value;
 					this.SendPropertyChanged("Active");
 					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AutomaticPayout", DbType="Bit NOT NULL")]
+		public bool AutomaticPayout
+		{
+			get
+			{
+				return this._AutomaticPayout;
+			}
+			set
+			{
+				if ((this._AutomaticPayout != value))
+				{
+					this.OnAutomaticPayoutChanging(value);
+					this.SendPropertyChanging();
+					this._AutomaticPayout = value;
+					this.SendPropertyChanged("AutomaticPayout");
+					this.OnAutomaticPayoutChanged();
 				}
 			}
 		}

@@ -44,6 +44,7 @@
       <Column Name="Unternehmen" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
       <Column Name="Knowhow" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AutomaticPayout" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Expert_Project" Member="Projects" ThisKey="id" OtherKey="LogExpertID" Type="Project" />
     </Type>
   </Table>
@@ -138,7 +139,7 @@
       <Association Name="Project_Task" Member="Tasks" ThisKey="Id" OtherKey="ProjectId" Type="Task" />
       <Association Name="BillingStatus_Project" Member="BillingStatus" ThisKey="BillingStatusID" OtherKey="Id" Type="BillingStatus" IsForeignKey="true" />
       <Association Name="Expert_Project" Member="Expert" ThisKey="LogExpertID" OtherKey="id" Type="Expert" IsForeignKey="true" />
-      <Association Name="Project_Project" Member="PreviousProject" Storage="_Project1" ThisKey="PreviousProjectID" OtherKey="Id" Type="Project" IsForeignKey="true" />
+	  <Association Name="Project_Project" Member="PreviousProject" Storage="_Project1" ThisKey="PreviousProjectID" OtherKey="Id" Type="Project" IsForeignKey="true" />
       <Association Name="Department_Project" Member="Department" ThisKey="DepartmentId" OtherKey="Id" Type="Department" IsForeignKey="true" />
       <Association Name="ProjectType_Project" Member="POneType" ThisKey="P1TypeId" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
       <Association Name="ProjectType_Project1" Member="PTwoType" ThisKey="P2TypeId" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
