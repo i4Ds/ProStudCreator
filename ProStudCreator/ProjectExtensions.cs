@@ -939,8 +939,8 @@ namespace ProStudCreator
                 case ProjectState.Rejected:
                     return _p.UserHasCreatorRights() || ShibUser.CanEditAllProjects();
                 case ProjectState.Published:
-                    return _p.UserHasDepartmentManagerRights();
                 case ProjectState.Ongoing:
+                    return _p.UserHasDepartmentManagerRights();
                 case ProjectState.Finished:
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedFinished:

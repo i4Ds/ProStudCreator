@@ -1356,7 +1356,7 @@ namespace ProStudCreator
         {
             if (Page.IsValid)
             {
-                SaveProject(true);
+                SaveProject(pageProject != null ? pageProject.State <= ProjectState.Published : true);
                 Response.Redirect("ProjectEditPage?id=" + pageProject.Id);
             }
             saveProject.Enabled = true;
@@ -1369,7 +1369,7 @@ namespace ProStudCreator
         {
             if (Page.IsValid)
             {
-                SaveProject(true);
+                SaveProject(pageProject != null ? pageProject.State <= ProjectState.Published : true);
                 Response.Redirect("projectlist");
             }
             saveCloseProject.Enabled = true;

@@ -38,16 +38,17 @@ namespace ProStudCreator
         }
 
         private static readonly object TaskCheckLock = new object();
-#if !DEBUG
-        private static DateTime NextTaskCheck = DateTime.Today.AddHours(19);
-#else
-        private static DateTime NextTaskCheck = DateTime.Today.AddHours(-25);
-#endif
+        private const int CheckHour = 13;
 
         public static DateTime GetNextTaskCheck()
         {
-            DateTime tmp = NextTaskCheck;
-            return tmp;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                var lastRun = db.TaskRuns.Where(r => !r.Forced).OrderByDescending(r => r.Date).FirstOrDefault();
+                if (lastRun == null) return DateTime.Now.Date.AddHours(CheckHour);
+
+                return lastRun.Date.Date.AddDays(1).AddHours(CheckHour);
+            }
         }
 
         public static void CheckAllTasks()
@@ -55,13 +56,21 @@ namespace ProStudCreator
             //protect against reentrancy-problems. this lock is enough as long as the method runs in less than 24h
             lock (TaskCheckLock)
             {
-                var now = DateTime.Now;
-                if (now < NextTaskCheck)
-                    return;
-
-                NextTaskCheck = now.Date.AddHours(24 + 19);
+                if (!ShouldTaskCheckBeRun()) return;
 
                 RunAllTasks(false);
+            }
+        }
+
+        private static bool ShouldTaskCheckBeRun()
+        {
+            var now = DateTime.Now;
+            using (var db = new ProStudentCreatorDBDataContext())
+            {
+                var lastRun = db.TaskRuns.Where(r => !r.Forced).OrderByDescending(r => r.Date).FirstOrDefault();
+                if (lastRun == null) return true;
+
+                return now.Date > lastRun.Date.Date && now.Hour >= CheckHour;
             }
         }
 
@@ -84,6 +93,13 @@ namespace ProStudCreator
         {
             using (var db = new ProStudentCreatorDBDataContext())
             {
+                db.TaskRuns.InsertOnSubmit(new TaskRun
+                {
+                    Date = DateTime.Now,
+                    Forced = forced
+                });
+                db.SubmitChanges();
+
                 CheckFinishProject(db);
                 //CheckGradesRegistered(db);
                 //CheckWebsummaryChecked(db);
@@ -927,29 +943,30 @@ namespace ProStudCreator
         private static void SendMailsToResponsibleUsers(ProStudentCreatorDBDataContext db)
         {
             var usersToMail = db.Tasks.Where(t => !t.Done 
-                && t.ResponsibleUser != null 
-                && (t.LastReminded == null || t.LastReminded <= DateTime.Now.AddDays(-t.TaskType.DaysBetweenReminds))
+                && t.ResponsibleUser != null
             ).Select(t => t.ResponsibleUser).Distinct();
 
             foreach (var user in usersToMail)
             {
-                var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                mail.To.Add(new MailAddress(user.Mail));
-                mail.Subject = "Erinnerung von ProStud";
-                mail.IsBodyHtml = true;
-
-                var mailMessage = new StringBuilder();
-                mailMessage.Append("<div style=\"font-family: Arial\">");
-                mailMessage.Append($"<p style=\"font-size: 110%\">Hallo {HttpUtility.HtmlEncode(user.Name.Split(' ')[0])}<p>"
-                                  + "<p>Es stehen folgende Aufgaben an:</p><ul>");
 
                 var tasks = db.Tasks.Where(t => t.ResponsibleUser == user 
                     && !t.Done
                     && (t.DueDate == null || t.DueDate < DateTime.Now)
+                    && (t.LastReminded == null || t.LastReminded <= DateTime.Now.AddDays(-t.TaskType.DaysBetweenReminds))
                 ).OrderBy(t => t.Project.ProjectNr).ToArray();
 
                 if (tasks.Any())
                 {
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                    mail.To.Add(new MailAddress(user.Mail));
+                    mail.Subject = "Erinnerung von ProStud";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append("<div style=\"font-family: Arial\">");
+                    mailMessage.Append($"<p style=\"font-size: 110%\">Hallo {HttpUtility.HtmlEncode(user.Name.Split(' ')[0])}<p>"
+                                      + "<p>Es stehen folgende Aufgaben an:</p><ul>");
+
                     foreach (var task in tasks)
                     {
                         if (task.FirstReminded.HasValue 

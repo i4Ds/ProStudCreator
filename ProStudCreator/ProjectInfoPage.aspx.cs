@@ -252,6 +252,26 @@ namespace ProStudCreator
                     }
                     break;
                 case ProjectState.Ongoing:
+                    if (pageProject.UserHasDepartmentManagerRights())
+                    {
+                        //show textboxes to input students
+                        Student1NameAdmin.Text = pageProject.LogStudent1Name ?? "";
+                        Student1MailAdmin.Text = pageProject.LogStudent1Mail ?? "";
+                        Student2NameAdmin.Text = pageProject.LogStudent2Name ?? "";
+                        Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
+                        DivStudentsAdmin.Visible = true;
+                    }
+                    else
+                    {
+                        //show student labels
+                        Student1Name.Text = $"<a href=\"mailto:{pageProject.LogStudent1Mail}\">{Server.HtmlEncode(pageProject.LogStudent1Name).Replace(" ", "&nbsp;")}</a>";
+                        Student2Name.Text = !string.IsNullOrEmpty(pageProject.LogStudent2Name)
+                            ? $"<a href=\"mailto:{pageProject.LogStudent2Mail}\">{Server.HtmlEncode(pageProject.LogStudent2Name).Replace(" ", "&nbsp;")}</a>"
+                            : "";
+                        DivStudents.Visible = true;
+                        break;
+                    }
+                    break;
                 case ProjectState.Finished:
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedFinished:
@@ -282,7 +302,7 @@ namespace ProStudCreator
                     if (pageProject.UserHasDepartmentManagerRights())
                     {
                         //show dropdowns
-                        FillDropType();
+                        FillDropType(true);
                         DropDuration.SelectedValue = pageProject.LogProjectDuration?.ToString() ?? dropDurationImpossibleValue;
                         DivTypeAdmin.Visible = true;
 
@@ -296,6 +316,34 @@ namespace ProStudCreator
                     }
                     break;
                 case ProjectState.Ongoing:
+                    if (pageProject.UserHasDepartmentManagerRights())
+                    {
+                        //show dropdowns
+                        FillDropType(false);
+                        DropDuration.Items.Remove(DropDuration.Items.FindByValue(dropDurationImpossibleValue));
+                        DropDuration.SelectedValue = pageProject.LogProjectDuration.ToString();
+                        DivTypeAdmin.Visible = true;
+
+                        //TODO: Set DropDuration.visible depending on DropType
+                    }
+                    else
+                    {
+                        //show type with duration
+                        if (pageProject.LogProjectType.P5 && !pageProject.LogProjectType.P6)
+                        {
+                            LabelProjectType.Text = "IP5" + (pageProject.LogProjectDuration == 2 ? " (Lang)" : "");
+                        }
+                        else if (!pageProject.LogProjectType.P5 && pageProject.LogProjectType.P6)
+                        {
+                            LabelProjectType.Text = "IP6"/* + (pageProject.LogProjectDuration == 2 ? " (Lang)" : "")*/;
+                        }
+                        else
+                        {
+                            LabelProjectType.Text = "?";
+                        }
+                        DivType.Visible = true;
+                    }
+                    break;
                 case ProjectState.Finished:
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedFinished:
@@ -323,12 +371,19 @@ namespace ProStudCreator
             }
         }
 
-        private void FillDropType()
+        private void FillDropType(bool withImpossibleValue)
         {
             DropType.DataSource = db.ProjectTypes.Where(t => t.P5 != t.P6).OrderBy(t => t.Id);
             DropType.DataBind();
-            DropType.Items.Insert(0, new ListItem("(Bitte Auswählen)", dropTypeImpossibleValue));
-            DropType.SelectedValue = pageProject.LogProjectType?.Id.ToString() ?? dropTypeImpossibleValue;
+            if (withImpossibleValue)
+            {
+                DropType.Items.Insert(0, new ListItem("(Bitte Auswählen)", dropTypeImpossibleValue));
+                DropType.SelectedValue = pageProject.LogProjectType?.Id.ToString() ?? dropTypeImpossibleValue;
+            }
+            else
+            {
+                DropType.SelectedValue = pageProject.LogProjectType.Id.ToString();
+            }
         }
 
         private void DisplayPresentation()
@@ -954,7 +1009,7 @@ namespace ProStudCreator
                     }
                     break;
                 case ProjectState.Ongoing:
-
+                    
                     if (pageProject.UserHasAdvisor2Rights())
                     {
                         //Name
@@ -1035,6 +1090,24 @@ namespace ProStudCreator
 
                     if (pageProject.UserHasDepartmentManagerRights())
                     {
+                        //Students
+                        pageProject.LogStudent1Name = string.IsNullOrWhiteSpace(Student1NameAdmin.Text)
+                            ? null
+                            : Student1NameAdmin.Text;
+                        pageProject.LogStudent1Mail = string.IsNullOrWhiteSpace(Student1MailAdmin.Text)
+                            ? null
+                            : Student1MailAdmin.Text;
+                        pageProject.LogStudent2Name = string.IsNullOrWhiteSpace(Student2NameAdmin.Text)
+                            ? null
+                            : Student2NameAdmin.Text;
+                        pageProject.LogStudent2Mail = string.IsNullOrWhiteSpace(Student2MailAdmin.Text)
+                            ? null
+                            : Student2MailAdmin.Text;
+
+                        //Type and duration
+                        pageProject.LogProjectType = db.ProjectTypes.Single(t => t.Id == int.Parse(DropType.SelectedValue));
+                        pageProject.LogProjectDuration = byte.Parse(DropDuration.SelectedValue);
+
                         //Expert
                         if (pageProject.LogProjectType.P6)
                         {

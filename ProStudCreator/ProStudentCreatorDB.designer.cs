@@ -22,7 +22,7 @@ namespace ProStudCreator
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="aspnet-ProStudCreator-20140818043155")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name= "aspnet-ProStudCreator-20140818043155")]
 	public partial class ProStudentCreatorDBDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -63,6 +63,9 @@ namespace ProStudCreator
     partial void InsertTask(Task instance);
     partial void UpdateTask(Task instance);
     partial void DeleteTask(Task instance);
+    partial void InsertTaskRun(TaskRun instance);
+    partial void UpdateTaskRun(TaskRun instance);
+    partial void DeleteTaskRun(TaskRun instance);
     #endregion
 		
 		public ProStudentCreatorDBDataContext() : 
@@ -180,6 +183,14 @@ namespace ProStudCreator
 			get
 			{
 				return this.GetTable<Task>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TaskRun> TaskRuns
+		{
+			get
+			{
+				return this.GetTable<TaskRun>();
 			}
 		}
 	}
@@ -5752,6 +5763,116 @@ namespace ProStudCreator
 						this._SemesterId = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Semester");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TaskRuns")]
+	public partial class TaskRun : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.DateTime _Date;
+		
+		private bool _Forced;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnDateChanging(System.DateTime value);
+    partial void OnDateChanged();
+    partial void OnForcedChanging(bool value);
+    partial void OnForcedChanged();
+    #endregion
+		
+		public TaskRun()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this.OnDateChanging(value);
+					this.SendPropertyChanging();
+					this._Date = value;
+					this.SendPropertyChanged("Date");
+					this.OnDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Forced", DbType="Bit NOT NULL")]
+		public bool Forced
+		{
+			get
+			{
+				return this._Forced;
+			}
+			set
+			{
+				if ((this._Forced != value))
+				{
+					this.OnForcedChanging(value);
+					this.SendPropertyChanging();
+					this._Forced = value;
+					this.SendPropertyChanged("Forced");
+					this.OnForcedChanged();
 				}
 			}
 		}

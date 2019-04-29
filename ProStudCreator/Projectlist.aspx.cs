@@ -81,7 +81,7 @@ namespace ProStudCreator
                 var refProj = FilterRelevantProjects(projects);
                 LabelNumProjects.Text = $"Anzahl Projekte: {refProj.Count()}";
                 var runningProj = refProj.Where(p => p.State >= 4 && p.State < 9);
-                LabelNumRunningProjects.Text = $"Anzahl Laufender Projekte: {runningProj.Count()}";
+                LabelNumRunningProjects.Text = $"Anzahl Gestarteter Projekte: {runningProj.Count()}";
                 var ip5n = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
                 LabelIP5Normal.Text = $"IP5: {ip5n.Where(p => p.State >= 5).Count()}/{ip5n.Count()}";
                 var ip5l = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);

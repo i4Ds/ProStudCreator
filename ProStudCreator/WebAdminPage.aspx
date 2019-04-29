@@ -9,6 +9,8 @@
     <div class="well usernSettings">
         <h3>Next Task Check</h3>
         <ul ID="TasksNextTaskCheck" runat="server"></ul>
+        <h5>Last 10 Task Checks:</h5>
+        <ul id="LastTaskRuns" runat="server"></ul>
         <asp:Button ID="ForceTaskCheckNow" runat="server" OnClick="ForceTaskCheckNow_Click" OnClientClick="this.disabled=true;" UseSubmitBehavior="false" />
         <h3>Tasks: Noten an Ausbildungsadministration übergeben</h3>
         <ul ID="TasksMarks" runat="server"></ul>
@@ -33,5 +35,7 @@
         <ul ID="CurrSemIP5Long" runat="server"></ul>
         <h5>IP6</h5>
         <ul ID="CurrSemIP6" runat="server"></ul>
+        <h5>HttpContext</h5>
+        <ul id="HttpContextContent" runat="server"></ul>
     </div>
 </asp:Content>
