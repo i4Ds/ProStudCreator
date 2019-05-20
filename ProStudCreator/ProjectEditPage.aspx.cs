@@ -502,7 +502,7 @@ namespace ProStudCreator
                 divPriorityTwo.Visible = false;
                 dropPOneTeamSize.Enabled = dropPOneType.Enabled = dropPTwoTeamSize.Enabled = dropPTwoType.Enabled = false;
                 dropPOneType.SelectedValue = db.ProjectTypes.Single(p => !p.P5 && p.P6).Id.ToString();
-                if (string.IsNullOrEmpty(pageProject?.LogStudent2Mail))
+                if (string.IsNullOrEmpty(previousProject?.LogStudent2Mail))
                     dropPOneTeamSize.SelectedValue = db.ProjectTeamSizes.Single(p => p.Size1 && !p.Size2).Id.ToString();
                 else
                     dropPOneTeamSize.SelectedValue = db.ProjectTeamSizes.Single(p => !p.Size1 && p.Size2).Id.ToString();
@@ -1618,6 +1618,7 @@ namespace ProStudCreator
                 DisplayReservations();
                 DisplayClient(pageProject == null);
             }
+            ToggleReservationTwoVisible();
             updateReservation.Update();
             updateClient.Update();
         }

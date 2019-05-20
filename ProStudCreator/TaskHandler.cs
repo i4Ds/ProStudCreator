@@ -93,14 +93,8 @@ namespace ProStudCreator
         {
             using (var db = new ProStudentCreatorDBDataContext())
             {
-                db.TaskRuns.InsertOnSubmit(new TaskRun
-                {
-                    Date = DateTime.Now,
-                    Forced = forced
-                });
-                db.SubmitChanges();
-
                 CheckFinishProject(db);
+                CheckArchiveProject(db);
                 //CheckGradesRegistered(db);
                 //CheckWebsummaryChecked(db);
                 //CheckBillingStatus(db);
@@ -116,7 +110,7 @@ namespace ProStudCreator
 
                 SendThesisTitlesToAdmin(db);
                 //SendGradesToAdmin(db);
-                //SendPayExperts(db);
+                SendPayExperts(db);
 
                 //vvvvvvvvvvvvv NOT YET IMPLEMENTED
                 //SendInvoiceCustomers(db); //<-- not yet implemented
@@ -126,13 +120,22 @@ namespace ProStudCreator
 
                 SendMailsToResponsibleUsers(db);
                 SendTaskCheckMailToWebAdmin(forced);
+
+                db.TaskRuns.InsertOnSubmit(new TaskRun
+                {
+                    Date = DateTime.Now,
+                    Forced = forced
+                });
+                db.SubmitChanges();
             }
         }
 
         private static void CheckFinishProject(ProStudentCreatorDBDataContext db)
         {
             //add new tasks
-            var activeFinishTasksIds = db.Tasks.Where(t => !t.Done && t.TaskType.Id == (int)Type.FinishProject).Select(t => t.ProjectId).ToList();
+
+            var temp = db.Tasks.Where(t => !t.Done && t.TaskType.Id == (int)Type.FinishProject).ToList();
+            var activeFinishTasksIds = temp.Select(t => t.ProjectId).ToList();
             var allOngoingProjects = db.Projects.Where(p => p.State == ProjectState.Ongoing && p.IsMainVersion).ToList();
 
             foreach (var project in allOngoingProjects)
@@ -150,11 +153,10 @@ namespace ProStudCreator
                 }
                 else
                 {
-                    var task = db.Tasks.Single(t => t.ProjectId == project.Id && t.TaskTypeId == (int)Type.FinishProject);
+                    var task = db.Tasks.Single(t => t.ProjectId == project.Id && t.TaskTypeId == (int)Type.FinishProject && !t.Done);
                     task.DueDate = project.GetGradeDeliveryDate(db);
                 }
             }
-
             //check tasks
             var activeFinishTasks = db.Tasks.Where(t => !t.Done && t.TaskTypeId == (int)Type.FinishProject).ToList();
             foreach (var task in activeFinishTasks)
@@ -162,6 +164,21 @@ namespace ProStudCreator
                 if (task.Project.State > ProjectState.Ongoing || !task.Project.IsMainVersion)
                 {
                     task.Done = true;
+                }
+            }
+
+            db.SubmitChanges();
+        }
+
+        private static void CheckArchiveProject(ProStudentCreatorDBDataContext db)
+        {
+            var allFinishedOrCanceledProjects = db.Projects.Where(p => p.State == ProjectState.Finished || p.State == ProjectState.Canceled);
+
+            foreach(var p in allFinishedOrCanceledProjects)
+            {
+                if (p.CheckTransitionArchive())
+                {
+                    p.Archive(db);
                 }
             }
 
@@ -696,67 +713,78 @@ namespace ProStudCreator
                 db.SubmitChanges();
             }
 
+            var lastSemester = Semester.LastSemester(db);
+
             if (activeTask.LastReminded == null || (DateTime.Now - activeTask.LastReminded.Value).TotalDays > type.DaysBetweenReminds)
             {
                 activeTask.LastReminded = DateTime.Now;
 
-                var unpaidExperts = db.Projects.Where(p => p.IsMainVersion 
-                    && p.State == (int)ProjectState.Published 
-                    && !p.LogExpertPaid 
-                    && (p.LogGradeStudent1 != null || p.LogGradeStudent2 != null) 
-                    && p.BillingStatus != null 
-                    && p.Expert != null 
-                    && p.BillingStatus.RequiresProjectResults
-                ).OrderBy(p => p.Expert.Name).ThenBy(p => p.Semester.StartDate).ThenBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr).ToList();
-
-                unpaidExperts = unpaidExperts.Where(p => p.WasDefenseHeld()).ToList();
-                if (unpaidExperts.Any())
+                var thesisProjects = db.Projects.Where(p => p.IsMainVersion
+                    && p.Semester == lastSemester
+                    && (p.LogProjectType.P6 && !p.LogProjectType.P5)
+                    && p.State != ProjectState.Deleted
+                    && p.State > ProjectState.Published
+                );
+                
+                if (thesisProjects.Any() && thesisProjects.All(p => p.State > ProjectState.Ongoing))
                 {
-                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    mail.To.Add(new MailAddress(Global.PayExpertAdmin));
-                    mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
-                    mail.IsBodyHtml = true;
-
-                    var mailMessage = new StringBuilder();
-                    mailMessage.Append(
-                        "<div style=\"font-family: Arial\">" +
-                        "<p>Liebe Administration<p>" +
-                        "<p>Bitte die Auszahlung von den folgenden Expertenhonoraren veranlassen:</p>" +
-                        "<table>" +
-                        "<tr>" +
-                            "<th>Experte</th>" +
-                            "<th>Semester</th>" +
-                            "<th>Studierende</th>" +
-                            "<th>Betreuer</th>" +
-                            "<th>Projekttitel</th>" +
-                        "</tr>");
-
-                    foreach (var p in unpaidExperts)
+                    var unpaidExperts = thesisProjects.Where(p => p.State == ProjectState.Finished
+                            && !p.LogExpertPaid 
+                            && p.Expert.AutomaticPayout
+                       ).OrderBy(p => p.Expert.Name)
+                        .ThenBy(p => p.Semester.StartDate)
+                        .ThenBy(p => p.Department.DepartmentName)
+                        .ThenBy(p => p.ProjectNr).ToList();
+                    
+                    if (unpaidExperts.Any())
                     {
-                        p.LogExpertPaid = true;
+                        var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                        mail.To.Add(new MailAddress(Global.PayExpertAdmin));
+                        mail.CC.Add(new MailAddress("hanna.troxler@fhnw.ch"));
+                        mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
+                        mail.IsBodyHtml = true;
+
+                        var mailMessage = new StringBuilder();
+                        mailMessage.Append(
+                            "<div style=\"font-family: Arial\">" +
+                            "<p>Liebe Administration<p>" +
+                            "<p>Bitte die Auszahlung von den folgenden Expertenhonoraren veranlassen:</p>" +
+                            "<table>" +
+                            "<tr>" +
+                                "<th>Experte</th>" +
+                                "<th>Semester</th>" +
+                                "<th>Studierende</th>" +
+                                "<th>Betreuer</th>" +
+                                "<th>Projekttitel</th>" +
+                            "</tr>");
+
+                        foreach (var p in unpaidExperts)
+                        {
+                            p.LogExpertPaid = true;
+
+                            mailMessage.Append(
+                            "<tr>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.Expert.Name)}</td>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.Semester.Name)}</td>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.LogStudent1Mail + (p.LogStudent2Mail != null ? ", " + p.LogStudent2Mail : ""))}</td>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
+                                $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
+                            "</tr>"
+                            );
+                        }
 
                         mailMessage.Append(
-                        "<tr>" +
-                            $"<td>{HttpUtility.HtmlEncode(p.Expert.Name)}</td>" +
-                            $"<td>{HttpUtility.HtmlEncode(p.Semester.Name)}</td>" +
-                            $"<td>{HttpUtility.HtmlEncode(p.LogStudent1Mail + (p.LogStudent2Mail != null ? ", " + p.LogStudent2Mail : ""))}</td>" +
-                            $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
-                            $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
-                        "</tr>"
-                        );
+                            "</table>" +
+                            "<br/>" +
+                            "<p>Herzliche Grüsse,<br/>" +
+                            "ProStud-Team</p>" +
+                            $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                            "</div>"
+                            );
+
+                        mail.Body = mailMessage.ToString();
+                        SendMail(mail);
                     }
-
-                    mailMessage.Append(
-                        "</table>" +
-                        "<br/>" +
-                        "<p>Herzliche Grüsse,<br/>" +
-                        "ProStud-Team</p>" +
-                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
-                        "</div>"
-                        );
-
-                    mail.Body = mailMessage.ToString();
-                    SendMail(mail);
                 }
             }
 

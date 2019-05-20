@@ -631,6 +631,32 @@ namespace ProStudCreator
             }
         }
 
+        private static bool IsExpertStateReadyForArchive(this Project _p)
+        {
+            if (_p.State != ProjectState.Finished && _p.State != ProjectState.Canceled) HandleInvalidState(_p, "IsExpertStateReadyForArchive");
+
+            // if it's a P5
+            if (_p.LogProjectType.P5 && !_p.LogProjectType.P6) return true;
+
+            // if it's a P6
+            if (_p.LogProjectType.P6 && !_p.LogProjectType.P5)
+            {
+                // if it's canceled
+                if (_p.State == ProjectState.Canceled) return true;
+
+                // if it's finished
+                if (_p.State == ProjectState.Finished)
+                {
+                    if (_p.Expert.AutomaticPayout)
+                    {
+                        return _p.LogExpertPaid;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region State Transitions
@@ -709,7 +735,7 @@ namespace ProStudCreator
         public static void Finish(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionFinish(_p)) HandleInvalidState(_p, "Finish");
-
+            
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Finished;
             _db.SubmitChanges();
@@ -854,15 +880,11 @@ namespace ProStudCreator
             switch (_p.State)
             {
                 case ProjectState.Finished:
-                    // ExpertPaid
-                    return _p.LogExpertPaid
-                    // GradeSentToAdmin
-                    && _p.GradeSentToAdmin;
-
                 case ProjectState.Canceled:
-                    // GradeSentToAdmin
-                    return _p.GradeSentToAdmin;
-
+                    // ExpertPaid
+                    return _p.IsExpertStateReadyForArchive()
+                        // GradeSentToAdmin
+                        && _p.GradeSentToAdmin;
                 default:
                     return false;
             }
