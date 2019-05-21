@@ -490,6 +490,22 @@ namespace ProStudCreator
             return true;
         }
 
+        public static bool StudentsAccordingToPreviousProject(this Project _p)
+        {
+            if (_p.PreviousProject == null) return true;
+
+            if (_p.Reservation1Mail != _p.PreviousProject.LogStudent1Mail) return false;
+
+            if (string.IsNullOrWhiteSpace(_p.Reservation2Mail) && string.IsNullOrWhiteSpace(_p.PreviousProject.LogStudent2Mail))
+            {
+                return true;
+            }
+            else
+            {
+                return _p.Reservation2Mail == _p.PreviousProject.LogStudent2Mail;
+            }
+        }
+
         public static bool IsAtLeastPublished(this Project _p)
         {
             return _p.State == ProjectState.Published
@@ -708,6 +724,21 @@ namespace ProStudCreator
         {
             if (!CheckTransitionPublish(_p)) HandleInvalidState(_p, "Publish");
 
+            if (_p.PreviousProject != null)
+            {
+                _p.LogProjectType = _db.ProjectTypes.Single(t => t.Id == _p.POneType.Id);
+                _p.LogProjectDuration = 1;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_p.Reservation1Mail))
+                _p.LogStudent1Mail = _p.Reservation1Mail;
+            if (!string.IsNullOrWhiteSpace(_p.Reservation1Name))
+                _p.LogStudent1Name = _p.Reservation1Name;
+            if (!string.IsNullOrWhiteSpace(_p.Reservation2Mail))
+                _p.LogStudent2Mail = _p.Reservation2Mail;
+            if (!string.IsNullOrWhiteSpace(_p.Reservation2Name))
+                _p.LogStudent2Name = _p.Reservation2Name;
+
             if (_p.Semester == null) _p.Semester = Semester.NextSemester(_db);
             _p.PublishedDate = DateTime.Now;
             _p.ModificationDate = DateTime.Now;
@@ -798,7 +829,7 @@ namespace ProStudCreator
                 // Client Information (Depending on ClientType)
                 && _p.MinimalClientInformationProvided()
                 // Reservation (Depending on PreviousProject)
-                && (_p.PreviousProject == null || (_p.PreviousProject != null && _p.Reservation1Mail == _p.PreviousProject.LogStudent1Mail && _p.Reservation2Mail == _p.PreviousProject.LogStudent2Mail));
+                && _p.StudentsAccordingToPreviousProject();
         }
 
         public static bool CheckTransitionUnsubmit(this Project _p)
@@ -828,7 +859,7 @@ namespace ProStudCreator
                 // Client Information (Depending on ClientType)
                 && _p.MinimalClientInformationProvided()
                 // Reservation (Depending on PreviousProject)
-                && (_p.PreviousProject == null || (_p.PreviousProject != null && _p.Reservation1Mail == _p.PreviousProject.LogStudent1Mail && _p.Reservation2Mail == _p.PreviousProject.LogStudent2Mail));
+                && _p.StudentsAccordingToPreviousProject();
         }
 
         public static bool CheckTransitionKickoff(this Project _p)
