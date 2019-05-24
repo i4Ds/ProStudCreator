@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 
 namespace ProStudCreator
@@ -19,7 +20,7 @@ namespace ProStudCreator
             if (!(ShibUser.IsAuthenticated(db) || idPDF.IsAtLeastPublished()))
             {
                 
-                Response.Redirect("error/AccessDenied.aspx");
+                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                 Response.End();
                 return;
             }

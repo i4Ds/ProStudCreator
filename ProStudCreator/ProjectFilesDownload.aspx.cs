@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 
 namespace ProStudCreator
@@ -20,7 +21,7 @@ namespace ProStudCreator
 
             if (!ShibUser.IsAuthenticated(db))
             {
-                Response.Redirect("error/AccessDenied.aspx");
+                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                 Response.End();
                 return;
             }

@@ -26,7 +26,7 @@ namespace ProStudCreator
         {
             if (ShibUser.GetEmail() != Global.WebAdmin)
             {
-                Response.Redirect("error/AccessDenied.aspx");
+                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                 Response.End();
             }
 

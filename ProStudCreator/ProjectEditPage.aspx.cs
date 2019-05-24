@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace ProStudCreator
 {
@@ -81,7 +82,7 @@ namespace ProStudCreator
 
                 if (!pageProject.UserCanEdit())
                 {
-                    Response.Redirect("error/AccessDenied.aspx");
+                    Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                     Response.End();
                 }
 
@@ -1403,24 +1404,27 @@ namespace ProStudCreator
 
         protected void SubmitProject_Click(object sender, EventArgs e)
         {
-            SaveProject(false);
-            var validationMessage = GenerateValidationMessageForSubmitAndPublish();
-
-            if (string.IsNullOrWhiteSpace(validationMessage))
+            if (Page.IsValid)
             {
-                pageProject.Submit(db);
-                db.SubmitChanges();
-                Response.Redirect("projectlist");
-                return;
+                SaveProject(false);
+                var validationMessage = GenerateValidationMessageForSubmitAndPublish();
+
+                if (string.IsNullOrWhiteSpace(validationMessage))
+                {
+                    pageProject.Submit(db);
+                    db.SubmitChanges();
+                    Response.Redirect("projectlist");
+                    return;
+                }
+                // Generate JavaScript alert with error message
+                var sb = new StringBuilder();
+                sb.Append("<script type = 'text/javascript'>");
+                sb.Append("alert('");
+                sb.Append(validationMessage);
+                sb.Append("');");
+                sb.Append("</script>");
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", sb.ToString(), false);
             }
-            // Generate JavaScript alert with error message
-            var sb = new StringBuilder();
-            sb.Append("<script type = 'text/javascript'>");
-            sb.Append("alert('");
-            sb.Append(validationMessage);
-            sb.Append("');");
-            sb.Append("</script>");
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", sb.ToString(), false);
         }
 
         private string GenerateValidationMessageForSubmitAndPublish()
@@ -1441,11 +1445,26 @@ namespace ProStudCreator
                 return "Bitte wählen Sie genau 1-2 passende Themengebiete aus.";
 
             //Client Information
-            if (txtClientName.Text.Trim().Length != 0 && !txtClientName.Text.IsValidName())
-                return "Bitte geben Sie den Namen des Kundenkontakts an (Vorname Nachname).";
+            if (radioClientType.SelectedIndex != (int)ClientType.Internal)
+            {
+                if (string.IsNullOrWhiteSpace(txtClientName.Text))
+                    return "Bitte geben Sie den Namen des Kundenkontakts an (Vorname Nachname).";
 
-            if (txtClientEmail.Text.Trim().Length != 0 && !txtClientEmail.Text.IsValidEmail())
-                return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
+                if (!txtClientName.Text.IsValidName())
+                    return "Bitte geben Sie den Namen des Kundenkontakts im Format (Vorname Nachname) an.";
+
+                if (string.IsNullOrWhiteSpace(txtClientEmail.Text))
+                    return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
+
+                if (!txtClientEmail.Text.IsValidEmail())
+                    return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts im Format (xxx@yyy.zzz) an.";
+
+                if (radioClientType.SelectedIndex == (int)ClientType.Company)
+                {
+                    if (string.IsNullOrWhiteSpace(txtClientCompany.Text))
+                        return "Bitte geben Sie den Namen des Unternehmens an.";
+                }
+            }
 
             //Reservation
             var res1Name = Reservation1Name.Text;

@@ -277,7 +277,7 @@
                             <div class="col-sm-6 col-md-7">
                                 <asp:TextBox runat="server" ID="txtClientEmail" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
                                 <asp:Label runat="server" ID="txtClientEmailLabel" CssClass="form-control" Visible="false"></asp:Label>
-                                <asp:RegularExpressionValidator ID="ClientEmailFormatValidator" ValidationExpression=".+@.+\..+" ForeColor="Red" Display="Dynamic" ControlToValidate="txtClientEmail" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie eine E-Mail mit Format 'xxx@yyy.zzz' an."></asp:RegularExpressionValidator>
+                                <asp:RegularExpressionValidator ID="ClientEmailFormatValidator" ValidationExpression=".+@.+\...+" ForeColor="Red" Display="Dynamic" ControlToValidate="txtClientEmail" runat="server" SetFocusOnError="true" ErrorMessage="Bitte geben Sie eine E-Mail mit Format 'xxx@yyy.zzz' an."></asp:RegularExpressionValidator>
                             </div>
                         </div>
                         <div class="form-group" style="text-align: left" runat="server" id="divClientDepartment">

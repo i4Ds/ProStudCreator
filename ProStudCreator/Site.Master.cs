@@ -64,7 +64,7 @@ namespace ProStudCreator
             if (!ShibUser.IsAuthenticated(new ProStudentCreatorDBDataContext()))
             {
                 //throw new HttpException(403, "Nicht berechtigt");
-                Response.Redirect("error/AccessDenied.aspx");
+                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                 Response.End();
                 return;
             }

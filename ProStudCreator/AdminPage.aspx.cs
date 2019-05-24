@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -35,7 +36,7 @@ namespace ProStudCreator
         {
             if (!ShibUser.CanVisitAdminPage())
             {
-                Response.Redirect("error/AccessDenied.aspx");
+                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                 Response.End();
             }
 
