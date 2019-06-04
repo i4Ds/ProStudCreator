@@ -38,7 +38,7 @@ namespace ProStudCreator
                 var pdfc = new PdfCreator();
 
                 //TODO: change it so this isn't needed (don't change database object every tick)
-                UpdateProjectFromFormData(pageProject, true);
+                UpdateProjectFromFormData(pageProject);
 
                 if (pdfc.CalcNumberOfPages(pageProject) > 1)
                 {
@@ -621,7 +621,7 @@ namespace ProStudCreator
 
         #region Save
 
-        private void UpdateProjectFromFormData(Project project, bool loadPicture = false)
+        private void UpdateProjectFromFormData(Project project)
         {
             //Name
             project.Name = ProjectName.Text.FixupParagraph();
@@ -693,7 +693,7 @@ namespace ProStudCreator
             //Priority
             project.POneType = db.ProjectTypes.Single(t => t.Id == int.Parse(dropPOneType.SelectedValue));
             project.POneTeamSize = db.ProjectTeamSizes.Single(s => s.Id == int.Parse(dropPOneTeamSize.SelectedValue));
-            
+
             if (dropPTwoType.SelectedValue == dropPTwoTypeImpossibleValue || dropPTwoTeamSize.SelectedValue == dropPTwoTeamSizeImpossibleValue)
             {
                 project.PTwoType = null;
@@ -775,6 +775,180 @@ namespace ProStudCreator
             project.TypeSysSec = projectTopics[6];
             project.TypeSE = projectTopics[7];
 
+            //Picture description
+            project.ImgDescription = imgdescription.Text.FixupParagraph();
+
+            // Long texts (description etc.)
+            project.InitialPosition = InitialPositionContent.Text.FixupParagraph();
+            project.Objective = ObjectivContent.Text.FixupParagraph();
+            project.ProblemStatement = ProblemStatementContent.Text.FixupParagraph();
+            project.References = ReferencesContent.Text.FixupParagraph();
+            project.Remarks = RemarksContent.Text.FixupParagraph();
+            project.Notes = NotesContent.Text.FixupParagraph();
+        }
+
+        private void UpdateNonDBProjectFromFormData(NonDBProject project)
+        {
+            //Name
+            project.Name = ProjectName.Text.FixupParagraph();
+
+            //Semester
+            if (DivSemester.Visible)
+            {
+                if (dropSemester.SelectedValue == dropSemesterImpossibleValue)
+                {
+                    project.SemesterId = null;
+                }
+                else
+                {
+                    project.SemesterId = db.Semester.Single(s => s.Id == int.Parse(dropSemester.SelectedValue)).Id;
+                }
+            }
+
+            //Previous Project
+            if (dropPreviousProject.SelectedValue == dropPreviousProjectImpossibleValue)
+            {
+                project.PreviousProjectId = null;
+            }
+            else
+            {
+                project.PreviousProjectId = db.Projects.Single(p => p.Id == int.Parse(dropPreviousProject.SelectedValue)).Id;
+            }
+
+            //Advisor
+            if (dropAdvisor1.SelectedValue == dropAdvisor1ImpossibleValue)
+                project.Advisor1Id = null;
+            else
+                project.Advisor1Id = db.UserDepartmentMap.Single(user => user.Id == int.Parse(dropAdvisor1.SelectedValue)).Id;
+
+            if (dropAdvisor2.SelectedValue == dropAdvisor2ImpossibleValue)
+                project.Advisor2Id = null;
+            else
+                project.Advisor2Id = db.UserDepartmentMap.Single(user => user.Id == int.Parse(dropAdvisor2.SelectedValue)).Id;
+
+            //Department
+            int newDepartmentId = int.Parse(dropDepartment.SelectedValue);
+            project.DepartmentId = db.Departments.Single(d => d.Id == newDepartmentId).Id;
+
+            // Languages
+            if (dropLanguage.SelectedIndex == 0)
+            {
+                project.LanguageGerman = true;
+                project.LanguageEnglish = true;
+            }
+            else if (dropLanguage.SelectedIndex == 1)
+            {
+                project.LanguageGerman = true;
+                project.LanguageEnglish = false;
+            }
+            else if (dropLanguage.SelectedIndex == 2)
+            {
+                project.LanguageGerman = false;
+                project.LanguageEnglish = true;
+            }
+            else throw new Exception($"Unexpected language selection {dropLanguage.SelectedIndex}");
+
+            //Priority
+            project.P1TypeId = db.ProjectTypes.Single(t => t.Id == int.Parse(dropPOneType.SelectedValue)).Id;
+            project.P1TeamSizeId = db.ProjectTeamSizes.Single(s => s.Id == int.Parse(dropPOneTeamSize.SelectedValue)).Id;
+
+            if (dropPTwoType.SelectedValue == dropPTwoTypeImpossibleValue || dropPTwoTeamSize.SelectedValue == dropPTwoTeamSizeImpossibleValue)
+            {
+                project.P2TypeId = null;
+                project.P2TeamSizeId = null;
+            }
+            else
+            {
+                project.P2TypeId = db.ProjectTypes.Single(t => t.Id == int.Parse(dropPTwoType.SelectedValue)).Id;
+                project.P2TeamSizeId = db.ProjectTeamSizes.Single(s => s.Id == int.Parse(dropPTwoTeamSize.SelectedValue)).Id;
+            }
+
+            if (project.P1TeamSizeId == project.P2TeamSizeId && project.P1TypeId == project.P2TypeId)
+            {
+                project.P2TypeId = null;
+                project.P2TeamSizeId = null;
+            }
+
+            //Client
+            if (radioClientType.SelectedIndex != (int)ClientType.Internal)
+            {
+                if (radioClientType.SelectedIndex == (int)ClientType.Company)
+                {
+                    project.ClientType = (int)ClientType.Company;
+                    project.ClientCompany = txtClientCompany.Text.FixupParagraph();
+                }
+                else
+                {
+                    project.ClientType = (int)ClientType.PrivatePerson;
+                    project.ClientCompany = "";
+                }
+                project.ClientAddressTitle = drpClientTitle.SelectedItem.Text;
+                project.ClientPerson = txtClientName.Text.FixupParagraph();
+                project.ClientAddressDepartment = txtClientDepartment.Text.FixupParagraph();
+                project.ClientAddressStreet = txtClientStreet.Text.FixupParagraph();
+                project.ClientAddressPostcode = txtClientPLZ.Text.FixupParagraph();
+                project.ClientAddressCity = txtClientCity.Text.FixupParagraph();
+                project.ClientReferenceNumber = txtClientReference.Text.FixupParagraph();
+                project.ClientMail = txtClientEmail.Text.Trim().ToLowerInvariant();
+            }
+            else
+            {
+                project.ClientType = (int)ClientType.Internal;
+                project.ClientAddressTitle = "Herr";
+
+                project.ClientCompany =
+                    project.ClientPerson =
+                        project.ClientAddressDepartment =
+                            project.ClientAddressStreet =
+                                project.ClientAddressPostcode =
+                                    project.ClientAddressCity =
+                                        project.ClientReferenceNumber =
+                                            project.ClientMail = "";
+            }
+
+            //NDA
+            project.UnderNDA = chkNDA.Checked;
+
+            //Reservation
+            project.Reservation1Name = Reservation1Name.Text.FixupParagraph();
+            project.Reservation1Mail = Reservation1Mail.Text.Trim().ToLowerInvariant();
+            if (db.ProjectTeamSizes.Single(s => s.Id == project.P1TeamSizeId).Size2)
+            {
+                project.Reservation2Name = Reservation2Name.Text.FixupParagraph();
+                project.Reservation2Mail = Reservation2Mail.Text.Trim().ToLowerInvariant();
+            }
+            else
+            {
+                project.Reservation2Name = "";
+                project.Reservation2Mail = "";
+            }
+
+            // Project categories
+            project.TypeDesignUX = projectTopics[0];
+            project.TypeHW = projectTopics[1];
+            project.TypeCGIP = projectTopics[2];
+            project.TypeMlAlg = projectTopics[3];
+            project.TypeAppWeb = projectTopics[4];
+            project.TypeDBBigData = projectTopics[5];
+            project.TypeSysSec = projectTopics[6];
+            project.TypeSE = projectTopics[7];
+
+            // Picture changed
+            if (AddPicture.HasFile) imageChanged = true;
+            //Picture description
+            project.ImgDescription = imgdescription.Text.FixupParagraph();
+
+            // Long texts (description etc.)
+            project.InitialPosition = InitialPositionContent.Text.FixupParagraph();
+            project.Objective = ObjectivContent.Text.FixupParagraph();
+            project.ProblemStatement = ProblemStatementContent.Text.FixupParagraph();
+            project.References = ReferencesContent.Text.FixupParagraph();
+            project.Remarks = RemarksContent.Text.FixupParagraph();
+            project.Notes = NotesContent.Text.FixupParagraph();
+        }
+
+        private void SavePicture(Project project)
+        {
             //Picture
             if (imageDeleted)
             {
@@ -789,35 +963,23 @@ namespace ProStudCreator
                     throw new Exception("Only jpg, jpeg or png are supported");
                 }
                 imageChanged = true;
-                if (loadPicture)
+                using (var input = AddPicture.PostedFile.InputStream)
                 {
-                    using (var input = AddPicture.PostedFile.InputStream)
+                    var data = new byte[AddPicture.PostedFile.ContentLength];
+                    var offset = 0;
+                    for (; ; )
                     {
-                        var data = new byte[AddPicture.PostedFile.ContentLength];
-                        var offset = 0;
-                        for (; ; )
-                        {
-                            var read = input.Read(data, offset, data.Length - offset);
-                            if (read == 0)
-                                break;
+                        var read = input.Read(data, offset, data.Length - offset);
+                        if (read == 0)
+                            break;
 
-                            offset += read;
-                        }
-                        project.Picture = new Binary(data);
+                        offset += read;
                     }
+                    project.Picture = new Binary(data);
                 }
             }
 
-            //Picture description
-            project.ImgDescription = imgdescription.Text.FixupParagraph();
-
-            // Long texts (description etc.)
-            project.InitialPosition = InitialPositionContent.Text.FixupParagraph();
-            project.Objective = ObjectivContent.Text.FixupParagraph();
-            project.ProblemStatement = ProblemStatementContent.Text.FixupParagraph();
-            project.References = ReferencesContent.Text.FixupParagraph();
-            project.Remarks = RemarksContent.Text.FixupParagraph();
-            project.Notes = NotesContent.Text.FixupParagraph();
+            db.SubmitChanges();
         }
 
 
@@ -832,21 +994,20 @@ namespace ProStudCreator
                 pageProject.IsMainVersion = true;
                 SaveNewProject();
             }
-            else if (HasProjectChanged())
+            else if (!copy)
             {
-                if (copy)
-                {
-                    SaveChangedProjectAsNewVersion();
-                } else
-                {
-                    SaveChangedProject();
-                }
+                SaveChangedProject();
+            }
+            else if (NEW_HasProjectChanged())
+            {
+                SaveChangedProjectAsNewVersion();
             }
         }
 
         private void SaveNewProject()
         {
-            UpdateProjectFromFormData(pageProject, true);
+            UpdateProjectFromFormData(pageProject);
+            SavePicture(pageProject);
             db.SubmitChanges(); // the next few lines depend on this submit
             pageProject.BaseVersionId = pageProject.Id;
             pageProject.OverOnePage = new PdfCreator().CalcNumberOfPages(pageProject) > 1;
@@ -858,7 +1019,8 @@ namespace ProStudCreator
         {
             if (!pageProject.UserCanEdit())
                 throw new UnauthorizedAccessException();
-            UpdateProjectFromFormData(pageProject, true);
+            UpdateProjectFromFormData(pageProject);
+            SavePicture(pageProject);
             pageProject.OverOnePage = new PdfCreator().CalcNumberOfPages(pageProject) > 1;
             pageProject.SaveProjectAsMainVersion(db);
         }
@@ -868,7 +1030,8 @@ namespace ProStudCreator
             if (!pageProject.UserCanEdit())
                 throw new UnauthorizedAccessException();
 
-            UpdateProjectFromFormData(pageProject, true);
+            UpdateProjectFromFormData(pageProject);
+            SavePicture(pageProject);
             pageProject.OverOnePage = new PdfCreator().CalcNumberOfPages(pageProject) > 1;
             pageProject = pageProject.CopyAndUseCopyAsMainVersion(db);
         }
@@ -887,6 +1050,13 @@ namespace ProStudCreator
             bool isChanged = comparisonProject.IsModified(pageProject) || imageChanged || imageDeleted;
             db.SubmitChanges();
             return isChanged;
+        }
+
+        private bool NEW_HasProjectChanged()
+        {
+            var comparisonProject = new NonDBProject();
+            UpdateNonDBProjectFromFormData(comparisonProject);
+            return pageProject.IsModified(comparisonProject, true, false) || imageChanged || imageDeleted;
         }
 
         #endregion

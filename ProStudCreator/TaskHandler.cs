@@ -521,7 +521,7 @@ namespace ProStudCreator
                 if (thesisProjects.Any())
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    mail.To.Add(new MailAddress(Global.GradeAdmin));
+                    mail.To.Add(new MailAddress(Global.WebAdmin)); // TODO: change to Global.GradeAdmin
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel";
                     mail.IsBodyHtml = true;
 
@@ -917,15 +917,18 @@ namespace ProStudCreator
             db.SubmitChanges();
 
             var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-            mail.To.Add(new MailAddress(Global.MarKomAdmin));
+            mail.To.Add(new MailAddress(Global.WebAdmin)); // TODO: change to Global.MarKomAdmin
+            //mail.CC.Add(new MailAddress("sibylle.peter@fhnw.ch"));
             mail.Subject = "Informatikprojekte P6: Projektliste für Broschüre";
             mail.IsBodyHtml = true;
+
+            var activeSem = Semester.ActiveSemester(lastSendDate, db);
 
             var mailMessage = new StringBuilder();
             mailMessage.Append(
                 "<div style=\"font-family: Arial\">" +
                 "<p>Liebes MarKom<p>" +
-                $"<p>Hier die Liste aller Informatik-Bachelorarbeiten im { Semester.ActiveSemester(lastSendDate, db).Name }:</p>" +
+                $"<p>Hier die Liste aller Informatik-Bachelorarbeiten im { activeSem.Name }:</p>" +
                 "<table>" +
                 "<tr>" +
                     "<th>Nachname</th>" +
@@ -937,7 +940,7 @@ namespace ProStudCreator
                 "</tr>");
 
             //FIXME: should consider project enddate, not startdate of semester
-            var projs = db.Projects.Where(p => p.IsMainVersion && p.LogProjectType.P6 && p.Semester.StartDate <= lastSendDate && p.Semester.EndDate >= lastSendDate && p.State == (int)ProjectState.Published && !p.UnderNDA).ToArray();
+            var projs = db.Projects.Where(p => p.IsMainVersion && p.LogProjectType.P6 && p.Semester.Id == activeSem.Id && p.State == (int)ProjectState.Ongoing && !p.UnderNDA).ToArray();
 
             foreach (var p in projs.OrderBy(p => p.Student1LastName()))
                 mailMessage.Append(

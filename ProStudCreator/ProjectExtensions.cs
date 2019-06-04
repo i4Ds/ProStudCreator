@@ -187,6 +187,88 @@ namespace ProStudCreator
             return false;
         }
 
+        public static bool IsModified(this Project p1, NonDBProject p2, bool checkEdit, bool checkInfo)
+        {
+            if (!string.Equals(p1.Name, p2.Name)) return true;
+            if (p1.ClientType != p2.ClientType) return true;
+            if (!string.Equals(p1.ClientCompany, p2.ClientCompany)) return true;
+            if (!string.Equals(p1.ClientAddressTitle, p2.ClientAddressTitle)) return true;
+            if (!string.Equals(p1.ClientPerson, p2.ClientPerson)) return true;
+            if (!string.Equals(p1.ClientMail, p2.ClientMail)) return true;
+            if (!string.Equals(p1.ClientAddressDepartment, p2.ClientAddressDepartment)) return true;
+            if (!string.Equals(p1.ClientAddressStreet, p2.ClientAddressStreet)) return true;
+            if (!string.Equals(p1.ClientAddressPostcode, p2.ClientAddressPostcode)) return true;
+            if (!string.Equals(p1.ClientAddressCity, p2.ClientAddressCity)) return true;
+            if (!string.Equals(p1.ClientReferenceNumber, p2.ClientReferenceNumber)) return true;
+            if (p1.UnderNDA != p2.UnderNDA) return true;
+
+            if (checkEdit)
+            {
+                // Edit
+                if (p1.SemesterId != p2.SemesterId) return true;
+                if (p1.PreviousProjectID != p2.PreviousProjectId) return true;
+
+                if (p1.Advisor1Id != p2.Advisor1Id) return true;
+                if (p1.Advisor2Id != p2.Advisor2Id) return true;
+                if (p1.DepartmentId != p2.DepartmentId) return true;
+
+                if (p1.LanguageGerman != p2.LanguageGerman) return true;
+                if (p1.LanguageEnglish != p2.LanguageEnglish) return true;
+                if (p1.P1TypeId != p2.P1TypeId) return true;
+                if (p1.P1TeamSizeId != p2.P1TeamSizeId) return true;
+                if (p1.P2TypeId != p2.P2TypeId) return true;
+                if (p1.P2TeamSizeId != p2.P2TeamSizeId) return true;
+
+                if (!string.Equals(p1.Reservation1Name, p2.Reservation1Name)) return true;
+                if (!string.Equals(p1.Reservation1Mail, p2.Reservation1Mail)) return true;
+                if (!string.Equals(p1.Reservation2Name, p2.Reservation2Name)) return true;
+                if (!string.Equals(p1.Reservation2Mail, p2.Reservation2Mail)) return true;
+
+                if (p1.TypeDesignUX != p2.TypeDesignUX) return true;
+                if (p1.TypeHW != p2.TypeHW) return true;
+                if (p1.TypeCGIP != p2.TypeCGIP) return true;
+                if (p1.TypeMlAlg != p2.TypeMlAlg) return true;
+                if (p1.TypeAppWeb != p2.TypeAppWeb) return true;
+                if (p1.TypeDBBigData != p2.TypeDBBigData) return true;
+                if (p1.TypeSysSec != p2.TypeSysSec) return true;
+                if (p1.TypeSE != p2.TypeSE) return true;
+                
+                if (!string.Equals(p1.ImgDescription, p2.ImgDescription)) return true;
+
+                if (!string.Equals(p1.InitialPosition, p2.InitialPosition)) return true;
+                if (!string.Equals(p1.Objective, p2.Objective)) return true;
+                if (!string.Equals(p1.ProblemStatement, p2.ProblemStatement)) return true;
+                if (!string.Equals(p1.References, p2.References)) return true;
+                if (!string.Equals(p1.Remarks, p2.Remarks)) return true;
+                if (!string.Equals(p1.Notes, p2.Notes)) return true;
+            }
+
+            if (checkInfo)
+            {
+                // Info Page
+                if (!string.Equals(p1.LogStudent1Name, p2.LogStudent1Name)) return true;
+                if (!string.Equals(p1.LogStudent1Mail, p2.LogStudent1Mail)) return true;
+                if (!string.Equals(p1.LogStudent2Name, p2.LogStudent2Name)) return true;
+                if (!string.Equals(p1.LogStudent2Mail, p2.LogStudent2Mail)) return true;
+                if (p1.LogProjectTypeID != p2.LogProjectTypeID) return true;
+                if (p1.LogProjectDuration != p2.LogProjectDuration) return true;
+
+                if (!System.DateTime.Equals(p1.LogDefenceDate, p2.LogDefenceDate)) return true;
+                if (!string.Equals(p1.LogDefenceRoom, p2.LogDefenceRoom)) return true;
+                if (p1.LogExpertID != p2.LogExpertID) return true;
+
+                if (p1.LogLanguageEnglish != p2.LogLanguageEnglish) return true;
+                if (p1.LogLanguageGerman != p2.LogLanguageGerman) return true;
+                if (p1.WebSummaryChecked != p2.WebSummaryChecked) return true;
+                if (p1.BillingStatusID != p2.BillingStatusID) return true;
+
+                if (p1.LogGradeStudent1 != p2.LogGradeStudent1) return true;
+                if (p1.LogGradeStudent2 != p2.LogGradeStudent2) return true;
+            }
+
+            return false;
+        }
+
         public static Project Duplicate(this Project _p, ProStudentCreatorDBDataContext db)
         {
             Project duplicatedProject = new Project
@@ -1087,6 +1169,83 @@ namespace ProStudCreator
             throw new InvalidOperationException(msg);
         }
     }
+
+    public class NonDBProject
+    {
+        // Both
+        public string Name { get; set; }
+
+        public int ClientType { get; set; }
+        public string ClientCompany { get; set; }
+        public string ClientAddressTitle { get; set; }
+        public string ClientPerson { get; set; }
+        public string ClientMail { get; set; }
+        public string ClientAddressDepartment { get; set; }
+        public string ClientAddressStreet { get; set; }
+        public string ClientAddressPostcode { get; set; }
+        public string ClientAddressCity { get; set; }
+        public string ClientReferenceNumber { get; set; }
+        public bool UnderNDA { get; set; }
+
+        // Edit
+        public System.Nullable<int> SemesterId { get; set; }
+        public System.Nullable<int> PreviousProjectId { get; set; }
+
+        public System.Nullable<int> Advisor1Id { get; set; }
+        public System.Nullable<int> Advisor2Id { get; set; }
+        public int DepartmentId { get; set; }
+
+        public bool LanguageGerman { get; set; }
+        public bool LanguageEnglish { get; set; }
+        public int P1TypeId { get; set; }
+        public int P1TeamSizeId { get; set; }
+        public System.Nullable<int> P2TypeId { get; set; }
+        public System.Nullable<int> P2TeamSizeId { get; set; }
+
+        public string Reservation1Name { get; set; }
+        public string Reservation1Mail { get; set; }
+        public string Reservation2Name { get; set; }
+        public string Reservation2Mail { get; set; }
+
+        public bool TypeDesignUX { get; set; }
+        public bool TypeHW { get; set; }
+        public bool TypeCGIP { get; set; }
+        public bool TypeMlAlg { get; set; }
+        public bool TypeAppWeb { get; set; }
+        public bool TypeDBBigData { get; set; }
+        public bool TypeSysSec { get; set; }
+        public bool TypeSE { get; set; }
+        public System.Data.Linq.Link<System.Data.Linq.Binary> Picture { get; set; }
+        public string ImgDescription { get; set; }
+
+        public string InitialPosition { get; set; }
+        public string Objective { get; set; }
+        public string ProblemStatement { get; set; }
+        public string References { get; set; }
+        public string Remarks { get; set; }
+        public string Notes { get; set; }
+
+        // Info Page
+        public string LogStudent1Name { get; set; }
+        public string LogStudent1Mail { get; set; }
+        public string LogStudent2Name { get; set; }
+        public string LogStudent2Mail { get; set; }
+        public System.Nullable<int> LogProjectTypeID { get; set; }
+        public System.Nullable<byte> LogProjectDuration { get; set; }
+
+        public System.Nullable<System.DateTime> LogDefenceDate { get; set; }
+        public string LogDefenceRoom { get; set; }
+        public System.Nullable<int> LogExpertID { get; set; }
+
+        public System.Nullable<bool> LogLanguageEnglish { get; set; }
+        public System.Nullable<bool> LogLanguageGerman { get; set; }
+        public bool WebSummaryChecked { get; set; }
+        public System.Nullable<int> BillingStatusID { get; set; }
+
+        public System.Nullable<float> LogGradeStudent1 { get; set; }
+        public System.Nullable<float> LogGradeStudent2 { get; set; }
+    }
+
     public partial class Project
     {
         public static string GetStateColor(int _state)
