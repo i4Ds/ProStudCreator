@@ -76,31 +76,67 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label LabelNumRunningProjects;
         
         /// <summary>
-        /// LabelIP5Normal control.
+        /// LabelNumRunningProjectsIP5N control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelIP5Normal;
+        protected global::System.Web.UI.WebControls.Label LabelNumRunningProjectsIP5N;
         
         /// <summary>
-        /// LabelIP5Long control.
+        /// LabelNumRunningProjectsIP5L control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelIP5Long;
+        protected global::System.Web.UI.WebControls.Label LabelNumRunningProjectsIP5L;
         
         /// <summary>
-        /// LabelIP6 control.
+        /// LabelNumRunningProjectsIP6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelIP6;
+        protected global::System.Web.UI.WebControls.Label LabelNumRunningProjectsIP6;
+        
+        /// <summary>
+        /// LabelNumFinishedProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNumFinishedProjects;
+        
+        /// <summary>
+        /// LabelNumFinishedProjectsIP5N control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNumFinishedProjectsIP5N;
+        
+        /// <summary>
+        /// LabelNumFinishedProjectsIP5L control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNumFinishedProjectsIP5L;
+        
+        /// <summary>
+        /// LabelNumFinishedProjectsIP6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNumFinishedProjectsIP6;
         
         /// <summary>
         /// colExInProgress control.

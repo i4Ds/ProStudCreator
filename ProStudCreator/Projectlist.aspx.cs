@@ -79,15 +79,28 @@ namespace ProStudCreator
             if (ShibUser.GetEmail() == Global.WebAdmin && whichOwner.SelectedValue == "AllProjects")
             {
                 var refProj = FilterRelevantProjects(projects);
+
+                var runningProj = refProj.Where(p => p.State == 4);
+                var runningProjIP5N = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
+                var runningProjIP5L = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
+                var runningProjIP6 = runningProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
+
+                var finishedProj = refProj.Where(p => p.State > 4 && p.State < 9);
+                var finishedProjIP5N = finishedProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
+                var finishedProjIP5L = finishedProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
+                var finishedProjIP6 = finishedProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
+
                 LabelNumProjects.Text = $"Anzahl Projekte: {refProj.Count()}";
-                var runningProj = refProj.Where(p => p.State >= 4 && p.State < 9);
-                LabelNumRunningProjects.Text = $"Anzahl Gestarteter Projekte: {runningProj.Count()}";
-                var ip5n = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
-                LabelIP5Normal.Text = $"IP5: {ip5n.Where(p => p.State >= 5).Count()}/{ip5n.Count()}";
-                var ip5l = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
-                LabelIP5Long.Text = $"IP5 Lang: {ip5l.Where(p => p.State >= 5).Count()}/{ip5l.Count()}";
-                var ip6 = runningProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
-                LabelIP6.Text = $"IP6: {ip6.Where(p => p.State >= 5).Count()}/{ip6.Count()}";
+
+                LabelNumRunningProjects.Text = $"Anzahl Laufender Projekte: {runningProj.Count()}";
+                LabelNumRunningProjectsIP5N.Text = $"IP5: {runningProjIP5N.Count()}";
+                LabelNumRunningProjectsIP5L.Text = $"IP5 Lang: {runningProjIP5L.Count()}";
+                LabelNumRunningProjectsIP6.Text = $"IP6: {runningProjIP6.Count()}";
+
+                LabelNumFinishedProjects.Text = $"Anzahl abgeschlossener Projekte: {finishedProj.Count()}";
+                LabelNumFinishedProjectsIP5N.Text = $"IP5: {finishedProjIP5N.Count()}";
+                LabelNumFinishedProjectsIP5L.Text = $"IP5 Lang: {finishedProjIP5L.Count()}";
+                LabelNumFinishedProjectsIP6.Text = $"IP6: {finishedProjIP6.Count()}";
 
                 DivProjectStatistics.Visible = true;
             }
