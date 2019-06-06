@@ -426,9 +426,9 @@ namespace ProStudCreator
             }
         }
 
-        private void DisplayPicture(bool isNewProject)
+        private void DisplayPicture(bool isNewProject, bool imageDeleted = false)
         {
-            if (!isNewProject && pageProject.Picture != null)
+            if (!isNewProject && pageProject.Picture != null && !imageDeleted)
             {
                 AddPictureLabel.Text = "Bild ändern:";
                 ProjectPicture.Visible = true;
@@ -935,7 +935,9 @@ namespace ProStudCreator
 
             // Picture changed
             if (AddPicture.HasFile) imageChanged = true;
-            //Picture description
+            // Picture deleted
+            if (db.Projects.Single(p => p.Id == pageProject.Id).Picture != null && !DeleteImageButton.Visible) imageDeleted = true;
+            // Picture description
             project.ImgDescription = imgdescription.Text.FixupParagraph();
 
             // Long texts (description etc.)
@@ -1803,8 +1805,14 @@ namespace ProStudCreator
 
         protected void DeleteImage_Click(object sender, EventArgs e)
         {
-            imageDeleted = true;
-            pageProject.Picture = null;
+            if (pageProject != null)
+            {
+                DisplayPicture(false, imageDeleted=true);
+            }
+            else
+            {
+                DisplayPicture(true, imageDeleted=true);
+            }
         }
 
         protected void TeamSize_SelectedIndexChanged(object sender, EventArgs e)

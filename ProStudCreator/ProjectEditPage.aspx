@@ -101,7 +101,8 @@
                 if (hasUnsavedChanges) {
                     return "Änderungen wurden noch nicht gespeichert. Seite wirklich verlassen?";
                 }
-            });
+            }
+        );
     </script>
     <asp:UpdatePanel runat="server" UpdateMode="Conditional" ID="refuseProjectUpdatePanel">
         <ContentTemplate>
@@ -375,30 +376,37 @@
                     <asp:Timer runat="server" Interval="60000" Enabled="true" />
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <div class="form-group">
-                <asp:Label runat="server" ID="AddPictureLabel" CssClass="control-label col-sm-3" Text="Bild hinzufügen:"></asp:Label>
-                <div class="col-sm-3">
-                    <asp:FileUpload runat="server" ID="AddPicture" accept=".jpeg,.jpg,.png" CssClass="control-label" /><small>(max. 1MB)</small>
-                    <br />
-                    <a style="color: red">
-                        <asp:RegularExpressionValidator ID="regexValidator" runat="server"
-                            ControlToValidate="AddPicture"
-                            ErrorMessage="Es werden nur JPEGs und PNGs als Bildformat unterstützt."
-                            ValidationExpression="(.*\.([Jj][Pp][Gg])|.*\.([Jj][Pp][Ee][Gg])|.*\.([Pp][Nn][Gg])$)">
-                        </asp:RegularExpressionValidator>
-                    </a>
-                </div>
-                <div class="col-sm-1">
-                    <asp:LinkButton runat="server" ID="DeleteImageButton" OnClick="DeleteImage_Click" OnClientClick="hasUnsavedChanges = false;return confirm('Dieses Bild wirklich entfernen?');" CssClass="btn btn-default btnHeight imageRemoveMargin glyphicon glyphicon-remove" Visible="false"></asp:LinkButton>
-                </div>
-            </div>
-            <div class="form-group">
-                <asp:Label runat="server" ID="ImageLabel" CssClass="control-label col-sm-3" Text=""></asp:Label>
-                <div class="col-sm-9">
-                    <asp:Image runat="server" ID="ProjectPicture" CssClass="maxImageWidth img-rounded" Visible="true" EnableViewState="False" />
-                    <asp:Image runat="server" ID="ProjectPicturePrevious" CssClass="maxImageWidth img-rounded" Visible="false" EnableViewState="False" />
-                </div>
-            </div>
+            <asp:UpdatePanel runat="server" UpdateMode="Conditional" ID="UpdateImage">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="DeleteImageButton" EventName="Click" />
+                </Triggers>
+                <ContentTemplate>
+                    <div class="form-group">
+                        <asp:Label runat="server" ID="AddPictureLabel" CssClass="control-label col-sm-3" Text="Bild hinzufügen:"></asp:Label>
+                        <div class="col-sm-3">
+                            <asp:FileUpload runat="server" ID="AddPicture" accept=".jpeg,.jpg,.png" CssClass="control-label" /><small>(max. 1MB)</small>
+                            <br />
+                            <a style="color: red">
+                                <asp:RegularExpressionValidator ID="regexValidator" runat="server"
+                                    ControlToValidate="AddPicture"
+                                    ErrorMessage="Es werden nur JPEGs und PNGs als Bildformat unterstützt."
+                                    ValidationExpression="(.*\.([Jj][Pp][Gg])|.*\.([Jj][Pp][Ee][Gg])|.*\.([Pp][Nn][Gg])$)">
+                                </asp:RegularExpressionValidator>
+                            </a>
+                        </div>
+                        <div class="col-sm-1">
+                            <asp:LinkButton runat="server" ID="DeleteImageButton" OnClick="DeleteImage_Click" OnClientClick="hasUnsavedChanges = false;return confirm('Dieses Bild wirklich entfernen?');" CssClass="btn btn-default btnHeight imageRemoveMargin glyphicon glyphicon-remove" Visible="false"></asp:LinkButton>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <asp:Label runat="server" ID="ImageLabel" CssClass="control-label col-sm-3" Text=""></asp:Label>
+                        <div class="col-sm-9">
+                            <asp:Image runat="server" ID="ProjectPicture" CssClass="maxImageWidth img-rounded" Visible="true" EnableViewState="False" />
+                            <asp:Image runat="server" ID="ProjectPicturePrevious" CssClass="maxImageWidth img-rounded" Visible="false" EnableViewState="False" />
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
             <div class="form-group">
                 <asp:Label runat="server" CssClass=" col-sm-3" Text=""></asp:Label>
                 <div class="col-md-9">
