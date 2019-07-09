@@ -491,17 +491,17 @@ namespace ProStudCreator
         /// <param name="_p"></param>
         public static void AssignUniqueProjectNr(this Project _p, ProStudentCreatorDBDataContext dbx)
         {
-            var semesterStart = Semester.ActiveSemester(_p.PublishedDate, dbx).StartDate;
-            var semesterEnd = Semester.ActiveSemester(_p.PublishedDate, dbx).DayBeforeNextSemester;
+            var activeSemester = Semester.ActiveSemester(_p.PublishedDate, dbx);
 
             // Get project numbers from this semester & same department
-            var nrs = (
-                from p in dbx.Projects
-                where p.PublishedDate >= semesterStart && p.PublishedDate <= semesterEnd
-                      && p.Id != _p.Id
-                      && (p.State == ProjectState.Published || p.State == ProjectState.Submitted)
-                      && p.Department == _p.Department
-                select p.ProjectNr).ToArray();
+            var nrs = dbx.Projects.Where(p =>
+                   p.State >= ProjectState.Published
+                && p.State < ProjectState.Deleted
+                && p.Semester.Id == activeSemester.Id
+                && p.Department.Id == _p.Department.Id
+                && p.Id != _p.Id)
+                .Select(p => p.ProjectNr).ToArray();
+
             if (_p.ProjectNr >= 100 || nrs.Contains(_p.ProjectNr) || _p.ProjectNr < 1)
             {
                 _p.ProjectNr = 1;
@@ -749,6 +749,10 @@ namespace ProStudCreator
                     {
                         return _p.LogExpertPaid;
                     }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -768,7 +772,6 @@ namespace ProStudCreator
             if (!CheckTransitionSubmit(_p)) HandleInvalidState(_p, "Submit");
             
             _p.ModificationDate = DateTime.Now;
-            AssignUniqueProjectNr(_p, _db);
             _p.State = ProjectState.Submitted;
             _db.SubmitChanges();
         }
@@ -795,6 +798,7 @@ namespace ProStudCreator
 
             _p.Semester = null;
             _p.State = ProjectState.Rejected;
+            _p.ProjectNr = 0;
             _db.SubmitChanges();
         }
 
@@ -825,6 +829,7 @@ namespace ProStudCreator
             _p.PublishedDate = DateTime.Now;
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Published;
+            AssignUniqueProjectNr(_p, _db);
             _db.SubmitChanges();
         }
 
