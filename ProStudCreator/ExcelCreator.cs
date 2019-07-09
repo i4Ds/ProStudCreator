@@ -14,6 +14,7 @@ namespace ProStudCreator
         private static readonly string SHEET_NAME = "Projects";
         private static readonly string MARKETING_SHEET_NAME = "_IP56_Informatikprojekte";
         private static readonly string Billing_SHEET_NAME = "_Verrechnungs_Excel";
+        private static readonly string MARKOM_SHEET_NAME = "_IP6_Ausstellung";
 
         private static readonly string[] ProjectListHeader =
         {
@@ -102,8 +103,18 @@ namespace ProStudCreator
             "",
             "Mitglied AIHK",
             "bezahlt"
-        };       
-        
+        };
+
+        private static readonly string[] MarKomHeader =
+        {
+            "Platz",
+            "Projekttitel",
+            "Stud 1 Name",
+            "Stud 2 Name",
+            "Firma Name",
+            "Firma Ort"
+        };
+
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
         public static void GenerateProjectList(Stream outStream, IEnumerable<Project> _projects)
         {
@@ -205,6 +216,35 @@ namespace ProStudCreator
         private static void ProjectToExcelMarketingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
             ICellStyle DateStyle)
         {
+            var sName1 = p.LogStudent1Name ?? "";
+            var sMail1 = p.LogStudent1Mail ?? "";
+            var sGrad1 = p.LogGradeStudent1;
+
+            string sName2 = null;
+            string sMail2 = null;
+            float? sGrad2 = null;
+
+            if (!string.IsNullOrWhiteSpace(p.LogStudent2Mail))
+            {
+                if (string.Compare(sMail1.Split('@')[0].Split('.')[1], p.LogStudent2Mail.Split('@')[0].Split('.')[1]) == 1)
+                {
+                    sName2 = sName1;
+                    sMail2 = sMail1;
+                    sGrad2 = sGrad1;
+
+                    sName1 = p.LogStudent2Name ?? "";
+                    sMail1 = p.LogStudent2Mail ?? "";
+                    sGrad1 = p.LogGradeStudent2;
+                }
+                else
+                {
+                    sName2 = p.LogStudent2Name ?? "";
+                    sMail2 = p.LogStudent2Mail ?? "";
+                    sGrad2 = p.LogGradeStudent2;
+                }
+            }
+
+
             var clientDepartment = string.IsNullOrEmpty(p.ClientAddressDepartment) ||
                                    string.IsNullOrEmpty(p.ClientCompany)
                 ? "" : p.ClientCompany + " Abt:" + p.ClientAddressDepartment;
@@ -221,29 +261,29 @@ namespace ProStudCreator
             if (p.GetDeliveryDate().HasValue)
                 cell2.SetCellValue(p.GetDeliveryDate().Value);
             row.CreateCell(i++).SetCellValue(p.ExhibitionBachelorThesis(db));
-            row.CreateCell(i++).SetCellValue(p.LogStudent1Name ?? "");
-            row.CreateCell(i++).SetCellValue(p.LogStudent1Mail ?? "");
+            row.CreateCell(i++).SetCellValue(sName1);
+            row.CreateCell(i++).SetCellValue(sMail1);
             var cell3 = row.CreateCell(i++);
-            if (GetStudentGrade(p.LogGradeStudent1) == -1)
+            if (GetStudentGrade(sGrad1) == -1)
             {
                 cell3.SetCellType(CellType.String);
                 cell3.SetCellValue("");
             }
             else
             {
-                cell3.SetCellValue(GetStudentGrade(p.LogGradeStudent1));
+                cell3.SetCellValue(GetStudentGrade(sGrad1));
             }
-            row.CreateCell(i++).SetCellValue(p.LogStudent2Name ?? "");
-            row.CreateCell(i++).SetCellValue(p.LogStudent2Mail ?? "");
+            row.CreateCell(i++).SetCellValue(sName2);
+            row.CreateCell(i++).SetCellValue(sMail2);
             var cell4 = row.CreateCell(i++);
-            if (GetStudentGrade(p.LogGradeStudent2) == -1)
+            if (GetStudentGrade(sGrad2) == -1)
             {
                 cell4.SetCellType(CellType.String);
                 cell4.SetCellValue("");
             }
             else
             {
-                cell4.SetCellValue(GetStudentGrade(p.LogGradeStudent2));
+                cell4.SetCellValue(GetStudentGrade(sGrad2));
             }
             row.CreateCell(i++).SetCellValue(string.IsNullOrEmpty(p.Reservation1Mail) ? "Nein" : "Ja");
             row.CreateCell(i++).SetCellValue(p.Advisor1?.Name ?? "");
@@ -490,6 +530,55 @@ namespace ProStudCreator
                 worksheet.AutoSizeColumn(i, true);
 
             workbook.Write(outStream);
+        }
+
+        public static void GenerateMarKomExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db, string semesterName)
+        {
+            var workbook = new XSSFWorkbook();
+            var worksheet = workbook.CreateSheet(semesterName + MARKOM_SHEET_NAME);
+
+            var HeaderStyle = workbook.CreateCellStyle();
+            HeaderStyle.BorderBottom = BorderStyle.Thick;
+            HeaderStyle.FillForegroundColor = HSSFColor.PaleBlue.Index;
+            HeaderStyle.FillPattern = FillPattern.SolidForeground;
+
+            var DateStyle = workbook.CreateCellStyle();
+            DateStyle.DataFormat = workbook.CreateDataFormat().GetFormat("dd.MM.yyyy");
+
+            // Header
+            worksheet.CreateRow(0);
+            for (var i = 0; i < MarKomHeader.Length; i++)
+            {
+                var cell = worksheet.GetRow(0).CreateCell(i);
+                cell.CellStyle = HeaderStyle;
+                cell.SetCellValue(MarKomHeader[i]);
+            }
+
+            // Project entries
+            var projects = _projects.ToArray();
+            for (var i = 0; i < projects.Length; i++)
+            {
+                var row = worksheet.CreateRow(1 + i);
+                ProjectToMarKomRow(projects[i], row);
+            }
+
+            for (var i = 0; i < MarKomHeader.Length; i++)
+                worksheet.AutoSizeColumn(i);
+
+            worksheet.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(0, 0, 0, MarKomHeader.Length - 1));
+
+            workbook.Write(outStream);
+        }
+
+        private static void ProjectToMarKomRow(Project p, IRow row)
+        {
+            var i = 0;
+            row.CreateCell(i++);
+            row.CreateCell(i++).SetCellValue(p.Name);
+            row.CreateCell(i++).SetCellValue(p.LogStudent1Name);
+            row.CreateCell(i++).SetCellValue(p.LogStudent2Name);
+            row.CreateCell(i++).SetCellValue(p.ClientCompany);
+            row.CreateCell(i++).SetCellValue(p.ClientAddressCity);
         }
     }
 }

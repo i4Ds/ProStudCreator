@@ -928,43 +928,31 @@ namespace ProStudCreator
             mailMessage.Append(
                 "<div style=\"font-family: Arial\">" +
                 "<p>Liebes MarKom<p>" +
-                $"<p>Hier die Liste aller Informatik-Bachelorarbeiten im { activeSem.Name }:</p>" +
-                "<table>" +
-                "<tr>" +
-                    "<th>Nachname</th>" +
-                    "<th>Vorname</th>" +
-                    "<th>Titel</th>" +
-                    "<th>Unternehmen</th>" +
-                    "<th>Unternehmensort</th>" +
-                    "<th>Nummer</th>" +
-                "</tr>");
-
-            //FIXME: should consider project enddate, not startdate of semester
-            var projs = db.Projects.Where(p => p.IsMainVersion && p.LogProjectType.P6 && p.Semester.Id == activeSem.Id && p.State == (int)ProjectState.Ongoing && !p.UnderNDA).ToArray();
-
-            foreach (var p in projs.OrderBy(p => p.Student1LastName()))
-                mailMessage.Append(
-                "<tr>" +
-                    $"<td>{HttpUtility.HtmlEncode(p.Student1LastName()) + (p.LogStudent2Name != null ? "<br/>" + HttpUtility.HtmlEncode(p.Student2LastName()) : "")}</td>" +
-                    $"<td>{HttpUtility.HtmlEncode(p.Student1FirstName()) + (p.LogStudent2Name != null ? "<br/>" + HttpUtility.HtmlEncode(p.Student2FirstName()) : "")}</td>" +
-                    $"<td>{HttpUtility.HtmlEncode(p.Name)}</td>" +
-                    $"<td>{(p.ClientType == (int)ClientType.Company ? HttpUtility.HtmlEncode(p.ClientCompany) : "")}</td>" +
-                    $"<td>{(p.ClientType == (int)ClientType.Company ? HttpUtility.HtmlEncode(p.ClientAddressCity) : "")}</td>" +
-                    $"<td>{HttpUtility.HtmlEncode(p.GetFullNr())}</td>" +
-                "</tr>"
-                );
-
-            mailMessage.Append(
-                "</table>" +
+                $"<p>Hier die Liste aller Informatik-Bachelorarbeiten im { activeSem.Name }</p>" +
                 "<br/>" +
                 "<p>Herzliche Grüsse,<br/>" +
                 "ProStud-Team</p>" +
                 $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                 "</div>"
-                );
+            );
+
+            //FIXME: should consider project enddate, not startdate of semester
+            var projs = db.Projects.Where(p => p.IsMainVersion && p.LogProjectType.P6 && p.Semester.Id == activeSem.Id && p.State == (int)ProjectState.Ongoing && !p.UnderNDA).ToArray();
+
+            var ms = new System.IO.MemoryStream();
+            ExcelCreator.GenerateMarKomExcel(ms, projs, db, activeSem.Name);
+            byte[] byteArr = ms.ToArray();
+            var ms2 = new System.IO.MemoryStream(byteArr, true);
+            ms2.Write(byteArr, 0, byteArr.Length);
+            ms2.Position = 0;
+            var attach = new System.Net.Mail.Attachment(ms2, $"{activeSem.Name}_IP6_Ausstellung.xlsx", "application/vnd.ms-excel");
+            mail.Attachments.Add(attach);
 
             mail.Body = mailMessage.ToString();
             SendMail(mail);
+
+            ms.Close();
+            ms2.Close();
 
             activeTask.Done = true;
             db.SubmitChanges();

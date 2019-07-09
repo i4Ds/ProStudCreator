@@ -90,9 +90,9 @@ namespace ProStudCreator
                 var finishedProjIP5L = finishedProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
                 var finishedProjIP6 = finishedProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
 
-                LabelNumProjects.Text = $"Anzahl Projekte: {refProj.Count()}";
+                LabelNumProjects.Text = $"Anzahl veröffentlichter Projekte: {refProj.Count()}";
 
-                LabelNumRunningProjects.Text = $"Anzahl Laufender Projekte: {runningProj.Count()}";
+                LabelNumRunningProjects.Text = $"Anzahl laufender Projekte: {runningProj.Count()}";
                 LabelNumRunningProjectsIP5N.Text = $"IP5: {runningProjIP5N.Count()}";
                 LabelNumRunningProjectsIP5L.Text = $"IP5 Lang: {runningProjIP5L.Count()}";
                 LabelNumRunningProjectsIP6.Text = $"IP6: {runningProjIP6.Count()}";
