@@ -89,11 +89,16 @@
                 &copy;<%: DateTime.Now.Year %> - Fachhochschule Nordwestschweiz
             </div>
             <div class="pull-right">
-                Angemeldet als <%: ShibUser.GetEmail() + " (" + ShibUser.GetDepartment().DepartmentName + ")" %> <%: ShibUser.IsAdmin() ? " (Admin)" : "" %>
-                <% if (inDebugMode)
-                   { %>
-                    <strong style="color: red">(DEBUG MODE)</strong>
-                <% } %>
+                <div>
+                    Angemeldet als <%: ShibUser.GetEmail() + " (" + ShibUser.GetDepartment().DepartmentName + ")" %> <%: ShibUser.IsAdmin() ? " (Admin)" : "" %>
+                    <% if (inDebugMode)
+                       { %>
+                        <strong style="color: red">(DEBUG MODE)</strong>
+                    <% } %>
+                </div>
+                <div class="pull-right" id="WebAdminUserDrop" runat="server">
+                    <asp:DropDownList runat="server" DataValueField="Mail" DataTextField="Name" ID="DropUser" AutoPostBack="true" CssClass="form-control" OnSelectedIndexChanged="DropUser_SelectedIndexChanged"></asp:DropDownList>
+                </div>
             </div>
         </footer>
     </div>

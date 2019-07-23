@@ -44,7 +44,7 @@ namespace ProStudCreator
 #endif
         }
 
-        public static string GetEmail()
+        public static string GetShibEmail()
         {
 #if DEBUG
             //return "test.mitarbeiteri4ds@testmail.com";
@@ -65,6 +65,19 @@ namespace ProStudCreator
             }
             return result;
 #endif
+        }
+
+        public static string GetEmail()
+        {
+            string shibMail = GetShibEmail();
+            if (shibMail == Global.WebAdmin && !string.IsNullOrWhiteSpace((string)System.Web.HttpContext.Current.Session["SelectedMail"]))
+            {
+                return (string)System.Web.HttpContext.Current.Session["SelectedMail"];
+            }
+            else
+            {
+                return shibMail;
+            }
         }
 
         public static string GetFirstName()

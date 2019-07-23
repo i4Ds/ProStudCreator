@@ -43,6 +43,14 @@ namespace ProStudCreator
             }
 
             Page.PreLoad += Master_Page_PreLoad;
+
+            //fill WebAdminDrop
+            if (ShibUser.GetShibEmail() == Global.WebAdmin)
+            {
+                DropUser.DataSource = db.UserDepartmentMap.Where(u => u.IsActive).OrderBy(u => u.Mail);
+                DropUser.DataBind();
+                DropUser.SelectedValue = ShibUser.GetEmail();
+            }
         }
 
         protected void Master_Page_PreLoad(object sender, EventArgs e)
@@ -72,6 +80,7 @@ namespace ProStudCreator
 
             NavAdmin.Visible = ShibUser.CanVisitAdminPage();
             NavWebAdmin.Visible = ShibUser.GetEmail() == Global.WebAdmin;
+            WebAdminUserDrop.Visible = ShibUser.GetShibEmail() == Global.WebAdmin;
         }
 
         public readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();
@@ -96,6 +105,12 @@ namespace ProStudCreator
         {
             Context.GetOwinContext().Authentication.SignOut();
             Response.Redirect("/Account/Login.aspx");
+        }
+
+        public void DropUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["SelectedMail"] = DropUser.SelectedValue;
+            Response.Redirect(Request.RawUrl);
         }
     }
 }
