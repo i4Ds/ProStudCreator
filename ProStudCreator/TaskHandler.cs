@@ -994,8 +994,12 @@ namespace ProStudCreator
                             && (DateTime.Now - task.FirstReminded).Value.Days / task.TaskType.DaysBetweenReminds > 2 
                             && task.TaskTypeId == (int)Type.FinishProject)
                         {
-                            mail.From = new MailAddress(task.Supervisor.Mail);
-                            mail.CC.Add(task.Supervisor.Mail);
+                            var ma = new MailAddress(task.Supervisor.Mail);
+                            mail.From = ma;
+                            if (!mail.CC.Contains(ma))
+                            {
+                                mail.CC.Add(ma);
+                            }
                         }
 
                         mailMessage.Append(task.Project != null ? "<li>" + $"{HttpUtility.HtmlEncode(task.TaskType.Description)} beim Projekt <a href=\"https://www.cs.technik.fhnw.ch/prostud/ProjectInfoPage?id={task.ProjectId}\">{HttpUtility.HtmlEncode(task.Project.Name)}</a></li>" : $"<li><a href=\"https://www.cs.technik.fhnw.ch/prostud/ \">{HttpUtility.HtmlEncode(task.TaskType.Description)}</a></li>");

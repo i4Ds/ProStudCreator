@@ -61,7 +61,34 @@
             <br/>
             <hr/>
         </div>
-        <div class="well" style="background-color: #ffffff; margin-top: 10px;">
+        <div class="col-sm-10">
+            <asp:Button runat="server" ID="NewProject" CssClass="btn btn-default buttonFont" Text="Neues Projekt" OnClick="NewProject_Click"/>
+            <asp:Button runat="server" ID="AllProjectsAsPDF" CssClass="btn btn-default buttonFont pdf" Text="Projekte als PDF" OnClick="AllProjectsAsPDF_Click"/>
+            <asp:Button runat="server" ID="AllProjectsAsExcel" CssClass="btn btn-default buttonFont" Text="Projektliste in Excel" OnClick="AllProjectsAsExcel_Click"/>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="col-sm-10" style="font-size: 70%">
+            <asp:Button id="colExInProgress" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#CEECF5"/>
+            = In Bearbeitung&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExSubmitted" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#ffcc99"/>
+            = Eingereicht&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExRejected" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#F5A9A9"/>
+            = Abgelehnt&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExPublished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#A9F5A9"/>
+            = Veröffentlicht&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExOngoing" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#64ed64"/>
+            = In Durchführung&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExFinished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#1adb1a"/>
+            = Abgeschlossen&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button id="colExCanceled" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#e8463b"/>
+            = Abgebrochen&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        <br />
+        <br />
+        <hr/>
+        <div class="well" style="background-color: #ffffff; margin-top: 10px; margin-bottom: 0px;">
             <asp:GridView ID="AllProjects" ItemType="ProStudCreator.ProjectSingleElement" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowCommand="ProjectRowClick" OnRowDataBound="AllProjects_RowDataBound" AllowSorting="True" OnSorting="AllProjects_Sorting">
                 <%--<AlternatingRowStyle BackColor="White" />--%>
                 <Columns>
@@ -111,27 +138,6 @@
                 <SortedDescendingCellStyle BackColor="#E9EBEF"/>
                 <SortedDescendingHeaderStyle BackColor="#4870BE"/>
             </asp:GridView>
-        </div>
-        <div style="font-size: 70%">
-            <asp:Button id="colExInProgress" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#CEECF5"/>
-            = In Bearbeitung&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExSubmitted" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#ffcc99"/>
-            = Eingereicht&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExRejected" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#F5A9A9"/>
-            = Abgelehnt&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExPublished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#A9F5A9"/>
-            = Veröffentlicht&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExOngoing" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#64ed64"/>
-            = In Durchführung&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExFinished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#1adb1a"/>
-            = Abgeschlossen&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExCanceled" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#e8463b"/>
-            = Abgebrochen&nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
-        <div style="margin-top: 16px;">
-            <asp:Button runat="server" ID="NewProject" CssClass="btn btn-default buttonFont" Text="Neues Projekt" OnClick="NewProject_Click"/>
-            <asp:Button runat="server" ID="AllProjectsAsPDF" CssClass="btn btn-default buttonFont pdf" Text="Projekte als PDF" OnClick="AllProjectsAsPDF_Click"/>
-            <asp:Button runat="server" ID="AllProjectsAsExcel" CssClass="btn btn-default buttonFont" Text="Projektliste in Excel" OnClick="AllProjectsAsExcel_Click"/>
         </div>
     </div>
 </asp:Content>

@@ -139,6 +139,24 @@ namespace ProStudCreator {
         protected global::System.Web.UI.WebControls.Label LabelNumFinishedProjectsIP6;
         
         /// <summary>
+        /// AllProjectsAsPDF control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AllProjectsAsPDF;
+        
+        /// <summary>
+        /// AllProjectsAsExcel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AllProjectsAsExcel;
+        
+        /// <summary>
         /// colExInProgress control.
         /// </summary>
         /// <remarks>
@@ -200,23 +218,5 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button colExCanceled;
-        
-        /// <summary>
-        /// AllProjectsAsPDF control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AllProjectsAsPDF;
-        
-        /// <summary>
-        /// AllProjectsAsExcel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AllProjectsAsExcel;
     }
 }

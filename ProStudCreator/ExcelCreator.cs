@@ -187,6 +187,10 @@ namespace ProStudCreator
             var DateStyle = workbook.CreateCellStyle();
             DateStyle.DataFormat = workbook.CreateDataFormat().GetFormat("dd.MM.yyyy");
 
+            var StateStyle = workbook.CreateCellStyle();
+            StateStyle.FillForegroundColor = IndexedColors.Grey25Percent.Index;
+            StateStyle.FillPattern = FillPattern.SolidForeground;
+
             // Header
             worksheet.CreateRow(0);
             for (var i = 0; i < AdminHeader.Length; i++)
@@ -201,7 +205,7 @@ namespace ProStudCreator
             for (var i = 0; i < projects.Length; i++)
             {
                 var row = worksheet.CreateRow(1 + i);
-                ProjectToExcelMarketingRow(projects[i], row, db, DateStyle);
+                ProjectToExcelMarketingRow(projects[i], row, db, DateStyle, StateStyle);
             }
 
             for (var i = 0; i < ProjectListHeader.Length; i++)
@@ -214,11 +218,13 @@ namespace ProStudCreator
         }
 
         private static void ProjectToExcelMarketingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
-            ICellStyle DateStyle)
+            ICellStyle DateStyle, ICellStyle StateStyle)
         {
             var sName1 = p.LogStudent1Name ?? "";
             var sMail1 = p.LogStudent1Mail ?? "";
             var sGrad1 = p.LogGradeStudent1;
+            var pLang = GetLanguage(p);
+            var pBilS = p.BillingStatus?.DisplayName ?? "";
 
             string sName2 = null;
             string sMail2 = null;
@@ -244,6 +250,14 @@ namespace ProStudCreator
                 }
             }
 
+            if (p.State != ProjectState.Finished && p.State != ProjectState.Canceled && p.State != ProjectState.ArchivedFinished && p.State != ProjectState.ArchivedCanceled)
+            {
+                sGrad1 = null;
+                sGrad2 = null;
+                pLang = "";
+                pBilS = "";
+                StateStyle = null;
+            }
 
             var clientDepartment = string.IsNullOrEmpty(p.ClientAddressDepartment) ||
                                    string.IsNullOrEmpty(p.ClientCompany)
@@ -293,13 +307,13 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.GetFullNr());
             row.CreateCell(i++).SetCellValue(p.LogProjectType?.ExportValue ?? "-");
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
-            row.CreateCell(i++).SetCellValue(GetLanguage(p));
+            row.CreateCell(i++).SetCellValue(pLang);
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString() ?? "");
             row.CreateCell(i++).SetCellValue(p.Expert?.AutomaticPayout.ToString() ?? "");
             row.CreateCell(i++).SetCellValue(p.LogDefenceDate?.ToString() ?? "-");
             row.CreateCell(i++).SetCellValue(p.LogDefenceRoom ?? "-");
-            row.CreateCell(i++).SetCellValue(p.BillingStatus?.DisplayName ?? "");
+            row.CreateCell(i++).SetCellValue(pBilS);
             row.CreateCell(i++).SetCellValue(p.ClientCompany ?? "");
             row.CreateCell(i++).SetCellValue(p.ClientAddressTitle ?? "");
             row.CreateCell(i++).SetCellValue(p.ClientPerson ?? "");
@@ -310,7 +324,12 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.ClientAddressCity ?? "");
             row.CreateCell(i++).SetCellValue(p.ClientReferenceNumber ?? "");
             row.CreateCell(i++).SetCellValue(GetClientAddress(p));
-            row.CreateCell(i++).SetCellValue(p.Id);            
+            var cell5 = row.CreateCell(i++);
+            cell5.SetCellValue(p.Id);
+            if (StateStyle != null)
+            {
+                cell5.CellStyle = StateStyle;
+            }
         }
          
         private static string GetLanguage(Project p)
