@@ -1585,6 +1585,41 @@ namespace ProStudCreator
                 {
                     pageProject.Submit(db);
                     db.SubmitChanges();
+
+                    var mail = new MailMessage();
+                    var departmentMngr = db.UserDepartmentMap.FirstOrDefault(u => u.IsDepartmentManager && u.Department == pageProject.Department);
+                    if (departmentMngr is null)
+                    {
+                        mail.To.Add(Global.WebAdmin);
+                        mail.From = new MailAddress("noreply@fhnw.ch");
+                        mail.Subject = $"ERROR";
+                        mail.Body = $"No DepartmentManager found for Department ID: {pageProject.DepartmentId}";
+                        
+                    }
+                    else
+                    {
+                        mail.To.Add(departmentMngr.Mail);
+                        mail.From = new MailAddress("noreply@fhnw.ch");
+                        mail.Subject = $"Neues Projekt eingereicht";
+                        mail.IsBodyHtml = true;
+
+                        var mailMessage = new StringBuilder();
+                        mailMessage.Append("<div style=\"font-family: Arial\">");
+                        mailMessage.Append($"<p style=\"font-size: 110%\">Hallo {HttpUtility.HtmlEncode(departmentMngr.Name.Split(' ')[0])}</p>"
+                            + "<p>Ein neues Projekt wurde eingereicht:</p>"
+                            + $"<p><a href=\"https://www.cs.technik.fhnw.ch/prostud/ProjectEditPage?id={pageProject.Id}\">{HttpUtility.HtmlEncode(pageProject.Name)}</a></p>"
+                            + "<br/>"
+                            + "<p>Freundliche Grüsse</p>"
+                            + "<p>ProStud-Team</p>"
+                            + $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>"
+                            + "</div>"
+                            );
+
+                        mail.Body = mailMessage.ToString();
+                    }
+
+                    TaskHandler.SendMail(mail);
+
                     Response.Redirect("projectlist");
                     return;
                 }

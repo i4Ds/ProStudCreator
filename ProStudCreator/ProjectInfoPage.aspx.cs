@@ -1274,7 +1274,7 @@ namespace ProStudCreator
                 return "Bitte geben Sie den Verrechnungsstatus an.";
 
             //Grades
-            if (pageProject.LogStudent1Mail != null)
+            if (!string.IsNullOrWhiteSpace(pageProject.LogStudent1Mail))
             {
                 if (string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text))
                     return $"Bitte geben Sie die Note von {pageProject.LogStudent1Name} an.";
@@ -1294,7 +1294,7 @@ namespace ProStudCreator
                 throw new InvalidOperationException("No Student1 in State Ongoing is not allowed");
             }
 
-            if (pageProject.LogStudent2Mail != null)
+            if (!string.IsNullOrWhiteSpace(pageProject.LogStudent2Mail))
             {
                 if (string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text))
                     return $"Bitte geben Sie die Note von {pageProject.LogStudent2Name} an.";
