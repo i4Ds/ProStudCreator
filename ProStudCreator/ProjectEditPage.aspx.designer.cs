@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProStudCreator {
-    
-    
-    public partial class ProjectEditPage {
-        
+namespace ProStudCreator
+{
+
+
+    public partial class ProjectEditPage
+    {
+
         /// <summary>
         /// refuseProjectUpdatePanel control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel refuseProjectUpdatePanel;
-        
+
         /// <summary>
         /// refusedReason control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl refusedReason;
-        
+
         /// <summary>
         /// refusedReasonTitle control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label refusedReasonTitle;
-        
+
         /// <summary>
         /// refusedReasonText control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox refusedReasonText;
-        
+
         /// <summary>
         /// RefuseDefinitiveNewProject control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button RefuseDefinitiveNewProject;
-        
+
         /// <summary>
         /// cancelRefusion control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cancelRefusion;
-        
+
         /// <summary>
         /// SiteTitle control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label SiteTitle;
-        
+
         /// <summary>
         /// AdminView control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder AdminView;
-        
+
         /// <summary>
         /// CreatorID control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label CreatorID;
-        
+
         /// <summary>
         /// ProjectName control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ProjectName;
-        
+
         /// <summary>
         /// ProjectNameLabel control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ProjectNameLabel;
-        
+
         /// <summary>
         /// ProjectNameValidator control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator ProjectNameValidator;
-        
+
         /// <summary>
         /// DivSemester control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivSemester;
-        
+
         /// <summary>
         /// dropSemester control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropSemester;
-        
+
         /// <summary>
         /// dropSemesterLabel control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label dropSemesterLabel;
-        
+
         /// <summary>
         /// updatePreviousProject control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updatePreviousProject;
-        
+
         /// <summary>
         /// dropPreviousProject control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropPreviousProject;
-        
+
         /// <summary>
         /// dropPreviousProjectLabel control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label dropPreviousProjectLabel;
-        
+
         /// <summary>
         /// PreviousProjectInfoLabel control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PreviousProjectInfoLabel;
-        
+
         /// <summary>
         /// dropAdvisor1 control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropAdvisor1;
-        
+
         /// <summary>
         /// dropAdvisor1Label control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label dropAdvisor1Label;
-        
+
         /// <summary>
         /// dropAdvisor2 control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropAdvisor2;
-        
+
         /// <summary>
         /// dropAdvisor2Label control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label dropAdvisor2Label;
-        
+
         /// <summary>
         /// dropDepartment control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropDepartment;
-        
+
         /// <summary>
         /// DepartmentLabel control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DepartmentLabel;
-        
+
         /// <summary>
         /// dropLanguage control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropLanguage;
-        
+
         /// <summary>
         /// updatePriority control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updatePriority;
-        
+
         /// <summary>
         /// dropPOneType control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropPOneType;
-        
+
         /// <summary>
         /// POneTypeLabel control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label POneTypeLabel;
-        
+
         /// <summary>
         /// dropPOneTeamSize control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropPOneTeamSize;
-        
+
         /// <summary>
         /// POneTeamSizeLabel control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label POneTeamSizeLabel;
-        
+
         /// <summary>
         /// divPriorityTwo control.
         /// </summary>
@@ -299,7 +301,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPriorityTwo;
-        
+
         /// <summary>
         /// dropPTwoType control.
         /// </summary>
@@ -308,7 +310,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropPTwoType;
-        
+
         /// <summary>
         /// PTwoTypeLabel control.
         /// </summary>
@@ -317,7 +319,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PTwoTypeLabel;
-        
+
         /// <summary>
         /// dropPTwoTeamSize control.
         /// </summary>
@@ -326,7 +328,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropPTwoTeamSize;
-        
+
         /// <summary>
         /// PTwoTeamSizeLabel control.
         /// </summary>
@@ -335,7 +337,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PTwoTeamSizeLabel;
-        
+
         /// <summary>
         /// updateClient control.
         /// </summary>
@@ -344,7 +346,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updateClient;
-        
+
         /// <summary>
         /// radioClientType control.
         /// </summary>
@@ -353,7 +355,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList radioClientType;
-        
+
         /// <summary>
         /// divClientForm control.
         /// </summary>
@@ -362,7 +364,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientForm;
-        
+
         /// <summary>
         /// divClientCompany control.
         /// </summary>
@@ -371,7 +373,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientCompany;
-        
+
         /// <summary>
         /// txtClientCompany control.
         /// </summary>
@@ -380,7 +382,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientCompany;
-        
+
         /// <summary>
         /// txtClientCompanyLabel control.
         /// </summary>
@@ -389,7 +391,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientCompanyLabel;
-        
+
         /// <summary>
         /// drpClientTitle control.
         /// </summary>
@@ -398,7 +400,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpClientTitle;
-        
+
         /// <summary>
         /// drpClientTitleLabel control.
         /// </summary>
@@ -407,7 +409,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label drpClientTitleLabel;
-        
+
         /// <summary>
         /// txtClientName control.
         /// </summary>
@@ -416,7 +418,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientName;
-        
+
         /// <summary>
         /// txtClientNameLabel control.
         /// </summary>
@@ -425,7 +427,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientNameLabel;
-        
+
         /// <summary>
         /// txtClientEmail control.
         /// </summary>
@@ -434,7 +436,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientEmail;
-        
+
         /// <summary>
         /// txtClientEmailLabel control.
         /// </summary>
@@ -443,7 +445,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientEmailLabel;
-        
+
         /// <summary>
         /// ClientEmailFormatValidator control.
         /// </summary>
@@ -452,7 +454,25 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator ClientEmailFormatValidator;
-        
+
+        /// <summary>
+        /// txtClientPhoneNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtClientPhoneNumber;
+
+        /// <summary>
+        /// txtClientPhoneNumberLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label txtClientPhoneNumberLabel;
+
         /// <summary>
         /// divClientDepartment control.
         /// </summary>
@@ -461,7 +481,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientDepartment;
-        
+
         /// <summary>
         /// txtClientDepartment control.
         /// </summary>
@@ -470,7 +490,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientDepartment;
-        
+
         /// <summary>
         /// txtClientDepartmentLabel control.
         /// </summary>
@@ -479,7 +499,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientDepartmentLabel;
-        
+
         /// <summary>
         /// txtClientStreet control.
         /// </summary>
@@ -488,7 +508,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientStreet;
-        
+
         /// <summary>
         /// txtClientStreetLabel control.
         /// </summary>
@@ -497,7 +517,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientStreetLabel;
-        
+
         /// <summary>
         /// txtClientPLZ control.
         /// </summary>
@@ -506,7 +526,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientPLZ;
-        
+
         /// <summary>
         /// txtClientPLZLabel control.
         /// </summary>
@@ -515,7 +535,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientPLZLabel;
-        
+
         /// <summary>
         /// txtClientCity control.
         /// </summary>
@@ -524,7 +544,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientCity;
-        
+
         /// <summary>
         /// txtClientCityLabel control.
         /// </summary>
@@ -533,7 +553,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientCityLabel;
-        
+
         /// <summary>
         /// txtClientReference control.
         /// </summary>
@@ -542,7 +562,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientReference;
-        
+
         /// <summary>
         /// txtClientReferenceLabel control.
         /// </summary>
@@ -551,7 +571,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientReferenceLabel;
-        
+
         /// <summary>
         /// chkNDA control.
         /// </summary>
@@ -560,7 +580,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNDA;
-        
+
         /// <summary>
         /// updateReservation control.
         /// </summary>
@@ -569,7 +589,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updateReservation;
-        
+
         /// <summary>
         /// Reservation1Name control.
         /// </summary>
@@ -578,7 +598,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Reservation1Name;
-        
+
         /// <summary>
         /// Reservation1NameLabel control.
         /// </summary>
@@ -587,7 +607,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Reservation1NameLabel;
-        
+
         /// <summary>
         /// Reservation1Mail control.
         /// </summary>
@@ -596,7 +616,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Reservation1Mail;
-        
+
         /// <summary>
         /// Reservation1MailLabel control.
         /// </summary>
@@ -605,7 +625,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Reservation1MailLabel;
-        
+
         /// <summary>
         /// Reservation2Name control.
         /// </summary>
@@ -614,7 +634,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Reservation2Name;
-        
+
         /// <summary>
         /// Reservation2NameLabel control.
         /// </summary>
@@ -623,7 +643,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Reservation2NameLabel;
-        
+
         /// <summary>
         /// Reservation2Mail control.
         /// </summary>
@@ -632,7 +652,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Reservation2Mail;
-        
+
         /// <summary>
         /// Reservation2MailLabel control.
         /// </summary>
@@ -641,7 +661,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Reservation2MailLabel;
-        
+
         /// <summary>
         /// DesignUX control.
         /// </summary>
@@ -650,7 +670,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton DesignUX;
-        
+
         /// <summary>
         /// HW control.
         /// </summary>
@@ -659,7 +679,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton HW;
-        
+
         /// <summary>
         /// CGIP control.
         /// </summary>
@@ -668,7 +688,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton CGIP;
-        
+
         /// <summary>
         /// MlAlg control.
         /// </summary>
@@ -677,7 +697,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton MlAlg;
-        
+
         /// <summary>
         /// AppWeb control.
         /// </summary>
@@ -686,7 +706,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton AppWeb;
-        
+
         /// <summary>
         /// DBBigData control.
         /// </summary>
@@ -695,7 +715,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton DBBigData;
-        
+
         /// <summary>
         /// SysSec control.
         /// </summary>
@@ -704,7 +724,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton SysSec;
-        
+
         /// <summary>
         /// SE control.
         /// </summary>
@@ -713,7 +733,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton SE;
-        
+
         /// <summary>
         /// UpdateImage control.
         /// </summary>
@@ -722,7 +742,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdateImage;
-        
+
         /// <summary>
         /// AddPictureLabel control.
         /// </summary>
@@ -731,7 +751,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label AddPictureLabel;
-        
+
         /// <summary>
         /// AddPicture control.
         /// </summary>
@@ -740,7 +760,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload AddPicture;
-        
+
         /// <summary>
         /// regexValidator control.
         /// </summary>
@@ -749,7 +769,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regexValidator;
-        
+
         /// <summary>
         /// DeleteImageButton control.
         /// </summary>
@@ -758,7 +778,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton DeleteImageButton;
-        
+
         /// <summary>
         /// ImageLabel control.
         /// </summary>
@@ -767,7 +787,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ImageLabel;
-        
+
         /// <summary>
         /// ProjectPicture control.
         /// </summary>
@@ -776,7 +796,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image ProjectPicture;
-        
+
         /// <summary>
         /// ProjectPicturePrevious control.
         /// </summary>
@@ -785,7 +805,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image ProjectPicturePrevious;
-        
+
         /// <summary>
         /// imgdescription control.
         /// </summary>
@@ -794,7 +814,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox imgdescription;
-        
+
         /// <summary>
         /// imgdescriptionLabel control.
         /// </summary>
@@ -803,7 +823,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox imgdescriptionLabel;
-        
+
         /// <summary>
         /// InitialPositionContent control.
         /// </summary>
@@ -812,7 +832,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox InitialPositionContent;
-        
+
         /// <summary>
         /// InitialPositionContentLabel control.
         /// </summary>
@@ -821,7 +841,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label InitialPositionContentLabel;
-        
+
         /// <summary>
         /// ObjectivContent control.
         /// </summary>
@@ -830,7 +850,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ObjectivContent;
-        
+
         /// <summary>
         /// ObjectivContentLabel control.
         /// </summary>
@@ -839,7 +859,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ObjectivContentLabel;
-        
+
         /// <summary>
         /// ProblemStatementContent control.
         /// </summary>
@@ -848,7 +868,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ProblemStatementContent;
-        
+
         /// <summary>
         /// ProblemStatementContentLabel control.
         /// </summary>
@@ -857,7 +877,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ProblemStatementContentLabel;
-        
+
         /// <summary>
         /// ReferencesContent control.
         /// </summary>
@@ -866,7 +886,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ReferencesContent;
-        
+
         /// <summary>
         /// ReferencesContentLabel control.
         /// </summary>
@@ -875,7 +895,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ReferencesContentLabel;
-        
+
         /// <summary>
         /// RemarksContent control.
         /// </summary>
@@ -884,7 +904,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox RemarksContent;
-        
+
         /// <summary>
         /// RemarksContentLabel control.
         /// </summary>
@@ -893,7 +913,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label RemarksContentLabel;
-        
+
         /// <summary>
         /// NotesContent control.
         /// </summary>
@@ -902,7 +922,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox NotesContent;
-        
+
         /// <summary>
         /// NotesContentLabel control.
         /// </summary>
@@ -911,7 +931,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label NotesContentLabel;
-        
+
         /// <summary>
         /// ValidationSummary1 control.
         /// </summary>
@@ -920,7 +940,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
-        
+
         /// <summary>
         /// PdfupdatePanel control.
         /// </summary>
@@ -929,7 +949,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel PdfupdatePanel;
-        
+
         /// <summary>
         /// Pdfupdatelabel control.
         /// </summary>
@@ -938,7 +958,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Pdfupdatelabel;
-        
+
         /// <summary>
         /// Pdfupdatetimer control.
         /// </summary>
@@ -947,7 +967,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.Timer Pdfupdatetimer;
-        
+
         /// <summary>
         /// publishProject control.
         /// </summary>
@@ -956,7 +976,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button publishProject;
-        
+
         /// <summary>
         /// refuseProject control.
         /// </summary>
@@ -965,7 +985,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button refuseProject;
-        
+
         /// <summary>
         /// rollbackProject control.
         /// </summary>
@@ -974,7 +994,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button rollbackProject;
-        
+
         /// <summary>
         /// submitProject control.
         /// </summary>
@@ -983,7 +1003,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button submitProject;
-        
+
         /// <summary>
         /// duplicateProject control.
         /// </summary>
@@ -992,7 +1012,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button duplicateProject;
-        
+
         /// <summary>
         /// saveCloseProject control.
         /// </summary>
@@ -1001,7 +1021,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button saveCloseProject;
-        
+
         /// <summary>
         /// saveProject control.
         /// </summary>
@@ -1010,7 +1030,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button saveProject;
-        
+
         /// <summary>
         /// cancelProject control.
         /// </summary>
@@ -1019,7 +1039,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cancelProject;
-        
+
         /// <summary>
         /// divHistory control.
         /// </summary>
@@ -1028,7 +1048,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divHistory;
-        
+
         /// <summary>
         /// UpdateHistory control.
         /// </summary>
@@ -1037,7 +1057,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdateHistory;
-        
+
         /// <summary>
         /// btnHistoryCollapse control.
         /// </summary>
@@ -1046,7 +1066,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnHistoryCollapse;
-        
+
         /// <summary>
         /// DivHistoryCollapsable control.
         /// </summary>
@@ -1055,7 +1075,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivHistoryCollapsable;
-        
+
         /// <summary>
         /// historyListView control.
         /// </summary>

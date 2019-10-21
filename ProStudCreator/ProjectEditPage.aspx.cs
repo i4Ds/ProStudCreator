@@ -480,7 +480,8 @@ namespace ProStudCreator
                                 txtClientPLZ.Text =
                                     txtClientCity.Text =
                                         txtClientReference.Text =
-                                            txtClientEmail.Text = "";
+                                            txtClientEmail.Text = 
+                                                txtClientPhoneNumber.Text = "";
 
                 divClientForm.Visible = false;
                 radioClientType.SelectedIndex = (int)ClientType.Internal;
@@ -503,6 +504,7 @@ namespace ProStudCreator
                 txtClientCity.Text = pageProject?.ClientAddressCity;
                 txtClientReference.Text = pageProject?.ClientReferenceNumber;
                 txtClientEmail.Text = pageProject?.ClientMail;
+                txtClientPhoneNumber.Text = pageProject?.ClientPhoneNumber;
 
                 PrepareClientForm();
             }
@@ -732,6 +734,7 @@ namespace ProStudCreator
                 project.ClientAddressCity = txtClientCity.Text.FixupParagraph();
                 project.ClientReferenceNumber = txtClientReference.Text.FixupParagraph();
                 project.ClientMail = txtClientEmail.Text.Trim().ToLowerInvariant();
+                project.ClientPhoneNumber = txtClientPhoneNumber.Text.Trim();
             }
             else
             {
@@ -745,7 +748,8 @@ namespace ProStudCreator
                                 project.ClientAddressPostcode =
                                     project.ClientAddressCity =
                                         project.ClientReferenceNumber =
-                                            project.ClientMail = "";
+                                            project.ClientMail = 
+                                                project.ClientPhoneNumber = "";
             }
 
             //NDA
@@ -890,6 +894,7 @@ namespace ProStudCreator
                 project.ClientAddressCity = txtClientCity.Text.FixupParagraph();
                 project.ClientReferenceNumber = txtClientReference.Text.FixupParagraph();
                 project.ClientMail = txtClientEmail.Text.Trim().ToLowerInvariant();
+                project.ClientPhoneNumber = txtClientPhoneNumber.Text.Trim();
             }
             else
             {
@@ -903,7 +908,8 @@ namespace ProStudCreator
                                 project.ClientAddressPostcode =
                                     project.ClientAddressCity =
                                         project.ClientReferenceNumber =
-                                            project.ClientMail = "";
+                                            project.ClientMail = 
+                                                project.ClientPhoneNumber = "";
             }
 
             //NDA
@@ -1373,6 +1379,7 @@ namespace ProStudCreator
             txtClientCityLabel.Text = CreateDiffString(project?.ClientAddressCity, currentProject?.ClientAddressCity);
             txtClientReferenceLabel.Text = CreateDiffString(project?.ClientReferenceNumber, currentProject?.ClientReferenceNumber);
             txtClientEmailLabel.Text = CreateDiffString(project?.ClientMail, currentProject?.ClientMail);
+            txtClientPhoneNumberLabel.Text = CreateDiffString(project?.ClientPhoneNumber, currentProject?.ClientPhoneNumber);
         }
 
         private void CollapseHistory(bool collapse)

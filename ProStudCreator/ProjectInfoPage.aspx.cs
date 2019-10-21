@@ -881,6 +881,7 @@ namespace ProStudCreator
                 ? $"<a href=\"mailto:{pageProject.ClientMail}\">{Server.HtmlEncode(pageProject.ClientMail).Replace(" ", "&nbsp;")}</a>"
                 : "";
             txtClientEmailAdmin.Text = pageProject.ClientMail ?? "";
+            LabelClientPhoneNumber.Text = txtClientPhoneNumberAdmin.Text = pageProject.ClientPhoneNumber ?? "";
             LabelClientDepartment.Text = txtClientDepartmentAdmin.Text = pageProject.ClientAddressDepartment ?? "";
             LabelClientStreet.Text = txtClientStreetAdmin.Text = pageProject.ClientAddressStreet ?? "";
             LabelClientPLZ.Text = txtClientPLZAdmin.Text = pageProject.ClientAddressPostcode ?? "";
@@ -895,11 +896,12 @@ namespace ProStudCreator
                 LabelClientTitle.Visible = drpClientTitleAdmin.Visible =
                     LabelClientName.Visible = txtClientNameAdmin.Visible =
                         LabelClientEmail.Visible = txtClientEmailAdmin.Visible =
-                            LabelClientDepartment.Visible = txtClientDepartmentAdmin.Visible =
-                                LabelClientStreet.Visible = txtClientStreetAdmin.Visible =
-                                    LabelClientPLZ.Visible = txtClientPLZAdmin.Visible =
-                                        LabelClientCity.Visible = txtClientCityAdmin.Visible =
-                                            LabelClientReference.Visible = txtClientReferenceAdmin.Visible = false;
+                            LabelClientPhoneNumber.Visible = txtClientPhoneNumberAdmin.Visible = 
+                                LabelClientDepartment.Visible = txtClientDepartmentAdmin.Visible =
+                                    LabelClientStreet.Visible = txtClientStreetAdmin.Visible =
+                                        LabelClientPLZ.Visible = txtClientPLZAdmin.Visible =
+                                            LabelClientCity.Visible = txtClientCityAdmin.Visible =
+                                                LabelClientReference.Visible = txtClientReferenceAdmin.Visible = false;
 
             switch (pageProject.State)
             {
@@ -910,11 +912,12 @@ namespace ProStudCreator
                             drpClientTitleAdmin.Visible =
                                 txtClientNameAdmin.Visible =
                                     txtClientEmailAdmin.Visible =
-                                        txtClientDepartmentAdmin.Visible =
-                                            txtClientStreetAdmin.Visible =
-                                                txtClientPLZAdmin.Visible =
-                                                    txtClientCityAdmin.Visible =
-                                                        txtClientReferenceAdmin.Visible = true;
+                                        txtClientPhoneNumberAdmin.Visible = 
+                                            txtClientDepartmentAdmin.Visible =
+                                                txtClientStreetAdmin.Visible =
+                                                    txtClientPLZAdmin.Visible =
+                                                        txtClientCityAdmin.Visible =
+                                                            txtClientReferenceAdmin.Visible = true;
                         radioClientType.Enabled = true;
                         chkNDA.Enabled = true;
                     }
@@ -924,11 +927,12 @@ namespace ProStudCreator
                             LabelClientTitle.Visible =
                                 LabelClientName.Visible =
                                     LabelClientEmail.Visible =
-                                        LabelClientDepartment.Visible =
-                                            LabelClientStreet.Visible =
-                                                LabelClientPLZ.Visible =
-                                                    LabelClientCity.Visible =
-                                                        LabelClientReference.Visible = true;
+                                        LabelClientPhoneNumber.Visible = 
+                                            LabelClientDepartment.Visible =
+                                                LabelClientStreet.Visible =
+                                                    LabelClientPLZ.Visible =
+                                                        LabelClientCity.Visible =
+                                                            LabelClientReference.Visible = true;
                         radioClientType.Enabled = false;
                         chkNDA.Enabled = false;
                     }
@@ -938,11 +942,12 @@ namespace ProStudCreator
                         LabelClientTitle.Visible =
                             LabelClientName.Visible =
                                 LabelClientEmail.Visible =
-                                    LabelClientDepartment.Visible =
-                                        LabelClientStreet.Visible =
-                                            LabelClientPLZ.Visible =
-                                                LabelClientCity.Visible =
-                                                    LabelClientReference.Visible = true;
+                                    LabelClientPhoneNumber.Visible = 
+                                        LabelClientDepartment.Visible =
+                                            LabelClientStreet.Visible =
+                                                LabelClientPLZ.Visible =
+                                                    LabelClientCity.Visible =
+                                                        LabelClientReference.Visible = true;
                     radioClientType.Enabled = false;
                     chkNDA.Enabled = false;
                     break;
@@ -1059,6 +1064,7 @@ namespace ProStudCreator
                         pageProject.ClientAddressTitle = drpClientTitleAdmin.SelectedValue == "1" ? "Herr" : "Frau";
                         pageProject.ClientPerson = txtClientNameAdmin.Text;
                         pageProject.ClientMail = txtClientEmailAdmin.Text;
+                        pageProject.ClientPhoneNumber = txtClientPhoneNumberAdmin.Text;
                         pageProject.ClientAddressDepartment = txtClientDepartmentAdmin.Text == "" ? null : txtClientDepartmentAdmin.Text;
                         pageProject.ClientAddressStreet = txtClientStreetAdmin.Text == "" ? null : txtClientStreetAdmin.Text;
                         pageProject.ClientAddressPostcode = txtClientPLZAdmin.Text == "" ? null : txtClientPLZAdmin.Text;

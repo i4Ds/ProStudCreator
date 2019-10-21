@@ -1487,6 +1487,8 @@ namespace ProStudCreator
 		
 		private string _Notes;
 		
+		private string _ClientPhoneNumber;
+		
 		private EntitySet<Project> _Projects;
 		
 		private EntitySet<Attachements> _Attachements;
@@ -1669,6 +1671,8 @@ namespace ProStudCreator
     partial void OnGradeSentToAdminChanged();
     partial void OnNotesChanging(string value);
     partial void OnNotesChanged();
+    partial void OnClientPhoneNumberChanging(string value);
+    partial void OnClientPhoneNumberChanged();
     #endregion
 		
 		public Project()
@@ -3215,6 +3219,26 @@ namespace ProStudCreator
 					this._Notes = value;
 					this.SendPropertyChanged("Notes");
 					this.OnNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClientPhoneNumber", DbType="varchar(20)")]
+		public string ClientPhoneNumber
+		{
+			get
+			{
+				return this._ClientPhoneNumber;
+			}
+			set
+			{
+				if ((this._ClientPhoneNumber != value))
+				{
+					this.OnClientPhoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ClientPhoneNumber = value;
+					this.SendPropertyChanged("ClientPhoneNumber");
+					this.OnClientPhoneNumberChanged();
 				}
 			}
 		}

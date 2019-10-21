@@ -195,6 +195,7 @@ namespace ProStudCreator
             if (!string.Equals(p1.ClientAddressTitle, p2.ClientAddressTitle)) return true;
             if (!string.Equals(p1.ClientPerson, p2.ClientPerson)) return true;
             if (!string.Equals(p1.ClientMail, p2.ClientMail)) return true;
+            if (!string.Equals(p1.ClientPhoneNumber, p2.ClientPhoneNumber)) return true;
             if (!string.Equals(p1.ClientAddressDepartment, p2.ClientAddressDepartment)) return true;
             if (!string.Equals(p1.ClientAddressStreet, p2.ClientAddressStreet)) return true;
             if (!string.Equals(p1.ClientAddressPostcode, p2.ClientAddressPostcode)) return true;
@@ -387,7 +388,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 91; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 92; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -407,6 +408,7 @@ namespace ProStudCreator
             target.ClientAddressTitle = _p.ClientAddressTitle;
             target.ClientCompany = _p.ClientCompany;
             target.ClientMail = _p.ClientMail;
+            target.ClientPhoneNumber = _p.ClientPhoneNumber;
             target.ClientPerson = _p.ClientPerson;
             target.ClientReferenceNumber = _p.ClientReferenceNumber;
             target.ClientType = _p.ClientType;
@@ -1185,6 +1187,7 @@ namespace ProStudCreator
         public string ClientAddressTitle { get; set; }
         public string ClientPerson { get; set; }
         public string ClientMail { get; set; }
+        public string ClientPhoneNumber { get; set; }
         public string ClientAddressDepartment { get; set; }
         public string ClientAddressStreet { get; set; }
         public string ClientAddressPostcode { get; set; }

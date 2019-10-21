@@ -134,6 +134,7 @@
       <Column Name="WebSummaryChecked" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Column Name="GradeSentToAdmin" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="false" />
+      <Column Name="ClientPhoneNumber" Type="System.String" DbType="varchar(20)" CanBeNull="true" />
       <Association Name="Project_Project" Member="Projects" ThisKey="Id" OtherKey="PreviousProjectID" Type="Project" />
       <Association Name="Project_Attachements" Member="Attachements" ThisKey="Id" OtherKey="ProjectId" Type="Attachements" />
       <Association Name="Project_Task" Member="Tasks" ThisKey="Id" OtherKey="ProjectId" Type="Task" />

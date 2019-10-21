@@ -311,6 +311,13 @@
                                     <asp:TextBox runat="server" ID="txtClientEmailAdmin" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
                                 </div>
                             </div>
+                            <div class="form-group" style="text-align: left">
+                                <asp:Label runat="server" Text="Telefonnummer:" CssClass="control-label col-sm-3"></asp:Label>
+                                <asp:Label runat="server" ID="LabelClientPhoneNumber" CssClass="col-sm-9 alignbottom"></asp:Label>
+                                <div class="col-sm-6">
+                                    <asp:TextBox runat="server" ID="txtClientPhoneNumberAdmin" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
+                                </div>
+                            </div>
                             <div class="form-group" style="text-align: left" runat="server" id="divClientDepartment">
                                 <asp:Label runat="server" Text="Abteilung:" CssClass="control-label col-sm-3"></asp:Label>
                                 <asp:Label runat="server" ID="LabelClientDepartment" CssClass="col-sm-9 alignbottom"></asp:Label>
