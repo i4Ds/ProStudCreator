@@ -617,7 +617,7 @@ namespace ProStudCreator
                 if (updatedProjects.Any())
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    mail.To.Add(new MailAddress(Global.GradeAdmin));
+                    mail.To.Add(new MailAddress(Global.WebAdmin)); // Change back to Global.GradeAdmin
                     mail.Subject = "Informatikprojekte P5/P6: Neue Noten";
                     mail.IsBodyHtml = true;
 

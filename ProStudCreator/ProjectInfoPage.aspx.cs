@@ -1013,7 +1013,7 @@ namespace ProStudCreator
                     if (pageProject.UserHasAdvisor2Rights())
                     {
                         //Name
-                        if (ProjectTitleAdmin.Visible)
+                        if (pageProject.CanEditTitle())
                         {
                             pageProject.Name = ProjectTitleAdmin.Text.FixupParagraph();
                         }
@@ -1077,12 +1077,12 @@ namespace ProStudCreator
                             : db.BillingStatus.Single(b => b.Id == int.Parse(DropBillingStatus.SelectedValue));
 
                         //Grades
-                        if (!string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text) && CheckGradeFieldStatus() && pageProject.LogGradeStudent1 == null)
+                        if (!string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text) && CheckGradeFieldStatus())
                         {
                             pageProject.LogGradeStudent1 = float.Parse(NumGradeStudent1Admin.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                         }
 
-                        if (!string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text) && CheckGradeFieldStatus() && pageProject.LogGradeStudent2 == null)
+                        if (!string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text) && CheckGradeFieldStatus())
                         {
                             pageProject.LogGradeStudent2 = float.Parse(NumGradeStudent2Admin.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                         }
