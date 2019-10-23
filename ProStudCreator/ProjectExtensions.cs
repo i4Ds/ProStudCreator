@@ -24,6 +24,8 @@ namespace ProStudCreator
 
         public static string GetFullNr(this Project _p) => $"{(_p.Semester == null ? "" : _p.Semester.Name + "_")}{_p.Department.DepartmentName}{_p.ProjectNr:D2}";
 
+        public static string GetProjectLabel(this Project _p) => $"{(_p.Semester == null ? "????" : _p.Semester.Name)}_{_p.Department.DepartmentName}{(_p.ProjectNr > 0 ? string.Format("{0:D2}", _p.ProjectNr) : "??")}";
+
         public static string GetFullTitle(this Project _p) => $"{(_p.Semester == null ? "" : _p.Semester.Name + "_")}{_p.Department.DepartmentName}{_p.ProjectNr:D2}: {_p.Name}";
 
 

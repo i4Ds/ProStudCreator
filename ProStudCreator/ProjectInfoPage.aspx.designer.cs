@@ -87,13 +87,13 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Label LabelState;
 
         /// <summary>
-        /// LabelSemester control.
+        /// LabelProjectNr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelSemester;
+        protected global::System.Web.UI.WebControls.Label LabelProjectNr;
 
         /// <summary>
         /// Advisor1Name control.
@@ -456,33 +456,6 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.DropDownList DropLanguage;
 
         /// <summary>
-        /// DivWebSummary control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivWebSummary;
-
-        /// <summary>
-        /// cbxWebSummaryChecked control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxWebSummaryChecked;
-
-        /// <summary>
-        /// LabelWebsummaryLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelWebsummaryLink;
-
-        /// <summary>
         /// DivBillingStatus control.
         /// </summary>
         /// <remarks>
@@ -526,6 +499,33 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// DivWebSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivWebSummary;
+
+        /// <summary>
+        /// cbxWebSummaryChecked control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbxWebSummaryChecked;
+
+        /// <summary>
+        /// LabelWebsummaryLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelWebsummaryLink;
 
         /// <summary>
         /// UpdateGradeFields control.

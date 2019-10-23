@@ -40,46 +40,28 @@
         </Scripts>
     </asp:ScriptManager>
 
-    <div class="navbar navbar-inverse navbar-fixed-top non-selectable" style="background-color: #f5f5f5">
-        <div class="container">
-            <div class="navbar-header" style="width: 100%">
-                <div class="navbar-brand" style="width: 100%">
-                    <img runat="server" src="pictures/Logo.png"/>
-                    <a href="projectlist" style="margin-left: 5%;">
-                        <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">IP5/IP6 Projekte</h2>
-                    </a>
-                    <a href="Termine" style="margin-left: 5%;">
-                        <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">Termine</h2>
-                    </a>
-                    <a href="Ablauf" style="margin-left: 5%;">
-                        <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">Ablauf</h2>
-                    </a>
-                    <a href="FAQ" style="margin-left: 5%;">
-                        <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">FAQ</h2>
-                    </a>
-                    <div runat="server" id="NavAdmin" class="display-inline">
-                        <a href="AdminPage.aspx" style="margin-left: 5%;">
-                            <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">Admin</h2>
-                        </a>
-                        <div runat="server" id="tasksToDo" class="display-inline" Visible="False">
-                            <img src="pictures/danger.png" height="32" width="32"/>
-                        </div>
-                    </div>
-                    <div runat="server" id="NavWebAdmin" class="display-inline">
-                        <a href="WebAdminPage.aspx" style="margin-left: 1%;">
-                            <h2 style="color: #000; display: inline; text-decoration: none; vertical-align: middle;">DB</h2>
-                        </a>
-                    </div>
-                </div>
+    <nav class="navbar navbar-default navbar-fixed-top non-selectable" style="background-color: #f5f5f5">
+        <div class="container container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>                        
+                </button>
+                <img class="navbar-brand" runat="server" src="pictures/Logo.png"/>
             </div>
-            <%-- <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav menuBar">
-                        <li>
-                        </li>
-                    </ul>
-                </div>--%>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="projectlist">IP5/IP6 Projekte</a></li>
+                    <li><a href="Termine">Termine</a></li>
+                    <li><a href="Ablauf">Ablauf</a></li>
+                    <li><a href="FAQ">FAQ</a></li>
+                    <li><a href="AdminPage.aspx" runat="server" id="NavAdmin">Admin</a></li>
+                    <li><a href="WebAdminPage.aspx" runat="server" id="NavWebAdmin">DB</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         <asp:ContentPlaceHolder ID="MainContent" runat="server">
         </asp:ContentPlaceHolder>

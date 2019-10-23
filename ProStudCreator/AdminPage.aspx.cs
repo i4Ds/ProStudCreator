@@ -106,7 +106,6 @@ namespace ProStudCreator
                         : ""
                 }),
                 projectName = i.Name,
-                Institute = i.Department.DepartmentName,
                 p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || (i.PTwoType?.P5 ?? false)),
                 p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || (i.PTwoType?.P6 ?? false)),
                 projectType1 = "pictures/projectTyp" + (i.TypeDesignUX
@@ -146,7 +145,7 @@ namespace ProStudCreator
                                                                        i.TypeDBBigData || i.TypeSysSec)
                                                            ? "SE"
                                                            : "Transparent"))))))) + ".png",
-                ProjectNr = i.ProjectNr != 0 ? i.ProjectNr.ToString("D2") : " "
+                ProjectNr = i.GetProjectLabel()
             };
         }
 

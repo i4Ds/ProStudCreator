@@ -14,7 +14,6 @@ namespace ProStudCreator
     public class ProjectSingleElement
     {
         public int id { get; set; }
-        public string Institute { get; set; }
         public string ProjectNr { get; set; }
         public string advisorName { get; set; }
         public string projectName { get; set; }
@@ -180,7 +179,6 @@ namespace ProStudCreator
                         : ""
                 }),
                 projectName = i.Name,
-                Institute = i.Department.DepartmentName,
                 p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || (i.PTwoType?.P5 ?? false)),
                 p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || (i.PTwoType?.P6 ?? false)),
                 lng = i.LogProjectDuration == (byte)2,
@@ -221,7 +219,7 @@ namespace ProStudCreator
                                                                        i.TypeDBBigData || i.TypeSysSec)
                                                            ? "SE"
                                                            : "Transparent"))))))) + ".png",
-                ProjectNr = i.ProjectNr != 0 ? i.ProjectNr.ToString("D2"):" "
+                ProjectNr = i.GetProjectLabel()
             };
         }
 
@@ -264,8 +262,8 @@ namespace ProStudCreator
                     case "Advisor":
                         AllProjects.DataSource = sortedProjects.OrderBy(p => p.advisorName.Contains("?")).ThenBy(p => p.advisorName);
                         break;
-                    case "Institute":
-                        AllProjects.DataSource = sortedProjects.OrderBy(p => p.Institute);
+                    case "ProjectNr":
+                        AllProjects.DataSource = sortedProjects.OrderBy(p => p.ProjectNr);
                         break;
                     case "projectName":
                         AllProjects.DataSource = sortedProjects.OrderBy(p => p.projectName);

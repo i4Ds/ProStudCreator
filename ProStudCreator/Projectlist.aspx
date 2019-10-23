@@ -93,8 +93,7 @@
                 <%--<AlternatingRowStyle BackColor="White" />--%>
                 <Columns>
                     <asp:BoundField DataField="advisorName" HeaderText="Betreuer" SortExpression="Advisor" HtmlEncode="false" ItemStyle-Wrap="false"/>
-                    <asp:BoundField DataField="Institute" HeaderText="Institut" SortExpression="Institute"/>
-                    <asp:BoundField DataField="ProjectNr" HeaderText="#" SortExpression="ProjectNr"/>
+                    <asp:BoundField DataField="projectNr" HeaderText="Projektnummer" SortExpression="ProjectNr"/>
                     <asp:BoundField DataField="projectName" HeaderText="Projektname" SortExpression="projectName" ItemStyle-Width="100%"/>
                     <asp:CheckBoxField HeaderText="P5" DataField="p5" SortExpression="P5"/>
                     <asp:CheckBoxField HeaderText="Lang" DataField="lng" SortExpression="Long"/>

@@ -79,7 +79,7 @@ namespace ProStudCreator
             LabelState.Text = pageProject.StateAsString;
 
             //Semester
-            LabelSemester.Text = pageProject.Semester?.Name ?? "?";
+            LabelProjectNr.Text = pageProject.GetProjectLabel();
 
             //Topics
             DisplayProjectTopics();
@@ -1115,7 +1115,7 @@ namespace ProStudCreator
                         pageProject.LogProjectDuration = byte.Parse(DropDuration.SelectedValue);
 
                         //Expert
-                        if (pageProject.LogProjectType.P6)
+                        if (pageProject.LogProjectType.P6 && DropExpert.Visible)
                         {
                             pageProject.Expert = DropExpert.SelectedIndex == 0
                                 ? null

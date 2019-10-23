@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProStudCreator {
-    
-    
-    public partial class SiteMaster {
-        
+namespace ProStudCreator
+{
+
+
+    public partial class SiteMaster
+    {
+
         /// <summary>
         /// NavAdmin control.
         /// </summary>
@@ -19,17 +21,8 @@ namespace ProStudCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NavAdmin;
-        
-        /// <summary>
-        /// tasksToDo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tasksToDo;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor NavAdmin;
+
         /// <summary>
         /// NavWebAdmin control.
         /// </summary>
@@ -37,8 +30,8 @@ namespace ProStudCreator {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NavWebAdmin;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor NavWebAdmin;
+
         /// <summary>
         /// MainContent control.
         /// </summary>
@@ -47,7 +40,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-        
+
         /// <summary>
         /// WebAdminUserDrop control.
         /// </summary>
@@ -56,7 +49,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl WebAdminUserDrop;
-        
+
         /// <summary>
         /// DropUser control.
         /// </summary>

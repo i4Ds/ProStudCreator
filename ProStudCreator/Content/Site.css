@@ -6,6 +6,39 @@ body {
     padding-top: 50px;
 }
 
+.navbar {
+    min-height: 75px;
+    border-bottom-color: black;
+}
+
+.navbar-toggle {
+    margin-top: 20px;
+    height: 35px;
+    border-color: black !important;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: black !important;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav > li > a {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        line-height: 35px;
+        font-size: 30px;
+        padding-left: 30px;
+    }
+}
+
+.navbar-nav > li > a {
+    color: black !important;
+}
+
+.container {
+    max-width: 1400px;
+}
+
 #historyRow {
     padding: 1em !important;
     margin: 0 !important;
@@ -53,6 +86,8 @@ ol li {
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
 
+/*
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -60,6 +95,8 @@ input[type="tel"],
 input[type="select"] {
     max-width: 280px;
 }
+
+*/
 
 /* Responsive: Portrait tablets and up */
 
@@ -426,10 +463,11 @@ html .demo-container .ruFakeInput {
     display: none;
 }
 
+/*
 .dropPreviousProject {
     max-width: 280px;
 }
-
+*/
 
 /*File Upload styles*/
 .ajax__fileupload {
@@ -655,3 +693,9 @@ del {
             top: 0;
             right: 0;
         }
+
+
+.no-margin {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
