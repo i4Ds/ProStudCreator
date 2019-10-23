@@ -114,7 +114,7 @@ namespace ProStudCreator
             document.Add(projectTypeImage);
 
             var title = new Paragraph(
-                proj.Department.DepartmentName + currentProject.ProjectNr.ToString("00") + ": " + proj.Name,
+                proj.GetProjectLabel() + ": " + proj.Name,
                 FontFactory.GetFont("Arial", 16, Font.BOLD)).Hyphenate(hyph);
             title.SpacingBefore = 8f;
             title.SpacingAfter = 16f;
