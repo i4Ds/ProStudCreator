@@ -16,6 +16,12 @@
         <ul ID="TasksMarks" runat="server"></ul>
         <h3>Tasks: Experten auszahlen</h3>
         <ul ID="TasksExperts" runat="server"></ul>
+        <h4>Theses with no Expert</h4>
+        <ul id="NoExpertTheses" runat="server"></ul>
+        <h4>Tasks: NEW Experts to be paid</h4>
+        <ul id="ExpertsToBePaid" runat="server"></ul>
+        <h4>Tasks: NEW Experts not to be paid</h4>
+        <ul id="ExpertsNotToBePaid" runat="server"></ul>
         <h3>Tasks: Thesis Titel an Ausbildungsadministration senden</h3>
         <ul ID="TasksTitles" runat="server"></ul>
         <h3>Tasks: Projekte abschliessen</h3>
@@ -35,7 +41,5 @@
         <ul ID="CurrSemIP5Long" runat="server"></ul>
         <h5>IP6</h5>
         <ul ID="CurrSemIP6" runat="server"></ul>
-        <h5>HttpContext</h5>
-        <ul id="HttpContextContent" runat="server"></ul>
     </div>
 </asp:Content>

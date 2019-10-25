@@ -698,10 +698,78 @@ namespace ProStudCreator
             db.SubmitChanges();
         }
 
+        public static (Dictionary<Expert, List<Project>>, Dictionary<Expert, List<Project>>) new_SendPayExperts(ProStudentCreatorDBDataContext db)
+        {
+            var type = db.TaskTypes.Single(t => t.Id == (int)Type.PayExperts);
+            var currSemester = Semester.CurrentSemester(db);
+            var currSemesterTask = db.Tasks.SingleOrDefault(t => t.TaskType == type && t.Semester == currSemester);
+            if (currSemesterTask == null)
+            {
+                currSemesterTask = new Task()
+                {
+                    TaskType = type,
+                    Semester = currSemester,
+                    FirstReminded = DateTime.Now
+                };
+                db.Tasks.InsertOnSubmit(currSemesterTask);
+                db.SubmitChanges();
+            }
+
+            var expertsToBePaid = new Dictionary<Expert, List<Project>>();
+            var expertsNotToBePaid = new Dictionary<Expert, List<Project>>();
+
+            var activeTasks = db.Tasks.Where(t => !t.Done && t.TaskType == type && t.Semester != null);
+
+            foreach (var task in activeTasks)
+            {
+                task.LastReminded = DateTime.Now;
+
+                var taskSemester = task.Semester;
+                var thesisProjects = db.Projects.Where(p => p.IsMainVersion
+                    && p.Semester == taskSemester
+                    && (p.LogProjectType.P6 && !p.LogProjectType.P5)
+                    && p.State != ProjectState.Deleted
+                    && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished)
+                    && !p.LogExpertPaid
+                    && p.Expert != null
+                    && p.Expert.AutomaticPayout
+                );
+
+                if (!thesisProjects.Any())
+                {
+                    task.Done = true;
+                }
+
+                var allExperts = thesisProjects.Select(p => p.Expert).Distinct();
+
+                foreach (Expert e in allExperts)
+                {
+                    if (thesisProjects.Where(p => p.Expert == e).Any(p => p.State == ProjectState.Ongoing))
+                    {
+                        var expertProjects = thesisProjects.Where(p => p.Expert == e);
+                        expertsNotToBePaid.Add(e, expertProjects.ToList());
+                    }
+                    else
+                    {
+                        var expertProjects = thesisProjects.Where(p => p.Expert == e);
+                        expertsToBePaid.Add(e, expertProjects.ToList());
+                    }
+                }
+
+                // TODO: Send Mail here
+                // TODO: Set Project.LogExpertPaid to true
+            }
+
+
+            db.SubmitChanges();
+
+            return (expertsToBePaid, expertsNotToBePaid);
+        }
+
         public static void SendPayExperts(ProStudentCreatorDBDataContext db)
         {
             var type = db.TaskTypes.Single(t => t.Id == (int)Type.PayExperts);
-            var activeTask = db.Tasks.SingleOrDefault(t => !t.Done && t.TaskType == type);
+            var activeTask = db.Tasks.SingleOrDefault(t => !t.Done && t.TaskType == type && t.Semester == null);
             if (activeTask == null)
             {
                 activeTask = new Task()
