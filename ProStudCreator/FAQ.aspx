@@ -48,7 +48,7 @@
             <a href="mailto:andre.csillaghy@fhnw.ch">André Csillaghy</a> für Projekte am I4DS.
         </p>
         <p id="iit2" visible="false" runat="server">
-            <a href="mailto:simon.schubiger@fhnw.ch">Simon Schubiger</a> für Projekte am IIT. 
+            <a href="mailto:marcel.gygli@fhnw.ch">Marcel Gygli</a> für Projekte am IIT. 
         </p>
         <h4>Wie können externe Auftraggeber Projekte einreichen?</h4>
         <p>
@@ -111,7 +111,7 @@
             Du bist für die Organisation des Experten und der Verteidigung verantwortlich.
         </p>
         <p id="iit1" visible="false" runat="server">
-            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:simon.schubiger@fhnw.ch">Simon Schubiger</a>.
+            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:marcel.gygli@fhnw.ch">Marcel Gygli</a>.
         </p>
         <h4>Wo sollen die Studierenden Ihren Code ablegen? Woher kriegen meine Studierenden eine VM?</h4>
         <p>
