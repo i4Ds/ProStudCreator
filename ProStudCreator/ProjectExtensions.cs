@@ -495,7 +495,7 @@ namespace ProStudCreator
         /// <param name="_p"></param>
         public static void AssignUniqueProjectNr(this Project _p, ProStudentCreatorDBDataContext dbx)
         {
-            var activeSemester = Semester.ActiveSemester(_p.PublishedDate, dbx);
+            var activeSemester = _p.Semester;
 
             // Get project numbers from this semester & same department
             var nrs = dbx.Projects.Where(p =>
@@ -512,7 +512,6 @@ namespace ProStudCreator
                 while (nrs.Contains(_p.ProjectNr))
                     _p.ProjectNr++;
             }
-
         }
 
         #endregion
