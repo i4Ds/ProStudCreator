@@ -327,7 +327,7 @@ namespace ProStudCreator
             return (bool)HttpContext.Current.Items["CanSubmitAllProjects"];
 #endif
         }
-
+        /*
         public static bool CanSeeCreationDetails()
         {
 #if DEBUG
@@ -348,5 +348,6 @@ namespace ProStudCreator
             return (bool)HttpContext.Current.Items["CanSeeCreationDetails"];
 #endif
         }
+        */
     }
 }

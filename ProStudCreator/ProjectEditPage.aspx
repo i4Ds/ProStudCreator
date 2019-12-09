@@ -119,9 +119,6 @@
     </asp:UpdatePanel>
     <div class="well newProjectSettings ">
         <asp:Label runat="server" ID="SiteTitle" Font-Size="24px" Height="50px"></asp:Label>
-        <asp:PlaceHolder ID="AdminView" runat="server" Visible="True">
-            <asp:Label runat="server" ID="CreatorID" CssClass="pull-right" Font-Size="24px" Height="50px"></asp:Label>
-        </asp:PlaceHolder>
         <div class="well contentDesign form-horizontal" style="background-color: #ffffff">
             <div class="form-group" style="margin-top: 15px">
                 <asp:Label runat="server" CssClass="control-label col-md-3" Text="Projektname:"></asp:Label>

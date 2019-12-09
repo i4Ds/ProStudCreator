@@ -56,7 +56,6 @@ namespace ProStudCreator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            AdminView.Visible = ShibUser.CanSeeCreationDetails();
             updateReservation.Visible = ShibUser.CanReserveProjects();
 
             //Button color
@@ -159,8 +158,6 @@ namespace ProStudCreator
                 PopulateHistoryGUI();
                 return;
             }
-
-            CreatorID.Text = pageProject?.Creator + "/" + pageProject?.CreateDate.ToString("yyyy-MM-dd") ?? "";
 
             //Name
             ProjectName.Text = pageProject?.Name ?? "";
@@ -1138,7 +1135,6 @@ namespace ProStudCreator
             ShowAllLabelsForComparison();
             HideTextboxesAndDropdownsForComparison();
 
-            CreatorID.Text = pageProject.Creator + "/" + pageProject.CreateDate.ToString("yyyy-MM-dd");
             AddPictureLabel.Text = "Bild ändern:";
             ProjectNameLabel.Text = CreateSimpleDiffString(pageProject.Name, currentProject.Name);
             dropAdvisor1Label.Text = CreateSimpleDiffString(pageProject.Advisor1?.Name ?? "", currentProject.Advisor1?.Name ?? "");
