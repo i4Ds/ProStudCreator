@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -27,12 +28,13 @@ namespace ProStudCreator
                 " ",
                 "Projekteinreichung (extern)",
                 "Projekteinreichung (intern)",
+                "Info Veranstaltung",
                 "Anmeldung ProApp",
                 "Projektzuteilung",
                 "Abgabe IP5",
                 "Abgabe IP5 (Lang)",
                 "Abgabe IP6<br/>Verteidigung",
-                "Abgabe IP6 (2 Sem.)<br/>Verteidigung",
+                // "Abgabe IP6 (2 Sem.)<br/>Verteidigung",
                 "Ausstellung Bachelorthesen"
             })
                 dt.Columns.Add(header);
@@ -42,6 +44,7 @@ namespace ProStudCreator
                     $"{semester.StartDate.ToShortDateString()} bis {semester.EndDate.ToShortDateString()}",
                     semester.ProjectSubmissionUntil.AddDays(-7 * 6).ToShortDateString(),
                     semester.ProjectSubmissionUntil.ToShortDateString(),
+                    semester.InfoEvent?.ToString("g", CultureInfo.CurrentCulture) ?? "?",
                     semester.ProAppApplication,
                     semester.ProjectAllocation,
                     semester.SubmissionIP5FullPartTime,
@@ -49,9 +52,11 @@ namespace ProStudCreator
                     semester.SubmissionIP6Normal + "<br/>" + (semester.DefenseIP6Start == null
                         ? ""
                         : $"{semester.DefenseIP6Start} bis {semester.DefenseIP6End}"),
+                    /*
                     semester.SubmissionIP6Variant2 + "<br/>" + (semester.DefenseIP6BStart == null
                         ? ""
                         : $"{semester.DefenseIP6BStart} bis {semester.DefenseIP6BEnd}"),
+                    */
                     semester.ExhibitionBachelorThesis);
 
 
