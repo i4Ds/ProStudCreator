@@ -79,27 +79,65 @@ namespace ProStudCreator
             {
                 var refProj = FilterRelevantProjects(projects);
 
-                var runningProj = refProj.Where(p => p.State == 4);
+                var submittedProj = projects.Where(p => p.State == ProjectState.Submitted && p.IsMainVersion);
+                var submittedProjIP5 = submittedProj.Where(p => p.POneType.P5 || (p.PTwoType != null && p.PTwoType.P5));
+                var submittedProjIP6 = submittedProj.Where(p => p.POneType.P6 || (p.PTwoType != null && p.PTwoType.P6));
+                var submittedProjI4DS = submittedProj.Where(p => p.DepartmentId == 0);
+                var submittedProjIMVS = submittedProj.Where(p => p.DepartmentId == 1);
+                var submittedProjIIT = submittedProj.Where(p => p.DepartmentId == 2);
+
+                var publishedProj = refProj.Where(p => p.State == ProjectState.Published);
+                var publishedProjIP5 = publishedProj.Where(p => p.POneType.P5 || (p.PTwoType != null && p.PTwoType.P5));
+                var publishedProjIP6 = publishedProj.Where(p => p.POneType.P6 || (p.PTwoType != null && p.PTwoType.P6));
+                var publishedProjI4DS = publishedProj.Where(p => p.DepartmentId == 0);
+                var publishedProjIMVS = publishedProj.Where(p => p.DepartmentId == 1);
+                var publishedProjIIT = publishedProj.Where(p => p.DepartmentId == 2);
+
+                var runningProj = refProj.Where(p => p.State == ProjectState.Ongoing);
                 var runningProjIP5N = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
                 var runningProjIP5L = runningProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
                 var runningProjIP6 = runningProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
+                var runningProjI4DS = runningProj.Where(p => p.DepartmentId == 0);
+                var runningProjIMVS = runningProj.Where(p => p.DepartmentId == 1);
+                var runningProjIIT = runningProj.Where(p => p.DepartmentId == 2);
 
-                var finishedProj = refProj.Where(p => p.State > 4 && p.State < 9);
+                var finishedProj = refProj.Where(p => p.State > ProjectState.Ongoing && p.State < ProjectState.Deleted);
                 var finishedProjIP5N = finishedProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 1);
                 var finishedProjIP5L = finishedProj.Where(p => p.LogProjectType.P5 && p.LogProjectDuration == 2);
                 var finishedProjIP6 = finishedProj.Where(p => p.LogProjectType.P6 && p.LogProjectDuration == 1);
+                var finishedProjI4DS = finishedProj.Where(p => p.DepartmentId == 0);
+                var finishedProjIMVS = finishedProj.Where(p => p.DepartmentId == 1);
+                var finishedProjIIT = finishedProj.Where(p => p.DepartmentId == 2);
 
-                LabelNumProjects.Text = $"Anzahl veröffentlichter Projekte: {refProj.Count()}";
+                LabelNumSubmittedProjects.Text = $"Anzahl eingereichter Projekte: {submittedProj.Count()}";
+                LabelNumSubmittedProjectsIP5.Text = $"IP5: {submittedProjIP5.Count()}";
+                LabelNumSubmittedProjectsIP6.Text = $"IP6: {submittedProjIP6.Count()}";
+                LabelNumSubmittedProjectsI4DS.Text = $"I4DS: {submittedProjI4DS.Count()}";
+                LabelNumSubmittedProjectsIMVS.Text = $"IMVS: {submittedProjIMVS.Count()}";
+                LabelNumSubmittedProjectsIIT.Text = $"IIT: {submittedProjIIT.Count()}";
+
+                LabelNumPublishedProjects.Text = $"Anzahl veröffentlichter Projekte: {publishedProj.Count()}";
+                LabelNumPublishedProjectsIP5.Text = $"IP5: {publishedProjIP5.Count()}";
+                LabelNumPublishedProjectsIP6.Text = $"IP6: {publishedProjIP6.Count()}";
+                LabelNumPublishedProjectsI4DS.Text = $"I4DS: {publishedProjI4DS.Count()}";
+                LabelNumPublishedProjectsIMVS.Text = $"IMVS: {publishedProjIMVS.Count()}";
+                LabelNumPublishedProjectsIIT.Text = $"IIT: {publishedProjIIT.Count()}";
 
                 LabelNumRunningProjects.Text = $"Anzahl laufender Projekte: {runningProj.Count()}";
-                LabelNumRunningProjectsIP5N.Text = $"IP5: {runningProjIP5N.Count()}";
-                LabelNumRunningProjectsIP5L.Text = $"IP5 Lang: {runningProjIP5L.Count()}";
+                LabelNumRunningProjectsIP5N.Text = $"IP5N: {runningProjIP5N.Count()}";
+                LabelNumRunningProjectsIP5L.Text = $"IP5L: {runningProjIP5L.Count()}";
                 LabelNumRunningProjectsIP6.Text = $"IP6: {runningProjIP6.Count()}";
+                LabelNumRunningProjectsI4DS.Text = $"I4DS: {runningProjI4DS.Count()}";
+                LabelNumRunningProjectsIMVS.Text = $"IMVS: {runningProjIMVS.Count()}";
+                LabelNumRunningProjectsIIT.Text = $"IIT: {runningProjIIT.Count()}";
 
                 LabelNumFinishedProjects.Text = $"Anzahl abgeschlossener Projekte: {finishedProj.Count()}";
-                LabelNumFinishedProjectsIP5N.Text = $"IP5: {finishedProjIP5N.Count()}";
-                LabelNumFinishedProjectsIP5L.Text = $"IP5 Lang: {finishedProjIP5L.Count()}";
+                LabelNumFinishedProjectsIP5N.Text = $"IP5N: {finishedProjIP5N.Count()}";
+                LabelNumFinishedProjectsIP5L.Text = $"IP5L: {finishedProjIP5L.Count()}";
                 LabelNumFinishedProjectsIP6.Text = $"IP6: {finishedProjIP6.Count()}";
+                LabelNumFinishedProjectsI4DS.Text = $"I4DS: {finishedProjI4DS.Count()}";
+                LabelNumFinishedProjectsIMVS.Text = $"IMVS: {finishedProjIMVS.Count()}";
+                LabelNumFinishedProjectsIIT.Text = $"IIT: {finishedProjIIT.Count()}";
 
                 DivProjectStatistics.Visible = true;
             }

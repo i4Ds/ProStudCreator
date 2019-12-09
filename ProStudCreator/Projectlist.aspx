@@ -27,36 +27,89 @@
         <br/>
         <hr/>
         <div runat="server" id="DivProjectStatistics">
-            <div class="col-sm-4">
-                <asp:Label runat="server" ID="LabelNumProjects"></asp:Label>
+            <div class="col-md-3">
+                <asp:Label runat="server" ID="LabelNumSubmittedProjects"></asp:Label>
+            </div>
+            <div class="col-md-2">
+                <asp:Label runat="server" ID="LabelNumSubmittedProjectsIP5"></asp:Label>
+            </div>
+            <div class="col-md-2">
+                <asp:Label runat="server" ID="LabelNumSubmittedProjectsIP6"></asp:Label>
+            </div>
+            <div class="col-md-1">
+                <asp:Label runat="server" ID="LabelNumSubmittedProjectsI4DS"></asp:Label>
+            </div>
+            <div class="col-md-1">
+                <asp:Label runat="server" ID="LabelNumSubmittedProjectsIMVS"></asp:Label>
+            </div>
+            <div class="col-md-1">
+                <asp:Label runat="server" ID="LabelNumSubmittedProjectsIIT"></asp:Label>
             </div>
             <br />
             <br />
-            <div class="col-sm-4">
+            <div class="col-sm-3">
+                <asp:Label runat="server" ID="LabelNumPublishedProjects"></asp:Label>
+            </div>
+            <div class="col-sm-2">
+                <asp:Label runat="server" ID="LabelNumPublishedProjectsIP5"></asp:Label>
+            </div>
+            <div class="col-sm-2">
+                <asp:Label runat="server" ID="LabelNumPublishedProjectsIP6"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumPublishedProjectsI4DS"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumPublishedProjectsIMVS"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumPublishedProjectsIIT"></asp:Label>
+            </div>
+            <br />
+            <br />
+            <div class="col-sm-3">
                 <asp:Label runat="server" ID="LabelNumRunningProjects"></asp:Label>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 <asp:Label runat="server" ID="LabelNumRunningProjectsIP5N"></asp:Label>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 <asp:Label runat="server" ID="LabelNumRunningProjectsIP5L"></asp:Label>
             </div>
             <div class="col-sm-2">
                 <asp:Label runat="server" ID="LabelNumRunningProjectsIP6"></asp:Label>
             </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumRunningProjectsI4DS"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumRunningProjectsIMVS"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumRunningProjectsIIT"></asp:Label>
+            </div>
             <br/>
             <br/>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <asp:Label runat="server" ID="LabelNumFinishedProjects"></asp:Label>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 <asp:Label runat="server" ID="LabelNumFinishedProjectsIP5N"></asp:Label>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 <asp:Label runat="server" ID="LabelNumFinishedProjectsIP5L"></asp:Label>
             </div>
             <div class="col-sm-2">
                 <asp:Label runat="server" ID="LabelNumFinishedProjectsIP6"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumFinishedProjectsI4DS"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumFinishedProjectsIMVS"></asp:Label>
+            </div>
+            <div class="col-sm-1">
+                <asp:Label runat="server" ID="LabelNumFinishedProjectsIIT"></asp:Label>
             </div>
             <br/>
             <hr/>
