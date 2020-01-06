@@ -12,14 +12,34 @@ namespace ProStudCreator
     {
         private readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();
 
+        protected (Semester[], int) SemestersToDisplay()
+        {
+            var currSem = Semester.CurrentSemester(db);
+            var changeDateString = Semester.LastSemester(currSem, db).DefenseIP6End;
+
+            //change date
+            var changeDate = DateTime.ParseExact(changeDateString, "dd.MM.yyyy", CultureInfo.InvariantCulture)
+                + TimeSpan.FromDays(2 * 7);
+
+            if (DateTime.Now >= changeDate)
+            {
+                return (new[]
+                {
+                    Semester.CurrentSemester(db), Semester.NextSemester(db), Semester.AfterNextSemester(db), Semester.NextSemester(Semester.AfterNextSemester(db), db)
+                }, 0);
+            }
+            else
+            {
+                return (new[]
+                {
+                    Semester.LastSemester(db), Semester.CurrentSemester(db), Semester.NextSemester(db), Semester.AfterNextSemester(db)
+                }, 1);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var semestersToDisplay = new[]
-            {
-                Semester.LastSemester(db), Semester.CurrentSemester(db), Semester.NextSemester(db),
-                Semester.AfterNextSemester(db)
-            };
-
+            var semestersToDisplay = SemestersToDisplay().Item1;
 
             var dt = new DataTable();
             foreach (var header in new[]
@@ -95,6 +115,8 @@ namespace ProStudCreator
 
         protected void AllEvents_DataBinding(object sender, EventArgs e)
         {
+            var currSemIndex = SemestersToDisplay().Item2 + 1; // +1 for row titles
+
             for (var i = 0; i < AllEvents.Rows.Count; i++)
             {
                 for (var j = 0; j < AllEvents.Rows[i].Cells.Count; j++)
@@ -104,13 +126,13 @@ namespace ProStudCreator
                 if (i % 2 == 0)
                 {
                     for (var j = 0; j < AllEvents.Rows[i].Cells.Count; j++)
-                        if (j == 2)
+                        if (j == currSemIndex)
                             AllEvents.Rows[i].Cells[j].BackColor = Color.FromArgb(198, 244, 203);
                 }
                 else
                 {
                     for (var j = 0; j < AllEvents.Rows[i].Cells.Count; j++)
-                        if (j == 2)
+                        if (j == currSemIndex)
                             AllEvents.Rows[i].Cells[j].BackColor = Color.FromArgb(218, 236, 220);
                 }
             }

@@ -1118,6 +1118,19 @@ namespace ProStudCreator
             SendMail(mail);
         }
 
+        public static void SendDebugMail(string body, string subject = "ProStud")
+        {
+            var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+            mail.To.Add(new MailAddress(Global.WebAdmin));
+            mail.Subject = $"DEBUG: {subject}";
+            mail.Body = body;
+
+            using (var smtpClient = new SmtpClient())
+            {
+                smtpClient.Send(mail);
+            }
+        }
+
         public static void SendMail(MailMessage mail)
         {
 #if !DEBUG

@@ -153,10 +153,10 @@ namespace ProStudCreator
                     if (pageProject.LogProjectType?.P5 == true)
                         ChangeTitleDate.Text = "";
                     else
-                        ChangeTitleDate.Text = $"Titeländerung noch bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).AddDays(-2).ToString("dd.MM.yyyy")} möglich!";
+                        ChangeTitleDate.Text = $"Titeländerung noch bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).ToString("dd.MM.yyyy")} möglich!";
                 }
                 else
-                    ChangeTitleDate.Text = $"Titeländerung war nur bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).AddDays(-2).ToString("dd.MM.yyyy")} möglich!";
+                    ChangeTitleDate.Text = $"Titeländerung war nur bis {(deliveryDate.Value - Global.AllowTitleChangesBeforeSubmission).ToString("dd.MM.yyyy")} möglich!";
             }
 
             switch (pageProject.State)
