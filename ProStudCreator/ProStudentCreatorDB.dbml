@@ -61,7 +61,7 @@
   <Table Name="dbo.Projects" Member="Projects">
     <Type Name="Project">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(120) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="Creator" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="ClientCompany" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="ClientPerson" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" UpdateCheck="Never" />

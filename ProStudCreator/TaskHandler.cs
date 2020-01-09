@@ -34,11 +34,13 @@ namespace ProStudCreator
             CheckBillingStatus = 16,
             SetProjectLanguage = 17,
             SendThesisTitles = 18,
-            FinishProject = 19
+            FinishProject = 19,
+            ThesisTitleHint2Weeks = 20,
+            ThesisTitleHint2Days = 21
         }
 
         private static readonly object TaskCheckLock = new object();
-        private const int CheckHour = 13;
+        private const int CheckHour = 23;
 
         public static DateTime GetNextTaskCheck()
         {
@@ -108,6 +110,7 @@ namespace ProStudCreator
                 InfoInsertNewSemesters(db);
                 //EnterAssignedStudents(db);
 
+                SendThesisTitleHints(db);
                 SendThesisTitlesToAdmin(db);
                 //SendGradesToAdmin(db);
                 SendPayExperts(db);
@@ -409,6 +412,146 @@ namespace ProStudCreator
             db.SubmitChanges();
         }
 
+        public static void SendThesisTitleHints(ProStudentCreatorDBDataContext db)
+        {
+            var currentSemester = Semester.CurrentSemester(db);
+            var type2Weeks = db.TaskTypes.Single(t => t.Id == (int)Type.ThesisTitleHint2Weeks);
+            var activeTask2Weeks = db.Tasks.SingleOrDefault(t => t.TaskType == type2Weeks && t.Semester == currentSemester);
+
+            if (activeTask2Weeks == null)
+            {
+                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                    ? dbDate : (DateTime?)null;
+
+                var dueDate = deliveryDateCurrentSemester - Global.AllowTitleChangesBeforeSubmission - TimeSpan.FromDays(7 * 2);
+
+                activeTask2Weeks = new Task()
+                {
+                    TaskType = type2Weeks,
+                    Semester = currentSemester,
+                    DueDate = dueDate
+                };
+                db.Tasks.InsertOnSubmit(activeTask2Weeks);
+                db.SubmitChanges();
+            }
+
+            if (!activeTask2Weeks.Done && DateTime.Now > activeTask2Weeks.DueDate)
+            {
+                activeTask2Weeks.Done = true;
+
+                var thesisProjects = db.Projects.Where(p => p.IsMainVersion
+                    && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled)
+                    && p.Semester == currentSemester
+                    && p.LogProjectType.P6
+                ).OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+
+                if (thesisProjects.Any())
+                {
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                    /*
+                    foreach(var p in thesisProjects)
+                    {
+                        var ma1 = new MailAddress(p.Advisor1.Mail);
+                        if (!mail.To.Contains(ma1))
+                        {
+                            mail.To.Add(ma1);
+                        }
+                        var ma2 = new MailAddress(p.Advisor2.Mail);
+                        if (!mail.To.Contains(ma2))
+                        {
+                            mail.To.Add(ma2);
+                        }
+                    }
+                    */
+                    mail.To.Add(new MailAddress(Global.WebAdmin));
+
+                    mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append(
+                        "<div style=\"font-family: Arial\">" +
+                        "<p>Liebe Betreuerinnen und Betreuer<p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet.</p>" +
+                        "<p>Ich möchte Sie bitten, die Titel zu überprüfen und Änderungen gleich im ProStud vorzunehmen.</p>" +
+                        "<br/>" +
+                        "<p>Herzliche Grüsse,<br/>" +
+                        "ProStud-Team</p>" +
+                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                        "</div>");
+                    mail.Body = mailMessage.ToString();
+                    SendMail(mail);
+                }
+            }
+
+            var type2Days = db.TaskTypes.Single(t => t.Id == (int)Type.ThesisTitleHint2Days);
+            var activeTask2Days = db.Tasks.SingleOrDefault(t => t.TaskType == type2Days && t.Semester == currentSemester);
+
+            if (activeTask2Days == null)
+            {
+                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                    ? dbDate : (DateTime?)null;
+
+                var dueDate = deliveryDateCurrentSemester - Global.AllowTitleChangesBeforeSubmission - TimeSpan.FromDays(2);
+
+                activeTask2Days = new Task()
+                {
+                    TaskType = type2Days,
+                    Semester = currentSemester,
+                    DueDate = dueDate
+                };
+                db.Tasks.InsertOnSubmit(activeTask2Days);
+                db.SubmitChanges();
+            }
+
+            if (!activeTask2Days.Done && DateTime.Now > activeTask2Days.DueDate)
+            {
+                activeTask2Days.Done = true;
+
+                var thesisProjects = db.Projects.Where(p => p.IsMainVersion
+                    && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled)
+                    && p.Semester == currentSemester
+                    && p.LogProjectType.P6
+                ).OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
+
+                if (thesisProjects.Any())
+                {
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                    /*
+                    foreach(var p in thesisProjects)
+                    {
+                        var ma = new MailAddress(p.Advisor1.Mail);
+                        if (!mail.To.Contains(ma))
+                        {
+                            mail.To.Add(ma);
+                        }
+                    }
+                    */
+                    mail.To.Add(new MailAddress(Global.WebAdmin));
+
+                    mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append(
+                        "<div style=\"font-family: Arial\">" +
+                        "<p>Liebe Betreuerinnen und Betreuer<p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Tagen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet.</p>" +
+                        "<p>Ich möchte Sie bitten, die Titel zu überprüfen und Änderungen gleich im ProStud vorzunehmen.</p>" +
+                        "<br/>" +
+                        "<p>Herzliche Grüsse,<br/>" +
+                        "ProStud-Team</p>" +
+                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                        "</div>");
+                    mail.Body = mailMessage.ToString();
+                    SendMail(mail);
+                }
+            }
+
+            db.SubmitChanges();
+        }
 
         public static void SendThesisTitlesToAdmin(ProStudentCreatorDBDataContext db)
         {
@@ -807,8 +950,9 @@ namespace ProStudCreator
                     if (unpaidExperts.Any())
                     {
                         var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                        mail.To.Add(new MailAddress(Global.PayExpertAdmin));
-                        mail.CC.Add(new MailAddress("hanna.troxler@fhnw.ch"));
+                        mail.To.Add(new MailAddress(Global.WebAdmin));
+                        //mail.To.Add(new MailAddress(Global.PayExpertAdmin));
+                        //mail.CC.Add(new MailAddress("hanna.troxler@fhnw.ch"));
                         mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
                         mail.IsBodyHtml = true;
 

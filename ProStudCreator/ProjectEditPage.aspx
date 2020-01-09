@@ -123,7 +123,7 @@
             <div class="form-group" style="margin-top: 15px">
                 <asp:Label runat="server" CssClass="control-label col-md-3" Text="Projektname:"></asp:Label>
                 <div class="col-md-6">
-                    <asp:TextBox runat="server" ID="ProjectName" CssClass="form-control" MaxLength="80"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="ProjectName" CssClass="form-control" MaxLength="120"></asp:TextBox>
                     <asp:Label runat="server" ID="ProjectNameLabel" CssClass="form-control" Visible="false" Style="overflow: auto; width: 75%;"></asp:Label>
                     <asp:RequiredFieldValidator ID="ProjectNameValidator" ForeColor="Red" Display="Dynamic" ControlToValidate="ProjectName" runat="server" enableclientscript="false" SetFocusOnError="true" ErrorMessage="Bitte geben Sie einen Projektnamen an."></asp:RequiredFieldValidator>
                 </div>

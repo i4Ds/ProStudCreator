@@ -24,6 +24,10 @@
         <ul id="ExpertsNotToBePaid" runat="server"></ul>
         <h3>Tasks: Thesis Titel an Ausbildungsadministration senden</h3>
         <ul ID="TasksTitles" runat="server"></ul>
+        <h4>Thesis Titel Erinnerung 2 Wochen</h4>
+        <ul ID="TitleReminder2Weeks" runat="server"></ul>
+        <h4>Thesis Titel Erinnerung 2 Tage</h4>
+        <ul ID="TitleReminder2Days" runat="server"></ul>
         <h3>Tasks: Projekte abschliessen</h3>
         <h4>Last Semester</h4>
         <asp:Label runat="server" ID="LabelLastSem"></asp:Label>

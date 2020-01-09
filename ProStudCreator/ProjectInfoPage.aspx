@@ -37,7 +37,7 @@
                 <asp:Label runat="server" Text="Projektname:" CssClass="control-label col-md-3"></asp:Label>
                 <asp:Label runat="server" ID="ProjectTitle" CssClass="col-md-6 maxWidth alignbottom" Font-Bold="true"></asp:Label>
                 <div runat="server" id="DivProjectTitleAdmin" class="col-md-6">
-                    <asp:TextBox runat="server" ID="ProjectTitleAdmin" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="ProjectTitleAdmin" CssClass="form-control maxWidth" MaxLength="120"></asp:TextBox>
                 </div>
                 <div class="col-md-3">
                     <asp:Image CssClass="img-rounded" ID="Topic1" Height="60px" runat="server"/>
