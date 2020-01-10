@@ -635,7 +635,7 @@ namespace ProStudCreator
 
         public static bool CanEditTitle(this Project _p)
         {
-            return (_p.LogProjectType?.P5 == true) || (DateTime.Now < _p.GetDeliveryDate() - Global.AllowTitleChangesBeforeSubmission);
+            return (_p.LogProjectType?.P5 == true) || (DateTime.Now < _p.GetDeliveryDate() - Global.AllowTitleChangesBeforeSubmission + TimeSpan.FromHours(TaskHandler.CheckHour - 1));
         }
 
 

@@ -40,7 +40,7 @@ namespace ProStudCreator
         }
 
         private static readonly object TaskCheckLock = new object();
-        private const int CheckHour = 23;
+        public const int CheckHour = 23;
 
         public static DateTime GetNextTaskCheck()
         {
