@@ -1152,7 +1152,7 @@ namespace ProStudCreator
                     }
 
                     //Client
-                    if (radioClientType.SelectedValue != "Intern" && (txtClientCompanyAdmin.Text + txtClientNameAdmin.Text == "" || txtClientStreetAdmin.Text == "" || txtClientPLZAdmin.Text == "" || txtClientCityAdmin.Text == "" || txtClientEmailAdmin.Text == ""))
+                    if (radioClientType.SelectedIndex != (int)ClientType.Internal && (txtClientCompanyAdmin.Text + txtClientNameAdmin.Text == "" || txtClientStreetAdmin.Text == "" || txtClientPLZAdmin.Text == "" || txtClientCityAdmin.Text == "" || txtClientEmailAdmin.Text == ""))
                     {
                         return "Bitte füllen Sie alle Pflichtfelder aus.";
                     }
@@ -1164,7 +1164,7 @@ namespace ProStudCreator
                             ? null
                             : db.BillingStatus.Single(b => b.Id == int.Parse(DropBillingStatus.SelectedValue));
 
-                        if (billingStatus?.ShowAddressOnInfoPage == true && pageProject.ClientType == (int)ClientType.Internal)
+                        if (billingStatus?.ShowAddressOnInfoPage == true && radioClientType.SelectedIndex == (int)ClientType.Internal)
                         {
                             return "Dieser Verrechnungsstatus ist nur bei externen Auftraggebern verfügbar.";
                         }

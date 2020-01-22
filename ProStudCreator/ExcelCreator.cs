@@ -254,7 +254,8 @@ namespace ProStudCreator
             {
                 sGrad1 = null;
                 sGrad2 = null;
-                pLang = "";
+                if (!string.IsNullOrWhiteSpace(pLang))
+                    pLang = pLang + " (Projekt in Durchführung)";
                 pBilS = "";
                 StateStyle = null;
             }
