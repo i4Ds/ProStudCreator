@@ -52,9 +52,10 @@ namespace ProStudCreator
                 "Anmeldung ProApp",
                 "Projektzuteilung",
                 "Abgabe IP5",
+                "Notenabgabe IP5",
                 "Abgabe IP5 (Lang)",
                 "Abgabe IP6<br/>Verteidigung",
-                // "Abgabe IP6 (2 Sem.)<br/>Verteidigung",
+                "Notenabgabe IP5 (Lang) / IP6",
                 "Ausstellung Bachelorthesen"
             })
                 dt.Columns.Add(header);
@@ -68,10 +69,12 @@ namespace ProStudCreator
                     semester.ProAppApplication,
                     semester.ProjectAllocation,
                     semester.SubmissionIP5FullPartTime,
+                    semester.GradeIP5Deadline,
                     semester.SubmissionIP5Accompanying,
                     semester.SubmissionIP6Normal + "<br/>" + (semester.DefenseIP6Start == null
                         ? ""
                         : $"{semester.DefenseIP6Start} bis {semester.DefenseIP6End}"),
+                    semester.GradeIP6Deadline,
                     /*
                     semester.SubmissionIP6Variant2 + "<br/>" + (semester.DefenseIP6BStart == null
                         ? ""
