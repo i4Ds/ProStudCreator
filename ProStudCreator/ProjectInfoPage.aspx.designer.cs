@@ -150,6 +150,15 @@ namespace ProStudCreator
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivStudentsAdmin;
 
         /// <summary>
+        /// Student1EventoAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Student1EventoAdmin;
+
+        /// <summary>
         /// Student1NameAdmin control.
         /// </summary>
         /// <remarks>
@@ -166,6 +175,15 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Student1MailAdmin;
+
+        /// <summary>
+        /// Student2EventoAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Student2EventoAdmin;
 
         /// <summary>
         /// Student2NameAdmin control.

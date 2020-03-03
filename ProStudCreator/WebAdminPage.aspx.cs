@@ -45,7 +45,7 @@ namespace ProStudCreator
             TasksMarks.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 11).OrderBy(t => (t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0))).Select(t => $"<li>Datum: {t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0)}</li>").ToArray());
             TasksExperts.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 9).OrderBy(t => (t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0))).Select(t => $"<li>Datum: {t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0)}</li>").ToArray());
 
-            NoExpertTheses.InnerHtml = String.Join("", db.Projects.Where(p => p.Semester == currSem && p.LogProjectType.P6 && !p.LogProjectType.P5 && p.IsMainVersion && p.State >= ProjectState.Ongoing && p.Expert == null).Select(p => $"<li><a href=\"ProjectInfoPage?id={p.Id}\">{p.GetProjectLabel()}</a> : {p.StateAsString}</li>").ToArray());
+            NoExpertTheses.InnerHtml = String.Join("", db.Projects.Where(p => p.LogProjectType.P6 && !p.LogProjectType.P5 && p.IsMainVersion && p.State >= ProjectState.Ongoing && p.State <= ProjectState.Finished && p.Expert == null).Select(p => $"<li><a href=\"ProjectInfoPage?id={p.Id}\">{p.GetProjectLabel()}</a> : {p.StateAsString}</li>").ToArray());
 
             (var etbp, var entbp) = TaskHandler.new_SendPayExperts(db);
             StringBuilder sb = new StringBuilder();

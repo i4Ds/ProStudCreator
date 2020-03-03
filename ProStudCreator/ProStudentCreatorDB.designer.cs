@@ -1489,6 +1489,10 @@ namespace ProStudCreator
 		
 		private string _ClientPhoneNumber;
 		
+		private string _LogStudent1Evento;
+		
+		private string _LogStudent2Evento;
+		
 		private EntitySet<Project> _Projects;
 		
 		private EntitySet<Attachements> _Attachements;
@@ -1673,6 +1677,10 @@ namespace ProStudCreator
     partial void OnNotesChanged();
     partial void OnClientPhoneNumberChanging(string value);
     partial void OnClientPhoneNumberChanged();
+    partial void OnLogStudent1EventoChanging(string value);
+    partial void OnLogStudent1EventoChanged();
+    partial void OnLogStudent2EventoChanging(string value);
+    partial void OnLogStudent2EventoChanged();
     #endregion
 		
 		public Project()
@@ -3223,7 +3231,7 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClientPhoneNumber", DbType="varchar(20)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClientPhoneNumber", DbType="nvarchar(20)")]
 		public string ClientPhoneNumber
 		{
 			get
@@ -3239,6 +3247,46 @@ namespace ProStudCreator
 					this._ClientPhoneNumber = value;
 					this.SendPropertyChanged("ClientPhoneNumber");
 					this.OnClientPhoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent1Evento", DbType="nvarchar(20)")]
+		public string LogStudent1Evento
+		{
+			get
+			{
+				return this._LogStudent1Evento;
+			}
+			set
+			{
+				if ((this._LogStudent1Evento != value))
+				{
+					this.OnLogStudent1EventoChanging(value);
+					this.SendPropertyChanging();
+					this._LogStudent1Evento = value;
+					this.SendPropertyChanged("LogStudent1Evento");
+					this.OnLogStudent1EventoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent2Evento", DbType="nvarchar(20)")]
+		public string LogStudent2Evento
+		{
+			get
+			{
+				return this._LogStudent2Evento;
+			}
+			set
+			{
+				if ((this._LogStudent2Evento != value))
+				{
+					this.OnLogStudent2EventoChanging(value);
+					this.SendPropertyChanging();
+					this._LogStudent2Evento = value;
+					this.SendPropertyChanged("LogStudent2Evento");
+					this.OnLogStudent2EventoChanged();
 				}
 			}
 		}

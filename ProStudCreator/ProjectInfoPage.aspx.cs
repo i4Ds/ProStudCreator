@@ -238,8 +238,10 @@ namespace ProStudCreator
                     if (pageProject.UserHasDepartmentManagerRights())
                     {
                         //show textboxes to input students
+                        Student1EventoAdmin.Text = pageProject.LogStudent1Evento ?? "";
                         Student1NameAdmin.Text = pageProject.LogStudent1Name ?? "";
                         Student1MailAdmin.Text = pageProject.LogStudent1Mail ?? "";
+                        Student2EventoAdmin.Text = pageProject.LogStudent2Evento ?? "";
                         Student2NameAdmin.Text = pageProject.LogStudent2Name ?? "";
                         Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
                         DivStudentsAdmin.Visible = true;
@@ -255,8 +257,10 @@ namespace ProStudCreator
                     if (pageProject.UserHasDepartmentManagerRights())
                     {
                         //show textboxes to input students
+                        Student1EventoAdmin.Text = pageProject.LogStudent1Evento ?? "";
                         Student1NameAdmin.Text = pageProject.LogStudent1Name ?? "";
                         Student1MailAdmin.Text = pageProject.LogStudent1Mail ?? "";
+                        Student2EventoAdmin.Text = pageProject.LogStudent2Evento ?? "";
                         Student2NameAdmin.Text = pageProject.LogStudent2Name ?? "";
                         Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
                         DivStudentsAdmin.Visible = true;
@@ -989,12 +993,18 @@ namespace ProStudCreator
                         pageProject.Name = ProjectTitleAdmin.Text.FixupParagraph();
 
                         //Students
+                        pageProject.LogStudent1Evento = string.IsNullOrWhiteSpace(Student1EventoAdmin.Text)
+                            ? null
+                            : Student1EventoAdmin.Text;
                         pageProject.LogStudent1Name = string.IsNullOrWhiteSpace(Student1NameAdmin.Text)
                             ? null
                             : Student1NameAdmin.Text;
                         pageProject.LogStudent1Mail = string.IsNullOrWhiteSpace(Student1MailAdmin.Text)
                             ? null
                             : Student1MailAdmin.Text;
+                        pageProject.LogStudent2Evento = string.IsNullOrWhiteSpace(Student2EventoAdmin.Text)
+                            ? null
+                            : Student2EventoAdmin.Text;
                         pageProject.LogStudent2Name = string.IsNullOrWhiteSpace(Student2NameAdmin.Text)
                             ? null
                             : Student2NameAdmin.Text;
@@ -1097,12 +1107,18 @@ namespace ProStudCreator
                     if (pageProject.UserHasDepartmentManagerRights())
                     {
                         //Students
+                        pageProject.LogStudent1Evento = string.IsNullOrWhiteSpace(Student1EventoAdmin.Text)
+                            ? null
+                            : Student1EventoAdmin.Text;
                         pageProject.LogStudent1Name = string.IsNullOrWhiteSpace(Student1NameAdmin.Text)
                             ? null
                             : Student1NameAdmin.Text;
                         pageProject.LogStudent1Mail = string.IsNullOrWhiteSpace(Student1MailAdmin.Text)
                             ? null
                             : Student1MailAdmin.Text;
+                        pageProject.LogStudent2Evento = string.IsNullOrWhiteSpace(Student2EventoAdmin.Text)
+                            ? null
+                            : Student2EventoAdmin.Text;
                         pageProject.LogStudent2Name = string.IsNullOrWhiteSpace(Student2NameAdmin.Text)
                             ? null
                             : Student2NameAdmin.Text;

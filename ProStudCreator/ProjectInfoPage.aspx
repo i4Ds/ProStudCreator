@@ -73,18 +73,24 @@
             <div runat="server" id="DivStudentsAdmin">
                 <div class="form-group">
                     <asp:Label runat="server" Text="Studierende:" CssClass="control-label col-md-3"></asp:Label>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
+                        <asp:TextBox runat="server" ID="Student1EventoAdmin" CssClass="form-control" placeholder="(Evento Id)"></asp:TextBox>
+                    </div>
+                    <div class="col-md-2">
                         <asp:TextBox runat="server" ID="Student1NameAdmin" CssClass="form-control" placeholder="(Vorname Nachname)"></asp:TextBox>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <asp:TextBox runat="server" ID="Student1MailAdmin" CssClass="form-control"  placeholder="(E-Mail)" TextMode="Email" onchange="isContentStud(this)"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-3 col-md-offset-3">
+                    <div class="col-md-2 col-md-offset-3">
+                        <asp:TextBox runat="server" ID="Student2EventoAdmin" CssClass="form-control" placeholder="(Evento Id)"></asp:TextBox>
+                    </div>
+                    <div class="col-md-2">
                         <asp:TextBox runat="server" ID="Student2NameAdmin" CssClass="form-control" placeholder="(Vorname Nachname)"></asp:TextBox>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <asp:TextBox runat="server" ID="Student2MailAdmin" CssClass="form-control" placeholder="(E-Mail)" TextMode="Email" onchange="isContentStud(this)"></asp:TextBox>
                     </div>
                 </div>
