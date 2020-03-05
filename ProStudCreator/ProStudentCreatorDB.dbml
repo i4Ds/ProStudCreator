@@ -108,9 +108,9 @@
       <Column Name="BillingStatusID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LogProjectTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LogProjectDuration" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="LogStudent1Name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LogStudent1FirstName" Storage="_LogStudent1FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="LogStudent1Mail" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="LogStudent2Name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LogStudent2FirstName" Storage="_LogStudent2FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="LogStudent2Mail" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="LogExpertID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LogExpertPaid" Type="System.Boolean" DbType="Bit" CanBeNull="false" />
@@ -137,6 +137,8 @@
       <Column Name="ClientPhoneNumber" Type="System.String" DbType="nvarchar(20)" CanBeNull="true" />
       <Column Name="LogStudent1Evento" Type="System.String" DbType="nvarchar(20)" CanBeNull="true" />
       <Column Name="LogStudent2Evento" Type="System.String" DbType="nvarchar(20)" CanBeNull="true" />
+      <Column Name="LogStudent1LastName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LogStudent2LastName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Association Name="Project_Project" Member="Projects" ThisKey="Id" OtherKey="PreviousProjectID" Type="Project" />
       <Association Name="Project_Attachements" Member="Attachements" ThisKey="Id" OtherKey="ProjectId" Type="Attachements" />
       <Association Name="Project_Task" Member="Tasks" ThisKey="Id" OtherKey="ProjectId" Type="Task" />

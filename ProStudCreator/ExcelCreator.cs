@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NPOI.HSSF.Util;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
@@ -115,6 +116,20 @@ namespace ProStudCreator
             "Firma Ort"
         };
 
+        private static readonly string[] GradeHeader =
+        {
+            "IDPerson",
+            "Anrede",
+            "Nachname",
+            "Vorname",
+            "Status",
+            "Bewertung für Upload",
+            "Bemerkung",
+            "Email",
+            "Typ",
+            "Dauer"
+        };
+
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
         public static void GenerateProjectList(Stream outStream, IEnumerable<Project> _projects)
         {
@@ -220,7 +235,7 @@ namespace ProStudCreator
         private static void ProjectToExcelMarketingRow(Project p, IRow row, ProStudentCreatorDBDataContext db,
             ICellStyle DateStyle, ICellStyle StateStyle)
         {
-            var sName1 = p.LogStudent1Name ?? "";
+            var sName1 = p.GetStudent1FullName();
             var sMail1 = p.LogStudent1Mail ?? "";
             var sGrad1 = p.LogGradeStudent1;
             var pLang = GetLanguage(p);
@@ -232,19 +247,19 @@ namespace ProStudCreator
 
             if (!string.IsNullOrWhiteSpace(p.LogStudent2Mail))
             {
-                if (string.Compare(sMail1.Split('@')[0].Split('.')[1], p.LogStudent2Mail.Split('@')[0].Split('.')[1]) == 1)
+                if (string.Compare(p.LogStudent1LastName, p.LogStudent2LastName) == 1)
                 {
                     sName2 = sName1;
                     sMail2 = sMail1;
                     sGrad2 = sGrad1;
 
-                    sName1 = p.LogStudent2Name ?? "";
+                    sName1 = p.GetStudent2FullName();
                     sMail1 = p.LogStudent2Mail ?? "";
                     sGrad1 = p.LogGradeStudent2;
                 }
                 else
                 {
-                    sName2 = p.LogStudent2Name ?? "";
+                    sName2 = p.GetStudent2FullName();
                     sMail2 = p.LogStudent2Mail ?? "";
                     sGrad2 = p.LogGradeStudent2;
                 }
@@ -464,10 +479,10 @@ namespace ProStudCreator
                 row.CreateCell(0).SetCellValue(p.Semester.Name);
                 row.CreateCell(1).SetCellValue(p.GetFullNr());
                 row.CreateCell(2).SetCellValue(p.Name);
-                if(p.LogStudent2Name!=null)
-                    row.CreateCell(3).SetCellValue(p.LogStudent1Name + " / " + p.LogStudent2Name);
+                if(!string.IsNullOrWhiteSpace(p.GetStudent2FullName()))
+                    row.CreateCell(3).SetCellValue(p.GetStudent1FullName() + " / " + p.GetStudent2FullName());
                 else
-                    row.CreateCell(3).SetCellValue(p.LogStudent1Name);
+                    row.CreateCell(3).SetCellValue(p.GetStudent1FullName());
                 row.CreateCell(4).SetCellValue(p.Advisor1?.Name ?? "");
                 row.CreateCell(5).SetCellValue(p.LogProjectType?.ExportValue ?? "");
                 row.CreateCell(6).SetCellValue(p.Department.DepartmentName);
@@ -552,6 +567,132 @@ namespace ProStudCreator
             workbook.Write(outStream);
         }
 
+        public static void GenerateGradeExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db)
+        {
+            var workbook = new XSSFWorkbook();
+
+            // Cell styles
+            var missingValueStyle = workbook.CreateCellStyle();
+            missingValueStyle.FillForegroundColor = HSSFColor.Yellow.Index;
+            missingValueStyle.FillPattern = FillPattern.SolidForeground;
+
+            // Grades
+            var worksheetGrades = workbook.CreateSheet("NotenDefinitiv");
+            worksheetGrades.CreateRow(0).CreateCell(0).SetCellValue("IDAnlass");
+            worksheetGrades.GetRow(0).CreateCell(1).CellStyle = missingValueStyle;
+            worksheetGrades.CreateRow(1).CreateCell(0).SetCellValue("AnlassNummer");
+            worksheetGrades.GetRow(1).CreateCell(1).CellStyle = missingValueStyle;
+            worksheetGrades.CreateRow(2).CreateCell(0).SetCellValue("AnlassBezeichnung");
+            worksheetGrades.GetRow(2).CreateCell(1).CellStyle = missingValueStyle;
+            worksheetGrades.CreateRow(3).CreateCell(0).SetCellValue("Exportiert am");
+            worksheetGrades.GetRow(3).CreateCell(1).SetCellValue(DateTime.Now.ToString("dd/MM/yyyy"));
+            worksheetGrades.CreateRow(4).CreateCell(0).SetCellValue("Exportiert durch");
+            worksheetGrades.GetRow(4).CreateCell(1).SetCellValue("PROSTUD");
+
+            var header = worksheetGrades.CreateRow(6);
+            for (var i = 0; i < GradeHeader.Length; i++)
+            {
+                header.CreateCell(i).SetCellValue(GradeHeader[i]);
+            }
+
+            var firstProjectRow = 7;
+
+            var projects = _projects.ToArray();
+            var rowCounter = firstProjectRow;
+            for (var i = 0; i < projects.Length; i++)
+            {
+                var row1 = worksheetGrades.CreateRow(rowCounter++);
+
+                // IDPerson
+                row1.CreateCell(0).SetCellValue(projects[i].LogStudent1Evento ?? "");
+
+                // Nachname
+                row1.CreateCell(2).SetCellValue(projects[i].LogStudent1LastName ?? "");
+
+                // Vorname
+                row1.CreateCell(3).SetCellValue(projects[i].LogStudent1FirstName ?? "");
+
+                // Bewertung für Upload
+                if (projects[i].LogGradeStudent1.HasValue)
+                    row1.CreateCell(5).SetCellValue(Math.Round(projects[i].LogGradeStudent1.Value, 4));
+
+                // Email
+                row1.CreateCell(7).SetCellValue(projects[i].LogStudent1Mail ?? "");
+
+                // Typ
+                row1.CreateCell(8).SetCellValue(projects[i].LogProjectType.ExportValue);
+
+                // Dauer
+                if (projects[i].LogProjectDuration.HasValue)
+                    row1.CreateCell(9).SetCellValue(projects[i].LogProjectDuration == 1 ? "KURZ" : "LANG");
+
+                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail))
+                {
+                    var row2 = worksheetGrades.CreateRow(rowCounter++);
+
+                    // IDPerson
+                    row2.CreateCell(0).SetCellValue(projects[i].LogStudent2Evento ?? "");
+
+                    // Nachname
+                    row2.CreateCell(2).SetCellValue(projects[i].LogStudent2LastName ?? "");
+
+                    // Vorname
+                    row2.CreateCell(3).SetCellValue(projects[i].LogStudent2FirstName ?? "");
+
+                    // Bewertung für Upload
+                    if (projects[i].LogGradeStudent2.HasValue)
+                        row2.CreateCell(5).SetCellValue(Math.Round(projects[i].LogGradeStudent2.Value, 4));
+
+                    // Email
+                    row2.CreateCell(7).SetCellValue(projects[i].LogStudent2Mail ?? "");
+
+                    // Typ
+                    row2.CreateCell(8).SetCellValue(projects[i].LogProjectType.ExportValue);
+
+                    // Dauer
+                    if (projects[i].LogProjectDuration.HasValue)
+                        row2.CreateCell(9).SetCellValue(projects[i].LogProjectDuration == 1 ? "KURZ" : "LANG");
+                }
+            }
+
+            worksheetGrades.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(firstProjectRow-1, firstProjectRow-1, 0, GradeHeader.Length - 1));
+
+            for (var i = 0; i < GradeHeader.Length; i++)
+                worksheetGrades.AutoSizeColumn(i);
+
+            /*
+            var table = ((XSSFSheet)worksheetGrades).CreateTable();
+            var ctTable = table.GetCTTable();
+            var ctTableStyle = ctTable.tableStyleInfo;
+            ctTableStyle.showColumnStripes = true;
+            ctTableStyle.showRowStripes = true;
+            var area = $"A{firstProjectRow}:{(char)('A')}{rowCounter - 2}";
+            ctTable.tableColumns = new CT_TableColumns();
+            ctTable.tableColumns.count = (uint)GradeHeader.Length;
+            var col = new CT_TableColumn();
+            ctTable.tableColumns.tableColumn = new List<CT_TableColumn>();
+            col.id = 1;
+            ctTable.tableColumns.tableColumn.Add(col);
+            ctTable.@ref = area;
+            */
+
+            // Konfig with a K
+            var worksheetKonfig = workbook.CreateSheet("Konfig");
+            worksheetKonfig.CreateRow(0);
+            worksheetKonfig.GetRow(0).CreateCell(0).SetCellValue("Version");
+            worksheetKonfig.GetRow(0).CreateCell(1).SetCellValue("FHNW;DozNotenUpload;1.0");
+            worksheetKonfig.CreateRow(1);
+            worksheetKonfig.GetRow(1).CreateCell(0).SetCellValue("Notenskala");
+            worksheetKonfig.GetRow(1).CreateCell(1).SetCellValue("Freie Notengebung");
+            worksheetKonfig.CreateRow(2);
+            worksheetKonfig.GetRow(2).CreateCell(0).SetCellValue("Notenwerte");
+            worksheetKonfig.AutoSizeColumn(0, true);
+            worksheetKonfig.AutoSizeColumn(1, true);
+
+            workbook.SetSheetHidden(1, SheetState.Hidden);
+            workbook.Write(outStream);
+        }
+
         public static void GenerateMarKomExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db, string semesterName)
         {
             var workbook = new XSSFWorkbook();
@@ -595,8 +736,8 @@ namespace ProStudCreator
             var i = 0;
             row.CreateCell(i++);
             row.CreateCell(i++).SetCellValue(p.Name);
-            row.CreateCell(i++).SetCellValue(p.LogStudent1Name);
-            row.CreateCell(i++).SetCellValue(p.LogStudent2Name);
+            row.CreateCell(i++).SetCellValue(p.GetStudent1FullName());
+            row.CreateCell(i++).SetCellValue(p.GetStudent2FullName());
             row.CreateCell(i++).SetCellValue(p.ClientCompany);
             row.CreateCell(i++).SetCellValue(p.ClientAddressCity);
         }

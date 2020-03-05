@@ -42,6 +42,7 @@ namespace ProStudCreator
 
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
+            btnGradeExport.Visible = ShibUser.GetEmail() == "dominik.gruntz@fhnw.ch" || ShibUser.GetEmail() == Global.WebAdmin;
 
 
             if (!Page.IsPostBack)
@@ -404,6 +405,37 @@ namespace ProStudCreator
 
 
             ExcelCreator.GenerateBillingList(Response.OutputStream, projectsToExport, db, SelectedSemester.SelectedItem.Text);
+            Response.End();
+        }
+
+        protected void BtnGradeExport_Click(object sender, EventArgs e)
+        {
+            IEnumerable<Project> projectsToExport = null;
+
+            if (SelectedSemester.SelectedValue == "") //Alle Semester
+            {
+                projectsToExport = db.Projects
+                    .Where(i => (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
+                    .OrderByDescending(i => i.Department)
+                    .ThenBy(i => i.ProjectNr);
+            }
+            else
+            {
+                var semesterId = int.Parse(SelectedSemester.SelectedValue);
+                projectsToExport = db.Projects
+                    .Where(i => i.SemesterId == semesterId
+                             && (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
+                    .OrderByDescending(i => i.Department.Id)
+                    .ThenBy(i => i.ProjectNr);
+            }
+            Response.Clear();
+            Response.ContentType = "application/Excel";
+            Response.AddHeader("content-disposition",
+                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Noten_Excel.xlsx");
+
+            ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db);
             Response.End();
         }
     }

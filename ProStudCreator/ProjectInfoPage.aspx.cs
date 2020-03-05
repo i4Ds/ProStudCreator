@@ -239,10 +239,12 @@ namespace ProStudCreator
                     {
                         //show textboxes to input students
                         Student1EventoAdmin.Text = pageProject.LogStudent1Evento ?? "";
-                        Student1NameAdmin.Text = pageProject.LogStudent1Name ?? "";
+                        Student1FirstNameAdmin.Text = pageProject.LogStudent1FirstName ?? "";
+                        Student1LastNameAdmin.Text = pageProject.LogStudent1LastName ?? "";
                         Student1MailAdmin.Text = pageProject.LogStudent1Mail ?? "";
                         Student2EventoAdmin.Text = pageProject.LogStudent2Evento ?? "";
-                        Student2NameAdmin.Text = pageProject.LogStudent2Name ?? "";
+                        Student2FirstNameAdmin.Text = pageProject.LogStudent2FirstName ?? "";
+                        Student2LastNameAdmin.Text = pageProject.LogStudent2LastName ?? "";
                         Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
                         DivStudentsAdmin.Visible = true;
                     } else
@@ -258,19 +260,21 @@ namespace ProStudCreator
                     {
                         //show textboxes to input students
                         Student1EventoAdmin.Text = pageProject.LogStudent1Evento ?? "";
-                        Student1NameAdmin.Text = pageProject.LogStudent1Name ?? "";
+                        Student1FirstNameAdmin.Text = pageProject.LogStudent1FirstName ?? "";
+                        Student1LastNameAdmin.Text = pageProject.LogStudent1LastName ?? "";
                         Student1MailAdmin.Text = pageProject.LogStudent1Mail ?? "";
                         Student2EventoAdmin.Text = pageProject.LogStudent2Evento ?? "";
-                        Student2NameAdmin.Text = pageProject.LogStudent2Name ?? "";
+                        Student2FirstNameAdmin.Text = pageProject.LogStudent2FirstName ?? "";
+                        Student2LastNameAdmin.Text = pageProject.LogStudent2LastName ?? "";
                         Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
                         DivStudentsAdmin.Visible = true;
                     }
                     else
                     {
                         //show student labels
-                        Student1Name.Text = $"<a href=\"mailto:{pageProject.LogStudent1Mail}\">{Server.HtmlEncode(pageProject.LogStudent1Name).Replace(" ", "&nbsp;")}</a>";
-                        Student2Name.Text = !string.IsNullOrEmpty(pageProject.LogStudent2Name)
-                            ? $"<a href=\"mailto:{pageProject.LogStudent2Mail}\">{Server.HtmlEncode(pageProject.LogStudent2Name).Replace(" ", "&nbsp;")}</a>"
+                        Student1Name.Text = $"<a href=\"mailto:{pageProject.LogStudent1Mail}\">{Server.HtmlEncode(pageProject.GetStudent1FullName()).Replace(" ", "&nbsp;")}</a>";
+                        Student2Name.Text = !string.IsNullOrEmpty(pageProject.LogStudent2Mail)
+                            ? $"<a href=\"mailto:{pageProject.LogStudent2Mail}\">{Server.HtmlEncode(pageProject.GetStudent2FullName()).Replace(" ", "&nbsp;")}</a>"
                             : "";
                         DivStudents.Visible = true;
                         break;
@@ -281,9 +285,9 @@ namespace ProStudCreator
                 case ProjectState.ArchivedFinished:
                 case ProjectState.ArchivedCanceled:
                     //show student labels
-                    Student1Name.Text = $"<a href=\"mailto:{pageProject.LogStudent1Mail}\">{Server.HtmlEncode(pageProject.LogStudent1Name).Replace(" ", "&nbsp;")}</a>";
-                    Student2Name.Text = !string.IsNullOrEmpty(pageProject.LogStudent2Name)
-                        ? $"<a href=\"mailto:{pageProject.LogStudent2Mail}\">{Server.HtmlEncode(pageProject.LogStudent2Name).Replace(" ", "&nbsp;")}</a>"
+                    Student1Name.Text = $"<a href=\"mailto:{pageProject.LogStudent1Mail}\">{Server.HtmlEncode(pageProject.GetStudent1FullName()).Replace(" ", "&nbsp;")}</a>";
+                    Student2Name.Text = !string.IsNullOrEmpty(pageProject.LogStudent2Mail)
+                        ? $"<a href=\"mailto:{pageProject.LogStudent2Mail}\">{Server.HtmlEncode(pageProject.GetStudent2FullName()).Replace(" ", "&nbsp;")}</a>"
                         : "";
                     DivStudents.Visible = true;
                     break;
@@ -604,8 +608,8 @@ namespace ProStudCreator
             NumGradeStudent2.ForeColor = System.Drawing.Color.Empty;
 
             //set the Labels to the Grades
-            LabelGradeStudent1.Text = $"Note von {pageProject.LogStudent1Name ?? "Student/in 1"}:";
-            LabelGradeStudent2.Text = $"Note von {pageProject.LogStudent2Name ?? "Student/in 2"}:";
+            LabelGradeStudent1.Text = $"Note von {pageProject.GetStudent1FullName()}:";
+            LabelGradeStudent2.Text = $"Note von {pageProject.GetStudent2FullName()}:";
 
             switch (pageProject.State)
             {
@@ -996,21 +1000,27 @@ namespace ProStudCreator
                         pageProject.LogStudent1Evento = string.IsNullOrWhiteSpace(Student1EventoAdmin.Text)
                             ? null
                             : Student1EventoAdmin.Text;
-                        pageProject.LogStudent1Name = string.IsNullOrWhiteSpace(Student1NameAdmin.Text)
-                            ? null
-                            : Student1NameAdmin.Text;
                         pageProject.LogStudent1Mail = string.IsNullOrWhiteSpace(Student1MailAdmin.Text)
                             ? null
                             : Student1MailAdmin.Text;
+                        pageProject.LogStudent1FirstName = string.IsNullOrWhiteSpace(Student1FirstNameAdmin.Text)
+                            ? null
+                            : Student1FirstNameAdmin.Text;
+                        pageProject.LogStudent1LastName = string.IsNullOrWhiteSpace(Student1LastNameAdmin.Text)
+                            ? null
+                            : Student1LastNameAdmin.Text;
                         pageProject.LogStudent2Evento = string.IsNullOrWhiteSpace(Student2EventoAdmin.Text)
                             ? null
                             : Student2EventoAdmin.Text;
-                        pageProject.LogStudent2Name = string.IsNullOrWhiteSpace(Student2NameAdmin.Text)
-                            ? null
-                            : Student2NameAdmin.Text;
                         pageProject.LogStudent2Mail = string.IsNullOrWhiteSpace(Student2MailAdmin.Text)
                             ? null
                             : Student2MailAdmin.Text;
+                        pageProject.LogStudent2FirstName = string.IsNullOrWhiteSpace(Student2FirstNameAdmin.Text)
+                            ? null
+                            : Student2FirstNameAdmin.Text;
+                        pageProject.LogStudent2LastName = string.IsNullOrWhiteSpace(Student2LastNameAdmin.Text)
+                            ? null
+                            : Student2LastNameAdmin.Text;
 
                         //Type and duration
                         pageProject.LogProjectType = DropType.SelectedValue == dropTypeImpossibleValue
@@ -1110,21 +1120,27 @@ namespace ProStudCreator
                         pageProject.LogStudent1Evento = string.IsNullOrWhiteSpace(Student1EventoAdmin.Text)
                             ? null
                             : Student1EventoAdmin.Text;
-                        pageProject.LogStudent1Name = string.IsNullOrWhiteSpace(Student1NameAdmin.Text)
-                            ? null
-                            : Student1NameAdmin.Text;
                         pageProject.LogStudent1Mail = string.IsNullOrWhiteSpace(Student1MailAdmin.Text)
                             ? null
                             : Student1MailAdmin.Text;
+                        pageProject.LogStudent1FirstName = string.IsNullOrWhiteSpace(Student1FirstNameAdmin.Text)
+                            ? null
+                            : Student1FirstNameAdmin.Text;
+                        pageProject.LogStudent1LastName = string.IsNullOrWhiteSpace(Student1LastNameAdmin.Text)
+                            ? null
+                            : Student1LastNameAdmin.Text;
                         pageProject.LogStudent2Evento = string.IsNullOrWhiteSpace(Student2EventoAdmin.Text)
                             ? null
                             : Student2EventoAdmin.Text;
-                        pageProject.LogStudent2Name = string.IsNullOrWhiteSpace(Student2NameAdmin.Text)
-                            ? null
-                            : Student2NameAdmin.Text;
                         pageProject.LogStudent2Mail = string.IsNullOrWhiteSpace(Student2MailAdmin.Text)
                             ? null
                             : Student2MailAdmin.Text;
+                        pageProject.LogStudent2FirstName = string.IsNullOrWhiteSpace(Student2FirstNameAdmin.Text)
+                            ? null
+                            : Student2FirstNameAdmin.Text;
+                        pageProject.LogStudent2LastName = string.IsNullOrWhiteSpace(Student2LastNameAdmin.Text)
+                            ? null
+                            : Student2LastNameAdmin.Text;
 
                         //Type and duration
                         pageProject.LogProjectType = db.ProjectTypes.Single(t => t.Id == int.Parse(DropType.SelectedValue));
@@ -1222,40 +1238,59 @@ namespace ProStudCreator
                 return "Ein langes IP6 wird nicht mehr angeboten. Bitte wählen Sie \"Normal\"";
 
             //Students
-            var stud1Name = Student1NameAdmin.Text;
+            var stud1Evento = Student1EventoAdmin.Text;
             var stud1Mail = Student1MailAdmin.Text;
-            var stud2Name = Student2NameAdmin.Text;
+            var stud1FirstName = Student1FirstNameAdmin.Text;
+            var stud1LastName = Student1LastNameAdmin.Text;
+            var stud2Evento = Student2EventoAdmin.Text;
             var stud2Mail = Student2MailAdmin.Text;
+            var stud2FirstName = Student2FirstNameAdmin.Text;
+            var stud2LastName = Student2LastNameAdmin.Text;
 
             Regex studentMailRegex1 = new Regex(@".*\..*@students\.fhnw\.ch");
             Regex studentMailRegex2 = new Regex(@".*\..*@fhnw\.ch");
 
-            if (stud1Mail.Trim().Length != 0 && stud1Name.Trim().Length == 0)
-                return "Bitte geben Sie den Namen der ersten Person an (Vorname Nachname).";
 
-            if (stud1Name.Trim().Length != 0 && stud1Mail.Trim().Length == 0)
+            //Student1
+            if (string.IsNullOrWhiteSpace(stud1Evento))
+                return "Bitte geben Sie die EventoID der ersten Person an.";
+
+            if (string.IsNullOrWhiteSpace(stud1Mail))
                 return "Bitte geben Sie die E-Mail-Adresse der ersten Person an.";
 
-            if (stud1Mail.Trim().Length != 0 && stud1Name.Trim().Length != 0)
+            System.Text.RegularExpressions.Match stud1match1 = studentMailRegex1.Match(stud1Mail);
+            System.Text.RegularExpressions.Match stud1match2 = studentMailRegex2.Match(stud1Mail);
+            if (!stud1match1.Success && !stud1match2.Success)
+                return "Bitte geben Sie eine gültige E-Mail-Adresse der ersten Person an. (vorname.nachname@students.fhnw.ch oder vorname.nachname@fhnw.ch)";
+
+            if (string.IsNullOrWhiteSpace(stud1FirstName))
+                return "Bitte geben Sie den Vornamen der ersten Person an.";
+
+            if (string.IsNullOrWhiteSpace(stud1LastName))
+                return "Bitte geben Sie den Nachnamen der ersten Person an.";
+
+            //Student2
+            if (!string.IsNullOrWhiteSpace(stud2Evento)
+                || !string.IsNullOrWhiteSpace(stud2Mail)
+                || !string.IsNullOrWhiteSpace(stud2FirstName)
+                || !string.IsNullOrWhiteSpace(stud2LastName))
             {
-                System.Text.RegularExpressions.Match match1 = studentMailRegex1.Match(stud1Mail);
-                System.Text.RegularExpressions.Match match2 = studentMailRegex2.Match(stud1Mail);
-                if (!match1.Success && !match2.Success)
-                    return "Bitte geben Sie eine gültige E-Mail-Adresse der ersten Person an. (vorname.nachname@students.fhnw.ch oder vorname.nachname@fhnw.ch)";
-            }
+                if (string.IsNullOrWhiteSpace(stud2Evento))
+                    return "Bitte geben Sie die EventoID der zweiten Person an.";
 
-            if (stud2Mail.Trim().Length != 0 && stud2Name.Trim().Length == 0)
-                return "Bitte geben Sie den Namen der zweiten Person an (Vorname Nachname).";
+                if (string.IsNullOrWhiteSpace(stud2Mail))
+                    return "Bitte geben Sie die E-Mail-Adresse der zweiten Person an.";
 
-            if (stud2Name.Trim().Length != 0 && stud2Mail.Trim().Length == 0)
-                return "Bitte geben Sie die E-Mail-Adresse der zweiten Person an.";
-
-            if (stud2Mail.Trim().Length != 0 && stud2Name.Trim().Length != 0)
-            {
-                System.Text.RegularExpressions.Match match1 = studentMailRegex1.Match(stud2Mail);
-                System.Text.RegularExpressions.Match match2 = studentMailRegex2.Match(stud2Mail);
-                if (!match1.Success && !match2.Success)
+                System.Text.RegularExpressions.Match stud2match1 = studentMailRegex1.Match(stud2Mail);
+                System.Text.RegularExpressions.Match stud2match2 = studentMailRegex2.Match(stud2Mail);
+                if (!stud2match1.Success && !stud2match2.Success)
                     return "Bitte geben Sie eine gültige E-Mail-Adresse der zweiten Person an. (vorname.nachname@students.fhnw.ch oder vorname.nachname@fhnw.ch)";
+
+                if (string.IsNullOrWhiteSpace(stud2FirstName))
+                    return "Bitte geben Sie den Vornamen der zweiten Person an.";
+
+                if (string.IsNullOrWhiteSpace(stud2LastName))
+                    return "Bitte geben Sie den Nachnamen der zweiten Person an.";
             }
 
             return null;
@@ -1299,7 +1334,7 @@ namespace ProStudCreator
             if (!string.IsNullOrWhiteSpace(pageProject.LogStudent1Mail))
             {
                 if (string.IsNullOrWhiteSpace(NumGradeStudent1Admin.Text))
-                    return $"Bitte geben Sie die Note von {pageProject.LogStudent1Name} an.";
+                    return $"Bitte geben Sie die Note von {pageProject.GetStudent1FullName()} an.";
 
                 if (float.TryParse(NumGradeStudent1Admin.Text.Replace(",", "."), NumberStyles.Float, CultureInfo.InvariantCulture, out float grade))
                 {
@@ -1319,7 +1354,7 @@ namespace ProStudCreator
             if (!string.IsNullOrWhiteSpace(pageProject.LogStudent2Mail))
             {
                 if (string.IsNullOrWhiteSpace(NumGradeStudent2Admin.Text))
-                    return $"Bitte geben Sie die Note von {pageProject.LogStudent2Name} an.";
+                    return $"Bitte geben Sie die Note von {pageProject.GetStudent2FullName()} an.";
 
                 if (float.TryParse(NumGradeStudent2Admin.Text.Replace(",", "."), NumberStyles.Float, CultureInfo.InvariantCulture, out float grade))
                 {

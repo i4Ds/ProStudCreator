@@ -153,9 +153,10 @@ namespace ProStudCreator
         {
             if (filterText.Text == "") return FilterRelevantProjects(projects);
 
+            // TODO: Improve search
             var searchString = filterText.Text;
             var filteredProjects = FilterRelevantProjects(
-                projects.Where(p => (p.Reservation1Name.Contains(searchString) || p.Reservation2Name.Contains(searchString) || p.LogStudent1Name.Contains(searchString) || p.LogStudent2Name.Contains(searchString))
+                projects.Where(p => (p.Reservation1Name.Contains(searchString) || p.Reservation2Name.Contains(searchString) || p.LogStudent1FirstName.Contains(searchString) || p.LogStudent1LastName.Contains(searchString) || p.LogStudent2FirstName.Contains(searchString) || p.LogStudent2LastName.Contains(searchString))
                                   && p.IsMainVersion))
                         .OrderBy(p => p.Department.DepartmentName).ThenBy(p => p.ProjectNr);
             return filteredProjects;

@@ -699,3 +699,7 @@ del {
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
+
+.no-padding-right {
+    padding-right: 0 !important;
+}

@@ -384,13 +384,16 @@ namespace ProStudCreator
 
         private static void EnterAssignedStudents(ProStudentCreatorDBDataContext db)
         {
+            throw new Exception("OUT OF DATE");
+
+            /*
             var type = db.TaskTypes.Single(t => t.Id == (int)Type.EnterAssignedStudents);
 
             var cutoffDate = new DateTime(2018, 1, 1);
 
             //add new tasks for projects
             var allActiveAssignStudentsTasks = db.Tasks.Where(t => !t.Done && t.TaskType == type).Select(i => i.ProjectId).ToList();
-            var allPublishedProjects = db.Projects.Where(p => p.State == ProjectState.Published && p.IsMainVersion && (p.LogStudent1Mail == null || p.LogStudent1Name == null || p.LogProjectDuration == null || p.LogProjectType == null) && p.Semester.StartDate <= DateTime.Now && p.Semester.StartDate >= cutoffDate).ToList();
+            var allPublishedProjects = db.Projects.Where(p => p.State == ProjectState.Published && p.IsMainVersion && (p.LogStudent1Mail == null || p.LogStudent1FirstName == null || p.LogProjectDuration == null || p.LogProjectType == null) && p.Semester.StartDate <= DateTime.Now && p.Semester.StartDate >= cutoffDate).ToList();
 
             foreach (var project in allPublishedProjects)
                 if (!allActiveAssignStudentsTasks.Contains(project.Id))
@@ -406,10 +409,11 @@ namespace ProStudCreator
             //mark registered tasks as done
             var openAssignStudentsTasks = db.Tasks.Where(i => !i.Done && i.TaskType == type).ToList();
             foreach (var openTask in openAssignStudentsTasks)
-                if ((!string.IsNullOrEmpty(openTask.Project.LogStudent1Mail) && !string.IsNullOrEmpty(openTask.Project.LogStudent1Name) && openTask.Project.LogProjectDuration != null && openTask.Project.LogProjectType != null) || openTask.Project.State != ProjectState.Published)
+                if ((!string.IsNullOrEmpty(openTask.Project.LogStudent1Mail) && !string.IsNullOrEmpty(openTask.Project.LogStudent1FirstName) && openTask.Project.LogProjectDuration != null && openTask.Project.LogProjectType != null) || openTask.Project.State != ProjectState.Published)
                     openTask.Done = true;
 
             db.SubmitChanges();
+            */
         }
 
         public static void SendThesisTitleHints(ProStudentCreatorDBDataContext db)

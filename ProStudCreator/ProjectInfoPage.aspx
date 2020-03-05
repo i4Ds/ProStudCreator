@@ -73,24 +73,30 @@
             <div runat="server" id="DivStudentsAdmin">
                 <div class="form-group">
                     <asp:Label runat="server" Text="Studierende:" CssClass="control-label col-md-3"></asp:Label>
-                    <div class="col-md-2">
+                    <div class="col-md-1 no-padding-right">
                         <asp:TextBox runat="server" ID="Student1EventoAdmin" CssClass="form-control" placeholder="(Evento Id)"></asp:TextBox>
                     </div>
-                    <div class="col-md-2">
-                        <asp:TextBox runat="server" ID="Student1NameAdmin" CssClass="form-control" placeholder="(Vorname Nachname)"></asp:TextBox>
+                    <div class="col-md-1 no-padding-right">
+                        <asp:TextBox runat="server" ID="Student1FirstNameAdmin" CssClass="form-control" placeholder="(Vorname)"></asp:TextBox>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1 no-padding-right">
+                        <asp:TextBox runat="server" ID="Student1LastNameAdmin" CssClass="form-control" placeholder="(Nachname)"></asp:TextBox>
+                    </div>
+                    <div class="col-md-3">
                         <asp:TextBox runat="server" ID="Student1MailAdmin" CssClass="form-control"  placeholder="(E-Mail)" TextMode="Email" onchange="isContentStud(this)"></asp:TextBox>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-2 col-md-offset-3">
+                    <div class="col-md-1 col-md-offset-3 no-padding-right">
                         <asp:TextBox runat="server" ID="Student2EventoAdmin" CssClass="form-control" placeholder="(Evento Id)"></asp:TextBox>
                     </div>
-                    <div class="col-md-2">
-                        <asp:TextBox runat="server" ID="Student2NameAdmin" CssClass="form-control" placeholder="(Vorname Nachname)"></asp:TextBox>
+                    <div class="col-md-1 no-padding-right">
+                        <asp:TextBox runat="server" ID="Student2FirstNameAdmin" CssClass="form-control" placeholder="(Vorname)"></asp:TextBox>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1 no-padding-right">
+                        <asp:TextBox runat="server" ID="Student2LastNameAdmin" CssClass="form-control" placeholder="(Nachname)"></asp:TextBox>
+                    </div>
+                    <div class="col-md-3">
                         <asp:TextBox runat="server" ID="Student2MailAdmin" CssClass="form-control" placeholder="(E-Mail)" TextMode="Email" onchange="isContentStud(this)"></asp:TextBox>
                     </div>
                 </div>
@@ -103,7 +109,7 @@
             </div>
             <div runat="server" id="DivTypeAdmin" class="form-group">
                 <asp:Label runat="server" Text="Art des Projektes:" CssClass="control-label col-md-3"></asp:Label>
-                <div class="col-md-3">
+                <div class="col-md-3 no-padding-right">
                     <asp:DropDownList runat="server" ID="DropType" DataValueField="Id" DataTextField="Description" CssClass="form-control"/>
                 </div>
                 <div class="col-md-3">

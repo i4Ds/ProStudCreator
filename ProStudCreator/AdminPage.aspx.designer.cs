@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProStudCreator {
-    
-    
-    public partial class AdminPage {
-        
+namespace ProStudCreator
+{
+
+
+    public partial class AdminPage
+    {
+
         /// <summary>
         /// GVTasks control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GVTasks;
-        
+
         /// <summary>
         /// AdminView control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder AdminView;
-        
+
         /// <summary>
         /// DivAdminProjects control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAdminProjects;
-        
+
         /// <summary>
         /// updateAdminProjects control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updateAdminProjects;
-        
+
         /// <summary>
         /// divRadioProjects control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divRadioProjects;
-        
+
         /// <summary>
         /// radioSelectedProjects control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList radioSelectedProjects;
-        
+
         /// <summary>
         /// btnAdminProjectsCollapse control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAdminProjectsCollapse;
-        
+
         /// <summary>
         /// DivAdminProjectsCollapsable control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAdminProjectsCollapsable;
-        
+
         /// <summary>
         /// CheckProjects control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView CheckProjects;
-        
+
         /// <summary>
         /// DivExcelExport control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExcelExport;
-        
+
         /// <summary>
         /// UpdateExcelExport control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdateExcelExport;
-        
+
         /// <summary>
         /// btnExcelExportCollapse control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnExcelExportCollapse;
-        
+
         /// <summary>
         /// DivExcelExportCollapsable control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivExcelExportCollapsable;
-        
+
         /// <summary>
         /// SelectedSemester control.
         /// </summary>
@@ -137,7 +139,16 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList SelectedSemester;
-        
+
+        /// <summary>
+        /// btnGradeExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGradeExport;
+
         /// <summary>
         /// btnBillingExport control.
         /// </summary>
@@ -146,7 +157,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnBillingExport;
-        
+
         /// <summary>
         /// btnMarketingExport control.
         /// </summary>
@@ -155,7 +166,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnMarketingExport;
-        
+
         /// <summary>
         /// UpdateAddInfo control.
         /// </summary>
@@ -164,7 +175,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdateAddInfo;
-        
+
         /// <summary>
         /// btnAddInfoCollapse control.
         /// </summary>
@@ -173,7 +184,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddInfoCollapse;
-        
+
         /// <summary>
         /// DivAddInfoCollapsable control.
         /// </summary>
@@ -182,7 +193,7 @@ namespace ProStudCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAddInfoCollapsable;
-        
+
         /// <summary>
         /// gvDates control.
         /// </summary>

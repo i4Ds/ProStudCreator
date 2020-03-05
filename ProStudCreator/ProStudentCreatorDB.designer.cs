@@ -1435,11 +1435,11 @@ namespace ProStudCreator
 		
 		private System.Nullable<byte> _LogProjectDuration;
 		
-		private string _LogStudent1Name;
+		private string _LogStudent1FirstName;
 		
 		private string _LogStudent1Mail;
 		
-		private string _LogStudent2Name;
+		private string _LogStudent2FirstName;
 		
 		private string _LogStudent2Mail;
 		
@@ -1492,6 +1492,10 @@ namespace ProStudCreator
 		private string _LogStudent1Evento;
 		
 		private string _LogStudent2Evento;
+		
+		private string _LogStudent1LastName;
+		
+		private string _LogStudent2LastName;
 		
 		private EntitySet<Project> _Projects;
 		
@@ -1623,12 +1627,12 @@ namespace ProStudCreator
     partial void OnLogProjectTypeIDChanged();
     partial void OnLogProjectDurationChanging(System.Nullable<byte> value);
     partial void OnLogProjectDurationChanged();
-    partial void OnLogStudent1NameChanging(string value);
-    partial void OnLogStudent1NameChanged();
+    partial void OnLogStudent1FirstNameChanging(string value);
+    partial void OnLogStudent1FirstNameChanged();
     partial void OnLogStudent1MailChanging(string value);
     partial void OnLogStudent1MailChanged();
-    partial void OnLogStudent2NameChanging(string value);
-    partial void OnLogStudent2NameChanged();
+    partial void OnLogStudent2FirstNameChanging(string value);
+    partial void OnLogStudent2FirstNameChanged();
     partial void OnLogStudent2MailChanging(string value);
     partial void OnLogStudent2MailChanged();
     partial void OnLogExpertIDChanging(System.Nullable<int> value);
@@ -1681,6 +1685,10 @@ namespace ProStudCreator
     partial void OnLogStudent1EventoChanged();
     partial void OnLogStudent2EventoChanging(string value);
     partial void OnLogStudent2EventoChanged();
+    partial void OnLogStudent1LastNameChanging(string value);
+    partial void OnLogStudent1LastNameChanged();
+    partial void OnLogStudent2LastNameChanging(string value);
+    partial void OnLogStudent2LastNameChanged();
     #endregion
 		
 		public Project()
@@ -2695,22 +2703,22 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent1Name", DbType="NVarChar(100)")]
-		public string LogStudent1Name
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent1FirstName", DbType="NVarChar(100)")]
+		public string LogStudent1FirstName
 		{
 			get
 			{
-				return this._LogStudent1Name;
+				return this._LogStudent1FirstName;
 			}
 			set
 			{
-				if ((this._LogStudent1Name != value))
+				if ((this._LogStudent1FirstName != value))
 				{
-					this.OnLogStudent1NameChanging(value);
+					this.OnLogStudent1FirstNameChanging(value);
 					this.SendPropertyChanging();
-					this._LogStudent1Name = value;
-					this.SendPropertyChanged("LogStudent1Name");
-					this.OnLogStudent1NameChanged();
+					this._LogStudent1FirstName = value;
+					this.SendPropertyChanged("LogStudent1FirstName");
+					this.OnLogStudent1FirstNameChanged();
 				}
 			}
 		}
@@ -2735,22 +2743,22 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent2Name", DbType="NVarChar(100)")]
-		public string LogStudent2Name
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent2FirstName", DbType="NVarChar(100)")]
+		public string LogStudent2FirstName
 		{
 			get
 			{
-				return this._LogStudent2Name;
+				return this._LogStudent2FirstName;
 			}
 			set
 			{
-				if ((this._LogStudent2Name != value))
+				if ((this._LogStudent2FirstName != value))
 				{
-					this.OnLogStudent2NameChanging(value);
+					this.OnLogStudent2FirstNameChanging(value);
 					this.SendPropertyChanging();
-					this._LogStudent2Name = value;
-					this.SendPropertyChanged("LogStudent2Name");
-					this.OnLogStudent2NameChanged();
+					this._LogStudent2FirstName = value;
+					this.SendPropertyChanged("LogStudent2FirstName");
+					this.OnLogStudent2FirstNameChanged();
 				}
 			}
 		}
@@ -3287,6 +3295,46 @@ namespace ProStudCreator
 					this._LogStudent2Evento = value;
 					this.SendPropertyChanged("LogStudent2Evento");
 					this.OnLogStudent2EventoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent1LastName", DbType="NVarChar(100)")]
+		public string LogStudent1LastName
+		{
+			get
+			{
+				return this._LogStudent1LastName;
+			}
+			set
+			{
+				if ((this._LogStudent1LastName != value))
+				{
+					this.OnLogStudent1LastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LogStudent1LastName = value;
+					this.SendPropertyChanged("LogStudent1LastName");
+					this.OnLogStudent1LastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudent2LastName", DbType="NVarChar(100)")]
+		public string LogStudent2LastName
+		{
+			get
+			{
+				return this._LogStudent2LastName;
+			}
+			set
+			{
+				if ((this._LogStudent2LastName != value))
+				{
+					this.OnLogStudent2LastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LogStudent2LastName = value;
+					this.SendPropertyChanged("LogStudent2LastName");
+					this.OnLogStudent2LastNameChanged();
 				}
 			}
 		}

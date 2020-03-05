@@ -159,13 +159,22 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox Student1EventoAdmin;
 
         /// <summary>
-        /// Student1NameAdmin control.
+        /// Student1FirstNameAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Student1NameAdmin;
+        protected global::System.Web.UI.WebControls.TextBox Student1FirstNameAdmin;
+
+        /// <summary>
+        /// Student1LastNameAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Student1LastNameAdmin;
 
         /// <summary>
         /// Student1MailAdmin control.
@@ -186,13 +195,22 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox Student2EventoAdmin;
 
         /// <summary>
-        /// Student2NameAdmin control.
+        /// Student2FirstNameAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Student2NameAdmin;
+        protected global::System.Web.UI.WebControls.TextBox Student2FirstNameAdmin;
+
+        /// <summary>
+        /// Student2LastNameAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Student2LastNameAdmin;
 
         /// <summary>
         /// Student2MailAdmin control.

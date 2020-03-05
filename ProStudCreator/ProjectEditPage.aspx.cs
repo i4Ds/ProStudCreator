@@ -459,8 +459,8 @@ namespace ProStudCreator
                 Reservation1Name.Enabled = Reservation1Mail.Enabled = Reservation2Mail.Enabled = Reservation2Name.Enabled = false;
                 Reservation1Mail.Text = previousProject.LogStudent1Mail;
                 Reservation2Mail.Text = previousProject.LogStudent2Mail;
-                Reservation1Name.Text = previousProject.LogStudent1Name;
-                Reservation2Name.Text = previousProject.LogStudent2Name;
+                Reservation1Name.Text = previousProject.GetStudent1FullName();
+                Reservation2Name.Text = previousProject.GetStudent2FullName();
             }
         }
 

@@ -101,10 +101,14 @@ namespace ProStudCreator
             _p.LogProjectDuration = null;
             _p.LogProjectType = null;
             _p.LogProjectTypeID = null;
+            _p.LogStudent1Evento = null;
             _p.LogStudent1Mail = null;
-            _p.LogStudent1Name = null;
+            _p.LogStudent1FirstName = null;
+            _p.LogStudent1LastName = null;
+            _p.LogStudent2Evento = null;
             _p.LogStudent2Mail = null;
-            _p.LogStudent2Name = null;
+            _p.LogStudent2FirstName = null;
+            _p.LogStudent2LastName = null;
             db.SubmitChanges();
         }
 
@@ -249,10 +253,14 @@ namespace ProStudCreator
             if (checkInfo)
             {
                 // Info Page
-                if (!string.Equals(p1.LogStudent1Name, p2.LogStudent1Name)) return true;
+                if (!string.Equals(p1.LogStudent1Evento, p2.LogStudent1Evento)) return true;
                 if (!string.Equals(p1.LogStudent1Mail, p2.LogStudent1Mail)) return true;
-                if (!string.Equals(p1.LogStudent2Name, p2.LogStudent2Name)) return true;
+                if (!string.Equals(p1.LogStudent1FirstName, p2.LogStudent1FirstName)) return true;
+                if (!string.Equals(p1.LogStudent1LastName, p2.LogStudent1LastName)) return true;
+                if (!string.Equals(p1.LogStudent2Evento, p2.LogStudent2Evento)) return true;
                 if (!string.Equals(p1.LogStudent2Mail, p2.LogStudent2Mail)) return true;
+                if (!string.Equals(p1.LogStudent2FirstName, p2.LogStudent2FirstName)) return true;
+                if (!string.Equals(p1.LogStudent2LastName, p2.LogStudent2LastName)) return true;
                 if (p1.LogProjectTypeID != p2.LogProjectTypeID) return true;
                 if (p1.LogProjectDuration != p2.LogProjectDuration) return true;
 
@@ -390,7 +398,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 92; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 96; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -437,10 +445,14 @@ namespace ProStudCreator
             target.LogProjectDuration = _p.LogProjectDuration;
             target.LogProjectType = _p.LogProjectType;
             target.LogProjectTypeID = _p.LogProjectTypeID;
+            target.LogStudent1Evento = _p.LogStudent1Evento;
             target.LogStudent1Mail = _p.LogStudent1Mail;
-            target.LogStudent1Name = _p.LogStudent1Name;
+            target.LogStudent1FirstName = _p.LogStudent1FirstName;
+            target.LogStudent1LastName = _p.LogStudent1LastName;
+            target.LogStudent2Evento = _p.LogStudent2Evento;
             target.LogStudent2Mail = _p.LogStudent2Mail;
-            target.LogStudent2Name = _p.LogStudent2Name;
+            target.LogStudent2FirstName = _p.LogStudent2FirstName;
+            target.LogStudent2LastName = _p.LogStudent2LastName;
             target.Name = _p.Name;
             target.Objective = _p.Objective;
             target.OverOnePage = _p.OverOnePage;
@@ -553,12 +565,8 @@ namespace ProStudCreator
             }
         }
 
-        public static string Student1FirstName(this Project _p) => _p.LogStudent1Name?.Split(' ')?[0];
-        public static string Student2FirstName(this Project _p) => _p.LogStudent2Name?.Split(' ')?[0];
-
-        public static string Student1LastName(this Project _p) => _p.LogStudent1Name == null ? null : string.Join(" ", _p.LogStudent1Name.Split(' ').Skip(1).ToArray());
-        public static string Student2LastName(this Project _p) => _p.LogStudent2Name == null ? null : string.Join(" ", _p.LogStudent2Name.Split(' ').Skip(1).ToArray());
-
+        public static string GetStudent1FullName(this Project _p) => $"{_p.LogStudent1FirstName ?? ""}{$" {_p.LogStudent1LastName}" ?? ""}";
+        public static string GetStudent2FullName(this Project _p) => $"{_p.LogStudent2FirstName ?? ""}{$" {_p.LogStudent2LastName}" ?? ""}";
 
         public static bool RightAmountOfTopics(this Project _p)
         {
@@ -821,12 +829,12 @@ namespace ProStudCreator
 
             if (!string.IsNullOrWhiteSpace(_p.Reservation1Mail))
                 _p.LogStudent1Mail = _p.Reservation1Mail;
-            if (!string.IsNullOrWhiteSpace(_p.Reservation1Name))
-                _p.LogStudent1Name = _p.Reservation1Name;
+            //if (!string.IsNullOrWhiteSpace(_p.Reservation1Name))
+            //    _p.LogStudent1FirstName = _p.Reservation1Name;
             if (!string.IsNullOrWhiteSpace(_p.Reservation2Mail))
                 _p.LogStudent2Mail = _p.Reservation2Mail;
-            if (!string.IsNullOrWhiteSpace(_p.Reservation2Name))
-                _p.LogStudent2Name = _p.Reservation2Name;
+            //if (!string.IsNullOrWhiteSpace(_p.Reservation2Name))
+            //    _p.LogStudent2FirstName = _p.Reservation2Name;
 
             if (_p.Semester == null) _p.Semester = Semester.NextSemester(_db);
             _p.PublishedDate = DateTime.Now;
@@ -960,10 +968,41 @@ namespace ProStudCreator
                 && (_p.LogProjectType.P5 || _p.LogProjectType.P6)
                 // ProjectDuration
                 && _p.LogProjectDuration.HasValue
-                // Student1Name
-                && !string.IsNullOrWhiteSpace(_p.LogStudent1Name)
+                // Student1
+                && _p.CheckStudent1()
+                // Student2
+                && _p.CheckStudent2();
+        }
+
+        public static bool CheckStudent1(this Project _p)
+        {
+            return
+                // Student1Evento
+                !string.IsNullOrWhiteSpace(_p.LogStudent1Evento)
                 // Student1Mail
-                && !string.IsNullOrWhiteSpace(_p.LogStudent1Mail);
+                && !string.IsNullOrWhiteSpace(_p.LogStudent1Mail)
+                // Student1FirstName
+                && !string.IsNullOrWhiteSpace(_p.LogStudent1FirstName)
+                // Student1LastName
+                && !string.IsNullOrWhiteSpace(_p.LogStudent1LastName);
+        }
+
+        public static bool CheckStudent2(this Project _p)
+        {
+            // I have a feeling this should be easier to check..
+            if (string.IsNullOrWhiteSpace(_p.LogStudent2Evento)
+                && string.IsNullOrWhiteSpace(_p.LogStudent2Mail)
+                && string.IsNullOrWhiteSpace(_p.LogStudent2FirstName)
+                && string.IsNullOrWhiteSpace(_p.LogStudent2LastName)
+                ) return true;
+
+            if (!string.IsNullOrWhiteSpace(_p.LogStudent2Evento)
+                && !string.IsNullOrWhiteSpace(_p.LogStudent2Mail)
+                && !string.IsNullOrWhiteSpace(_p.LogStudent2FirstName)
+                && !string.IsNullOrWhiteSpace(_p.LogStudent2LastName)
+                ) return true;
+
+            return false;
         }
 
         public static bool CheckTransitionFinish(this Project _p)
@@ -974,8 +1013,12 @@ namespace ProStudCreator
                 && ((_p.LogLanguageEnglish.HasValue && (bool)_p.LogLanguageEnglish) || (_p.LogLanguageGerman.HasValue && (bool)_p.LogLanguageGerman))
                 // - Client Information (Depending on ClientType)
                 && _p.MinimalClientInformationProvided()
+                // - Student1
+                && _p.CheckStudent1()
                 // - GradeStudent1
                 && _p.LogGradeStudent1.HasValue
+                // - Student2
+                && _p.CheckStudent2()
                 // - GradeStudent2
                 && (string.IsNullOrWhiteSpace(_p.LogStudent2Mail) || (!string.IsNullOrWhiteSpace(_p.LogStudent2Mail) && _p.LogGradeStudent2.HasValue))
                 // - WebSummaryChecked
@@ -1235,10 +1278,14 @@ namespace ProStudCreator
         public string Notes { get; set; }
 
         // Info Page
-        public string LogStudent1Name { get; set; }
+        public string LogStudent1Evento { get; set; }
         public string LogStudent1Mail { get; set; }
-        public string LogStudent2Name { get; set; }
+        public string LogStudent1FirstName { get; set; }
+        public string LogStudent1LastName { get; set; }
+        public string LogStudent2Evento { get; set; }
         public string LogStudent2Mail { get; set; }
+        public string LogStudent2FirstName { get; set; }
+        public string LogStudent2LastName { get; set; }
         public System.Nullable<int> LogProjectTypeID { get; set; }
         public System.Nullable<byte> LogProjectDuration { get; set; }
 
