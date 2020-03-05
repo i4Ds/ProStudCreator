@@ -102,6 +102,7 @@ namespace ProStudCreator
             "Verrechnung",
             "",
             "",
+            "",
             "Mitglied AIHK",
             "bezahlt"
         };
@@ -460,9 +461,9 @@ namespace ProStudCreator
             for (var i = 0; i < BillingHeader.Length; i++)
             {
                 var cell = worksheet.GetRow(0).CreateCell(i);
-                cell.CellStyle = i < 14 ? cellStyleHeader : cellStyleHeaderYellow;
+                cell.CellStyle = i < 15 ? cellStyleHeader : cellStyleHeaderYellow;
                 cell.SetCellValue(BillingHeader[i]);
-                if (i < 11 || i > 13)
+                if (i < 11 || i > 14)
                 {
                     cell.CellStyle.WrapText = true;
                     worksheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 2, i, i));
@@ -497,15 +498,16 @@ namespace ProStudCreator
                 else
                     row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
 
-                row.CreateCell(13).SetCellValue(p.BillingStatus?.DisplayName ?? "");
-                row.CreateCell(14);
+                row.CreateCell(13).SetCellValue(p.ClientReferenceNumber ?? "");
+                row.CreateCell(14).SetCellValue(p.BillingStatus?.DisplayName ?? "");
                 row.CreateCell(15);
+                row.CreateCell(16);
 
 
                 //add border to the first few columns
                 for (var cellcount = 0; cellcount < 11; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-                for (var cellcount = 14; cellcount < 16; cellcount++)
+                for (var cellcount = 15; cellcount < 17; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
                 ICellStyle cellStyle;
@@ -519,7 +521,7 @@ namespace ProStudCreator
                 else
                     cellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
-                for (var cellcount = 11; cellcount < 14; cellcount++)
+                for (var cellcount = 11; cellcount < 15; cellcount++)
                     row.GetCell(cellcount).CellStyle = cellStyle;
             }
 
@@ -536,7 +538,11 @@ namespace ProStudCreator
 
             SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;
-            SecondHeadersCells.SetCellValue("               ");
+            SecondHeadersCells.SetCellValue(" ");
+
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue(" ");
 
             SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleRed;
@@ -556,6 +562,10 @@ namespace ProStudCreator
             SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;
             SecondHeadersCells.SetCellValue("Rechnungsadresse");
+
+            SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("Verrechnungs- / Auftragsnummer");
 
             SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleRed;

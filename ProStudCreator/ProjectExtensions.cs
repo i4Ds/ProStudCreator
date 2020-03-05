@@ -565,8 +565,8 @@ namespace ProStudCreator
             }
         }
 
-        public static string GetStudent1FullName(this Project _p) => $"{_p.LogStudent1FirstName ?? ""}{$" {_p.LogStudent1LastName}" ?? ""}";
-        public static string GetStudent2FullName(this Project _p) => $"{_p.LogStudent2FirstName ?? ""}{$" {_p.LogStudent2LastName}" ?? ""}";
+        public static string GetStudent1FullName(this Project _p) => $"{_p.LogStudent1FirstName ?? ""}{(_p.LogStudent1LastName != null ? $" {_p.LogStudent1LastName}" : "")}";
+        public static string GetStudent2FullName(this Project _p) => $"{_p.LogStudent2FirstName ?? ""}{(_p.LogStudent2LastName != null ? $" {_p.LogStudent2LastName}" : "")}";
 
         public static bool RightAmountOfTopics(this Project _p)
         {

@@ -308,7 +308,7 @@
                             </div>
                         </div>
                         <div class="form-group" style="text-align: left">
-                            <asp:Label runat="server" Text="Referenz des Kunden:" CssClass="control-label col-md-3"></asp:Label>
+                            <asp:Label runat="server" Text="Verrechnungs- / Auftragsnummer:" CssClass="control-label col-md-3"></asp:Label>
                             <div class="col-md-6">
                                 <asp:TextBox runat="server" ID="txtClientReference" CssClass="form-control maxWidth" Placeholder="Falls vorhanden." ToolTip="z.B. Bestellnummer des Auftraggebers." MaxLength="50"></asp:TextBox>
                                 <asp:Label runat="server" ID="txtClientReferenceLabel" CssClass="form-control" Visible="false"></asp:Label>
