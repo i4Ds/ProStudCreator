@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Admin Bereich" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="WebAdminPage.aspx.cs" Inherits="ProStudCreator.WebAdminPage" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectList" Src="~/UserControls/ProjectListControl.ascx" %>
 
 <asp:Content ID="WebAdminPageContent" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">
@@ -45,5 +46,11 @@
         <ul ID="CurrSemIP5Long" runat="server"></ul>
         <h5>IP6</h5>
         <ul ID="CurrSemIP6" runat="server"></ul>
+    </div>
+    <div class="well header-spacer" runat="server">
+        <asp:Label runat="server" Font-Size="24px" Height="50px" Text="Project List"></asp:Label>
+        <div class="well contentDesign form-horizontal" style="background-color: #ffffff">
+            <UserControl:ProjectList Id="pl" runat="server" ShowModificationDate="True" />
+        </div>
     </div>
 </asp:Content>

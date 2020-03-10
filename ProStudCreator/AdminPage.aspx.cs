@@ -29,6 +29,8 @@ namespace ProStudCreator
             SelectedSemester.SelectedValue = Semester.CurrentSemester(db).Id.ToString();
             SelectedSemester.Items.Insert(0, new ListItem("Alle Semester", ""));
             SelectedSemester.Items.Insert(1, new ListItem("――――――――――――――――", ".", false));
+
+            ProjectGrid.db = db;
         }
 
 
@@ -75,9 +77,7 @@ namespace ProStudCreator
 
             }
 
-            CheckProjects.DataSource = GetSelectedProjects();
-            CheckProjects.DataBind();
-
+            ProjectGrid.SetProjects(GetSelectedProjects());
 
             gvDates.DataSource = CalculateDates();
             gvDates.DataBind();
@@ -90,66 +90,6 @@ namespace ProStudCreator
             Session["LastPage"] = "adminpage";
         }
 
-        private ProjectSingleElement GetProjectSingleElement(Project i)
-        {
-            return new ProjectSingleElement
-            {
-                id = i.Id,
-                advisorName = string.Concat(new[]
-                {
-                    i.Advisor1 != null
-                        ? "<a href=\"mailto:" + i.Advisor1.Mail + "\">" +
-                          Server.HtmlEncode(i.Advisor1.Name).Replace(" ", "&nbsp;") + "</a>"
-                        : "?",
-                    i.Advisor2 != null
-                        ? "<br /><a href=\"mailto:" + i.Advisor2.Mail + "\">" +
-                          Server.HtmlEncode(i.Advisor2.Name).Replace(" ", "&nbsp;") + "</a>"
-                        : ""
-                }),
-                projectName = i.Name,
-                p5 = i.LogProjectType?.P5 ?? (i.POneType.P5 || (i.PTwoType?.P5 ?? false)),
-                p6 = i.LogProjectType?.P6 ?? (i.POneType.P6 || (i.PTwoType?.P6 ?? false)),
-                projectType1 = "pictures/projectTyp" + (i.TypeDesignUX
-                                   ? "DesignUX"
-                                   : (i.TypeHW
-                                       ? "HW"
-                                       : (i.TypeCGIP
-                                           ? "CGIP"
-                                           : (i.TypeMlAlg
-                                               ? "MlAlg"
-                                               : (i.TypeAppWeb
-                                                   ? "AppWeb"
-                                                   : (i.TypeDBBigData
-                                                       ? "DBBigData"
-                                                       : (i.TypeSysSec
-                                                           ? "SysSec"
-                                                           : (i.TypeSE ? "SE" : "Transparent")))))))) + ".png",
-                projectType2 = "pictures/projectTyp" + (i.TypeHW && i.TypeDesignUX
-                                   ? "HW"
-                                   : (i.TypeCGIP && (i.TypeDesignUX || i.TypeHW)
-                                       ? "CGIP"
-                                       : (i.TypeMlAlg && (i.TypeDesignUX || i.TypeHW || i.TypeCGIP)
-                                           ? "MlAlg"
-                                           : (i.TypeAppWeb &&
-                                              (i.TypeDesignUX || i.TypeHW || i.TypeCGIP || i.TypeMlAlg)
-                                               ? "AppWeb"
-                                               : (i.TypeDBBigData &&
-                                                  (i.TypeDesignUX || i.TypeHW || i.TypeCGIP || i.TypeMlAlg ||
-                                                   i.TypeAppWeb)
-                                                   ? "DBBigData"
-                                                   : (i.TypeSysSec &&
-                                                      (i.TypeDesignUX || i.TypeHW || i.TypeCGIP || i.TypeMlAlg ||
-                                                       i.TypeAppWeb || i.TypeDBBigData)
-                                                       ? "SysSec"
-                                                       : (i.TypeSE && (i.TypeDesignUX || i.TypeHW || i.TypeCGIP ||
-                                                                       i.TypeMlAlg || i.TypeAppWeb ||
-                                                                       i.TypeDBBigData || i.TypeSysSec)
-                                                           ? "SE"
-                                                           : "Transparent"))))))) + ".png",
-                ProjectNr = i.GetProjectLabel()
-            };
-        }
-
         private IEnumerable<object> CalculateDates()
         {
             for (var year = DateTime.Now.Year; year <= DateTime.Now.Year + 3; year++)
@@ -160,7 +100,7 @@ namespace ProStudCreator
             }
         }
 
-        private IQueryable<ProjectSingleElement> GetSelectedProjects()
+        private IQueryable<Project> GetSelectedProjects()
         {
             var depId = ShibUser.GetDepartment(db).Id;
 
@@ -170,55 +110,21 @@ namespace ProStudCreator
                     return db.Projects.Where(p => p.IsMainVersion
                                                && (p.State == ProjectState.InProgress || p.State == ProjectState.Submitted || p.State == ProjectState.Rejected))
                                       .OrderBy(i => i.Department.DepartmentName)
-                                      .ThenBy(i => i.ProjectNr)
-                                      .Select(i => GetProjectSingleElement(i));
+                                      .ThenBy(i => i.ProjectNr);
                 case "toPublish":
                     return db.Projects.Where(p => p.State == ProjectState.Submitted
                                                && p.IsMainVersion
                                                && p.DepartmentId == depId)
                                       .OrderBy(i => i.Advisor1.Mail)
-                                      .ThenBy(i => i.ProjectNr)
-                                      .Select(i => GetProjectSingleElement(i));
+                                      .ThenBy(i => i.ProjectNr);
                 case "allProjects":
                     return db.Projects.Where(p => p.State != ProjectState.Deleted
                                                && p.IsMainVersion)
                                       .OrderBy(i => i.DepartmentId)
                                       .ThenBy(i => i.State)
-                                      .ThenBy(i => i.ProjectNr)
-                                      .Select(i => GetProjectSingleElement(i));
+                                      .ThenBy(i => i.ProjectNr);
                 default:
                     throw new Exception($"Unexpected radioSelectedProjects.SelectedValue '{radioSelectedProjects.SelectedValue}'");
-            }
-        }
-
-        protected void ProjectRowClick(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Sort")
-                return;
-
-            var id = Convert.ToInt32(e.CommandArgument);
-            switch (e.CommandName)
-            {
-                case "revokeSubmission":
-                    var projectr = db.Projects.Single(i => i.Id == id);
-                    projectr.State = ProjectState.InProgress;
-                    db.SubmitChanges();
-                    Response.Redirect(Request.RawUrl);
-                    break;
-                case "deleteProject":
-                    var project = db.Projects.Single(i => i.Id == id);
-                    project.Delete(db);
-                    db.SubmitChanges();
-                    Response.Redirect(Request.RawUrl);
-                    break;
-                case "editProject":
-                    Response.Redirect("ProjectEditPage?id=" + id);
-                    break;
-                case "submitProject":
-                    //EinreichenButton_Click(id);
-                    break;
-                default:
-                    throw new Exception("Unknown command " + e.CommandName);
             }
         }
 
@@ -309,29 +215,7 @@ namespace ProStudCreator
         protected void RadioSelectedProjects_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             Session["SelectedAdminProjects"] = radioSelectedProjects.SelectedIndex;
-            CheckProjects.DataSource = GetSelectedProjects();
-            CheckProjects.DataBind();
-
-        }
-
-        protected void CheckProjects_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType != DataControlRowType.DataRow) return;
-            var project = db.Projects.Single(item => item.Id == ((ProjectSingleElement)e.Row.DataItem).id);
-
-            if (!project.UserCanEdit())
-            {
-                var x = e.Row.Cells[e.Row.Cells.Count - 4].Controls;
-                e.Row.Cells[e.Row.Cells.Count - 3].Controls.OfType<DataBoundLiteralControl>().First().Visible = false; //edit
-                e.Row.Cells[e.Row.Cells.Count - 2].Controls.OfType<LinkButton>().First().Visible = false; //delete
-            }
-
-            //TODO: decide wether to keep this button or not
-            e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = false; //submit
-
-            Color col = ColorTranslator.FromHtml(project.StateColor);
-            foreach (TableCell cell in e.Row.Cells)
-                cell.BackColor = col;
+            ProjectGrid.SetProjects(GetSelectedProjects());
         }
 
         protected void BtnAdminProjectsCollapse_OnClick(object sender, EventArgs e)

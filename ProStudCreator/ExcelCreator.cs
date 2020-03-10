@@ -699,7 +699,8 @@ namespace ProStudCreator
             worksheetKonfig.AutoSizeColumn(0, true);
             worksheetKonfig.AutoSizeColumn(1, true);
 
-            workbook.SetSheetHidden(1, SheetState.Hidden);
+            workbook.SetSheetOrder("Konfig", 0);
+            workbook.SetSheetHidden(0, SheetState.Hidden);
             workbook.Write(outStream);
         }
 

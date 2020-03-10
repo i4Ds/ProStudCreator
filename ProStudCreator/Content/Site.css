@@ -703,3 +703,8 @@ del {
 .no-padding-right {
     padding-right: 0 !important;
 }
+
+.header-spacer {
+    background-color: #f5f5f5;
+    margin-top: 40px;
+}

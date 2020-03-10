@@ -19,6 +19,7 @@ namespace ProStudCreator
 
         protected void Page_Init(object sender, EventArgs e)
         {
+            pl.db = db;
         }
 
 
@@ -29,6 +30,8 @@ namespace ProStudCreator
                 Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
                 Response.End();
             }
+            
+            pl.SetProjects(db.Projects.Where(p => p.IsMainVersion));
 
             if (!Page.IsPostBack)
             {
