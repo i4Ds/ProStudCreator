@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
+    <Content Include="UserControls\ProjectListControl.ascx" />
     <Content Include="WebAdminPage.aspx" />
     <Content Include="AdminPage.aspx" />
     <Content Include="App_Data\Database1.mdf" />
@@ -303,6 +304,13 @@
     </Compile>
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ProjectListControl.ascx.cs">
+      <DependentUpon>ProjectListControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ProjectListControl.ascx.designer.cs">
+      <DependentUpon>ProjectListControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="WebAdminPage.aspx.cs">
       <DependentUpon>WebAdminPage.aspx</DependentUpon>
