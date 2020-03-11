@@ -42,6 +42,15 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Button ForceTaskCheckNow;
 
         /// <summary>
+        /// UpcomingPres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UpcomingPres;
+
+        /// <summary>
         /// TasksMarks control.
         /// </summary>
         /// <remarks>

@@ -13,6 +13,8 @@
         <h5>Last 10 Task Checks:</h5>
         <ul id="LastTaskRuns" runat="server"></ul>
         <asp:Button ID="ForceTaskCheckNow" runat="server" OnClick="ForceTaskCheckNow_Click" OnClientClick="this.disabled=true;" UseSubmitBehavior="false" />
+        <h3>Upcoming presentations</h3>
+        <ul id="UpcomingPres" runat="server"></ul>
         <h3>Tasks: Noten an Ausbildungsadministration übergeben</h3>
         <ul ID="TasksMarks" runat="server"></ul>
         <h3>Tasks: Experten auszahlen</h3>

@@ -45,6 +45,8 @@ namespace ProStudCreator
             TasksNextTaskCheck.InnerHtml = $"{TaskHandler.GetNextTaskCheck()}";
             LastTaskRuns.InnerHtml = String.Join("", db.TaskRuns.OrderByDescending(r => r.Date).Select(r => $"Date: {r.Date} | Forced: {r.Forced.ToString()}<br>").Take(10).ToArray());
 
+            UpcomingPres.InnerHtml = String.Join("", db.Projects.Where(p => p.State == ProjectState.Ongoing && p.LogDefenceDate != null && p.LogDefenceDate > DateTime.Now).OrderBy(p => p.LogDefenceDate).Select(p => $"<li>{p.LogDefenceDate} - {p.LogDefenceRoom} - <a href=\"ProjectInfoPage?id={p.Id}\">{p.Name}</a></li>").ToArray());
+
             TasksMarks.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 11).OrderBy(t => (t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0))).Select(t => $"<li>Datum: {t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0)}</li>").ToArray());
             TasksExperts.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 9).OrderBy(t => (t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0))).Select(t => $"<li>Datum: {t.LastReminded + new TimeSpan(t.TaskType.DaysBetweenReminds, 0, 0, 0)}</li>").ToArray());
 
