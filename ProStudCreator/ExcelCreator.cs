@@ -699,9 +699,26 @@ namespace ProStudCreator
             worksheetKonfig.AutoSizeColumn(0, true);
             worksheetKonfig.AutoSizeColumn(1, true);
 
+            // Names
+            AddName(workbook, "_FHNW_ID_", "Konfig!$B$1");
+            AddName(workbook, "_FHNW_FIELD_Notenskala", "Konfig!$B$2");
+            AddName(workbook, "_FHNW_COLUMN_Noten", "Konfig!$B$3");
+            AddName(workbook, "_FHNW_FIELD_AnlassID", "NotenDefinitiv!$B$1");
+            AddName(workbook, "_FHNW_FIELD_AnlassNummer", "NotenDefinitiv!$B$2");
+            AddName(workbook, "_FHNW_FIELD_Bezeichnung", "NotenDefinitiv!$B$3");
+            AddName(workbook, "_FHNW_TABLE_Bewertung", $"NotenDefinitiv!$A$8:$G${rowCounter}");
+            AddName(workbook, "_FilterDatabase", "NotenDefinitiv!$A$7:$G$7");
+
             workbook.SetSheetOrder("Konfig", 0);
             workbook.SetSheetHidden(0, SheetState.Hidden);
             workbook.Write(outStream);
+        }
+
+        private static void AddName(XSSFWorkbook wb, string name, string refersTo)
+        {
+            XSSFName _name = (XSSFName)wb.CreateName();
+            _name.NameName = name;
+            _name.RefersToFormula = refersTo;
         }
 
         public static void GenerateMarKomExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db, string semesterName)
