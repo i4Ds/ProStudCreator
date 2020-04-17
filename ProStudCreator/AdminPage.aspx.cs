@@ -44,7 +44,7 @@ namespace ProStudCreator
 
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
-            btnGradeExport.Visible = ShibUser.GetEmail() == "dominik.gruntz@fhnw.ch" || ShibUser.GetEmail() == Global.WebAdmin;
+            btnGradeExport.Visible = ShibUser.CanExportExcel();
 
 
             if (!Page.IsPostBack)
