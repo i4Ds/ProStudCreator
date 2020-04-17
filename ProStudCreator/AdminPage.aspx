@@ -136,7 +136,7 @@
                             <asp:Label runat="server" Text="Ansprechpersonen:" CssClass="control-label col-sm-3"></asp:Label>
                             <asp:Label runat="server" CssClass="col-sm-3 alignbottom">
                                 <a href="mailto:simon.beck@fhnw.ch" target="_blank">Simon Beck</a>,
-                                <a href="mailto:andre.csillaghy@fhnw.ch" target="_blank">André Csillaghy</a>
+                                <a href="mailto:dominik.gruntz@fhnw.ch" target="_blank">Dominik Gruntz</a>
                             </asp:Label>
                         </div>
                         <hr />

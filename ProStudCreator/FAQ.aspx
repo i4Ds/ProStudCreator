@@ -45,7 +45,7 @@
             <a href="mailto:dominik.gruntz@fhnw.ch">Dominik Gruntz</a> für Projekte am IMVS.
         </p>
         <p id="i4ds2" visible="false" runat="server">
-            <a href="mailto:andre.csillaghy@fhnw.ch">André Csillaghy</a> für Projekte am I4DS.
+            <a href="mailto:fabian.maerki@fhnw.ch">Fabian Märki</a> für Projekte am I4DS.
         </p>
         <p id="iit2" visible="false" runat="server">
             <a href="mailto:marcel.gygli@fhnw.ch">Marcel Gygli</a> für Projekte am IIT. 
@@ -105,7 +105,7 @@
         </p>
         <h4>Wer organisiert Experten für meine Projekte?</h4>
         <p id="i4ds1" visible="false" runat="server">
-            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:andre.csillaghy@fhnw.ch">André Csillaghy</a>.
+            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:fabian.maerki@fhnw.ch">Fabian Märki</a>.
         </p>
         <p id="imvs1" visible="false" runat="server">
             Du bist für die Organisation des Experten und der Verteidigung verantwortlich.
