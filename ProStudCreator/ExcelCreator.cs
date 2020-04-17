@@ -665,6 +665,8 @@ namespace ProStudCreator
                 }
             }
 
+            var lastProjectRow = rowCounter;
+
             worksheetGrades.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(firstProjectRow-1, firstProjectRow-1, 0, GradeHeader.Length - 1));
 
             for (var i = 0; i < GradeHeader.Length; i++)
@@ -700,14 +702,14 @@ namespace ProStudCreator
             worksheetKonfig.AutoSizeColumn(1, true);
 
             // Names
-            AddName(workbook, "_FHNW_ID_", "Konfig!$B$1");
-            AddName(workbook, "_FHNW_FIELD_Notenskala", "Konfig!$B$2");
-            AddName(workbook, "_FHNW_COLUMN_Noten", "Konfig!$B$3");
-            AddName(workbook, "_FHNW_FIELD_AnlassID", "NotenDefinitiv!$B$1");
-            AddName(workbook, "_FHNW_FIELD_AnlassNummer", "NotenDefinitiv!$B$2");
-            AddName(workbook, "_FHNW_FIELD_Bezeichnung", "NotenDefinitiv!$B$3");
-            AddName(workbook, "_FHNW_TABLE_Bewertung", $"NotenDefinitiv!$A$8:$G${rowCounter}");
-            AddName(workbook, "_FilterDatabase", "NotenDefinitiv!$A$7:$G$7");
+            AddName(workbook, "_FHNW_ID_", $"{worksheetKonfig.SheetName}!$B$1");
+            AddName(workbook, "_FHNW_FIELD_Notenskala", $"{worksheetKonfig.SheetName}!$B$2");
+            AddName(workbook, "_FHNW_COLUMN_Noten", $"{worksheetKonfig.SheetName}!$B$3");
+            AddName(workbook, "_FHNW_FIELD_AnlassID", $"{worksheetGrades.SheetName}!$B$1");
+            AddName(workbook, "_FHNW_FIELD_AnlassNummer", $"{worksheetGrades.SheetName}!$B$2");
+            AddName(workbook, "_FHNW_FIELD_Bezeichnung", $"{worksheetGrades.SheetName}!$B$3");
+            AddName(workbook, "_FHNW_TABLE_Bewertung", $"{worksheetGrades.SheetName}!$A$8:$G${lastProjectRow}");
+            AddName(workbook, "_FilterDatabase", $"{worksheetGrades.SheetName}!$A$7:$G$7");
 
             workbook.SetSheetOrder("Konfig", 0);
             workbook.SetSheetHidden(0, SheetState.Hidden);
