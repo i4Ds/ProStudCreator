@@ -49,6 +49,7 @@ namespace ProStudCreator
             "Projektnummer",
             "Institut",
             "Projekttitel",
+            "Projektstatus",
             "Projektstart",
             "Projektabgabe",
             "Ausstellung Bachelorthesis",
@@ -268,8 +269,6 @@ namespace ProStudCreator
 
             if (p.State != ProjectState.Finished && p.State != ProjectState.Canceled && p.State != ProjectState.ArchivedFinished && p.State != ProjectState.ArchivedCanceled)
             {
-                sGrad1 = null;
-                sGrad2 = null;
                 if (!string.IsNullOrWhiteSpace(pLang))
                     pLang = pLang + " (Projekt in Durchführung)";
                 pBilS = "";
@@ -284,6 +283,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.GetFullNr());
             row.CreateCell(i++).SetCellValue(p.Department.DepartmentName);
             row.CreateCell(i++).SetCellValue(p.Name);
+            row.CreateCell(i++).SetCellValue(p.StateAsString);
             var cell1 = row.CreateCell(i++);
             cell1.CellStyle = DateStyle;
             cell1.SetCellValue(p.Semester?.StartDate ?? Semester.NextSemester(db).StartDate.Date);
@@ -623,7 +623,7 @@ namespace ProStudCreator
                 row1.CreateCell(3).SetCellValue(projects[i].LogStudent1FirstName ?? "");
 
                 // Bewertung für Upload
-                if (projects[i].LogGradeStudent1.HasValue)
+                if (projects[i].LogGradeStudent1.HasValue && projects[i].State > ProjectState.Ongoing && projects[i].State < ProjectState.Deleted)
                     row1.CreateCell(5).SetCellValue(Math.Round(projects[i].LogGradeStudent1.Value, 4));
 
                 // Email
@@ -650,7 +650,7 @@ namespace ProStudCreator
                     row2.CreateCell(3).SetCellValue(projects[i].LogStudent2FirstName ?? "");
 
                     // Bewertung für Upload
-                    if (projects[i].LogGradeStudent2.HasValue)
+                    if (projects[i].LogGradeStudent2.HasValue && projects[i].State > ProjectState.Ongoing && projects[i].State < ProjectState.Deleted)
                         row2.CreateCell(5).SetCellValue(Math.Round(projects[i].LogGradeStudent2.Value, 4));
 
                     // Email
