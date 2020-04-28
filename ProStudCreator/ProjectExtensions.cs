@@ -481,7 +481,7 @@ namespace ProStudCreator
             target.Reservation2Name = _p.Reservation2Name;
             target.Semester = _p.Semester;
             target.State = _p.State;
-            target.Tasks = _p.Tasks;
+            //target.Tasks = _p.Tasks;
             target.TypeAppWeb = _p.TypeAppWeb;
             target.TypeCGIP = _p.TypeCGIP;
             target.TypeDBBigData = _p.TypeDBBigData;
