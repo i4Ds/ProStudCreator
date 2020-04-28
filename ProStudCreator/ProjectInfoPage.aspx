@@ -28,6 +28,20 @@
             }
             return ok;
         }
+
+        function Confirm() {
+            var confirm_value = document.createElement("INPUT");
+            confirm_value.type = "hidden";
+            confirm_value.name = "confirm_value";
+            if (confirm("Ein neues Projekt wurde erstellt. Zu neuem Projekt wechseln?")) {
+                confirm_value.value = "Yes";
+            } else {
+                confirm_value.value = "No";
+            }
+            document.forms[0].appendChild(confirm_value);
+            return true;
+        }
+
     </script>
     <div class="well newProjectSettings">
         <asp:Label runat="server" ID="SiteTitle" Font-Size="24px" Height="50px" Text="Projektinformationen"></asp:Label>
@@ -354,6 +368,7 @@
             <asp:Button runat="server" ID="BtnFinishProject" OnClick="BtnFinishProject_OnClick" CssClass="btn btn-default" Text="Projekt abschliessen" OnClientClick="return confirmSaving('Projekt wirklich abschliessen?');"></asp:Button>
             <asp:Button runat="server" ID="BtnCancelProject" OnClick="BtnCancelProject_OnClick" CssClass="btn btn-default" Text="Projekt abbrechen" OnClientClick="return confirmSaving('Projekt wirklich abbrechen?');"></asp:Button>
             <asp:Button runat="server" ID="BtnKickoffProject" OnClick="BtnKickoffProject_OnClick" CssClass="btn btn-default" Text="Projekt starten" OnClientClick="return confirmSaving('Projekt wirklich starten?');"></asp:Button>
+            <asp:Button runat="server" ID="BtnDuplicateProject" OnClick="BtnDuplicateProject_OnClick" CssClass="btn btn-default" Text="Duplizieren"  OnClientClick="return Confirm();"  AutoPostBack="true" Style="margin-right: 0px;" />
             <asp:Button runat="server" ID="BtnSaveChanges" OnClick="BtnSaveChanges_OnClick" CssClass="btn btn-default" Text="Speichern & Schliessen"></asp:Button>
             <asp:Button runat="server" ID="BtnSaveBetween" OnClick="BtnSaveBetween_OnClick" CssClass="btn btn-default" Text="Zwischenspeichern" />
             <asp:Button runat="server" ID="BtnCancel" OnClick="BtnCancel_OnClick" CssClass="btn btn-default" Text="Abbrechen"></asp:Button>

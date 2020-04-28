@@ -80,6 +80,10 @@ namespace ProStudCreator
             duplicate.Reservation2Mail = "";
             duplicate.Reservation1Name = "";
             duplicate.Reservation2Name = "";
+            duplicate.GradeSentToAdmin = false;
+            duplicate.WebSummaryChecked = false;
+            duplicate.Ablehnungsgrund = "";
+            duplicate.Notes = "";
             duplicate.State = ProjectState.InProgress;
             duplicate.ClearLog(db);
             duplicate.IsMainVersion = true;

@@ -663,6 +663,7 @@ namespace ProStudCreator
         {
             BtnSaveBetween.Visible = BtnSaveChanges.Visible = true;
             BtnFinishProject.Visible = BtnCancelProject.Visible = BtnKickoffProject.Visible = false;
+            BtnDuplicateProject.Visible = true;
 
             switch (pageProject.State)
             {
@@ -680,6 +681,7 @@ namespace ProStudCreator
                     break;
                 default:
                     BtnSaveBetween.Enabled = BtnSaveChanges.Enabled = BtnFinishProject.Enabled = BtnCancelProject.Enabled = BtnKickoffProject.Enabled = false;
+                    BtnDuplicateProject.Enabled = true;
                     break;
             }
 
@@ -763,6 +765,17 @@ namespace ProStudCreator
             else
             {
                 ReturnAlert(validationMessageSave);
+            }
+        }
+
+        protected void BtnDuplicateProject_OnClick(object sender, EventArgs e)
+        {
+            var duplicate = pageProject.DuplicateProject(db);
+
+            string confirmValue = Request.Form["confirm_value"];
+            if (confirmValue == "Yes")
+            {
+                Response.Redirect("~/ProjectEditPage.aspx?id=" + duplicate.Id);
             }
         }
 
