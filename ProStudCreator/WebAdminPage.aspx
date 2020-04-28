@@ -25,6 +25,9 @@
         <ul id="ExpertsToBePaid" runat="server"></ul>
         <h4>Tasks: NEW Experts not to be paid</h4>
         <ul id="ExpertsNotToBePaid" runat="server"></ul>
+        <h4>Tasks: NEW ExpertPaid Mail (ALL EXPERTS)</h4>
+        <div id="ExpertMailMessage" runat="server"></div>
+        <asp:Button ID="SendExpertMailToWebAdmin" runat="server" OnClick="SendExpertMailToWebAdmin_Click" />
         <h3>Tasks: Thesis Titel an Ausbildungsadministration senden</h3>
         <ul ID="TasksTitles" runat="server"></ul>
         <h4>Thesis Titel Erinnerung 2 Wochen</h4>

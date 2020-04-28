@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -52,7 +53,7 @@ namespace ProStudCreator
 
             NoExpertTheses.InnerHtml = String.Join("", db.Projects.Where(p => p.LogProjectType.P6 && !p.LogProjectType.P5 && p.IsMainVersion && p.State >= ProjectState.Ongoing && p.State <= ProjectState.Finished && p.Expert == null).Select(p => $"<li><a href=\"ProjectInfoPage?id={p.Id}\">{p.GetProjectLabel()}</a> : {p.StateAsString}</li>").ToArray());
 
-            (var etbp, var entbp) = TaskHandler.new_SendPayExperts(db);
+            (var etbp, var entbp, var msg) = TaskHandler.new_SendPayExperts(db);
             StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair<Expert, List<Project>> entry in etbp)
             {
@@ -76,6 +77,8 @@ namespace ProStudCreator
             }
             ExpertsNotToBePaid.InnerHtml = sb.ToString();
 
+            ExpertMailMessage.InnerHtml = msg;
+
             TasksTitles.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 18).OrderBy(t => t.DueDate).Select(t => $"<li>Datum: {t.DueDate}</li>").ToArray());
             TitleReminder2Weeks.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 20).OrderBy(t => t.DueDate).Select(t => $"<li>Datum: {t.DueDate}</li>").ToArray());
             TitleReminder2Days.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 21).OrderBy(t => t.DueDate).Select(t => $"<li>Datum: {t.DueDate}</li>").ToArray());
@@ -91,6 +94,7 @@ namespace ProStudCreator
             // HttpContextContent.InnerHtml = System.Uri.UnescapeDataString(HttpContext.Current.Request.Headers.ToString()).Replace("&","<br><br>");
 
             ForceTaskCheckNow.Text = "Force Task Check Now!";
+            SendExpertMailToWebAdmin.Text = "Send Mail To Webadmin";
 
             Session["LastPage"] = "webadminpage";
         }
@@ -100,6 +104,18 @@ namespace ProStudCreator
             TaskHandler.ForceCheckAllTasks();
             ForceTaskCheckNow.Enabled = true;
             Response.Redirect("WebAdminPage.aspx");
+        }
+
+        protected void SendExpertMailToWebAdmin_Click(object sender, EventArgs e)
+        {
+            (_, _, var msg) = TaskHandler.new_SendPayExperts(db);
+
+            var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+            mail.To.Add(new MailAddress(Global.WebAdmin));
+            mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
+            mail.IsBodyHtml = true;
+            mail.Body = msg;
+            TaskHandler.SendMail(mail);
         }
     }
 }

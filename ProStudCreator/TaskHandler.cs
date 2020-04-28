@@ -845,7 +845,7 @@ namespace ProStudCreator
             db.SubmitChanges();
         }
 
-        public static (Dictionary<Expert, List<Project>>, Dictionary<Expert, List<Project>>) new_SendPayExperts(ProStudentCreatorDBDataContext db)
+        public static (Dictionary<Expert, List<Project>>, Dictionary<Expert, List<Project>>, string) new_SendPayExperts(ProStudentCreatorDBDataContext db)
         {
             var type = db.TaskTypes.Single(t => t.Id == (int)Type.PayExperts);
             var currSemester = Semester.CurrentSemester(db);
@@ -864,14 +864,28 @@ namespace ProStudCreator
 
             var expertsToBePaid = new Dictionary<Expert, List<Project>>();
             var expertsNotToBePaid = new Dictionary<Expert, List<Project>>();
+            var mailMessage = new StringBuilder();
+            mailMessage.Append(
+                "<div style=\"font-family: Arial\">" +
+                "<p>Liebe Administration<p>" +
+                "<p>Bitte die Auszahlung von den folgenden Expertenhonoraren veranlassen:</p>" +
+                "<table>" +
+                "<tr>" +
+                    "<th>Experte</th>" +
+                    "<th>Semester</th>" +
+                    "<th>Studierende</th>" +
+                    "<th>Betreuer</th>" +
+                    "<th>Projekttitel</th>" +
+                "</tr>");
 
             var activeTasks = db.Tasks.Where(t => !t.Done && t.TaskType == type && t.Semester != null);
 
             foreach (var task in activeTasks)
             {
-                task.LastReminded = DateTime.Now;
-
                 var taskSemester = task.Semester;
+
+                if (DateTime.Now < taskSemester.GradeIP6Deadline) continue;
+                
                 var thesisProjects = db.Projects.Where(p => p.IsMainVersion
                     && p.Semester == taskSemester
                     && (p.LogProjectType.P6 && !p.LogProjectType.P5)
@@ -881,6 +895,8 @@ namespace ProStudCreator
                     && p.Expert != null
                     && p.Expert.AutomaticPayout
                 );
+
+                task.LastReminded = DateTime.Now;
 
                 if (!thesisProjects.Any())
                 {
@@ -905,12 +921,37 @@ namespace ProStudCreator
 
                 // TODO: Send Mail here
                 // TODO: Set Project.LogExpertPaid to true
+
+                foreach (var p in thesisProjects
+                    .OrderBy(p => p.Expert.Name)
+                    .ThenBy(p => p.Semester.StartDate)
+                    .ThenBy(p => p.Department.DepartmentName)
+                    .ThenBy(p => p.ProjectNr))
+                {
+                    mailMessage.Append(
+                    "<tr>" +
+                        $"<td>{HttpUtility.HtmlEncode(p.Expert.Name)}</td>" +
+                        $"<td>{HttpUtility.HtmlEncode(p.Semester.Name)}</td>" +
+                        $"<td>{HttpUtility.HtmlEncode(p.LogStudent1Mail + (p.LogStudent2Mail != null ? ", " + p.LogStudent2Mail : ""))}</td>" +
+                        $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
+                        $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
+                    "</tr>"
+                    );
+                }
             }
 
+            mailMessage.Append(
+                "</table>" +
+                "<br/>" +
+                "<p>Herzliche Grüsse,<br/>" +
+                "ProStud-Team</p>" +
+                $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                "</div>"
+                );
 
-            db.SubmitChanges();
+            //db.SubmitChanges();
 
-            return (expertsToBePaid, expertsNotToBePaid);
+            return (expertsToBePaid, expertsNotToBePaid, mailMessage.ToString());
         }
 
         public static void SendPayExperts(ProStudentCreatorDBDataContext db)
