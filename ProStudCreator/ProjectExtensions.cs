@@ -17,7 +17,7 @@ namespace ProStudCreator
         {
             _p.Creator = ShibUser.GetEmail();
             _p.CreateDate = DateTime.Now;
-            _p.PublishedDate = DateTime.Now;
+            // _p.PublishedDate = DateTime.Now;
             _p.State = ProjectState.InProgress;
             _p.IsMainVersion = true;
         }
@@ -87,6 +87,8 @@ namespace ProStudCreator
             duplicate.State = ProjectState.InProgress;
             duplicate.ClearLog(db);
             duplicate.IsMainVersion = true;
+            duplicate.Creator = ShibUser.GetEmail();
+            duplicate.CreateDate = DateTime.Now;
             duplicate.Name += " (Duplikat)";
             db.SubmitChanges();
             return duplicate;
@@ -96,7 +98,7 @@ namespace ProStudCreator
         {
             _p.LogDefenceDate = null;
             _p.LogDefenceRoom = null;
-            _p.LogExpertID = null;
+            _p.Expert = null;
             _p.LogExpertPaid = false;
             _p.LogGradeStudent1 = null;
             _p.LogGradeStudent2 = null;
@@ -412,7 +414,7 @@ namespace ProStudCreator
             target.Ablehnungsgrund = _p.Ablehnungsgrund;
             target.Advisor1 = _p.Advisor1;
             target.Advisor2 = _p.Advisor2;
-            target.Attachements = _p.Attachements;
+            //target.Attachements = _p.Attachements;
             target.BaseVersionId = _p.BaseVersionId;
             target.BillingStatus = _p.BillingStatus;
             target.ClientAddressCity = _p.ClientAddressCity;
