@@ -92,7 +92,7 @@
       <Column Name="OverOnePage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="ModificationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="PublishedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PublishedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="true" />
       <Column Name="LastEditedBy" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="ProjectNr" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LanguageGerman" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
@@ -108,9 +108,9 @@
       <Column Name="BillingStatusID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LogProjectTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LogProjectDuration" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="LogStudent1FirstName" Storage="_LogStudent1FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LogStudent1FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="LogStudent1Mail" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="LogStudent2FirstName" Storage="_LogStudent2FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LogStudent2FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="LogStudent2Mail" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="LogExpertID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LogExpertPaid" Type="System.Boolean" DbType="Bit" CanBeNull="false" />

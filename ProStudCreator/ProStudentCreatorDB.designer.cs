@@ -22,7 +22,7 @@ namespace ProStudCreator
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="aspnet-ProStudCreator-20140818043155")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Database1")]
 	public partial class ProStudentCreatorDBDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -1403,7 +1403,7 @@ namespace ProStudCreator
 		
 		private System.DateTime _ModificationDate;
 		
-		private System.DateTime _PublishedDate;
+		private System.Nullable<System.DateTime> _PublishedDate;
 		
 		private string _LastEditedBy;
 		
@@ -1595,7 +1595,7 @@ namespace ProStudCreator
     partial void OnCreateDateChanged();
     partial void OnModificationDateChanging(System.DateTime value);
     partial void OnModificationDateChanged();
-    partial void OnPublishedDateChanging(System.DateTime value);
+    partial void OnPublishedDateChanging(System.Nullable<System.DateTime> value);
     partial void OnPublishedDateChanged();
     partial void OnLastEditedByChanging(string value);
     partial void OnLastEditedByChanged();
@@ -2372,7 +2372,7 @@ namespace ProStudCreator
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishedDate", DbType="DateTime NOT NULL")]
-		public System.DateTime PublishedDate
+		public System.Nullable<System.DateTime> PublishedDate
 		{
 			get
 			{
