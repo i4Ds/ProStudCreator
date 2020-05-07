@@ -163,7 +163,7 @@ namespace ProStudCreator
             var db = new ProStudentCreatorDBDataContext();
             p.Semester = p.Semester == null ? Semester.NextSemester(db) : p.Semester = p.Semester;
 
-            row.CreateCell(0).SetCellValue(p.GetFullNr());
+            row.CreateCell(0).SetCellValue(p.GetProjectLabel());
             row.CreateCell(1).SetCellValue(p.Name);
             row.CreateCell(2).SetCellValue(p.GetFullTitle());
             row.CreateCell(3).SetCellValue(p.POneType.ExportValue);
@@ -280,7 +280,7 @@ namespace ProStudCreator
                 ? "" : p.ClientCompany + " Abt:" + p.ClientAddressDepartment;
 
             var i = 0;
-            row.CreateCell(i++).SetCellValue(p.GetFullNr());
+            row.CreateCell(i++).SetCellValue(p.GetProjectLabel());
             row.CreateCell(i++).SetCellValue(p.Department.DepartmentName);
             row.CreateCell(i++).SetCellValue(p.Name);
             row.CreateCell(i++).SetCellValue(p.StateAsString);
@@ -321,7 +321,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.Advisor1?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.Advisor2?.Name ?? "");
             row.CreateCell(i++).SetCellValue(p.Advisor2?.Mail ?? "");
-            row.CreateCell(i++).SetCellValue(p.GetFullNr());
+            row.CreateCell(i++).SetCellValue(p.PreviousProject?.GetProjectLabel() ?? "");
             row.CreateCell(i++).SetCellValue(p.LogProjectType?.ExportValue ?? "-");
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(pLang);
@@ -478,7 +478,7 @@ namespace ProStudCreator
                 var p = projects[i];
 
                 row.CreateCell(0).SetCellValue(p.Semester.Name);
-                row.CreateCell(1).SetCellValue(p.GetFullNr());
+                row.CreateCell(1).SetCellValue(p.GetProjectLabel());
                 row.CreateCell(2).SetCellValue(p.Name);
                 if(!string.IsNullOrWhiteSpace(p.GetStudent2FullName()))
                     row.CreateCell(3).SetCellValue(p.GetStudent1FullName() + " / " + p.GetStudent2FullName());
