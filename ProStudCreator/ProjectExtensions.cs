@@ -89,7 +89,7 @@ namespace ProStudCreator
             duplicate.IsMainVersion = true;
             duplicate.Creator = ShibUser.GetEmail();
             duplicate.CreateDate = DateTime.Now;
-            duplicate.Name += " (Duplikat)";
+            if (duplicate.Name.Length <= 109) duplicate.Name += " (Duplikat)";
             db.SubmitChanges();
             return duplicate;
         }

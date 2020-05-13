@@ -59,7 +59,7 @@ namespace ProStudCreator
             colExCanceled.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Canceled));
 
             //Statistics
-            if ((ShibUser.GetEmail() == Global.WebAdmin || ShibUser.IsDepartmentManager()) && whichOwner.SelectedValue == "AllProjects")
+            if ((ShibUser.GetEmail() == Global.WebAdmin || ShibUser.CanVisitAdminPage()) && whichOwner.SelectedValue == "AllProjects")
             {
                 var refProj = FilterRelevantProjects(projects);
 
