@@ -286,7 +286,7 @@ namespace ProStudCreator
                         && p.LogProjectType.P5
                         && !p.LogProjectType.P6
                         && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.ArchivedFinished)
-                        && (p.SemesterId == lastSem.Id || (p.LogProjectDuration == 2 && lastlastSem != null && p.SemesterId == lastlastSem.Id)))
+                        && (p.SemesterId == lastSem.Id || (p.LogProjectDuration == 2 && p.SemesterId == lastlastSem.Id)))
                         .OrderBy(p => p.Name);
                 }
                 else

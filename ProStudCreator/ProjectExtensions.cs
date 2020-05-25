@@ -85,6 +85,7 @@ namespace ProStudCreator
             duplicate.Ablehnungsgrund = "";
             duplicate.Notes = "";
             duplicate.State = ProjectState.InProgress;
+            duplicate.Semester = null;
             duplicate.ClearLog(db);
             duplicate.IsMainVersion = true;
             duplicate.Creator = ShibUser.GetEmail();

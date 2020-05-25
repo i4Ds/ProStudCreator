@@ -52,7 +52,7 @@
         </p>
         <h4>Wie können externe Auftraggeber Projekte einreichen?</h4>
         <p>
-            Externe Auftraggeber schicken <a href="Content/Externe_Projekteingabe.pdf" class="pdf">dieses Formular</a> an Markus Oehninger. Informiert
+            Externe Auftraggeber schicken <a href="Content/Projekteingabe_Firma.pdf" class="pdf">dieses Formular</a> an Sibylle Peter. Informiert
             Interessenten doch bitte, dass einfache Programmierarbeiten nicht an die Studierenden ausgelagert werden können. Die könnten aber als IP1-4
             interessant sein! Für externe Projekte gelten dieselben Anforderungen wie für interne Projekte.
         </p>
