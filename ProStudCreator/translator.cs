@@ -131,6 +131,24 @@ namespace ProStudCreator
                 return "Languages";
             return "Sprachen";
         }
+        public string GetLanguageBoth()
+        {
+            if (language == Language.English)
+                return "German or English";
+            return "Deutsch oder Englisch";
+        }
+        public string GetLanguageGerman()
+        {
+            if (language == Language.English)
+                return "German";
+            return "Deutsch";
+        }
+        public string GetLanguageEnglish()
+        {
+            if (language == Language.English)
+                return "English";
+            return "Englisch";
+        }
 
         public string GetHeadingFooter(Project CurrentProject, ProStudentCreatorDBDataContext db)
         {

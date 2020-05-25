@@ -183,13 +183,14 @@ namespace ProStudCreator
                 fontRegular));
 
             // Row 4
-            strLang = "Deutsch oder Englisch";
+            strLang = translator.GetLanguageBoth();
             if(currentProject.LanguageEnglish && !currentProject.LanguageGerman)
             {
-                strLang = "Englisch";
-            }else if(currentProject.LanguageGerman && !currentProject.LanguageEnglish)
+                strLang = translator.GetLanguageEnglish();
+            }
+            else if(currentProject.LanguageGerman && !currentProject.LanguageEnglish)
             {
-                strLang = "Deutsch";
+                strLang = translator.GetLanguageGerman();
             }
             projectTable.AddCell(new Paragraph(translator.GetHeadingLangugages()+":", fontHeading));
             projectTable.AddCell(new Paragraph(strLang, fontRegular));
