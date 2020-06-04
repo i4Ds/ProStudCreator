@@ -40,6 +40,10 @@
                 Die Formulierung muss detailliert genug sein, dass man dafür eine Offerte erstellen könnte.
             </li>
         </ul>
+        <p>
+            Falls ein Projekt sowohl als P5 als auch als P6 ausgeschrieben wird, dann gib in der Projektbeschreibung an, was zusätzlich
+			verlangt wird, falls das Projekt als P6 gewählt wird.
+        </p>		
         <h4>Wer ist meine Ansprechperson bei Fragen?</h4>
         <p id="imvs2" visible="false" runat="server">
             <a href="mailto:dominik.gruntz@fhnw.ch">Dominik Gruntz</a> für Projekte am IMVS.
@@ -82,9 +86,11 @@
         </p>
         <h4>Wie läuft die Zuteilung der Projekte?</h4>
         <p>
-            Einzelne Projekte stellen die Projektverantwortlichen der Institute den Studierenden vor. Die restlichen Projektbeschriebe werden als PDF abgegeben.
-            Studierende bewerben sich auf die Projekte und werden automatisiert zugeteilt. Du kriegst vermutlich nicht Deine Wunschkandidaten.
-            Das Reservieren von Arbeiten ist nur in Ausnahmefällen möglich: Bei Folgeprojekten oder wenn Studierende beim Auftraggeber Arbeitnehmer sind.
+            Den Studierenden wird ein PDF mit allen Projektbeschreibungen abgegeben.
+			Die Studierenden bewerben sich auf einer separaten Plattform auf die Projekte und werden automatisiert zugeteilt. Du kriegst vermutlich nicht Deine Wunschkandidaten.
+            Das Reservieren von Arbeiten ist nur in Ausnahmefällen möglich: Bei Folgeprojekten, wenn Studierende beim Auftraggeber angestellt sind (BB-Studierende)
+			oder wenn die Studierenden einen externen Auftraggeber akquiriert haben und dieser auf Initiative der Studierenden ein Projekt eingereicht hat und
+			bereit ist, die Projektkosten zu bezahlen.
         </p>
         <p>
             Sobald die Zuteilung der Projekte erfolgt ist, erhältst Du eine Rückmeldung, welche Projekte von Dir (nicht) gewählt wurden.
