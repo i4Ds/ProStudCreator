@@ -1320,12 +1320,13 @@ namespace ProStudCreator
             }
         }
 
-        public static void SendMail(MailMessage mail)
+        public static void SendMail(MailMessage mail, bool webAdminCC = true)
         {
 #if !DEBUG
             using (var smtpClient = new SmtpClient())
             {
-                mail.CC.Add(new MailAddress(Global.WebAdmin));
+                if (webAdminCC)
+                    mail.CC.Add(new MailAddress(Global.WebAdmin));
                 smtpClient.Send(mail);
             }
 #else

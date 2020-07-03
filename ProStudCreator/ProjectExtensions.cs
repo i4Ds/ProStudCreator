@@ -86,6 +86,7 @@ namespace ProStudCreator
             duplicate.Notes = "";
             duplicate.State = ProjectState.InProgress;
             duplicate.Semester = null;
+            duplicate.ProjectNr = 0;
             duplicate.ClearLog(db);
             duplicate.IsMainVersion = true;
             duplicate.Creator = ShibUser.GetEmail();

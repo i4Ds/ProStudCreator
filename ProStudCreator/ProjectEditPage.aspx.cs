@@ -1621,7 +1621,7 @@ namespace ProStudCreator
                         mail.Body = mailMessage.ToString();
                     }
 
-                    TaskHandler.SendMail(mail);
+                    TaskHandler.SendMail(mail, false);
 
                     Response.Redirect("projectlist");
                     return;
@@ -1745,7 +1745,7 @@ namespace ProStudCreator
                     + "Automatische Nachricht von ProStud\n"
                     + "https://www.cs.technik.fhnw.ch/prostud/";
 
-                TaskHandler.SendMail(mailMessage);
+                TaskHandler.SendMail(mailMessage, false);
 
                 Response.Redirect(Session["LastPage"] == null ? "projectlist" : (string)Session["LastPage"]);
                 return;
@@ -1810,7 +1810,7 @@ namespace ProStudCreator
             mailMessage.Body =
             refusedReasonText.Text + "\n\n----------------------\nAutomatische Nachricht von ProStud\nhttps://www.cs.technik.fhnw.ch/prostud/";
 
-            TaskHandler.SendMail(mailMessage);
+            TaskHandler.SendMail(mailMessage, false);
 
             Response.Redirect(Session["LastPage"] == null ? "projectlist" : (string)Session["LastPage"]);
         }
