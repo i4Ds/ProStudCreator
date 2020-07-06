@@ -453,7 +453,7 @@ namespace ProStudCreator
                 if (thesisProjects.Any())
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    /*
+
                     foreach(var p in thesisProjects)
                     {
                         var ma1 = new MailAddress(p.Advisor1.Mail);
@@ -467,8 +467,6 @@ namespace ProStudCreator
                             mail.To.Add(ma2);
                         }
                     }
-                    */
-                    mail.To.Add(new MailAddress(Global.WebAdmin));
 
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
                     mail.IsBodyHtml = true;
@@ -523,17 +521,19 @@ namespace ProStudCreator
                 if (thesisProjects.Any())
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    /*
                     foreach(var p in thesisProjects)
                     {
-                        var ma = new MailAddress(p.Advisor1.Mail);
-                        if (!mail.To.Contains(ma))
+                        var ma1 = new MailAddress(p.Advisor1.Mail);
+                        if (!mail.To.Contains(ma1))
                         {
-                            mail.To.Add(ma);
+                            mail.To.Add(ma1);
+                        }
+                        var ma2 = new MailAddress(p.Advisor2.Mail);
+                        if (!mail.To.Contains(ma2))
+                        {
+                            mail.To.Add(ma2);
                         }
                     }
-                    */
-                    mail.To.Add(new MailAddress(Global.WebAdmin));
 
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
                     mail.IsBodyHtml = true;
@@ -595,7 +595,7 @@ namespace ProStudCreator
                     return;
                 }
 
-                var dueDate = deliveryDateCurrentSemester - Global.AllowTitleChangesBeforeSubmission;
+                var dueDate = deliveryDateCurrentSemester - Global.AllowTitleChangesBeforeSubmission + TimeSpan.FromDays(1);
 
                 activeTask = new Task()
                 {
@@ -642,7 +642,7 @@ namespace ProStudCreator
                 }
                 else
                 {
-                    var dueDateNext = deliveryDateNextSemester - Global.AllowTitleChangesBeforeSubmission;
+                    var dueDateNext = deliveryDateNextSemester - Global.AllowTitleChangesBeforeSubmission + TimeSpan.FromDays(1);
 
                     nextSemesterTask = new Task()
                     {
