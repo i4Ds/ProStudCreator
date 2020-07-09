@@ -136,7 +136,7 @@ namespace ProStudCreator
             DisplayButtons();
 
             //Attachments
-            divFileUpload.Visible = pageProject.UserHasAdvisor2Rights();
+            DisplayAttachments();
         }
 
         private void DisplayName()
@@ -688,6 +688,16 @@ namespace ProStudCreator
             BtnFinishProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Finished));
             BtnCancelProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Canceled));
             BtnKickoffProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Ongoing));
+        }
+
+        private void DisplayAttachments()
+        {
+            if (pageProject.UnderNDA && !pageProject.UserHasAdvisor2Rights())
+            {
+                DivAttachments.Visible = false;
+            }
+
+            divFileUpload.Visible = pageProject.UserHasAdvisor2Rights();
         }
 
         #endregion
@@ -1389,6 +1399,35 @@ namespace ProStudCreator
                 if (radioClientType.SelectedIndex == (int)ClientType.Company && string.IsNullOrWhiteSpace(txtClientCompanyAdmin.Text))
                     return "Bitte geben Sie den Namen des Unternehmen an.";
             }
+
+            //
+            //Department specific
+            //
+
+            if (pageProject.Department.i4DS)
+            {
+                //Attachment
+                if (!pageProject.Attachements.Any(a => !a.Deleted))
+                {
+                    return "Bitte laden Sie die Dokumentation des Projektes hoch.";
+                }
+            }
+            else if (pageProject.Department.IIT)
+            {
+                //Attachment
+                if (!pageProject.Attachements.Any(a => !a.Deleted))
+                {
+                    return "Bitte laden Sie die Dokumentation des Projektes hoch.";
+                }
+            }
+            else if (pageProject.Department.IMVS)
+            {
+                //None
+            }
+            else
+            {
+                return $"Das Projekt hat kein Institut. Bitte kontaktiere {Global.WebAdmin}";
+            }
             
             return null;
         }
@@ -1472,9 +1511,9 @@ namespace ProStudCreator
         protected void OnUploadComplete(object sender, AjaxFileUploadEventArgs e)
         {
             using (var s = e.GetStreamContents())
-                if (db.Attachements.Any(a => a.ProjectId.ToString() == Request.QueryString["id"] && a.FileName == e.FileName && !a.Deleted))
+                if (db.Attachements.Any(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted))
                 {
-                    SaveFileInDb(db.Attachements.Single(a => a.ProjectId.ToString() == Request.QueryString["id"] && a.FileName == e.FileName && !a.Deleted), s);
+                    SaveFileInDb(db.Attachements.Single(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted), s);
                 }
                 else
                 {
@@ -1501,7 +1540,7 @@ namespace ProStudCreator
         {
             var attach = new Attachements
             {
-                ProjectId = int.Parse(Request.QueryString["id"]),
+                ProjectId = pageProject.Id,
                 UploadUserMail = ShibUser.GetEmail(),
                 UploadDate = DateTime.Now,
                 UploadSize = fileSize,
@@ -1554,13 +1593,10 @@ namespace ProStudCreator
         protected void GridProjectAttachs_OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType != DataControlRowType.DataRow) return;
-            var project =
-                db.Projects.Single(item => item.Id == ((ProjectSingleAttachment)e.Row.DataItem).BaseVersionId);
+            // var project = db.Projects.Single(item => item.Id == ((ProjectSingleAttachment)e.Row.DataItem).BaseVersionId);
 
-            if (!(ShibUser.GetEmail() == project.Advisor1?.Mail || ShibUser.GetEmail() == project.Advisor2?.Mail ||
-                  !ShibUser.CanEditAllProjects()))
+            if (!pageProject.UserHasAdvisor2Rights())
                 e.Row.Cells[e.Row.Cells.Count - 1].Visible = false;
-
 
             try
             {

@@ -1013,6 +1013,29 @@ namespace ProStudCreator
             return false;
         }
 
+        public static bool DepartmentSpecificForFinish(this Project _p)
+        {
+            if (_p.Department.i4DS)
+            {
+                // - Attachment
+                return _p.Attachements.Any(a => !a.Deleted);
+            }
+            else if (_p.Department.IIT)
+            {
+                // - Attachment
+                return _p.Attachements.Any(a => !a.Deleted);
+            }
+            else if (_p.Department.IMVS)
+            {
+                return true;
+            }
+            else
+            {
+                HandleInvalidState(_p, "Project with no department");
+                return false;
+            }
+        }
+
         public static bool CheckTransitionFinish(this Project _p)
         {
             // Permission
@@ -1032,7 +1055,9 @@ namespace ProStudCreator
                 // - WebSummaryChecked
                 && _p.WebSummaryChecked
                 // - Expert
-                && (!_p.LogProjectType.P6 || (_p.LogProjectType.P6 && _p.Expert != null));
+                && (!_p.LogProjectType.P6 || (_p.LogProjectType.P6 && _p.Expert != null))
+                // - Department specific
+                && _p.DepartmentSpecificForFinish();
         }
 
         public static bool CheckTransitionCancel(this Project _p)

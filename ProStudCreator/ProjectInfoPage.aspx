@@ -375,7 +375,7 @@
         </div>
     </div>
 
-    <div class="well newProjectSettings">
+    <div class="well newProjectSettings" id="DivAttachments" runat="server">
         <asp:Label runat="server" ID="lblProjectAttachements" Font-Size="24px" Height="50px" Text="Projekt Artefakte"></asp:Label>
         <div class="well contentDesign form-horizontal" style="background-color: #ffffff">
             <asp:UpdatePanel runat="server" ID="updateProjectAttachements" UpdateMode="Conditional">
