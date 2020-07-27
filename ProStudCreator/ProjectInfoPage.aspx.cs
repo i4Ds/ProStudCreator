@@ -61,7 +61,6 @@ namespace ProStudCreator
                 pageProject = db.Projects.Single(p => (int?)p.Id == id);
                 return;
             }
-
             else
             {
                 UpdateUIFromProjectObject();
@@ -1510,16 +1509,22 @@ namespace ProStudCreator
 
         protected void OnUploadComplete(object sender, AjaxFileUploadEventArgs e)
         {
+            if (pageProject is null)
+            {
+                id = int.Parse(Request.QueryString["id"]);
+                pageProject = db.Projects.Single(p => p.Id == id);
+            }
+
             using (var s = e.GetStreamContents())
-                if (db.Attachements.Any(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted))
-                {
-                    SaveFileInDb(db.Attachements.Single(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted), s);
-                }
-                else
-                {
-                    var attachement = CreateNewAttach(e.FileSize, e.FileName);
-                    SaveFileInDb(attachement, s);
-                }
+            if (db.Attachements.Any(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted))
+            {
+                SaveFileInDb(db.Attachements.Single(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted), s);
+            }
+            else
+            {
+                var attachement = CreateNewAttach(e.FileSize, e.FileName);
+                SaveFileInDb(attachement, s);
+            }
 
             divDownloadBtn.Visible = true;
 
