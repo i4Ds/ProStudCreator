@@ -8,11 +8,7 @@ namespace ProStudCreator
     {
         public static bool IsAuthenticated(ProStudentCreatorDBDataContext db)
         {
-#if DEBUG
-            return true;
-#else
-            return /* ShibUser.IsStaff() && */ ShibUser.GetDepartment(db)!=null && db.UserDepartmentMap.Any(i => i.Mail == ShibUser.GetEmail());
-#endif
+            return ShibUser.GetDepartment(db) != null && db.UserDepartmentMap.Any(i => i.Mail == ShibUser.GetEmail());
         }
 
         public static bool IsAdmin()
@@ -159,6 +155,11 @@ namespace ProStudCreator
             }
             return (bool)HttpContext.Current.Items["IsDepartmentManager"];
 #endif
+        }
+
+        public static string GetDepartmentName()
+        {
+            return GetDepartment()?.DepartmentName ?? "";
         }
 
         public static Department GetDepartment()

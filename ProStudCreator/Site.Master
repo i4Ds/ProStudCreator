@@ -72,7 +72,7 @@
             </div>
             <div class="pull-right">
                 <div>
-                    Angemeldet als <%: ShibUser.GetEmail() + " (" + ShibUser.GetDepartment().DepartmentName + ")" %> <%: ShibUser.IsAdmin() ? " (Admin)" : "" %>
+                    Angemeldet als <%: ShibUser.GetEmail() + " (" + ShibUser.GetDepartmentName() + ")" %> <%: ShibUser.IsAdmin() ? " (Admin)" : "" %>
                     <% if (inDebugMode)
                        { %>
                         <strong style="color: red">(DEBUG MODE)</strong>
