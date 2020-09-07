@@ -42,15 +42,15 @@ namespace ProStudCreator
                 Response.Cookies.Set(responseCookie);
             }
 
-            Page.PreLoad += Master_Page_PreLoad;
-
             //fill WebAdminDrop
-            if (ShibUser.GetShibEmail() == Global.WebAdmin)
+            if (ShibUser.IsShibWebAdmin())
             {
                 DropUser.DataSource = db.UserDepartmentMap.Where(u => u.IsActive).OrderBy(u => u.Mail);
                 DropUser.DataBind();
                 DropUser.SelectedValue = ShibUser.GetEmail();
             }
+
+            Page.PreLoad += Master_Page_PreLoad;
         }
 
         protected void Master_Page_PreLoad(object sender, EventArgs e)
@@ -69,18 +69,16 @@ namespace ProStudCreator
                     throw new InvalidOperationException("Fehler bei der Überprüfung des Anti-XSRF-Tokens.");
             }
 
+            
             if (!ShibUser.IsAuthenticated(new ProStudentCreatorDBDataContext()))
             {
-                //throw new HttpException(403, "Nicht berechtigt");
-                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
-                Response.End();
+                Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.AbsolutePath}");
                 return;
             }
 
-
             NavAdmin.Visible = ShibUser.CanVisitAdminPage();
-            NavWebAdmin.Visible = ShibUser.GetEmail() == Global.WebAdmin;
-            WebAdminUserDrop.Visible = ShibUser.GetShibEmail() == Global.WebAdmin;
+            NavWebAdmin.Visible = ShibUser.IsWebAdmin();
+            WebAdminUserDrop.Visible = ShibUser.IsShibWebAdmin();
         }
 
         public readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();

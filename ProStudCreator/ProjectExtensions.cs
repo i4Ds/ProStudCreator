@@ -1127,7 +1127,7 @@ namespace ProStudCreator
 
         public static bool UserHasDepartmentManagerRights(this Project _p)
         {
-            return UserIsDepartmentManager() || ShibUser.GetEmail() == Global.WebAdmin;
+            return UserIsDepartmentManager() || ShibUser.IsWebAdmin();
         }
 
         public static bool UserHasAdvisor1Rights(this Project _p)

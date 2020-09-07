@@ -55,7 +55,7 @@
     <div class="well header-spacer" runat="server">
         <asp:Label runat="server" Font-Size="24px" Height="50px" Text="Project List"></asp:Label>
         <div class="well contentDesign form-horizontal" style="background-color: #ffffff">
-            <UserControl:ProjectList Id="pl" runat="server" ShowModificationDate="True" />
+            <!-- <UserControl:ProjectList Id="pl" runat="server" ShowModificationDate="True" /> -->
         </div>
     </div>
 </asp:Content>

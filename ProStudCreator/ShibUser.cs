@@ -118,6 +118,10 @@ namespace ProStudCreator
             return GetFirstName() + " " + GetLastName();
         }
 
+        public static bool IsShibWebAdmin() => GetShibEmail() == Global.WebAdmin;
+
+        public static bool IsWebAdmin() => GetEmail() == Global.WebAdmin;
+
         public static bool IsDepartmentManager(Department _d)
         {
 #if DEBUG

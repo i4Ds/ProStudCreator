@@ -81,7 +81,7 @@ namespace ProStudCreator
 
                 if (!pageProject.UserCanEdit())
                 {
-                    Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
+                    Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.AbsolutePath}");
                     Response.End();
                 }
 
@@ -240,7 +240,7 @@ namespace ProStudCreator
 
         private void FillDropSemester(bool isNewProject)
         {
-            if (ShibUser.GetEmail() == Global.WebAdmin && (pageProject?.State ?? 0) <= ProjectState.Published)
+            if (ShibUser.IsWebAdmin() && (pageProject?.State ?? 0) <= ProjectState.Published)
             {
                 dropSemester.DataSource = db.Semester.OrderBy(s => s.StartDate);
                 dropSemester.DataBind();

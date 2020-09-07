@@ -20,7 +20,7 @@ namespace ProStudCreator
             if (!(ShibUser.IsAuthenticated(db) || idPDF.IsAtLeastPublished()))
             {
                 
-                Response.Redirect("error/AccessDenied.aspx?url=" + HttpContext.Current.Request.Url.AbsoluteUri);
+                Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.AbsolutePath}");
                 Response.End();
                 return;
             }
