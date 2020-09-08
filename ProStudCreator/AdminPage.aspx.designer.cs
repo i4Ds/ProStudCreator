@@ -168,6 +168,60 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Button btnMarketingExport;
 
         /// <summary>
+        /// DivAdminUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAdminUsers;
+
+        /// <summary>
+        /// UpdateAdminUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateAdminUsers;
+
+        /// <summary>
+        /// BtnAdminUsersCollapse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnAdminUsersCollapse;
+
+        /// <summary>
+        /// DivAdminUsersCollapsable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAdminUsersCollapsable;
+
+        /// <summary>
+        /// UserList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::ProStudCreator.UserListControl UserList;
+
+        /// <summary>
+        /// NewUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button NewUser;
+
+        /// <summary>
         /// UpdateAddInfo control.
         /// </summary>
         /// <remarks>

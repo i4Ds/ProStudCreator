@@ -158,7 +158,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
+    <Content Include="UserEditPage.aspx" />
     <Content Include="UserControls\ProjectListControl.ascx" />
+    <Content Include="UserControls\UserListControl.ascx" />
     <Content Include="WebAdminPage.aspx" />
     <Content Include="AdminPage.aspx" />
     <Content Include="App_Data\Database1.mdf" />
@@ -305,12 +307,26 @@
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UserEditPage.aspx.cs">
+      <DependentUpon>UserEditPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserEditPage.aspx.designer.cs">
+      <DependentUpon>UserEditPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ProjectListControl.ascx.cs">
       <DependentUpon>ProjectListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserControls\ProjectListControl.ascx.designer.cs">
       <DependentUpon>ProjectListControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserListControl.ascx.cs">
+      <DependentUpon>UserListControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserListControl.ascx.designer.cs">
+      <DependentUpon>UserListControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="WebAdminPage.aspx.cs">
       <DependentUpon>WebAdminPage.aspx</DependentUpon>

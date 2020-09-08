@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace ProStudCreator
             SelectedSemester.Items.Insert(1, new ListItem("――――――――――――――――", ".", false));
 
             ProjectGrid.db = db;
+            UserList.db = db;
         }
 
 
@@ -43,6 +45,7 @@ namespace ProStudCreator
             }
 
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
+            DivAdminUsers.Visible = ShibUser.IsWebAdmin(); // || ShibUser.IsDepartmentManager();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
             btnGradeExport.Visible = ShibUser.CanExportExcel();
 
@@ -69,6 +72,10 @@ namespace ProStudCreator
                 else
                     CollapseExcelExport((bool)Session["ExcelExportCollapsed"]);
 
+                if (Session["AdminUsersCollapsed"] == null)
+                    CollapseAdminUsers(false);
+                else
+                    CollapseAdminUsers((bool)Session["AdminUsersCollapsed"]);
 
                 if (Session["AddInfoCollapsed"] == null)
                     CollapseAddInfo(true);
@@ -78,6 +85,15 @@ namespace ProStudCreator
             }
 
             ProjectGrid.SetProjects(GetSelectedProjects());
+
+            if (ShibUser.IsWebAdmin())
+            {
+                UserList.SetUsers(db.UserDepartmentMap.Where(u => true));
+            }
+            else if (ShibUser.IsDepartmentManager())
+            {
+                UserList.SetUsers(db.UserDepartmentMap.Where(u => u.Department == ShibUser.GetDepartment()));
+            }
 
             gvDates.DataSource = CalculateDates();
             gvDates.DataBind();
@@ -140,6 +156,13 @@ namespace ProStudCreator
             Session["ExcelExportCollapsed"] = collapse;
             DivExcelExportCollapsable.Visible = !collapse;
             btnExcelExportCollapse.Text = collapse ? "◄" : "▼";
+        }
+
+        private void CollapseAdminUsers(bool collapse)
+        {
+            Session["AdminUsersCollapsed"] = collapse;
+            DivAdminUsersCollapsable.Visible = !collapse;
+            BtnAdminUsersCollapse.Text = collapse ? "◄" : "▼";
         }
 
         private void CollapseAddInfo(bool collapse)
@@ -223,6 +246,11 @@ namespace ProStudCreator
             CollapseAdminProjects(!(bool)Session["AdminProjectCollapsed"]);
         }
 
+        protected void BtnAdminUsersCollapse_OnClick(object sender, EventArgs e)
+        {
+            CollapseAdminUsers(!(bool)Session["AdminUsersCollapsed"]);
+        }
+
         protected void BtnExcelExportCollapse_OnClick(object sender, EventArgs e)
         {
             CollapseExcelExport(!(bool)Session["ExcelExportCollapsed"]);
@@ -257,6 +285,11 @@ namespace ProStudCreator
 
         }
         */
+
+        protected void NewUser_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("UserEditPage");
+        }
 
         protected void BtnBillingExport_Click(object sender, EventArgs e)
         {

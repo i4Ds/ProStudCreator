@@ -8,7 +8,7 @@ namespace ProStudCreator
     {
         public static bool IsAuthenticated(ProStudentCreatorDBDataContext db)
         {
-            return ShibUser.GetDepartment(db) != null && db.UserDepartmentMap.Any(i => i.Mail == ShibUser.GetEmail());
+            return ShibUser.GetDepartment(db) != null && db.UserDepartmentMap.SingleOrDefault(i => i.Mail == ShibUser.GetEmail())?.IsActive == true;
         }
 
         public static bool IsAdmin()
@@ -43,10 +43,6 @@ namespace ProStudCreator
         public static string GetShibEmail()
         {
 #if DEBUG
-            //return "test.mitarbeiteri4ds@testmail.com";
-            //return "test.dozenti4ds@testmail.com";
-            //return "test.superuseri4ds@testmail.com";
-            //return "test.superuserimvs@testmail.com";
             return Global.WebAdmin;
 #else
             string mail = HttpContext.Current.Request.Headers["mail"];

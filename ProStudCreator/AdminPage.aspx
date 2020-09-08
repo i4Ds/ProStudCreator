@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="Admin Bereich" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="AdminPage.aspx.cs" Inherits="ProStudCreator.AdminPage" %>
 <%@ Register TagPrefix="UserControl" TagName="ProjectList" Src="~/UserControls/ProjectListControl.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="UserList" Src="~/UserControls/UserListControl.ascx" %>
 
 <asp:Content ID="AdminPageContent" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">
@@ -99,6 +100,28 @@
                         <asp:Button runat="server" ID="btnBillingExport" OnClick="BtnBillingExport_Click" CssClass="btn btn-default" Text="Verrechnung" />
                         <asp:Button runat="server" ID="btnMarketingExport" OnClick="BtnMarketingExport_OnClick" CssClass="btn btn-default" Text="Export"></asp:Button>                        
                         </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+    <div class="well newProjectSettings" runat="server" id="DivAdminUsers">
+        <asp:UpdatePanel runat="server" ID="UpdateAdminUsers">
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="BtnAdminUsersCollapse" EventName="Click" />
+            </Triggers>
+            <ContentTemplate>
+                <asp:Label runat="server" Font-Size="24px" Height="50px" Text="Users" CssClass="col-sm-4"></asp:Label>
+                <div style="text-align: right;">
+                    <asp:Button runat="server" ID="BtnAdminUsersCollapse" CssClass="btn btn-default btnHeight" Text="◄" OnClick="BtnAdminUsersCollapse_OnClick" />
+                </div>
+                <br />
+                <div id="DivAdminUsersCollapsable" runat="server" visible="False">
+                    <div class="well" style="background-color: #ffffff">
+                        <UserControl:UserList ID="UserList" runat="server" />
+                    </div>
+                    <div>
+                        <asp:Button runat="server" ID="NewUser" CssClass="btn btn-default buttonFont" Text="Neuer User" OnClick="NewUser_Click"/>
+                    </div>
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>
