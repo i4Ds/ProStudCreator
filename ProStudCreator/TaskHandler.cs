@@ -97,26 +97,27 @@ namespace ProStudCreator
             {
                 CheckFinishProject(db);
                 CheckArchiveProject(db);
-                //CheckGradesRegistered(db);
-                //CheckWebsummaryChecked(db);
-                //CheckBillingStatus(db);
-                //CheckLanguageSet(db);
-                //CheckUploadResults(db);
+                // CheckGradesRegistered(db);
+                // CheckWebsummaryChecked(db);
+                // CheckBillingStatus(db);
+                // CheckLanguageSet(db);
+                // CheckUploadResults(db);
 
-                //InfoStartProject(db);
-                //InfoFinishProject(db);
+                // InfoStartProject(db);
+                // InfoFinishProject(db);
 
 
                 InfoInsertNewSemesters(db);
-                //EnterAssignedStudents(db);
+                // EnterAssignedStudents(db);
 
                 SendThesisTitleHints(db);
                 SendThesisTitlesToAdmin(db);
-                //SendGradesToAdmin(db);
-                SendPayExperts(db);
+                // SendGradesToAdmin(db);
+                // SendPayExperts(db);
+                var _ = new_SendPayExperts(db);
 
-                //vvvvvvvvvvvvv NOT YET IMPLEMENTED
-                //SendInvoiceCustomers(db); //<-- not yet implemented
+                // vvvvvvvvvvvvv NOT YET IMPLEMENTED
+                // SendInvoiceCustomers(db); //<-- not yet implemented
 
                 SendDoubleCheckMarKomBrochureData(db);
                 SendMarKomBrochure(db);
@@ -856,7 +857,8 @@ namespace ProStudCreator
                 {
                     TaskType = type,
                     Semester = currSemester,
-                    FirstReminded = DateTime.Now
+                    FirstReminded = DateTime.Now,
+                    LastReminded = DateTime.Now
                 };
                 db.Tasks.InsertOnSubmit(currSemesterTask);
                 db.SubmitChanges();
@@ -864,19 +866,6 @@ namespace ProStudCreator
 
             var expertsToBePaid = new Dictionary<Expert, List<Project>>();
             var expertsNotToBePaid = new Dictionary<Expert, List<Project>>();
-            var mailMessage = new StringBuilder();
-            mailMessage.Append(
-                "<div style=\"font-family: Arial\">" +
-                "<p>Liebe Administration<p>" +
-                "<p>Bitte die Auszahlung von den folgenden Expertenhonoraren veranlassen:</p>" +
-                "<table>" +
-                "<tr>" +
-                    "<th>Experte</th>" +
-                    "<th>Semester</th>" +
-                    "<th>Studierende</th>" +
-                    "<th>Betreuer</th>" +
-                    "<th>Projekttitel</th>" +
-                "</tr>");
 
             var activeTasks = db.Tasks.Where(t => !t.Done && t.TaskType == type && t.Semester != null);
 
@@ -885,7 +874,7 @@ namespace ProStudCreator
                 var taskSemester = task.Semester;
 
                 if (DateTime.Now < taskSemester.GradeIP6Deadline) continue;
-                
+
                 var thesisProjects = db.Projects.Where(p => p.IsMainVersion
                     && p.Semester == taskSemester
                     && (p.LogProjectType.P6 && !p.LogProjectType.P5)
@@ -895,13 +884,6 @@ namespace ProStudCreator
                     && p.Expert != null
                     && p.Expert.AutomaticPayout
                 );
-
-                task.LastReminded = DateTime.Now;
-
-                if (!thesisProjects.Any())
-                {
-                    task.Done = true;
-                }
 
                 var allExperts = thesisProjects.Select(p => p.Expert).Distinct();
 
@@ -919,15 +901,43 @@ namespace ProStudCreator
                     }
                 }
 
-                // TODO: Send Mail here
-                // TODO: Set Project.LogExpertPaid to true
+                if (task.LastReminded == null || (DateTime.Now - task.LastReminded.Value).TotalDays > type.DaysBetweenReminds)
+                {
+                    task.LastReminded = DateTime.Now;
 
-                foreach (var p in thesisProjects
+                    if (!thesisProjects.Any())
+                    {
+                        task.Done = true;
+                    }
+
+                    db.SubmitChanges();
+                }
+            }
+
+            var mailMessage = new StringBuilder();
+            if (expertsToBePaid.Any())
+            {
+                mailMessage.Append(
+                    "<div style=\"font-family: Arial\">" +
+                    "<p>Liebe Administration<p>" +
+                    "<p>Bitte die Auszahlung von den folgenden Expertenhonoraren veranlassen:</p>" +
+                    "<table>" +
+                    "<tr>" +
+                        "<th>Experte</th>" +
+                        "<th>Semester</th>" +
+                        "<th>Studierende</th>" +
+                        "<th>Betreuer</th>" +
+                        "<th>Projekttitel</th>" +
+                    "</tr>");
+
+                foreach (var p in expertsToBePaid.SelectMany(kvpair => kvpair.Value)
                     .OrderBy(p => p.Expert.Name)
                     .ThenBy(p => p.Semester.StartDate)
                     .ThenBy(p => p.Department.DepartmentName)
                     .ThenBy(p => p.ProjectNr))
                 {
+                    p.LogExpertPaid = true;
+
                     mailMessage.Append(
                     "<tr>" +
                         $"<td>{HttpUtility.HtmlEncode(p.Expert.Name)}</td>" +
@@ -938,18 +948,27 @@ namespace ProStudCreator
                     "</tr>"
                     );
                 }
-            }
 
-            mailMessage.Append(
-                "</table>" +
-                "<br/>" +
-                "<p>Herzliche Grüsse,<br/>" +
-                "ProStud-Team</p>" +
-                $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
-                "</div>"
+                mailMessage.Append(
+                    "</table>" +
+                    "<br/>" +
+                    "<p>Herzliche Grüsse,<br/>" +
+                    "ProStud-Team</p>" +
+                    $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                    "</div>"
                 );
 
-            //db.SubmitChanges();
+                var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                mail.To.Add(new MailAddress(Global.WebAdmin));
+                //mail.To.Add(new MailAddress(Global.PayExpertAdmin));
+                //mail.CC.Add(new MailAddress("hanna.troxler@fhnw.ch"));
+                mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
+                mail.IsBodyHtml = true;
+                mail.Body = mailMessage.ToString();
+                SendMail(mail);
+
+                db.SubmitChanges();
+            }
 
             return (expertsToBePaid, expertsNotToBePaid, mailMessage.ToString());
         }

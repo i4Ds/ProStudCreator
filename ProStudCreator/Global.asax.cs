@@ -20,7 +20,7 @@ namespace ProStudCreator
         private const string DummyPage = "CheckAllTasks";
         public static readonly TimeSpan AllowTitleChangesBeforeSubmission = TimeSpan.FromDays(10*7);
         public static readonly TimeSpan ExpectFinalPresentationAfterSubmissionForIP5 = TimeSpan.FromDays(2*7);
-        public static readonly TimeSpan GradingDuration = TimeSpan.FromDays(3);
+        public static readonly TimeSpan GradingDuration = TimeSpan.FromDays(0);
         public static readonly string WebAdmin = "simon.beck@fhnw.ch";
         public static readonly string GradeAdmin = "admin.technik@fhnw.ch";
         public static readonly string PayExpertAdmin = "hannelore.gerber@fhnw.ch";
