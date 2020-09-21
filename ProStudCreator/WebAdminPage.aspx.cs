@@ -90,6 +90,61 @@ namespace ProStudCreator
 
             // HttpContextContent.InnerHtml = System.Uri.UnescapeDataString(HttpContext.Current.Request.Headers.ToString()).Replace("&","<br><br>");
 
+            /*
+            var semesterIDS = new List<int>() { 2,6,7,10,17,18,23,28 };
+            var sbp5 = new StringBuilder();
+            var sbp6 = new StringBuilder();
+
+            foreach (var user in db.UserDepartmentMap.Where(u => u.CanBeAdvisor1).OrderBy(u => u.DepartmentId))
+            {
+                sbp5.Append($"<li>{user.Name},");
+                sbp6.Append($"<li>{user.Name},");
+
+                foreach (var sem in semesterIDS)
+                {
+                    var p5grades = new List<float>();
+                    var p6grades = new List<float>();
+
+                    foreach (var proj in db.Projects.Where(p => 
+                        p.IsMainVersion 
+                        && (p.State == ProjectState.Finished || p.State == ProjectState.ArchivedFinished) 
+                        && p.SemesterId == sem 
+                        && p.Advisor1Id == user.Id
+                    ))
+                    {
+                        if (proj.LogGradeStudent1.HasValue)
+                        {
+                            if (proj.LogProjectTypeID == 1)
+                                p5grades.Add(proj.LogGradeStudent1.Value);
+                            else if (proj.LogProjectTypeID == 2)
+                                p6grades.Add(proj.LogGradeStudent1.Value);
+                        }
+                        if (proj.LogGradeStudent2.HasValue)
+                        {
+                            if (proj.LogProjectTypeID == 1)
+                                p5grades.Add(proj.LogGradeStudent2.Value);
+                            else if (proj.LogProjectTypeID == 2)
+                                p6grades.Add(proj.LogGradeStudent2.Value);
+                        }
+                    }
+
+                    if (p5grades.Any())
+                        sbp5.Append($"{p5grades.Average()}".Replace(',','.'));
+                    if (p6grades.Any())
+                        sbp6.Append($"{p6grades.Average()}".Replace(',', '.'));
+
+                    sbp5.Append(",");
+                    sbp6.Append(",");
+                }
+
+                sbp5.Append("</li>");
+                sbp6.Append("</li>");
+            }
+
+            P5Grades.InnerHtml = sbp5.ToString();
+            P6Grades.InnerHtml = sbp6.ToString();
+            */
+
             ForceTaskCheckNow.Text = "Force Task Check Now!";
             SendExpertMailToWebAdmin.Text = "Send Mail To Webadmin";
 

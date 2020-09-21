@@ -51,5 +51,11 @@
         <ul ID="CurrSemIP5Long" runat="server"></ul>
         <h5>IP6</h5>
         <ul ID="CurrSemIP6" runat="server"></ul>
+        <!--
+        <h5>P5 Noten nach Hauptbetreuer</h5>
+        <ul ID="P5Grades" runat="server"></ul>
+        <h5>P6 Noten nach Hauptbetreuer</h5>
+        <ul ID="P6Grades" runat="server"></ul>
+        -->
     </div>
 </asp:Content>

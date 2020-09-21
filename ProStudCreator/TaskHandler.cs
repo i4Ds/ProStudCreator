@@ -36,7 +36,9 @@ namespace ProStudCreator
             SendThesisTitles = 18,
             FinishProject = 19,
             ThesisTitleHint2Weeks = 20,
-            ThesisTitleHint2Days = 21
+            ThesisTitleHint2Days = 21,
+            GradeDeadlineIP5 = 22,
+            GradeDeadlineIP6 = 23
         }
 
         private static readonly object TaskCheckLock = new object();
@@ -109,6 +111,8 @@ namespace ProStudCreator
 
                 InfoInsertNewSemesters(db);
                 // EnterAssignedStudents(db);
+
+                SendGradeDeadlineHints(db);
 
                 SendThesisTitleHints(db);
                 SendThesisTitlesToAdmin(db);
@@ -552,6 +556,144 @@ namespace ProStudCreator
                         "</div>");
                     mail.Body = mailMessage.ToString();
                     SendMail(mail);
+                }
+            }
+
+            db.SubmitChanges();
+        }
+
+        public static void SendGradeDeadlineHints(ProStudentCreatorDBDataContext db)
+        {
+            var currentSemester = Semester.CurrentSemester(db);
+            var lastSemester = Semester.LastSemester(db);
+            var typeIP5Deadline = db.TaskTypes.Single(t => t.Id == (int)Type.GradeDeadlineIP5);
+            var typeIP6Deadline = db.TaskTypes.Single(t => t.Id == (int)Type.GradeDeadlineIP6);
+
+            var currentSemIP5Task = db.Tasks.SingleOrDefault(t => t.TaskType == typeIP5Deadline && t.Semester == currentSemester);
+            var currentSemIP6Task = db.Tasks.SingleOrDefault(t => t.TaskType == typeIP6Deadline && t.Semester == currentSemester);
+
+            if (currentSemIP5Task == null)
+            {
+                var currentSemIP5Deadline = currentSemester.GradeIP5Deadline;
+                var dueDate = currentSemIP5Deadline - TimeSpan.FromDays(7);
+
+                currentSemIP5Task = new Task()
+                {
+                    TaskType = typeIP5Deadline,
+                    Semester = currentSemester,
+                    DueDate = dueDate
+                };
+                db.Tasks.InsertOnSubmit(currentSemIP5Task);
+                db.SubmitChanges();
+            }
+            if (currentSemIP6Task == null)
+            {
+                var currentSemIP6Deadline = currentSemester.GradeIP6Deadline;
+                var dueDate = currentSemIP6Deadline - TimeSpan.FromDays(7);
+
+                currentSemIP6Task = new Task()
+                {
+                    TaskType = typeIP6Deadline,
+                    Semester = currentSemester,
+                    DueDate = dueDate
+                };
+                db.Tasks.InsertOnSubmit(currentSemIP6Task);
+                db.SubmitChanges();
+            }
+
+            var activeIP5Tasks = db.Tasks.Where(t => t.TaskType == typeIP5Deadline && !t.Done);
+            var activeIP6Tasks = db.Tasks.Where(t => t.TaskType == typeIP6Deadline && !t.Done);
+
+            foreach (var task in activeIP5Tasks)
+            {
+                if (DateTime.Now >= task.DueDate)
+                {
+
+                    var projectsIP5 = db.Projects.Where(p => p.IsMainVersion
+                        && p.Semester == task.Semester
+                        && p.LogProjectTypeID == 1
+                        && p.LogProjectDuration == 1
+                        && p.State == ProjectState.Ongoing);
+
+                    var adv1 = projectsIP5.Select(p => p.Advisor1);
+                    var adv2 = projectsIP5.Where(p => p.Advisor2 != null).Select(p => p.Advisor2);
+
+                    var advisors = adv1.Concat(adv2).Distinct();
+
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+
+                    foreach (var a in advisors)
+                    {
+                        var ma = new MailAddress(a.Mail);
+                        mail.To.Add(ma);
+                    }
+
+                    mail.Subject = "Informatikprojekte IP5: Notenabgabe Erinnerung";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append(
+                        "<div style=\"font-family: Arial\">" +
+                        "<p>Liebe Betreuerinnen und Betreuer<p>" +
+                        $"<p>Die Deadline für die Notenabgabe der IP5 (kurz) für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP5Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
+                        "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen.</p>" +
+                        "<br/>" +
+                        "<p>Herzliche Grüsse,<br/>" +
+                        "ProStud-Team</p>" +
+                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                        "</div>");
+                    mail.Body = mailMessage.ToString();
+
+                    SendMail(mail);
+
+                    task.FirstReminded = task.LastReminded = DateTime.Now;
+                    task.Done = true;
+                }
+            }
+
+            foreach (var task in activeIP6Tasks)
+            {
+                if (DateTime.Now >= task.DueDate)
+                {
+
+                    var projectsIP6 = db.Projects.Where(p => p.IsMainVersion
+                        && p.Semester == task.Semester
+                        && (p.LogProjectTypeID == 2 || p.LogProjectTypeID == 1 && p.LogProjectDuration == 2)
+                        && p.State == ProjectState.Ongoing);
+
+                    var adv1 = projectsIP6.Select(p => p.Advisor1);
+                    var adv2 = projectsIP6.Where(p => p.Advisor2 != null).Select(p => p.Advisor2);
+
+                    var advisors = adv1.Concat(adv2).Distinct();
+
+                    var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+
+                    foreach (var a in advisors)
+                    {
+                        var ma = new MailAddress(a.Mail);
+                        mail.To.Add(ma);
+                    }
+
+                    mail.Subject = "Informatikprojekte IP6: Notenabgabe Erinnerung";
+                    mail.IsBodyHtml = true;
+
+                    var mailMessage = new StringBuilder();
+                    mailMessage.Append(
+                        "<div style=\"font-family: Arial\">" +
+                        "<p>Liebe Betreuerinnen und Betreuer<p>" +
+                        $"<p>Die Deadline für die Notenabgabe der IP5 (lang) und IP6 für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP6Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
+                        "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen.</p>" +
+                        "<br/>" +
+                        "<p>Herzliche Grüsse,<br/>" +
+                        "ProStud-Team</p>" +
+                        $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
+                        "</div>");
+                    mail.Body = mailMessage.ToString();
+
+                    SendMail(mail);
+
+                    task.FirstReminded = task.LastReminded = DateTime.Now;
+                    task.Done = true;
                 }
             }
 
