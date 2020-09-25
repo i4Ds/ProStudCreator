@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.Ajax.Utilities;
 using NPOI.HSSF.Util;
 using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.UserModel;
@@ -130,7 +131,8 @@ namespace ProStudCreator
             "Bemerkung",
             "Email",
             "Typ",
-            "Dauer"
+            "Dauer",
+            "Sprache"
         };
 
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
@@ -638,6 +640,9 @@ namespace ProStudCreator
                 if (projects[i].LogProjectDuration.HasValue)
                     row1.CreateCell(9).SetCellValue(projects[i].LogProjectDuration == 1 ? "KURZ" : "LANG");
 
+                // Sprache
+                row1.CreateCell(10).SetCellValue(GetLanguage(projects[i]));
+
                 if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail))
                 {
                     var row2 = worksheetGrades.CreateRow(rowCounter++);
@@ -664,6 +669,9 @@ namespace ProStudCreator
                     // Dauer
                     if (projects[i].LogProjectDuration.HasValue)
                         row2.CreateCell(9).SetCellValue(projects[i].LogProjectDuration == 1 ? "KURZ" : "LANG");
+
+                    // Sprache
+                    row2.CreateCell(10).SetCellValue(GetLanguage(projects[i]));
                 }
             }
 

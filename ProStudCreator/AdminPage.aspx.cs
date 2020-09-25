@@ -73,7 +73,7 @@ namespace ProStudCreator
                     CollapseExcelExport((bool)Session["ExcelExportCollapsed"]);
 
                 if (Session["AdminUsersCollapsed"] == null)
-                    CollapseAdminUsers(false);
+                    CollapseAdminUsers(true);
                 else
                     CollapseAdminUsers((bool)Session["AdminUsersCollapsed"]);
 
