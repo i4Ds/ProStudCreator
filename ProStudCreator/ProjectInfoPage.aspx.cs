@@ -356,7 +356,11 @@ namespace ProStudCreator
                 case ProjectState.ArchivedFinished:
                 case ProjectState.ArchivedCanceled:
                     //show type with duration
-                    if (pageProject.LogProjectType.P5 && !pageProject.LogProjectType.P6)
+                    if (pageProject.LogProjectType is null)
+                    {
+                        LabelProjectType.Text = "?";
+                    }
+                    else if (pageProject.LogProjectType.P5 && !pageProject.LogProjectType.P6)
                     {
                         LabelProjectType.Text = "IP5" + (pageProject.LogProjectDuration == 2 ? " (Lang)" : "");
                     }
@@ -1651,7 +1655,7 @@ namespace ProStudCreator
 
             if (!ShibUser.IsAuthenticated(db))
             {
-                Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.AbsolutePath}");
+                Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.PathAndQuery}");
                 Response.End();
                 return;
             }

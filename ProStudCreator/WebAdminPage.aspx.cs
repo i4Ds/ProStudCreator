@@ -27,7 +27,7 @@ namespace ProStudCreator
         {
             if (!ShibUser.IsWebAdmin())
             {
-                Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.AbsolutePath}");
+                Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.PathAndQuery}");
                 Response.End();
             }
 

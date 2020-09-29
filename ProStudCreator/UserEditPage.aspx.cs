@@ -32,7 +32,7 @@ namespace ProStudCreator
 
                 if (!(ShibUser.IsDepartmentManager(pageUser.Department) || ShibUser.IsWebAdmin()))
                 {
-                    Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.AbsolutePath}");
+                    Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.PathAndQuery}");
                     Response.End();
                 }
             }
