@@ -138,17 +138,21 @@ namespace ProStudCreator
             }
         }
 
+        private static List<int> noFinishReminderMails = new List<int>() { 7 };
+
         private static void CheckFinishProject(ProStudentCreatorDBDataContext db)
         {
             //add new tasks
 
-            var temp = db.Tasks.Where(t => !t.Done && t.TaskType.Id == (int)Type.FinishProject).ToList();
-            var activeFinishTasksIds = temp.Select(t => t.ProjectId).ToList();
+            var finishTasks = db.Tasks.Where(t => t.TaskType.Id == (int)Type.FinishProject);
+            var projectIdsWithTask = finishTasks.Select(t => t.ProjectId).ToList();
             var allOngoingProjects = db.Projects.Where(p => p.State == ProjectState.Ongoing && p.IsMainVersion).ToList();
 
             foreach (var project in allOngoingProjects)
             {
-                if (!activeFinishTasksIds.Contains(project.Id))
+                if (noFinishReminderMails.Contains(project?.Advisor1?.Id ?? -1)) continue; // no reminder mails
+
+                if (!projectIdsWithTask.Contains(project.Id))
                 {
                     db.Tasks.InsertOnSubmit(new Task
                     {
@@ -161,10 +165,15 @@ namespace ProStudCreator
                 }
                 else
                 {
-                    var task = db.Tasks.Single(t => t.ProjectId == project.Id && t.TaskTypeId == (int)Type.FinishProject && !t.Done);
-                    task.DueDate = project.GetGradeDeliveryDate(db);
+                    var task = db.Tasks.Single(t => t.ProjectId == project.Id && t.TaskTypeId == (int)Type.FinishProject);
+                    if (!task.Done)
+                    {
+                        task.DueDate = project.GetGradeDeliveryDate(db);
+                    }
                 }
             }
+            db.SubmitChanges();
+
             //check tasks
             var activeFinishTasks = db.Tasks.Where(t => !t.Done && t.TaskTypeId == (int)Type.FinishProject).ToList();
             foreach (var task in activeFinishTasks)

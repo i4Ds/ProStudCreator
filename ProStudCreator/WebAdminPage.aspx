@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="Admin Bereich" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="WebAdminPage.aspx.cs" Inherits="ProStudCreator.WebAdminPage" %>
 <%@ Register TagPrefix="UserControl" TagName="UserList" Src="~/UserControls/UserListControl.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopic" Src="~/UserControls/ProjectTopic.ascx" %>
 
 <asp:Content ID="WebAdminPageContent" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">
@@ -7,6 +8,9 @@
         return confirm(message);
     }
 </script>
+    <div class="well usernSettings">
+        <UserControl:ProjectTopic runat="server" Name="AppWeb"></UserControl:ProjectTopic>
+    </div>
     <div class="well usernSettings">
         <h3>Next Task Check</h3>
         <ul ID="TasksNextTaskCheck" runat="server"></ul>
