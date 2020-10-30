@@ -553,19 +553,19 @@ namespace ProStudCreator
                 DateTime dbDate;
 
                 if (_p.LogProjectDuration == 1 && (_p.LogProjectType?.P5 ?? false)) //IP5 Projekt Voll/TeilZeit
-                    return DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP5FullPartTime, "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
                 if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P5 ?? false)) //IP5 Berufsbegleitend
-                    return DateTime.TryParseExact(_p.Semester.SubmissionIP5Accompanying, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP5Accompanying, "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
                 if (_p.LogProjectDuration == 1 && (_p.LogProjectType?.P6 ?? false)) //IP6 Variante 1 Semester
-                    return DateTime.TryParseExact(_p.Semester.SubmissionIP6Normal, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Normal, "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
                 if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P6 ?? false)) //IP6 Variante 2 Semester
-                    return DateTime.TryParseExact(_p.Semester.SubmissionIP6Variant2, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Variant2, "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
 
@@ -636,12 +636,12 @@ namespace ProStudCreator
                 return _p.LogDefenceDate;
 
             DateTime dbDate;
-            if (_p.LogProjectDuration == 1 && (_p?.LogProjectType?.P5 ?? false)) //IP5 Projekt Voll/TeilZeit
-                return DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime, "dd.MM.yyyy",
+            if (_p.LogProjectDuration == 1 && (_p.LogProjectType?.P5 ?? false)) //IP5 Projekt Voll/TeilZeit
+                return DateTime.TryParseExact(_p.Semester?.SubmissionIP5FullPartTime, "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                     ? dbDate + Global.ExpectFinalPresentationAfterSubmissionForIP5 : (DateTime?)null;
-            if (_p.LogProjectDuration == 2 && (_p?.LogProjectType?.P5 ?? false)) //IP5 Berufsbegleitend
-                return DateTime.TryParseExact(_p.Semester.SubmissionIP5Accompanying, "dd.MM.yyyy",
+            if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P5 ?? false)) //IP5 Berufsbegleitend
+                return DateTime.TryParseExact(_p.Semester?.SubmissionIP5Accompanying, "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                     ? dbDate + Global.ExpectFinalPresentationAfterSubmissionForIP5 : (DateTime?)null;
 
@@ -657,18 +657,23 @@ namespace ProStudCreator
 
         public static Semester GetEndSemester(this Project _p, ProStudentCreatorDBDataContext db)
         {
+            if (_p.Semester is null)
+                return null;
             return _p.LogProjectDuration == 2 && _p.LogProjectType.P6 ? Semester.NextSemester(_p.Semester, db) : _p.Semester;
         }
 
         public static string ExhibitionBachelorThesis(this Project _p, ProStudentCreatorDBDataContext db)
         {
+            if (_p.Semester is null)
+                return "";
+
             if (_p.LogProjectType?.P5 == true
                 || (_p.LogProjectType?.P6 == true && _p.LogProjectDuration == 1 && !_p.Semester.IsSpringSemester())
                 || (_p.LogProjectType?.P6 == true && _p.LogProjectDuration == 2 && _p.Semester.IsSpringSemester()))
             {
                 return "";
             }
-            return _p.GetEndSemester(db).ExhibitionBachelorThesis;
+            return _p.GetEndSemester(db)?.ExhibitionBachelorThesis ?? "";
         }
 
 
