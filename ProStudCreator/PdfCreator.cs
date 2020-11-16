@@ -243,8 +243,7 @@ namespace ProStudCreator
                     AddParagraph(proj.InitialPosition, document, translator.GetHeadingInitialPosition(), proj.InitialPosition);
                     AddParagraph(proj.Objective, document, translator.GetHeadingObjective(), proj.Objective);
                     AddParagraph(proj.ProblemStatement, document, translator.GetHeadingProblemStatement(), proj.ProblemStatement);
-                    AddParagraph(proj.References, document, translator.GetHeadingTechnology(),
-                        proj.References);
+                    AddParagraph(proj.References, document, translator.GetHeadingTechnology(), proj.References);
                 }
             }
             else
@@ -253,8 +252,7 @@ namespace ProStudCreator
                 AddParagraph(proj.InitialPosition, document, translator.GetHeadingInitialPosition(), proj.InitialPosition);
                 AddParagraph(proj.Objective, document, translator.GetHeadingObjective(), proj.Objective);
                 AddParagraph(proj.ProblemStatement, document, translator.GetHeadingProblemStatement(), proj.ProblemStatement);
-                AddParagraph(proj.References, document, translator.GetHeadingTechnology(),
-                    proj.References);
+                AddParagraph(proj.References, document, translator.GetHeadingTechnology(), proj.References);
             }
 
 
@@ -265,10 +263,11 @@ namespace ProStudCreator
             var strRemarks = "";
             //var strOneSem = "";
             if (proj.Remarks != "")
-                strRemarks += proj.Remarks + "\n\n";
+                strRemarks += proj.Remarks;
 
             if (proj.Reservation1Name != "")
             {
+                strRemarks += "\n\n";
                 strReservations += translator.GetReservedString(proj.Reservation1Name, proj.Reservation2Name);
             }
 
