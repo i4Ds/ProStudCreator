@@ -60,12 +60,12 @@ namespace ProStudCreator
             if (forceDl)
             {
                 Response.ContentType = "application/force-download";
-                Response.AddHeader("content-disposition", $"attachment; filename=\"{idPDF.GetFullTitle()}.pdf\"");
+                Response.AddHeader("content-disposition", $"attachment; filename=\"{idPDF.GetFilename()}.pdf\"");
             }
             else
             {
                 Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", $"inline; filename=\"{idPDF.GetFullTitle()}.pdf\"");
+                Response.AddHeader("content-disposition", $"inline; filename=\"{idPDF.GetFilename()}.pdf\"");
             }
             Response.BinaryWrite(bytesInStream);
             Response.End();

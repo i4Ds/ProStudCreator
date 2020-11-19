@@ -28,6 +28,8 @@ namespace ProStudCreator
 
         public static string GetFullTitle(this Project _p) => $"{(_p.Semester == null ? "" : _p.Semester.Name + "_")}{_p.Department.DepartmentName}{_p.ProjectNr:D2}: {_p.Name}";
 
+        public static string GetFilename(this Project _p) => _p.GetFullTitle().Replace('"', '_');
+
 
         public static Project CopyProject(this Project _p)
         {
