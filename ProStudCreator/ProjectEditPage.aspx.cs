@@ -79,7 +79,7 @@ namespace ProStudCreator
                     Response.End();
                 }
 
-                if (!pageProject.UserCanEdit())
+                if (!pageProject.UserCanView())
                 {
                     Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.PathAndQuery}");
                     Response.End();
@@ -219,9 +219,9 @@ namespace ProStudCreator
             NotesContent.Text = pageProject?.Notes ?? "";
 
             //Button visibility
-            saveProject.Visible = true;
             if (id.HasValue)
             {
+                // submit button
                 submitProject.Visible = pageProject.UserCanSubmit();
                 if ((pageProject.State == ProjectState.InProgress || pageProject.State == ProjectState.Rejected)
                     && (pageProject.UserIsAdvisor2() || pageProject.UserIsCreator())
@@ -231,8 +231,25 @@ namespace ProStudCreator
                     submitProject.Enabled = false;
                     submitProject.Text = "Nur Hauptbetreuer können Projekte einreichen";
                 }
+
+                // save buttons
+                saveProject.Visible = saveCloseProject.Visible = pageProject.UserCanEdit();
+                if (pageProject.State == ProjectState.Submitted
+                    && pageProject.UserCanView() 
+                    && !pageProject.UserCanEdit())
+                {
+                    saveProject.Visible = false;
+                    saveCloseProject.Visible = true;
+                    saveCloseProject.Enabled = false;
+                    saveCloseProject.Text = "Eingereichte Projekte können nicht bearbeitet werden";
+                }
             }
-            //submitProject.Visible = id.HasValue && pageProject.UserCanSubmit();
+            else
+            {
+                saveProject.Visible = true;
+                saveCloseProject.Visible = true;
+                submitProject.Visible = false;
+            }
             publishProject.Visible = pageProject?.UserCanPublish() ?? false;
             refuseProject.Visible = pageProject?.UserCanReject() ?? false;
             rollbackProject.Visible = pageProject?.UserCanUnsubmit() ?? false;
@@ -410,7 +427,7 @@ namespace ProStudCreator
             if (isNewProject)
             {
                 dropPOneType.SelectedValue = db.ProjectTypes.Single(t => t.P5 && t.P6).Id.ToString();
-                dropPOneTeamSize.SelectedValue = db.ProjectTeamSizes.Single(s => s.Size1 && s.Size2).Id.ToString();
+                dropPOneTeamSize.SelectedValue = db.ProjectTeamSizes.Single(s => !s.Size1 && s.Size2).Id.ToString();
                 dropPTwoType.SelectedValue = dropPTwoTypeImpossibleValue;
                 dropPTwoTeamSize.SelectedValue = dropPTwoTeamSizeImpossibleValue;
             }

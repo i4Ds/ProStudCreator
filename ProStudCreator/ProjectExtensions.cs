@@ -1156,7 +1156,7 @@ namespace ProStudCreator
 
         #region Permissions
 
-        public static bool UserCanEdit(this Project _p)
+        public static bool UserCanView(this Project _p)
         {
             switch (_p.State)
             {
@@ -1164,6 +1164,27 @@ namespace ProStudCreator
                 case ProjectState.Submitted:
                 case ProjectState.Rejected:
                     return _p.UserHasCreatorRights() || ShibUser.CanEditAllProjects();
+                case ProjectState.Published:
+                case ProjectState.Ongoing:
+                    return _p.UserHasDepartmentManagerRights();
+                case ProjectState.Finished:
+                case ProjectState.Canceled:
+                case ProjectState.ArchivedFinished:
+                case ProjectState.ArchivedCanceled:
+                    return ShibUser.IsWebAdmin();
+                default:
+                    return false;
+            }
+        }
+
+        public static bool UserCanEdit(this Project _p)
+        {
+            switch (_p.State)
+            {
+                case ProjectState.InProgress:
+                case ProjectState.Rejected:
+                    return _p.UserHasCreatorRights() || ShibUser.CanEditAllProjects();
+                case ProjectState.Submitted:
                 case ProjectState.Published:
                 case ProjectState.Ongoing:
                     return _p.UserHasDepartmentManagerRights();

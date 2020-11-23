@@ -103,7 +103,7 @@ namespace ProStudCreator
             {
                 var project = db.Projects.Single(item => item.Id == ((ProjectRowElement)e.Row.DataItem).id);
 
-                if (!project.UserCanEdit())
+                if (!project.UserCanView())
                 {
                     var x = e.Row.Cells[e.Row.Cells.Count - 3].Controls;
                     e.Row.Cells[e.Row.Cells.Count - 2].Controls.OfType<DataBoundLiteralControl>().First().Visible = false; //edit
