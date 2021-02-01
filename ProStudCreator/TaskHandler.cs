@@ -95,46 +95,65 @@ namespace ProStudCreator
 
         private static void RunAllTasks(bool forced) //register all Methods which check for tasks here.
         {
-            using (var db = new ProStudentCreatorDBDataContext())
+            try
             {
-                CheckFinishProject(db);
-                CheckArchiveProject(db);
-                // CheckGradesRegistered(db);
-                // CheckWebsummaryChecked(db);
-                // CheckBillingStatus(db);
-                // CheckLanguageSet(db);
-                // CheckUploadResults(db);
-
-                // InfoStartProject(db);
-                // InfoFinishProject(db);
-
-
-                InfoInsertNewSemesters(db);
-                // EnterAssignedStudents(db);
-
-                SendGradeDeadlineHints(db);
-
-                SendThesisTitleHints(db);
-                SendThesisTitlesToAdmin(db);
-                // SendGradesToAdmin(db);
-                // SendPayExperts(db);
-                var _ = new_SendPayExperts(db);
-
-                // vvvvvvvvvvvvv NOT YET IMPLEMENTED
-                // SendInvoiceCustomers(db); //<-- not yet implemented
-
-                SendDoubleCheckMarKomBrochureData(db);
-                SendMarKomBrochure(db);
-
-                SendMailsToResponsibleUsers(db);
-                SendTaskCheckMailToWebAdmin(forced);
-
-                db.TaskRuns.InsertOnSubmit(new TaskRun
+                using (var db = new ProStudentCreatorDBDataContext())
                 {
-                    Date = DateTime.Now,
-                    Forced = forced
-                });
-                db.SubmitChanges();
+                    CheckFinishProject(db);
+                    CheckArchiveProject(db);
+                    // CheckGradesRegistered(db);
+                    // CheckWebsummaryChecked(db);
+                    // CheckBillingStatus(db);
+                    // CheckLanguageSet(db);
+                    // CheckUploadResults(db);
+
+                    // InfoStartProject(db);
+                    // InfoFinishProject(db);
+
+
+                    InfoInsertNewSemesters(db);
+                    // EnterAssignedStudents(db);
+
+                    SendGradeDeadlineHints(db);
+
+                    SendThesisTitleHints(db);
+                    SendThesisTitlesToAdmin(db);
+                    // SendGradesToAdmin(db);
+                    // SendPayExperts(db);
+                    var _ = new_SendPayExperts(db);
+
+                    // vvvvvvvvvvvvv NOT YET IMPLEMENTED
+                    // SendInvoiceCustomers(db); //<-- not yet implemented
+
+                    SendDoubleCheckMarKomBrochureData(db);
+                    SendMarKomBrochure(db);
+
+                    SendMailsToResponsibleUsers(db);
+                    SendTaskCheckMailToWebAdmin(forced);
+
+                    db.TaskRuns.InsertOnSubmit(new TaskRun
+                    {
+                        Date = DateTime.Now,
+                        Forced = forced
+                    });
+                    db.SubmitChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+                mail.To.Add(new MailAddress(Global.WebAdmin));
+                mail.Subject = "TaskCheck has thrown an Exception";
+                mail.IsBodyHtml = true;
+
+                var mailMessage = new StringBuilder();
+                mailMessage.Append("<div style=\"font-family: Arial\">");
+                mailMessage.Append(
+                    $"<p>Time: {DateTime.Now}<p>" +
+                    $"<p>{e.Message}<p>");
+                mail.Body = mailMessage.ToString();
+
+                SendMail(mail);
             }
         }
 
@@ -475,10 +494,13 @@ namespace ProStudCreator
                         {
                             mail.To.Add(ma1);
                         }
-                        var ma2 = new MailAddress(p.Advisor2.Mail);
-                        if (!mail.To.Contains(ma2))
+                        if (!string.IsNullOrWhiteSpace(p.Advisor2?.Mail))
                         {
-                            mail.To.Add(ma2);
+                            var ma2 = new MailAddress(p.Advisor2.Mail);
+                            if (!mail.To.Contains(ma2))
+                            {
+                                mail.To.Add(ma2);
+                            }
                         }
                     }
 
@@ -542,10 +564,13 @@ namespace ProStudCreator
                         {
                             mail.To.Add(ma1);
                         }
-                        var ma2 = new MailAddress(p.Advisor2.Mail);
-                        if (!mail.To.Contains(ma2))
+                        if (!string.IsNullOrWhiteSpace(p.Advisor2?.Mail))
                         {
-                            mail.To.Add(ma2);
+                            var ma2 = new MailAddress(p.Advisor2.Mail);
+                            if (!mail.To.Contains(ma2))
+                            {
+                                mail.To.Add(ma2);
+                            }
                         }
                     }
 
