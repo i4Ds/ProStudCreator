@@ -222,6 +222,60 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Button NewUser;
 
         /// <summary>
+        /// DivAdminExperts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAdminExperts;
+
+        /// <summary>
+        /// UpdateAdminExperts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdateAdminExperts;
+
+        /// <summary>
+        /// BtnAdminExpertsCollapse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnAdminExpertsCollapse;
+
+        /// <summary>
+        /// DivAdminExpertsCollapsable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivAdminExpertsCollapsable;
+
+        /// <summary>
+        /// ExpertList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::ProStudCreator.ExpertListControl ExpertList;
+
+        /// <summary>
+        /// NewExpert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button NewExpert;
+
+        /// <summary>
         /// UpdateAddInfo control.
         /// </summary>
         /// <remarks>

@@ -30,6 +30,20 @@ namespace ProStudCreator
 
         public static string GetFilename(this Project _p) => _p.GetFullTitle().Replace('"', '_');
 
+        public static string GetWebSummaryLink(this Project _p)
+        {
+            if (_p.State < ProjectState.Ongoing || _p.State >= ProjectState.Deleted) return null;
+
+            string prefix = "https://web0.fhnw.ch";
+            string school = "ht";
+            string course = "informatik";
+            string projectType = _p.LogProjectType?.P6 == true ? "ip6" : "ip5";
+            string sem = _p.Semester?.Name?.ToLower() ?? "00fs";
+            string fullNr = _p.GetFullNr().ToLower();
+
+            return $"{prefix}/{school}/{course}/{projectType}/{sem}/{fullNr}";
+        }
+
 
         public static Project CopyProject(this Project _p)
         {

@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Admin Bereich" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="AdminPage.aspx.cs" Inherits="ProStudCreator.AdminPage" %>
 <%@ Register TagPrefix="UserControl" TagName="ProjectList" Src="~/UserControls/ProjectListControl.ascx" %>
 <%@ Register TagPrefix="UserControl" TagName="UserList" Src="~/UserControls/UserListControl.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="ExpertList" Src="~/UserControls/ExpertListControl.ascx" %>
 
 <asp:Content ID="AdminPageContent" ContentPlaceHolderID="MainContent" runat="server">
 <script type="text/javascript">
@@ -121,6 +122,28 @@
                     </div>
                     <div>
                         <asp:Button runat="server" ID="NewUser" CssClass="btn btn-default buttonFont" Text="Neuer User" OnClick="NewUser_Click"/>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+    <div class="well newProjectSettings" runat="server" id="DivAdminExperts">
+        <asp:UpdatePanel runat="server" ID="UpdateAdminExperts">
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="BtnAdminExpertsCollapse" EventName="Click" />
+            </Triggers>
+            <ContentTemplate>
+                <asp:Label runat="server" Font-Size="24px" Height="50px" Text="Experts" CssClass="col-sm-4"></asp:Label>
+                <div style="text-align: right;">
+                    <asp:Button runat="server" ID="BtnAdminExpertsCollapse" CssClass="btn btn-default btnHeight" Text="◄" OnClick="BtnAdminExpertsCollapse_OnClick" />
+                </div>
+                <br />
+                <div id="DivAdminExpertsCollapsable" runat="server" visible="False">
+                    <div class="well" style="background-color: #ffffff">
+                        <UserControl:ExpertList ID="ExpertList" runat="server" />
+                    </div>
+                    <div>
+                        <asp:Button runat="server" ID="NewExpert" CssClass="btn btn-default buttonFont" Text="Neuer Expert" OnClick="NewExpert_Click"/>
                     </div>
                 </div>
             </ContentTemplate>

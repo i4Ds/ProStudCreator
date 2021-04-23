@@ -113,6 +113,10 @@ namespace ProStudCreator
             cbxWebSummaryChecked.Checked = pageProject.WebSummaryChecked;
             cbxWebSummaryChecked.Enabled = pageProject.State == ProjectState.Ongoing && pageProject.UserHasAdvisor2Rights();
 
+            string webSumLink = pageProject.GetWebSummaryLink();
+            LabelWebsummaryLink.Text = webSumLink is null ? "" : $"<a target=\"_blank\" href=\"{webSumLink}\">Link</a>";
+
+            /*
             LabelWebsummaryLink.Text = !string.IsNullOrEmpty(pageProject?.Semester?.Name ?? null)
                 ? pageProject.LogProjectTypeID != null
                     ? "<a target=\"_blank\" href=\"https://web.fhnw.ch/technik/projekte/i/" + (pageProject.LogProjectTypeID == 1
@@ -121,6 +125,7 @@ namespace ProStudCreator
                     + "\">Link</a>"
                     : ""
                 : "";
+            */
 
             //BillingStatus
             DisplayBillingStatus();

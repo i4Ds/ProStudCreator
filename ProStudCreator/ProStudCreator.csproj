@@ -159,6 +159,9 @@
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
     <Content Include="UserControls\ProjectTopic.ascx" />
+    <Content Include="UserControls\ProjectTopic.css" />
+    <Content Include="ExpertEditPage.aspx" />
+    <Content Include="UserControls\ExpertListControl.ascx" />
     <Content Include="UserEditPage.aspx" />
     <Content Include="UserControls\ProjectListControl.ascx" />
     <Content Include="UserControls\UserListControl.ascx" />
@@ -315,6 +318,20 @@
     <Compile Include="UserControls\ProjectTopic.ascx.designer.cs">
       <DependentUpon>ProjectTopic.ascx</DependentUpon>
     </Compile>
+    <Compile Include="ExpertEditPage.aspx.cs">
+      <DependentUpon>ExpertEditPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExpertEditPage.aspx.designer.cs">
+      <DependentUpon>ExpertEditPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ExpertListControl.ascx.cs">
+      <DependentUpon>ExpertListControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ExpertListControl.ascx.designer.cs">
+      <DependentUpon>ExpertListControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserEditPage.aspx.cs">
       <DependentUpon>UserEditPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -426,6 +443,7 @@
     <Compile Include="ProjectExtensions.cs" />
     <Compile Include="Projectlist.aspx.cs">
       <DependentUpon>Projectlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Projectlist.aspx.designer.cs">
       <DependentUpon>Projectlist.aspx</DependentUpon>

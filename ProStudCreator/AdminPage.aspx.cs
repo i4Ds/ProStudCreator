@@ -33,6 +33,7 @@ namespace ProStudCreator
 
             ProjectGrid.db = db;
             UserList.db = db;
+            ExpertList.db = db;
         }
 
 
@@ -46,6 +47,7 @@ namespace ProStudCreator
 
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
             DivAdminUsers.Visible = ShibUser.IsWebAdmin(); // || ShibUser.IsDepartmentManager();
+            DivAdminExperts.Visible = ShibUser.IsWebAdmin(); // || ShibUser.IsDepartmentManager();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
             btnGradeExport.Visible = ShibUser.CanExportExcel();
 
@@ -77,6 +79,11 @@ namespace ProStudCreator
                 else
                     CollapseAdminUsers((bool)Session["AdminUsersCollapsed"]);
 
+                if (Session["AdminExpertsCollapsed"] == null)
+                    CollapseAdminExperts(true);
+                else
+                    CollapseAdminExperts((bool)Session["AdminExpertsCollapsed"]);
+
                 if (Session["AddInfoCollapsed"] == null)
                     CollapseAddInfo(true);
                 else
@@ -93,6 +100,11 @@ namespace ProStudCreator
             else if (ShibUser.IsDepartmentManager())
             {
                 UserList.SetUsers(db.UserDepartmentMap.Where(u => u.Department == ShibUser.GetDepartment()));
+            }
+
+            if (ShibUser.IsWebAdmin())
+            {
+                ExpertList.SetExperts(db.Experts.Where(ex => true));
             }
 
             gvDates.DataSource = CalculateDates();
@@ -163,6 +175,13 @@ namespace ProStudCreator
             Session["AdminUsersCollapsed"] = collapse;
             DivAdminUsersCollapsable.Visible = !collapse;
             BtnAdminUsersCollapse.Text = collapse ? "◄" : "▼";
+        }
+
+        private void CollapseAdminExperts(bool collapse)
+        {
+            Session["AdminExpertsCollapsed"] = collapse;
+            DivAdminExpertsCollapsable.Visible = !collapse;
+            BtnAdminExpertsCollapse.Text = collapse ? "◄" : "▼";
         }
 
         private void CollapseAddInfo(bool collapse)
@@ -251,6 +270,11 @@ namespace ProStudCreator
             CollapseAdminUsers(!(bool)Session["AdminUsersCollapsed"]);
         }
 
+        protected void BtnAdminExpertsCollapse_OnClick(object sender, EventArgs e)
+        {
+            CollapseAdminExperts(!(bool)Session["AdminExpertsCollapsed"]);
+        }
+
         protected void BtnExcelExportCollapse_OnClick(object sender, EventArgs e)
         {
             CollapseExcelExport(!(bool)Session["ExcelExportCollapsed"]);
@@ -289,6 +313,11 @@ namespace ProStudCreator
         protected void NewUser_Click(object sender, EventArgs e)
         {
             Response.Redirect("UserEditPage");
+        }
+
+        protected void NewExpert_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ExpertEditPage");
         }
 
         protected void BtnBillingExport_Click(object sender, EventArgs e)

@@ -27,22 +27,22 @@ namespace ProStudCreator.UserControls
 
         private bool internalSelected = false;
         private string ViewStateKey { get => $"ProjectTopic_{Name}"; }
-        private Color SelectedBackColor { get; set; }
-        private Color UnselectedBackColor { get => ColorTranslator.FromHtml("#E8E6E6"); }
+        private string SelectedBackColor { get; set; }
+        private string UnselectedBackColor { get => "#E8E6E6"; }
         private string SelectedFontColor { get => "#000000"; }
         private string UnselectedFontColor { get => "#C8C6C6"; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            var res = getTopicValues(Name);
+            SelectedBackColor = res.color;
+
             if (IsPostBack)
             {
                 Selected = (bool)ViewState[ViewStateKey];
             }
             else
             {
-                var res = getTopicValues(Name);
-                SelectedBackColor = ColorTranslator.FromHtml(res.color);
-
                 DivFirstTopic.InnerText = res.firstTopic;
                 if (string.IsNullOrWhiteSpace(res.secondTopic))
                 {
@@ -78,16 +78,16 @@ namespace ProStudCreator.UserControls
 
         private void Select()
         {
-            DivWrapper.BackColor = SelectedBackColor;
-            DivFirstTopic.Style.Add("color", SelectedFontColor);
-            DivSecondTopic.Style.Add("color", SelectedFontColor);
+            DivWrapper.Style["background-color"] = SelectedBackColor;
+            DivFirstTopic.Style["color"] = SelectedFontColor;
+            DivSecondTopic.Style["color"] = SelectedFontColor;
         }
 
         private void Unselect()
         {
-            DivWrapper.BackColor = UnselectedBackColor;
-            DivFirstTopic.Style.Add("color", UnselectedFontColor);
-            DivSecondTopic.Style.Add("color", UnselectedFontColor);
+            DivWrapper.Style["background-color"] = UnselectedBackColor;
+            DivFirstTopic.Style["color"] = UnselectedFontColor;
+            DivSecondTopic.Style["color"] = UnselectedFontColor;
         }
 
         protected (string firstTopic, string secondTopic, string color) getTopicValues(string name)
@@ -96,6 +96,20 @@ namespace ProStudCreator.UserControls
             {
                 case "AppWeb":
                     return ("App", "Web", "#BCB5B5");
+                case "DesignUX":
+                    return ("Design", "UX", "#FFB643");
+                case "HW":
+                    return ("HW", null, "#6EF083");
+                case "CGIP":
+                    return ("CG", "IP", "#4D83FF");
+                case "MLAlg":
+                    return ("ML", "Alg", "#EFED5C");
+                case "DBBigData":
+                    return ("DB", "Big Data", "#B895E3");
+                case "SysSec":
+                    return ("Sys", "Sec", "#E16060");
+                case "SERE":
+                    return ("SE", "RE", "#36AE6E");
                 default:
                     throw new Exception("No topic with this name");
             }
