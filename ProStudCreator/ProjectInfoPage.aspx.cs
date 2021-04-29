@@ -193,6 +193,11 @@ namespace ProStudCreator
 
         private void DisplayProjectTopics()
         {
+            var (topic1, topic2) = pageProject.GetTopicStrings();
+            ProjectTopicImage1.Name = topic1;
+            ProjectTopicImage2.Name = topic2;
+
+            /*
             Topic1.ImageUrl = "pictures/projectTyp" + (pageProject.TypeDesignUX
                    ? "DesignUX"
                    : (pageProject.TypeHW
@@ -230,6 +235,7 @@ namespace ProStudCreator
                                                                    pageProject.TypeDBBigData || pageProject.TypeSysSec)
                                                        ? "SE"
                                                        : "Transparent"))))))) + ".png";
+            */
         }
 
         private void DisplayStudents()

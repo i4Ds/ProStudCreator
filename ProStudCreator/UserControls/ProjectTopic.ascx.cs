@@ -43,6 +43,7 @@ namespace ProStudCreator.UserControls
             }
             else
             {
+                DivWrapper.ToolTip = res.toolTip;
                 DivFirstTopic.InnerText = res.firstTopic;
                 if (string.IsNullOrWhiteSpace(res.secondTopic))
                 {
@@ -90,26 +91,30 @@ namespace ProStudCreator.UserControls
             DivSecondTopic.Style["color"] = UnselectedFontColor;
         }
 
-        protected (string firstTopic, string secondTopic, string color) getTopicValues(string name)
+        public static (string firstTopic, string secondTopic, string toolTip, string color) getTopicValues(string name)
         {
             switch(name)
             {
                 case "AppWeb":
-                    return ("App", "Web", "#BCB5B5");
+                    return ("App", "Web", "Mobile Apps, Webentwicklung, ...", "#BCB5B5");
                 case "DesignUX":
-                    return ("Design", "UX", "#FFB643");
+                    return ("Design", "UX", "Design, Usability, User Interfaces, ...", "#FFB643");
                 case "HW":
-                    return ("HW", null, "#6EF083");
+                    return ("HW", null, "Hardwarenah, IoT, Embedded, Low-level, ...", "#6EF083");
                 case "CGIP":
-                    return ("CG", "IP", "#4D83FF");
+                    return ("CG", "IP", "Computergrafik, 3D, Bildverarbeitung, ...", "#3A56F7");
                 case "MLAlg":
-                    return ("ML", "Alg", "#EFED5C");
+                    return ("ML", "Alg", "Mathematik, Algorithmen, Machine Learning, Data Mining, ...", "#EFED5C");
                 case "DBBigData":
-                    return ("DB", "Big Data", "#B895E3");
+                    return ("DB", "Big Data", "Datenbanken, Big Data, Data Spaces, ...", "#B895E3");
                 case "SysSec":
-                    return ("Sys", "Sec", "#E16060");
+                    return ("Sys", "Sec", "ITSM, Networks, Security, ...", "#E16060");
                 case "SERE":
-                    return ("SE", "RE", "#36AE6E");
+                    return ("SE", "RE", "Software Engineering, Testing, Tooling, Architectures, Requirements Engineering, ...", "#36AE6E");
+                case "DataScience":
+                    return ("Data", "Science", "Data Science", "#38B8F7");
+                case "Transparent":
+                    return ("", "", "", "#000000");
                 default:
                     throw new Exception("No topic with this name");
             }

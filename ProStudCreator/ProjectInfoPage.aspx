@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Projekt Information" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProjectInfoPage.aspx.cs" Inherits="ProStudCreator.ProjectInfoPage" EnableEventValidation="false" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImage" Src="~/UserControls/ProjectTopicImage.ascx" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 <asp:Content ID="ProjectInofpageContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -54,8 +55,8 @@
                     <asp:TextBox runat="server" ID="ProjectTitleAdmin" CssClass="form-control maxWidth" MaxLength="120"></asp:TextBox>
                 </div>
                 <div class="col-md-3">
-                    <asp:Image CssClass="img-rounded" ID="Topic1" Height="60px" runat="server"/>
-                    <asp:Image CssClass="img-rounded" ID="Topic2" Height="60px" runat="server"/>
+                    <UserControl:ProjectTopicImage runat="server" ID="ProjectTopicImage1" Margin="4"/>
+                    <UserControl:ProjectTopicImage runat="server" ID="ProjectTopicImage2" Margin="4"/>
                 </div>
             </div>
             <div class="form-group" style="text-align: left">

@@ -46,8 +46,8 @@ namespace ProStudCreator
             }
 
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
-            DivAdminUsers.Visible = ShibUser.IsWebAdmin(); // || ShibUser.IsDepartmentManager();
-            DivAdminExperts.Visible = ShibUser.IsWebAdmin(); // || ShibUser.IsDepartmentManager();
+            DivAdminUsers.Visible = ShibUser.IsWebAdmin() || ShibUser.GetEmail() == "dominik.gruntz@fhnw.ch"; // || ShibUser.IsDepartmentManager();
+            DivAdminExperts.Visible = ShibUser.IsWebAdmin() || ShibUser.GetEmail() == "dominik.gruntz@fhnw.ch"; // || ShibUser.IsDepartmentManager();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
             btnGradeExport.Visible = ShibUser.CanExportExcel();
 
@@ -102,7 +102,7 @@ namespace ProStudCreator
                 UserList.SetUsers(db.UserDepartmentMap.Where(u => u.Department == ShibUser.GetDepartment()));
             }
 
-            if (ShibUser.IsWebAdmin())
+            if (ShibUser.IsWebAdmin() || ShibUser.IsDepartmentManager())
             {
                 ExpertList.SetExperts(db.Experts.Where(ex => true));
             }

@@ -31,9 +31,12 @@ namespace ProStudCreator
                 Response.End();
             }
 
-            if (!Page.IsPostBack)
+            if (Page.IsPostBack)
             {
+                return;
             }
+
+
             var lastSem = Semester.LastSemester(db);
             var currSem = Semester.CurrentSemester(db);
 

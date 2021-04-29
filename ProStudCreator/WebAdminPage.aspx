@@ -1,15 +1,39 @@
 ﻿<%@ Page Title="Admin Bereich" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="WebAdminPage.aspx.cs" Inherits="ProStudCreator.WebAdminPage" %>
 <%@ Register TagPrefix="UserControl" TagName="UserList" Src="~/UserControls/UserListControl.ascx" %>
 <%@ Register TagPrefix="UserControl" TagName="ProjectTopic" Src="~/UserControls/ProjectTopic.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImage" Src="~/UserControls/ProjectTopicImage.ascx" %>
 
 <asp:Content ID="WebAdminPageContent" ContentPlaceHolderID="MainContent" runat="server">
-<script type="text/javascript">
-    function confirmSaving(message) {
-        return confirm(message);
-    }
-</script>
-    <div class="well usernSettings">
-        <UserControl:ProjectTopic runat="server" Name="AppWeb"></UserControl:ProjectTopic>
+    <script type="text/javascript">
+        function confirmSaving(message) {
+            return confirm(message);
+        }
+    </script>
+    
+    <div class="well usernSettings" style="overflow:hidden;" >
+        <UserControl:ProjectTopic runat="server" Name="DesignUX" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="HW" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="CGIP" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="MLAlg" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="AppWeb" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="DBBigData" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="SysSec" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="SERE" Selected="false"></UserControl:ProjectTopic>
+        <UserControl:ProjectTopic runat="server" Name="DataScience" Selected="false"></UserControl:ProjectTopic>
+        <br />
+        <br />
+        <br />
+        <br />
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="DesignUX"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="HW"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="CGIP"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="MLAlg"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="AppWeb"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="DBBigData"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="SysSec"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="SERE"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="DataScience"></UserControl:ProjectTopicImage>
+        <UserControl:ProjectTopicImage runat="server" Margin="4" Name="Transparent"></UserControl:ProjectTopicImage>
     </div>
     <div class="well usernSettings">
         <h3>Next Task Check</h3>

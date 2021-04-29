@@ -599,6 +599,48 @@ namespace ProStudCreator
             return (c == 1 || c == 2);
         }
 
+        public static (string, string) GetTopicStrings(this Project _p)
+        {
+            var topic1 = _p.TypeDesignUX
+                   ? "DesignUX"
+                   : (_p.TypeHW
+                       ? "HW"
+                       : (_p.TypeCGIP
+                           ? "CGIP"
+                           : (_p.TypeMlAlg
+                               ? "MLAlg"
+                               : (_p.TypeAppWeb
+                                   ? "AppWeb"
+                                   : (_p.TypeDBBigData
+                                       ? "DBBigData"
+                                       : (_p.TypeSysSec
+                                           ? "SysSec"
+                                           : (_p.TypeSE ? "SERE" : "Transparent")))))));
+             var topic2 = _p.TypeHW && _p.TypeDesignUX
+                                   ? "HW"
+                                   : (_p.TypeCGIP && (_p.TypeDesignUX || _p.TypeHW)
+                                       ? "CGIP"
+                                       : (_p.TypeMlAlg && (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP)
+                                           ? "MLAlg"
+                                           : (_p.TypeAppWeb &&
+                                              (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP || _p.TypeMlAlg)
+                                               ? "AppWeb"
+                                               : (_p.TypeDBBigData &&
+                                                  (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP || _p.TypeMlAlg ||
+                                                   _p.TypeAppWeb)
+                                                   ? "DBBigData"
+                                                   : (_p.TypeSysSec &&
+                                                      (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP || _p.TypeMlAlg ||
+                                                       _p.TypeAppWeb || _p.TypeDBBigData)
+                                                       ? "SysSec"
+                                                       : (_p.TypeSE && (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP ||
+                                                                       _p.TypeMlAlg || _p.TypeAppWeb ||
+                                                                       _p.TypeDBBigData || _p.TypeSysSec)
+                                                           ? "SERE"
+                                                           : "Transparent"))))));
+            return (topic1, topic2);
+        }
+
         public static bool MinimalClientInformationProvided(this Project _p)
         {
             if (_p.ClientType == (int)ClientType.Internal) return true;

@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
+    <Content Include="UserControls\ProjectTopicImage.ascx" />
     <Content Include="UserControls\ProjectTopic.ascx" />
     <Content Include="UserControls\ProjectTopic.css" />
     <Content Include="ExpertEditPage.aspx" />
@@ -310,6 +311,13 @@
     </Compile>
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ProjectTopicImage.ascx.cs">
+      <DependentUpon>ProjectTopicImage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ProjectTopicImage.ascx.designer.cs">
+      <DependentUpon>ProjectTopicImage.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ProjectTopic.ascx.cs">
       <DependentUpon>ProjectTopic.ascx</DependentUpon>

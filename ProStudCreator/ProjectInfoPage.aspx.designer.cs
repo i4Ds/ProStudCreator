@@ -51,22 +51,22 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox ProjectTitleAdmin;
 
         /// <summary>
-        /// Topic1 control.
+        /// ProjectTopicImage1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image Topic1;
+        protected global::ProStudCreator.UserControls.ProjectTopicImage ProjectTopicImage1;
 
         /// <summary>
-        /// Topic2 control.
+        /// ProjectTopicImage2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image Topic2;
+        protected global::ProStudCreator.UserControls.ProjectTopicImage ProjectTopicImage2;
 
         /// <summary>
         /// ChangeTitleDate control.

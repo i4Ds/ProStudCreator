@@ -20,7 +20,7 @@
 </head>
 <body>
 <form runat="server">
-    <asp:ScriptManager runat="server">
+    <asp:ScriptManager runat="server" EnablePartialRendering="true">
         <Scripts>
             <%--Weitere Informationen zum Bundling von Skripts in ScriptManager finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=301884". --%>
             <%--Framework-Skripts--%>

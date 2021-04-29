@@ -56,6 +56,9 @@ namespace ProStudCreator
                 p5 = p.LogProjectType?.P5 ?? (p.POneType.P5 || (p.PTwoType?.P5 ?? false)),
                 p6 = p.LogProjectType?.P6 ?? (p.POneType.P6 || (p.PTwoType?.P6 ?? false)),
                 lng = p.LogProjectDuration == (byte)2,
+                
+
+                /*
                 projectType1 = "~/pictures/projectTyp" + (p.TypeDesignUX
                                    ? "DesignUX"
                                    : (p.TypeHW
@@ -93,6 +96,7 @@ namespace ProStudCreator
                                                                        p.TypeDBBigData || p.TypeSysSec)
                                                            ? "SE"
                                                            : "Transparent"))))))) + ".png",
+                */
                 ProjectNr = p.GetProjectLabel()
             };
         }
@@ -110,6 +114,10 @@ namespace ProStudCreator
                 }
 
                 e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = project.UserCanDelete(); //delete
+
+                var topics = project.GetTopicStrings();
+                ((UserControls.ProjectTopicImage)e.Row.FindControl("ProjectTopic1")).Name = topics.Item1;
+                ((UserControls.ProjectTopicImage)e.Row.FindControl("ProjectTopic2")).Name = topics.Item2;
 
                 Color col = ColorTranslator.FromHtml(project.StateColor);
                 foreach (TableCell cell in e.Row.Cells)

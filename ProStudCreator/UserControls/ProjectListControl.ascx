@@ -1,4 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProjectListControl.ascx.cs" Inherits="ProStudCreator.ProjectListControl" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImage" Src="~/UserControls/ProjectTopicImage.ascx" %>
+
 <asp:GridView ID="ProjectGrid" ItemType="ProStudCreator.ProjectRowElement" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowCommand="ProjectRowClick" OnRowDataBound="ProjectGrid_RowDataBound" AllowSorting="True" OnSorting="ProjectGrid_Sorting">
     <%--<AlternatingRowStyle BackColor="White" />--%>
     <Columns>
@@ -8,8 +10,16 @@
         <asp:CheckBoxField HeaderText="P5" DataField="p5" SortExpression="P5"/>
         <asp:CheckBoxField HeaderText="Lang" DataField="lng" SortExpression="Long"/>
         <asp:CheckBoxField HeaderText="P6" DataField="p6" SortExpression="P6"/>
-        <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="projectType1" HeaderText="Themen" ItemStyle-Width="20px"/>
-        <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="projectType2" ItemStyle-Width="20px"/>
+        <asp:TemplateField HeaderText="Themen">
+            <ItemTemplate>
+                <UserControl:ProjectTopicImage runat="server" ID="ProjectTopic1"></UserControl:ProjectTopicImage>
+            </ItemTemplate>
+        </asp:TemplateField>
+        <asp:TemplateField>
+            <ItemTemplate>
+                <UserControl:ProjectTopicImage runat="server" ID="ProjectTopic2"></UserControl:ProjectTopicImage>
+            </ItemTemplate>
+        </asp:TemplateField>
         <asp:BoundField DataField="modDateString" HeaderText="Zuletzt geändert" SortExpression="modDate" />
         <asp:TemplateField ItemStyle-Wrap="false">
             <ItemTemplate>
