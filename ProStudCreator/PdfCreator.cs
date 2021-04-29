@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using ProStudCreator.UserControls;
 
 namespace ProStudCreator
 {
@@ -98,20 +99,79 @@ namespace ProStudCreator
             //
 
             var proj = currentProject;
-            var currentProjectType = GetCurrentProjectTypeOne(proj);
-            var projectTypeImage =
-                Image.GetInstance(HttpContext.Current.Request.MapPath("~/pictures/" + currentProjectType));
-            projectTypeImage.SetAbsolutePosition(388, PageSize.A4.Height - document.TopMargin + 10);
 
-            projectTypeImage.ScaleToFit(50f, 150f);
-            document.Add(projectTypeImage);
 
-            currentProjectType = GetCurrentProjectTypeTwo(proj);
-            projectTypeImage =
-                Image.GetInstance(HttpContext.Current.Request.MapPath("~/pictures/" + currentProjectType));
-            projectTypeImage.SetAbsolutePosition(443, PageSize.A4.Height - document.TopMargin + 10);
-            projectTypeImage.ScaleToFit(50f, 150f);
-            document.Add(projectTypeImage);
+            var topic1 = GetCurrentProjectTypeOne(proj);
+            var topic2 = GetCurrentProjectTypeTwo(proj);
+
+            var cb = writer.DirectContent;
+
+            if (topic1 != "Transparent")
+            {
+                Font topicFont = new Font(Font.FontFamily.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
+
+                (var topic1name1, var topic1name2, _, var topic1color) = ProjectTopic.getTopicValues(topic1);
+
+                var rectW = 50;
+                var rectH = 32;
+
+                var rectlly = PageSize.A4.Height - document.TopMargin + 10;
+                var rect1llx = 388;
+
+                cb.SetColorFill(new BaseColor(System.Drawing.ColorTranslator.FromHtml(topic1color)));
+                cb.Rectangle(rect1llx, rectlly, rectW, rectH);
+                cb.Fill();
+
+                if (topic1name2 != null)
+                {
+                    ColumnText ct = new ColumnText(cb);
+                    var phr1 = new Phrase(topic1name1, topicFont);
+                    ct.SetSimpleColumn(phr1, rect1llx, rectlly + rectH / 2, rect1llx + rectW, rectlly + rectH, rectH / 4 + 4, Element.ALIGN_CENTER);
+                    ct.Go();
+                    ct = new ColumnText(cb);
+                    var phr2 = new Phrase(topic1name2, topicFont);
+                    ct.SetSimpleColumn(phr2, rect1llx, rectlly, rect1llx + rectW, rectlly + rectH / 2, rectH / 4 + 4, Element.ALIGN_CENTER);
+                    ct.Go();
+                }
+                else
+                {
+                    ColumnText ct = new ColumnText(cb);
+                    var phr1 = new Phrase(topic1name1, topicFont);
+                    ct.SetSimpleColumn(phr1, rect1llx, rectlly, rect1llx + rectW, rectlly + rectH, rectH / 2 + 4, Element.ALIGN_CENTER);
+                    ct.Go();
+                }
+
+                if (topic2 != "Transparent")
+                {
+                    var rect2llx = 443;
+                    (var topic2name1, var topic2name2, _, var topic2color) = ProjectTopic.getTopicValues(topic2);
+
+                    cb.SetColorFill(new BaseColor(System.Drawing.ColorTranslator.FromHtml(topic2color)));
+                    cb.Rectangle(rect2llx, rectlly, rectW, rectH);
+                    cb.Fill();
+
+                    if (topic2name2 != null)
+                    {
+                        ColumnText ct = new ColumnText(cb);
+                        var phr1 = new Phrase(topic2name1, topicFont);
+                        ct.SetSimpleColumn(phr1, rect2llx, rectlly + rectH / 2, rect2llx + rectW, rectlly + rectH, rectH / 4 + 4, Element.ALIGN_CENTER);
+                        ct.Go();
+                        ct = new ColumnText(cb);
+                        var phr2 = new Phrase(topic2name2, topicFont);
+                        ct.SetSimpleColumn(phr2, rect2llx, rectlly, rect2llx + rectW, rectlly + rectH / 2, rectH / 4 + 4, Element.ALIGN_CENTER);
+                        ct.Go();
+                    }
+                    else
+                    {
+                        ColumnText ct = new ColumnText(cb);
+                        var phr1 = new Phrase(topic2name1, topicFont);
+                        ct.SetSimpleColumn(phr1, rect2llx, rectlly, rect2llx + rectW, rectlly + rectH, rectH / 2 + 4, Element.ALIGN_CENTER);
+                        ct.Go();
+                    }
+                }
+            }
+
+            cb.SetColorFill(BaseColor.BLACK);
 
             var title = new Paragraph(
                 proj.GetProjectLabel() + ": " + proj.Name,
@@ -317,20 +377,22 @@ namespace ProStudCreator
         private string GetCurrentProjectTypeOne(Project proj)
         {
             if (proj.TypeDesignUX)
-                return "projectTypDesignUX.png";
+                return "DesignUX";
             if (proj.TypeHW)
-                return "projectTypHW.png";
+                return "HW";
             if (proj.TypeCGIP)
-                return "projectTypCGIP.png";
+                return "CGIP";
             if (proj.TypeMlAlg)
-                return "projectTypMlAlg.png";
+                return "MLAlg";
             if (proj.TypeAppWeb)
-                return "projectTypAppWeb.png";
+                return "AppWeb";
             if (proj.TypeDBBigData)
-                return "projectTypDBBigData.png";
+                return "DBBigData";
             if (proj.TypeSysSec)
-                return "projectTypSysSec.png";
-            return "projectTypSE.png";
+                return "SysSec";
+            if (proj.TypeSE)
+                return "SERE";
+            return "Transparent";
         }
 
         private string GetCurrentProjectTypeTwo(Project proj)
@@ -339,23 +401,23 @@ namespace ProStudCreator
             // TODO Consider extracting logic to a method that returns two project types. e.g. put in a list and pull out first two relevant types.
 
             if (proj.TypeHW && proj.TypeDesignUX)
-                return "projectTypHW.png";
+                return "HW";
             if (proj.TypeCGIP && (proj.TypeDesignUX || proj.TypeHW))
-                return "projectTypCGIP.png";
+                return "CGIP";
             if (proj.TypeMlAlg && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP))
-                return "projectTypMlAlg.png";
+                return "MLAlg";
             if (proj.TypeAppWeb && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg))
-                return "projectTypAppWeb.png";
+                return "AppWeb";
             if (proj.TypeDBBigData && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg ||
                                        proj.TypeAppWeb))
-                return "projectTypDBBigData.png";
+                return "DBBigData";
             if (proj.TypeSysSec && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg ||
                                     proj.TypeAppWeb || proj.TypeDBBigData))
-                return "projectTypSysSec.png";
+                return "SysSec";
             if (proj.TypeSE && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg ||
                                 proj.TypeAppWeb || proj.TypeDBBigData || proj.TypeSysSec))
-                return "projectTypSE.png";
-            return "projectTypTransparent.png";
+                return "SERE";
+            return "Transparent";
         }
 
         public int CalcNumberOfPages(Project PDF)

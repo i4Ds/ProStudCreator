@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Projekt bearbeiten" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="ProjectEditPage.aspx.cs" Inherits="ProStudCreator.ProjectEditPage" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopic" Src="~/UserControls/ProjectTopic.ascx" %>
 
 <%@ Import Namespace="ProStudCreator" %>
 
@@ -364,16 +365,7 @@
             <asp:UpdatePanel runat="server" class="form-group" UpdateMode="Conditional">
                 <ContentTemplate>
                     <asp:Label runat="server" CssClass="control-label col-md-3" Text="Themengebiet:"></asp:Label>
-                    <div id="projectTypes" class="col-md-9">
-                        <asp:ImageButton CssClass="img-rounded" ID="DesignUX" Height="60px" runat="server" ToolTip="Design, Usability, User Interfaces, ..." ImageUrl="pictures/projectTypDesignUXUnchecked.png" OnClick="DesignUX_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="HW" Height="60px" runat="server" ToolTip="Hardwarenah, IoT, Embedded, Low-level, ..." ImageUrl="pictures/projectTypHWUnchecked.png" OnClick="HW_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="CGIP" Height="60px" runat="server" ToolTip="Computergrafik, 3D, Bildverarbeitung, ..." ImageUrl="pictures/projectTypCGIPUnchecked.png" OnClick="CGIP_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="MlAlg" Height="60px" runat="server" ToolTip="Mathematik, Algorithmen, Machine Learning, Data Mining, ..." ImageUrl="pictures/projectTypMlAlgUnchecked.png" OnClick="MlAlg_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="AppWeb" Height="60px" runat="server" ToolTip="Mobile Apps, Webentwicklung, ..." ImageUrl="pictures/projectTypAppWebUnchecked.png" OnClick="AppWeb_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="DBBigData" Height="60px" runat="server" ToolTip="Datenbanken, Big Data, Data Spaces, ..." ImageUrl="pictures/projectTypDBBigDataUnchecked.png" OnClick="DBBigData_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="SysSec" Height="60px" runat="server" ToolTip="ITSM, Networks, Security, ..." ImageUrl="pictures/projectTypSysSecUnchecked.png" OnClick="SysSec_Click" CausesValidation="false" />
-                        <asp:ImageButton CssClass="img-rounded" ID="SE" Height="60px" runat="server" ToolTip="Software Engineering, Testing, Tooling, Architectures, Requirements Engineering, ..." ImageUrl="pictures/projectTypSEUnchecked.png" OnClick="SE_Click" CausesValidation="false" />
-                    </div>
+                    <div runat="server" id="projectTopics" class="col-md-9"></div>
                     <asp:Timer runat="server" Interval="60000" Enabled="true" />
                 </ContentTemplate>
             </asp:UpdatePanel>

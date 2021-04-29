@@ -12,12 +12,12 @@
         <asp:CheckBoxField HeaderText="P6" DataField="p6" SortExpression="P6"/>
         <asp:TemplateField HeaderText="Themen">
             <ItemTemplate>
-                <UserControl:ProjectTopicImage runat="server" ID="ProjectTopic1"></UserControl:ProjectTopicImage>
+                <UserControl:ProjectTopicImage runat="server" Name='<%# Eval("projectTopic1") %>'></UserControl:ProjectTopicImage>
             </ItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField>
             <ItemTemplate>
-                <UserControl:ProjectTopicImage runat="server" ID="ProjectTopic2"></UserControl:ProjectTopicImage>
+                <UserControl:ProjectTopicImage runat="server" Name='<%# Eval("projectTopic2") %>'></UserControl:ProjectTopicImage>
             </ItemTemplate>
         </asp:TemplateField>
         <asp:BoundField DataField="modDateString" HeaderText="Zuletzt geändert" SortExpression="modDate" />

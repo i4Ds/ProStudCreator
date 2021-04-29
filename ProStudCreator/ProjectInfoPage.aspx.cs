@@ -59,6 +59,9 @@ namespace ProStudCreator
             {
                 id = int.Parse(Request.QueryString["id"]);
                 pageProject = db.Projects.Single(p => (int?)p.Id == id);
+
+                //Topics
+                DisplayProjectTopics();
                 return;
             }
             else

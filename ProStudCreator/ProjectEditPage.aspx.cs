@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
+using ProStudCreator.UserControls;
 
 namespace ProStudCreator
 {
@@ -17,10 +18,11 @@ namespace ProStudCreator
         public readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();
         private int? id;
         private Project pageProject;
-        private bool[] projectTopics = new bool[8];
         private bool imageChanged = false;
         private bool imageDeleted = false;
         //private Binary picture;
+
+        private List<string> topics = new List<string>() { "DesignUX", "HW", "CGIP", "MLAlg", "DBBigData", "AppWeb", "SysSec", "SERE" };
 
         private readonly string dropSemesterImpossibleValue = "dropSemesterImpossibleValue";
         private readonly string dropPreviousProjectImpossibleValue = "dropPreviousProjectImpossibleValue";
@@ -54,17 +56,19 @@ namespace ProStudCreator
         }
         #endregion
 
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            foreach (var name in topics)
+            {
+                ProjectTopic pt = (ProjectTopic)Page.LoadControl("~/UserControls/ProjectTopic.ascx");
+                pt.ID = $"Topic{name}";
+                pt.Name = name;
+                projectTopics.Controls.Add(pt);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            updateReservation.Visible = ShibUser.CanReserveProjects();
-
-            //Button color
-            submitProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Submitted));
-            rollbackProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.InProgress));
-            refuseProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Rejected));
-            publishProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Published));
-
-            btnHistoryCollapse.CausesValidation = false;
             // Retrieve the project from DB
             if (Request.QueryString["id"] != null)
             {
@@ -107,17 +111,24 @@ namespace ProStudCreator
             }
 
 
-
-            if (IsPostBack)
-            {
-                projectTopics = (bool[])ViewState["Topics"];
-            }
+            if (Session["AddInfoCollapsed"] == null)
+                CollapseHistory(true);
             else
+                CollapseHistory((bool)Session["AddInfoCollapsed"]);
+
+
+            if (!IsPostBack)
             {
-                if (Session["AddInfoCollapsed"] == null)
-                    CollapseHistory(true);
-                else
-                    CollapseHistory((bool)Session["AddInfoCollapsed"]);
+
+                updateReservation.Visible = ShibUser.CanReserveProjects();
+
+                //Button color
+                submitProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Submitted));
+                rollbackProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.InProgress));
+                refuseProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Rejected));
+                publishProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Published));
+
+                btnHistoryCollapse.CausesValidation = false;
 
                 if (id.HasValue)
                 {
@@ -588,49 +599,15 @@ namespace ProStudCreator
         {
             if (!isNewProject)
             {
-                if (pageProject.TypeDesignUX)
-                {
-                    DesignUX.ImageUrl = "pictures/projectTypDesignUX.png";
-                    projectTopics[0] = true;
-                }
-                if (pageProject.TypeHW)
-                {
-                    HW.ImageUrl = "pictures/projectTypHW.png";
-                    projectTopics[1] = true;
-                }
-                if (pageProject.TypeCGIP)
-                {
-                    CGIP.ImageUrl = "pictures/projectTypCGIP.png";
-                    projectTopics[2] = true;
-                }
-                if (pageProject.TypeMlAlg)
-                {
-                    MlAlg.ImageUrl = "pictures/projectTypMlAlg.png";
-                    projectTopics[3] = true;
-                }
-                if (pageProject.TypeAppWeb)
-                {
-                    AppWeb.ImageUrl = "pictures/projectTypAppWeb.png";
-                    projectTopics[4] = true;
-                }
-                if (pageProject.TypeDBBigData)
-                {
-                    DBBigData.ImageUrl = "pictures/projectTypDBBigData.png";
-                    projectTopics[5] = true;
-                }
-                if (pageProject.TypeSysSec)
-                {
-                    SysSec.ImageUrl = "pictures/projectTypSysSec.png";
-                    projectTopics[6] = true;
-                }
-                if (pageProject.TypeSE)
-                {
-                    SE.ImageUrl = "pictures/projectTypSE.png";
-                    projectTopics[7] = true;
-                }
+                ((ProjectTopic)projectTopics.FindControl("TopicDesignUX")).Selected = pageProject.TypeDesignUX;
+                ((ProjectTopic)projectTopics.FindControl("TopicHW")).Selected = pageProject.TypeHW;
+                ((ProjectTopic)projectTopics.FindControl("TopicCGIP")).Selected = pageProject.TypeCGIP;
+                ((ProjectTopic)projectTopics.FindControl("TopicMLAlg")).Selected = pageProject.TypeMlAlg;
+                ((ProjectTopic)projectTopics.FindControl("TopicAppWeb")).Selected = pageProject.TypeAppWeb;
+                ((ProjectTopic)projectTopics.FindControl("TopicDBBigData")).Selected = pageProject.TypeDBBigData;
+                ((ProjectTopic)projectTopics.FindControl("TopicSysSec")).Selected = pageProject.TypeSysSec;
+                ((ProjectTopic)projectTopics.FindControl("TopicSERE")).Selected = pageProject.TypeSE;
             }
-
-            ViewState["Topics"] = projectTopics;
         }
 
         #endregion
@@ -783,15 +760,15 @@ namespace ProStudCreator
                 project.Reservation2Mail = "";
             }
 
-            // Project categories
-            project.TypeDesignUX = projectTopics[0];
-            project.TypeHW = projectTopics[1];
-            project.TypeCGIP = projectTopics[2];
-            project.TypeMlAlg = projectTopics[3];
-            project.TypeAppWeb = projectTopics[4];
-            project.TypeDBBigData = projectTopics[5];
-            project.TypeSysSec = projectTopics[6];
-            project.TypeSE = projectTopics[7];
+            // Project topics
+            project.TypeDesignUX = ((ProjectTopic)projectTopics.FindControl("TopicDesignUX")).Selected;
+            project.TypeHW = ((ProjectTopic)projectTopics.FindControl("TopicHW")).Selected;
+            project.TypeCGIP = ((ProjectTopic)projectTopics.FindControl("TopicCGIP")).Selected;
+            project.TypeMlAlg = ((ProjectTopic)projectTopics.FindControl("TopicMLAlg")).Selected;
+            project.TypeAppWeb = ((ProjectTopic)projectTopics.FindControl("TopicAppWeb")).Selected;
+            project.TypeDBBigData = ((ProjectTopic)projectTopics.FindControl("TopicDBBigData")).Selected;
+            project.TypeSysSec = ((ProjectTopic)projectTopics.FindControl("TopicSysSec")).Selected;
+            project.TypeSE = ((ProjectTopic)projectTopics.FindControl("TopicSERE")).Selected;
 
             //Picture description
             project.ImgDescription = imgdescription.Text.FixupParagraph();
@@ -943,15 +920,15 @@ namespace ProStudCreator
                 project.Reservation2Mail = "";
             }
 
-            // Project categories
-            project.TypeDesignUX = projectTopics[0];
-            project.TypeHW = projectTopics[1];
-            project.TypeCGIP = projectTopics[2];
-            project.TypeMlAlg = projectTopics[3];
-            project.TypeAppWeb = projectTopics[4];
-            project.TypeDBBigData = projectTopics[5];
-            project.TypeSysSec = projectTopics[6];
-            project.TypeSE = projectTopics[7];
+            // Project topics
+            project.TypeDesignUX = ((ProjectTopic)projectTopics.FindControl("TopicDesignUX")).Selected;
+            project.TypeHW = ((ProjectTopic)projectTopics.FindControl("TopicHW")).Selected;
+            project.TypeCGIP = ((ProjectTopic)projectTopics.FindControl("TopicCGIP")).Selected;
+            project.TypeMlAlg = ((ProjectTopic)projectTopics.FindControl("TopicMLAlg")).Selected;
+            project.TypeAppWeb = ((ProjectTopic)projectTopics.FindControl("TopicAppWeb")).Selected;
+            project.TypeDBBigData = ((ProjectTopic)projectTopics.FindControl("TopicDBBigData")).Selected;
+            project.TypeSysSec = ((ProjectTopic)projectTopics.FindControl("TopicSysSec")).Selected;
+            project.TypeSE = ((ProjectTopic)projectTopics.FindControl("TopicSERE")).Selected;
 
             // Picture changed
             if (AddPicture.HasFile) imageChanged = true;
@@ -1157,6 +1134,7 @@ namespace ProStudCreator
             dropAdvisor1Label.Text = CreateSimpleDiffString(pageProject.Advisor1?.Name ?? "", currentProject.Advisor1?.Name ?? "");
             dropAdvisor2Label.Text = CreateSimpleDiffString(pageProject.Advisor2?.Name ?? "", currentProject.Advisor2?.Name ?? "");
 
+            /*
             if (currentProject.TypeDesignUX)
             {
                 DesignUX.ImageUrl = "pictures/projectTypDesignUX.png";
@@ -1307,6 +1285,7 @@ namespace ProStudCreator
                     SE.BorderColor = Color.Red;
                 }
             }
+            */
 
             dropPOneType.SelectedValue = pageProject.POneType.Id.ToString();
             dropPTwoType.SelectedValue = pageProject.PTwoType?.Id.ToString();
@@ -1402,130 +1381,6 @@ namespace ProStudCreator
             btnHistoryCollapse.Text = collapse ? "◄" : "▼";
         }
 
-
-        #endregion
-
-        #region Click handlers: Project topics
-
-        protected void DesignUX_Click(object sender, ImageClickEventArgs e)
-        {
-            if (DesignUX.ImageUrl == "pictures/projectTypDesignUXUnchecked.png")
-            {
-                DesignUX.ImageUrl = "pictures/projectTypDesignUX.png";
-                projectTopics[0] = true;
-            }
-            else
-            {
-                DesignUX.ImageUrl = "pictures/projectTypDesignUXUnchecked.png";
-                projectTopics[0] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void HW_Click(object sender, ImageClickEventArgs e)
-        {
-            if (HW.ImageUrl == "pictures/projectTypHWUnchecked.png")
-            {
-                HW.ImageUrl = "pictures/projectTypHW.png";
-                projectTopics[1] = true;
-            }
-            else
-            {
-                HW.ImageUrl = "pictures/projectTypHWUnchecked.png";
-                projectTopics[1] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void CGIP_Click(object sender, ImageClickEventArgs e)
-        {
-            if (CGIP.ImageUrl == "pictures/projectTypCGIPUnchecked.png")
-            {
-                CGIP.ImageUrl = "pictures/projectTypCGIP.png";
-                projectTopics[2] = true;
-            }
-            else
-            {
-                CGIP.ImageUrl = "pictures/projectTypCGIPUnchecked.png";
-                projectTopics[2] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void MlAlg_Click(object sender, ImageClickEventArgs e)
-        {
-            if (MlAlg.ImageUrl == "pictures/projectTypMlAlgUnchecked.png")
-            {
-                MlAlg.ImageUrl = "pictures/projectTypMlAlg.png";
-                projectTopics[3] = true;
-            }
-            else
-            {
-                MlAlg.ImageUrl = "pictures/projectTypMlAlgUnchecked.png";
-                projectTopics[3] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void AppWeb_Click(object sender, ImageClickEventArgs e)
-        {
-            if (AppWeb.ImageUrl == "pictures/projectTypAppWebUnchecked.png")
-            {
-                AppWeb.ImageUrl = "pictures/projectTypAppWeb.png";
-                projectTopics[4] = true;
-            }
-            else
-            {
-                AppWeb.ImageUrl = "pictures/projectTypAppWebUnchecked.png";
-                projectTopics[4] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void DBBigData_Click(object sender, ImageClickEventArgs e)
-        {
-            if (DBBigData.ImageUrl == "pictures/projectTypDBBigDataUnchecked.png")
-            {
-                DBBigData.ImageUrl = "pictures/projectTypDBBigData.png";
-                projectTopics[5] = true;
-            }
-            else
-            {
-                DBBigData.ImageUrl = "pictures/projectTypDBBigDataUnchecked.png";
-                projectTopics[5] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void SysSec_Click(object sender, ImageClickEventArgs e)
-        {
-            if (SysSec.ImageUrl == "pictures/projectTypSysSecUnchecked.png")
-            {
-                SysSec.ImageUrl = "pictures/projectTypSysSec.png";
-                projectTopics[6] = true;
-            }
-            else
-            {
-                SysSec.ImageUrl = "pictures/projectTypSysSecUnchecked.png";
-                projectTopics[6] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
-
-        protected void SE_Click(object sender, ImageClickEventArgs e)
-        {
-            if (SE.ImageUrl == "pictures/projectTypSEUnchecked.png")
-            {
-                SE.ImageUrl = "pictures/projectTypSE.png";
-                projectTopics[7] = true;
-            }
-            else
-            {
-                SE.ImageUrl = "pictures/projectTypSEUnchecked.png";
-                projectTopics[7] = false;
-            }
-            ViewState["Topics"] = projectTopics;
-        }
 
         public bool CheckVisibility(int id)
         {
@@ -1666,7 +1521,13 @@ namespace ProStudCreator
 
             //1-2 selected ProjectTopics
             var numAssignedTypes = 0;
-            numAssignedTypes = projectTopics.Count(a => a);
+            foreach (var name in topics)
+            {
+                if (((ProjectTopic)projectTopics.FindControl($"Topic{name}")).Selected)
+                {
+                    numAssignedTypes++;
+                }
+            }
 
             if (numAssignedTypes != 1 && numAssignedTypes != 2)
                 return "Bitte wählen Sie genau 1-2 passende Themengebiete aus.";

@@ -13,13 +13,13 @@ namespace ProStudCreator.UserControls
 {
     public partial class ProjectTopicImage : System.Web.UI.UserControl
     {
-        public string Name { get; set; }
         public int Margin { get; set; } = 0;
+        public string Name { get; set; }
 
         private string SelectedBackColor { get; set; }
         private string SelectedFontColor { get => "#000000"; }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_PreRender(object sender, EventArgs e)
         {
             var res = ProjectTopic.getTopicValues(Name);
             SelectedBackColor = res.color;
@@ -47,6 +47,10 @@ namespace ProStudCreator.UserControls
             }
 
             DivWrapper.Style["margin"] = $"{Margin}px";
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
         }
     }
 }

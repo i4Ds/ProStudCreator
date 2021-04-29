@@ -52,51 +52,13 @@ namespace ProStudCreator
                 }),
                 projectName = p.Name,
                 modDate = p.ModificationDate,
+                projectTopic1 = p.GetTopicStrings().Item1,
+                projectTopic2 = p.GetTopicStrings().Item2,
 
                 p5 = p.LogProjectType?.P5 ?? (p.POneType.P5 || (p.PTwoType?.P5 ?? false)),
                 p6 = p.LogProjectType?.P6 ?? (p.POneType.P6 || (p.PTwoType?.P6 ?? false)),
                 lng = p.LogProjectDuration == (byte)2,
                 
-
-                /*
-                projectType1 = "~/pictures/projectTyp" + (p.TypeDesignUX
-                                   ? "DesignUX"
-                                   : (p.TypeHW
-                                       ? "HW"
-                                       : (p.TypeCGIP
-                                           ? "CGIP"
-                                           : (p.TypeMlAlg
-                                               ? "MlAlg"
-                                               : (p.TypeAppWeb
-                                                   ? "AppWeb"
-                                                   : (p.TypeDBBigData
-                                                       ? "DBBigData"
-                                                       : (p.TypeSysSec
-                                                           ? "SysSec"
-                                                           : (p.TypeSE ? "SE" : "Transparent")))))))) + ".png",
-                projectType2 = "~/pictures/projectTyp" + (p.TypeHW && p.TypeDesignUX
-                                   ? "HW"
-                                   : (p.TypeCGIP && (p.TypeDesignUX || p.TypeHW)
-                                       ? "CGIP"
-                                       : (p.TypeMlAlg && (p.TypeDesignUX || p.TypeHW || p.TypeCGIP)
-                                           ? "MlAlg"
-                                           : (p.TypeAppWeb &&
-                                              (p.TypeDesignUX || p.TypeHW || p.TypeCGIP || p.TypeMlAlg)
-                                               ? "AppWeb"
-                                               : (p.TypeDBBigData &&
-                                                  (p.TypeDesignUX || p.TypeHW || p.TypeCGIP || p.TypeMlAlg ||
-                                                   p.TypeAppWeb)
-                                                   ? "DBBigData"
-                                                   : (p.TypeSysSec &&
-                                                      (p.TypeDesignUX || p.TypeHW || p.TypeCGIP || p.TypeMlAlg ||
-                                                       p.TypeAppWeb || p.TypeDBBigData)
-                                                       ? "SysSec"
-                                                       : (p.TypeSE && (p.TypeDesignUX || p.TypeHW || p.TypeCGIP ||
-                                                                       p.TypeMlAlg || p.TypeAppWeb ||
-                                                                       p.TypeDBBigData || p.TypeSysSec)
-                                                           ? "SE"
-                                                           : "Transparent"))))))) + ".png",
-                */
                 ProjectNr = p.GetProjectLabel()
             };
         }
@@ -114,10 +76,6 @@ namespace ProStudCreator
                 }
 
                 e.Row.Cells[e.Row.Cells.Count - 1].Controls.OfType<LinkButton>().First().Visible = project.UserCanDelete(); //delete
-
-                var topics = project.GetTopicStrings();
-                ((UserControls.ProjectTopicImage)e.Row.FindControl("ProjectTopic1")).Name = topics.Item1;
-                ((UserControls.ProjectTopicImage)e.Row.FindControl("ProjectTopic2")).Name = topics.Item2;
 
                 Color col = ColorTranslator.FromHtml(project.StateColor);
                 foreach (TableCell cell in e.Row.Cells)
@@ -186,8 +144,8 @@ namespace ProStudCreator
         public string ProjectNr { get; set; }
         public string advisorName { get; set; }
         public string projectName { get; set; }
-        public string projectType1 { get; set; }
-        public string projectType2 { get; set; }
+        public string projectTopic1 { get; set; }
+        public string projectTopic2 { get; set; }
         public bool p5 { get; set; }
         public bool p6 { get; set; }
         public bool lng { get; set; }
