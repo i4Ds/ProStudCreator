@@ -11,35 +11,38 @@ using System.Web.UI.WebControls;
 
 namespace ProStudCreator.UserControls
 {
-    public partial class ProjectTopicImage : System.Web.UI.UserControl
+    public partial class ProjectTopicImageControl : System.Web.UI.UserControl
     {
         public int Margin { get; set; } = 0;
-        public string Name { get; set; }
+        public Topic Topic { get; set; }
 
         private string SelectedBackColor { get; set; }
         private string SelectedFontColor { get => "#000000"; }
 
         protected void Page_PreRender(object sender, EventArgs e)
         {
-            var res = ProjectTopic.getTopicValues(Name);
-            SelectedBackColor = res.color;
-
-            DivFirstTopic.InnerText = res.firstTopic;
-            if (string.IsNullOrWhiteSpace(res.secondTopic))
+            if (Topic is null)
             {
+                SelectedBackColor = "#FFFFFF";
+
+                DivFirstTopic.InnerText = "";
                 DivSecondTopic.Visible = false;
-            }
-            else
-            {
-                DivSecondTopic.InnerText = res.secondTopic;
-            }
-
-            if (Name == "Transparent")
-            {
                 DivWrapper.Style["opacity"] = "0";
             }
             else
             {
+                SelectedBackColor = $"#{Topic.Color}";
+
+                DivFirstTopic.InnerText = Topic.FirstText;
+                if (string.IsNullOrWhiteSpace(Topic.SecondText))
+                {
+                    DivSecondTopic.Visible = false;
+                }
+                else
+                {
+                    DivSecondTopic.InnerText = Topic.SecondText;
+                }
+
                 DivWrapper.Style["opacity"] = "1";
                 DivWrapper.Style["background-color"] = SelectedBackColor;
                 DivFirstTopic.Style["color"] = SelectedFontColor;

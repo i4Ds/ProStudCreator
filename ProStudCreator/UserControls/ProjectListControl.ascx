@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProjectListControl.ascx.cs" Inherits="ProStudCreator.ProjectListControl" %>
-<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImage" Src="~/UserControls/ProjectTopicImage.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImageControl" Src="~/UserControls/ProjectTopicImageControl.ascx" %>
 
 <asp:GridView ID="ProjectGrid" ItemType="ProStudCreator.ProjectRowElement" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowCommand="ProjectRowClick" OnRowDataBound="ProjectGrid_RowDataBound" AllowSorting="True" OnSorting="ProjectGrid_Sorting">
     <%--<AlternatingRowStyle BackColor="White" />--%>
@@ -12,14 +12,16 @@
         <asp:CheckBoxField HeaderText="P6" DataField="p6" SortExpression="P6"/>
         <asp:TemplateField HeaderText="Themen">
             <ItemTemplate>
-                <UserControl:ProjectTopicImage runat="server" Name='<%# Eval("projectTopic1") %>'></UserControl:ProjectTopicImage>
+                <UserControl:ProjectTopicImageControl runat="server" Topic='<%# Eval("projectTopic1") %>'></UserControl:ProjectTopicImageControl>
             </ItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField>
             <ItemTemplate>
-                <UserControl:ProjectTopicImage runat="server" Name='<%# Eval("projectTopic2") %>'></UserControl:ProjectTopicImage>
+                <UserControl:ProjectTopicImageControl runat="server" Topic='<%# Eval("projectTopic2") %>'></UserControl:ProjectTopicImageControl>
             </ItemTemplate>
         </asp:TemplateField>
+        <asp:CheckBoxField HeaderText="I" DataField="SubmitToCS" SortExpression="CS"/>
+        <asp:CheckBoxField HeaderText="DS" DataField="SubmitToDS" SortExpression="DS"/>
         <asp:BoundField DataField="modDateString" HeaderText="Zuletzt geändert" SortExpression="modDate" />
         <asp:TemplateField ItemStyle-Wrap="false">
             <ItemTemplate>

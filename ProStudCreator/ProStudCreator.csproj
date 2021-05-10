@@ -158,8 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ablauf.aspx" />
-    <Content Include="UserControls\ProjectTopicImage.ascx" />
-    <Content Include="UserControls\ProjectTopic.ascx" />
+    <Content Include="UserControls\ProjectTopicImageControl.ascx" />
+    <Content Include="UserControls\ProjectTopicControl.ascx" />
     <Content Include="UserControls\ProjectTopic.css" />
     <Content Include="ExpertEditPage.aspx" />
     <Content Include="UserControls\ExpertListControl.ascx" />
@@ -178,17 +178,17 @@
     <Content Include="Content\jpg.png" />
     <Content Include="Content\zip.png" />
     <Content Include="error\OutdatedData.aspx" />
-    <Content Include="pictures\danger.png" />
-    <Content Include="pictures\datum.png" />
-    <Content Include="pictures\datun_grau.png" />
-    <Content Include="pictures\experte.png" />
-    <Content Include="pictures\experte_grau.png" />
-    <Content Include="pictures\experte_zahlen.png" />
-    <Content Include="pictures\experte_zahlen_grau.png" />
-    <Content Include="pictures\projectTypMlAlg.png" />
-    <Content Include="pictures\projectTypMlAlgUnchecked.png" />
-    <Content Include="pictures\raum.png" />
-    <Content Include="pictures\raum_grau.png" />
+    <Content Include="pictures\unused\danger.png" />
+    <Content Include="pictures\unused\datum.png" />
+    <Content Include="pictures\unused\datun_grau.png" />
+    <Content Include="pictures\unused\experte.png" />
+    <Content Include="pictures\unused\experte_grau.png" />
+    <Content Include="pictures\unused\experte_zahlen.png" />
+    <Content Include="pictures\unused\experte_zahlen_grau.png" />
+    <Content Include="pictures\old\projectTypMlAlg.png" />
+    <Content Include="pictures\old\projectTypMlAlgUnchecked.png" />
+    <Content Include="pictures\unused\raum.png" />
+    <Content Include="pictures\unused\raum_grau.png" />
     <Content Include="ProjectFilesDownload.aspx" />
     <Content Include="ProjectInfoPage.aspx" />
     <Content Include="ProjectEditPage.aspx" />
@@ -214,11 +214,11 @@
     <Content Include="PDF.aspx" />
     <Content Include="pictures\LogoPDF.png" />
     <Content Include="Content\pdf.png" />
-    <Content Include="pictures\projectTypSE.png" />
-    <Content Include="pictures\projectTypSEUnchecked.png" />
-    <Content Include="pictures\projectTypSysSec.png" />
-    <Content Include="pictures\projectTypSysSecUnchecked.png" />
-    <Content Include="pictures\projectTypTransparent.png" />
+    <Content Include="pictures\old\projectTypSE.png" />
+    <Content Include="pictures\old\projectTypSEUnchecked.png" />
+    <Content Include="pictures\old\projectTypSysSec.png" />
+    <Content Include="pictures\old\projectTypSysSecUnchecked.png" />
+    <Content Include="pictures\old\projectTypTransparent.png" />
     <Content Include="Content\Prozess.PNG" />
     <Content Include="Content\Poster_TemplateI_150923.pptx" />
     <Content Include="Content\Leitfaden_Berichte_4.01.pdf" />
@@ -237,16 +237,16 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="pictures\Logo.png" />
-    <Content Include="pictures\projectTypAppWeb.png" />
-    <Content Include="pictures\projectTypAppWebUnchecked.png" />
-    <Content Include="pictures\projectTypCGIP.png" />
-    <Content Include="pictures\projectTypCGIPUnchecked.png" />
-    <Content Include="pictures\projectTypDBBigData.png" />
-    <Content Include="pictures\projectTypDBBigDataUnchecked.png" />
-    <Content Include="pictures\projectTypDesignUX.png" />
-    <Content Include="pictures\projectTypDesignUXUnchecked.png" />
-    <Content Include="pictures\projectTypHW.png" />
-    <Content Include="pictures\projectTypHWUnchecked.png" />
+    <Content Include="pictures\old\projectTypAppWeb.png" />
+    <Content Include="pictures\old\projectTypAppWebUnchecked.png" />
+    <Content Include="pictures\old\projectTypCGIP.png" />
+    <Content Include="pictures\old\projectTypCGIPUnchecked.png" />
+    <Content Include="pictures\old\projectTypDBBigData.png" />
+    <Content Include="pictures\old\projectTypDBBigDataUnchecked.png" />
+    <Content Include="pictures\old\projectTypDesignUX.png" />
+    <Content Include="pictures\old\projectTypDesignUXUnchecked.png" />
+    <Content Include="pictures\old\projectTypHW.png" />
+    <Content Include="pictures\old\projectTypHWUnchecked.png" />
     <Content Include="Projectlist.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -312,19 +312,19 @@
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ProjectTopicImage.ascx.cs">
-      <DependentUpon>ProjectTopicImage.ascx</DependentUpon>
+    <Compile Include="UserControls\ProjectTopicImageControl.ascx.cs">
+      <DependentUpon>ProjectTopicImageControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UserControls\ProjectTopicImage.ascx.designer.cs">
-      <DependentUpon>ProjectTopicImage.ascx</DependentUpon>
+    <Compile Include="UserControls\ProjectTopicImageControl.ascx.designer.cs">
+      <DependentUpon>ProjectTopicImageControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ProjectTopic.ascx.cs">
-      <DependentUpon>ProjectTopic.ascx</DependentUpon>
+    <Compile Include="UserControls\ProjectTopicControl.ascx.cs">
+      <DependentUpon>ProjectTopicControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UserControls\ProjectTopic.ascx.designer.cs">
-      <DependentUpon>ProjectTopic.ascx</DependentUpon>
+    <Compile Include="UserControls\ProjectTopicControl.ascx.designer.cs">
+      <DependentUpon>ProjectTopicControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="ExpertEditPage.aspx.cs">
       <DependentUpon>ExpertEditPage.aspx</DependentUpon>

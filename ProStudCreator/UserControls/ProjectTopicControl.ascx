@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProjectTopic.ascx.cs" Inherits="ProStudCreator.UserControls.ProjectTopic" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProjectTopicControl.ascx.cs" Inherits="ProStudCreator.UserControls.ProjectTopicControl" %>
 
 <asp:UpdatePanel runat="server" UpdateMode="Conditional" ID="TopicUpdatePanel" ChildrenAsTriggers="true">
     <ContentTemplate>

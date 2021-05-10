@@ -66,6 +66,9 @@ namespace ProStudCreator
     partial void InsertTaskRun(TaskRun instance);
     partial void UpdateTaskRun(TaskRun instance);
     partial void DeleteTaskRun(TaskRun instance);
+    partial void InsertTopic(Topic instance);
+    partial void UpdateTopic(Topic instance);
+    partial void DeleteTopic(Topic instance);
     #endregion
 		
 		public ProStudentCreatorDBDataContext() : 
@@ -191,6 +194,14 @@ namespace ProStudCreator
 			get
 			{
 				return this.GetTable<TaskRun>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Topic> Topics
+		{
+			get
+			{
+				return this.GetTable<Topic>();
 			}
 		}
 	}
@@ -1497,6 +1508,14 @@ namespace ProStudCreator
 		
 		private string _LogStudent2LastName;
 		
+		private bool _SubmitToStudyCourseCS;
+		
+		private bool _SubmitToStudyCourseDS;
+		
+		private System.Nullable<byte> _LogStudyCourse;
+		
+		private string _Topics;
+		
 		private EntitySet<Project> _Projects;
 		
 		private EntitySet<Attachements> _Attachements;
@@ -1689,6 +1708,14 @@ namespace ProStudCreator
     partial void OnLogStudent1LastNameChanged();
     partial void OnLogStudent2LastNameChanging(string value);
     partial void OnLogStudent2LastNameChanged();
+    partial void OnSubmitToStudyCourseCSChanging(bool value);
+    partial void OnSubmitToStudyCourseCSChanged();
+    partial void OnSubmitToStudyCourseDSChanging(bool value);
+    partial void OnSubmitToStudyCourseDSChanged();
+    partial void OnLogStudyCourseChanging(System.Nullable<byte> value);
+    partial void OnLogStudyCourseChanged();
+    partial void OnTopicsChanging(string value);
+    partial void OnTopicsChanged();
     #endregion
 		
 		public Project()
@@ -2847,7 +2874,7 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogDefenceRoom", DbType="NChar(10)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogDefenceRoom", DbType="nvarchar(500)")]
 		public string LogDefenceRoom
 		{
 			get
@@ -3335,6 +3362,86 @@ namespace ProStudCreator
 					this._LogStudent2LastName = value;
 					this.SendPropertyChanged("LogStudent2LastName");
 					this.OnLogStudent2LastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubmitToStudyCourseCS", DbType="bit NOT NULL")]
+		public bool SubmitToStudyCourseCS
+		{
+			get
+			{
+				return this._SubmitToStudyCourseCS;
+			}
+			set
+			{
+				if ((this._SubmitToStudyCourseCS != value))
+				{
+					this.OnSubmitToStudyCourseCSChanging(value);
+					this.SendPropertyChanging();
+					this._SubmitToStudyCourseCS = value;
+					this.SendPropertyChanged("SubmitToStudyCourseCS");
+					this.OnSubmitToStudyCourseCSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubmitToStudyCourseDS", DbType="bit NOT NULL")]
+		public bool SubmitToStudyCourseDS
+		{
+			get
+			{
+				return this._SubmitToStudyCourseDS;
+			}
+			set
+			{
+				if ((this._SubmitToStudyCourseDS != value))
+				{
+					this.OnSubmitToStudyCourseDSChanging(value);
+					this.SendPropertyChanging();
+					this._SubmitToStudyCourseDS = value;
+					this.SendPropertyChanged("SubmitToStudyCourseDS");
+					this.OnSubmitToStudyCourseDSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
+		public System.Nullable<byte> LogStudyCourse
+		{
+			get
+			{
+				return this._LogStudyCourse;
+			}
+			set
+			{
+				if ((this._LogStudyCourse != value))
+				{
+					this.OnLogStudyCourseChanging(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourse = value;
+					this.SendPropertyChanged("LogStudyCourse");
+					this.OnLogStudyCourseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Topics", DbType="nvarchar(200)", CanBeNull=false)]
+		public string Topics
+		{
+			get
+			{
+				return this._Topics;
+			}
+			set
+			{
+				if ((this._Topics != value))
+				{
+					this.OnTopicsChanging(value);
+					this.SendPropertyChanging();
+					this._Topics = value;
+					this.SendPropertyChanged("Topics");
+					this.OnTopicsChanged();
 				}
 			}
 		}
@@ -5993,6 +6100,164 @@ namespace ProStudCreator
 					this._Forced = value;
 					this.SendPropertyChanged("Forced");
 					this.OnForcedChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Topic")]
+	public partial class Topic : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _FirstText;
+		
+		private string _SecondText;
+		
+		private string _Tooltip;
+		
+		private string _Color;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnFirstTextChanging(string value);
+    partial void OnFirstTextChanged();
+    partial void OnSecondTextChanging(string value);
+    partial void OnSecondTextChanged();
+    partial void OnTooltipChanging(string value);
+    partial void OnTooltipChanged();
+    partial void OnColorChanging(string value);
+    partial void OnColorChanged();
+    #endregion
+		
+		public Topic()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstText", DbType="NVarChar(10)")]
+		public string FirstText
+		{
+			get
+			{
+				return this._FirstText;
+			}
+			set
+			{
+				if ((this._FirstText != value))
+				{
+					this.OnFirstTextChanging(value);
+					this.SendPropertyChanging();
+					this._FirstText = value;
+					this.SendPropertyChanged("FirstText");
+					this.OnFirstTextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecondText", DbType="NVarChar(10)")]
+		public string SecondText
+		{
+			get
+			{
+				return this._SecondText;
+			}
+			set
+			{
+				if ((this._SecondText != value))
+				{
+					this.OnSecondTextChanging(value);
+					this.SendPropertyChanging();
+					this._SecondText = value;
+					this.SendPropertyChanged("SecondText");
+					this.OnSecondTextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tooltip", DbType="NVarChar(100)")]
+		public string Tooltip
+		{
+			get
+			{
+				return this._Tooltip;
+			}
+			set
+			{
+				if ((this._Tooltip != value))
+				{
+					this.OnTooltipChanging(value);
+					this.SendPropertyChanging();
+					this._Tooltip = value;
+					this.SendPropertyChanged("Tooltip");
+					this.OnTooltipChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Color", DbType="NChar(6)")]
+		public string Color
+		{
+			get
+			{
+				return this._Color;
+			}
+			set
+			{
+				if ((this._Color != value))
+				{
+					this.OnColorChanging(value);
+					this.SendPropertyChanging();
+					this._Color = value;
+					this.SendPropertyChanged("Color");
+					this.OnColorChanged();
 				}
 			}
 		}

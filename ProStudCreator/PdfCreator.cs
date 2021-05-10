@@ -100,17 +100,23 @@ namespace ProStudCreator
 
             var proj = currentProject;
 
+            // var topic1 = GetCurrentProjectTypeOne(proj);
+            // var topic2 = GetCurrentProjectTypeTwo(proj);
 
-            var topic1 = GetCurrentProjectTypeOne(proj);
-            var topic2 = GetCurrentProjectTypeTwo(proj);
+            var topics = proj.GetProjectTopics(db);
+            var topic1 = topics.ElementAtOrDefault(0);
+            var topic2 = topics.ElementAtOrDefault(1);
 
             var cb = writer.DirectContent;
 
-            if (topic1 != "Transparent")
+            if (topic1 != null)
             {
                 Font topicFont = new Font(Font.FontFamily.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
 
-                (var topic1name1, var topic1name2, _, var topic1color) = ProjectTopic.getTopicValues(topic1);
+                // (var topic1name1, var topic1name2, _, var topic1color) = ProjectTopic.getTopicValues(topic1);
+                var topic1name1 = topic1.FirstText;
+                var topic1name2 = topic1.SecondText;
+                var topic1color = $"#{topic1.Color}";
 
                 var rectW = 50;
                 var rectH = 32;
@@ -141,10 +147,13 @@ namespace ProStudCreator
                     ct.Go();
                 }
 
-                if (topic2 != "Transparent")
+                if (topic2 != null)
                 {
                     var rect2llx = 443;
-                    (var topic2name1, var topic2name2, _, var topic2color) = ProjectTopic.getTopicValues(topic2);
+                    // (var topic2name1, var topic2name2, _, var topic2color) = ProjectTopic.getTopicValues(topic2);
+                    var topic2name1 = topic2.FirstText;
+                    var topic2name2 = topic2.SecondText;
+                    var topic2color = $"#{topic2.Color}";
 
                     cb.SetColorFill(new BaseColor(System.Drawing.ColorTranslator.FromHtml(topic2color)));
                     cb.Rectangle(rect2llx, rectlly, rectW, rectH);

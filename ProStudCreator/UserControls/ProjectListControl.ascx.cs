@@ -31,7 +31,8 @@ namespace ProStudCreator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Grid.Columns[8].Visible = ShowModificationDate;
+            // Grid.Columns[10].Visible = ShowModificationDate;
+            Grid.Columns[Grid.Columns.Count - 5].Visible = ShowModificationDate;
         }
 
         private ProjectRowElement GetProjectRowElement(Project p)
@@ -52,12 +53,15 @@ namespace ProStudCreator
                 }),
                 projectName = p.Name,
                 modDate = p.ModificationDate,
-                projectTopic1 = p.GetTopicStrings().Item1,
-                projectTopic2 = p.GetTopicStrings().Item2,
+                projectTopic1 = p.GetProjectTopics(db).ElementAtOrDefault(0),
+                projectTopic2 = p.GetProjectTopics(db).ElementAtOrDefault(1),
 
                 p5 = p.LogProjectType?.P5 ?? (p.POneType.P5 || (p.PTwoType?.P5 ?? false)),
                 p6 = p.LogProjectType?.P6 ?? (p.POneType.P6 || (p.PTwoType?.P6 ?? false)),
                 lng = p.LogProjectDuration == (byte)2,
+
+                SubmitToCS = p.LogStudyCourse is null ? p.SubmitToStudyCourseCS : p.LogStudyCourse == 1,
+                SubmitToDS = p.LogStudyCourse is null ? p.SubmitToStudyCourseDS : p.LogStudyCourse == 2,
                 
                 ProjectNr = p.GetProjectLabel()
             };
@@ -144,11 +148,13 @@ namespace ProStudCreator
         public string ProjectNr { get; set; }
         public string advisorName { get; set; }
         public string projectName { get; set; }
-        public string projectTopic1 { get; set; }
-        public string projectTopic2 { get; set; }
+        public Topic projectTopic1 { get; set; }
+        public Topic projectTopic2 { get; set; }
         public bool p5 { get; set; }
         public bool p6 { get; set; }
         public bool lng { get; set; }
+        public bool SubmitToCS { get; set; }
+        public bool SubmitToDS { get; set; }
         public DateTime modDate { get; set; }
         public string modDateString { get => modDate.ToString("dd.MM.yyyy"); }
     }

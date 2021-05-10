@@ -17,7 +17,6 @@ namespace ProStudCreator
         {
             _p.Creator = ShibUser.GetEmail();
             _p.CreateDate = DateTime.Now;
-            // _p.PublishedDate = DateTime.Now;
             _p.State = ProjectState.InProgress;
             _p.IsMainVersion = true;
         }
@@ -43,7 +42,6 @@ namespace ProStudCreator
 
             return $"{prefix}/{school}/{course}/{projectType}/{sem}/{fullNr}";
         }
-
 
         public static Project CopyProject(this Project _p)
         {
@@ -133,6 +131,7 @@ namespace ProStudCreator
             _p.LogStudent2Mail = null;
             _p.LogStudent2FirstName = null;
             _p.LogStudent2LastName = null;
+            _p.LogStudyCourse = null;
             db.SubmitChanges();
         }
 
@@ -255,14 +254,7 @@ namespace ProStudCreator
                 if (!string.Equals(p1.Reservation2Name, p2.Reservation2Name)) return true;
                 if (!string.Equals(p1.Reservation2Mail, p2.Reservation2Mail)) return true;
 
-                if (p1.TypeDesignUX != p2.TypeDesignUX) return true;
-                if (p1.TypeHW != p2.TypeHW) return true;
-                if (p1.TypeCGIP != p2.TypeCGIP) return true;
-                if (p1.TypeMlAlg != p2.TypeMlAlg) return true;
-                if (p1.TypeAppWeb != p2.TypeAppWeb) return true;
-                if (p1.TypeDBBigData != p2.TypeDBBigData) return true;
-                if (p1.TypeSysSec != p2.TypeSysSec) return true;
-                if (p1.TypeSE != p2.TypeSE) return true;
+                if (p1.Topics != p2.Topics) return true;
                 
                 if (!string.Equals(p1.ImgDescription, p2.ImgDescription)) return true;
 
@@ -272,6 +264,9 @@ namespace ProStudCreator
                 if (!string.Equals(p1.References, p2.References)) return true;
                 if (!string.Equals(p1.Remarks, p2.Remarks)) return true;
                 if (!string.Equals(p1.Notes, p2.Notes)) return true;
+
+                if (p1.SubmitToStudyCourseCS != p2.SubmitToStudyCourseCS) return true;
+                if (p1.SubmitToStudyCourseDS != p2.SubmitToStudyCourseDS) return true;
             }
 
             if (checkInfo)
@@ -299,6 +294,8 @@ namespace ProStudCreator
 
                 if (p1.LogGradeStudent1 != p2.LogGradeStudent1) return true;
                 if (p1.LogGradeStudent2 != p2.LogGradeStudent2) return true;
+
+                if (p1.LogStudyCourse != p2.LogStudyCourse) return true;
             }
 
             return false;
@@ -317,6 +314,8 @@ namespace ProStudCreator
             return duplicatedProject;
         }
 
+        /*
+
         /// <summary>
         ///     Validates the user's input and generates an error message for invalid input.
         ///     One message is returned at a time, processed top to bottom.
@@ -334,10 +333,8 @@ namespace ProStudCreator
             if (_p.ClientMail.Trim().Length != 0 && !_p.ClientMail.IsValidEmail())
                 validationMessage = "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
 
-            /*
             if ((!_p.Advisor1?.Name.IsValidName()) ?? true)
                 validationMessage = "Bitte wählen Sie einen Hauptbetreuer aus.";
-            */
 
             var numAssignedTypes = 0;
             if (projectTypes == null)
@@ -412,6 +409,8 @@ namespace ProStudCreator
             return projectType;
         }
 
+        */
+
 
         /***
          * 
@@ -422,7 +421,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 96; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 100; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -512,6 +511,10 @@ namespace ProStudCreator
             target.WebSummaryChecked = _p.WebSummaryChecked;
             target.GradeSentToAdmin = _p.GradeSentToAdmin;
             target.Notes = _p.Notes;
+            target.SubmitToStudyCourseCS = _p.SubmitToStudyCourseCS;
+            target.SubmitToStudyCourseDS = _p.SubmitToStudyCourseDS;
+            target.LogStudyCourse = _p.LogStudyCourse;
+            target.Topics = _p.Topics;
         }
 
         public static Project CreateNewProject(ProStudentCreatorDBDataContext db)
@@ -554,6 +557,7 @@ namespace ProStudCreator
 
         #region Getters
 
+        /*
         public static int GetProjectTeamSize(this Project _p)
         {
             if (_p.POneTeamSize.Size2 ||
@@ -561,6 +565,7 @@ namespace ProStudCreator
                 return 2;
             return 1;
         }
+        */
 
         public static DateTime? GetDeliveryDate(this Project _p)
         {
@@ -592,53 +597,24 @@ namespace ProStudCreator
         public static string GetStudent1FullName(this Project _p) => $"{_p.LogStudent1FirstName ?? ""}{(_p.LogStudent1LastName != null ? $" {_p.LogStudent1LastName}" : "")}";
         public static string GetStudent2FullName(this Project _p) => $"{_p.LogStudent2FirstName ?? ""}{(_p.LogStudent2LastName != null ? $" {_p.LogStudent2LastName}" : "")}";
 
-        public static bool RightAmountOfTopics(this Project _p)
+        public static bool RightAmountOfTopics(this Project _p, ProStudentCreatorDBDataContext db)
         {
-            var topics = _p.GetProjectTypeBools();
-            var c = topics.Where(b => b).Count();
-            return (c == 1 || c == 2);
+            var numTopics = _p.GetProjectTopics(db).Count();
+            return numTopics == 1 || numTopics == 2;
         }
 
-        public static (string, string) GetTopicStrings(this Project _p)
+        public static List<Topic> GetProjectTopics(this Project _p, ProStudentCreatorDBDataContext db)
         {
-            var topic1 = _p.TypeDesignUX
-                   ? "DesignUX"
-                   : (_p.TypeHW
-                       ? "HW"
-                       : (_p.TypeCGIP
-                           ? "CGIP"
-                           : (_p.TypeMlAlg
-                               ? "MLAlg"
-                               : (_p.TypeAppWeb
-                                   ? "AppWeb"
-                                   : (_p.TypeDBBigData
-                                       ? "DBBigData"
-                                       : (_p.TypeSysSec
-                                           ? "SysSec"
-                                           : (_p.TypeSE ? "SERE" : "Transparent")))))));
-             var topic2 = _p.TypeHW && _p.TypeDesignUX
-                                   ? "HW"
-                                   : (_p.TypeCGIP && (_p.TypeDesignUX || _p.TypeHW)
-                                       ? "CGIP"
-                                       : (_p.TypeMlAlg && (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP)
-                                           ? "MLAlg"
-                                           : (_p.TypeAppWeb &&
-                                              (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP || _p.TypeMlAlg)
-                                               ? "AppWeb"
-                                               : (_p.TypeDBBigData &&
-                                                  (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP || _p.TypeMlAlg ||
-                                                   _p.TypeAppWeb)
-                                                   ? "DBBigData"
-                                                   : (_p.TypeSysSec &&
-                                                      (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP || _p.TypeMlAlg ||
-                                                       _p.TypeAppWeb || _p.TypeDBBigData)
-                                                       ? "SysSec"
-                                                       : (_p.TypeSE && (_p.TypeDesignUX || _p.TypeHW || _p.TypeCGIP ||
-                                                                       _p.TypeMlAlg || _p.TypeAppWeb ||
-                                                                       _p.TypeDBBigData || _p.TypeSysSec)
-                                                           ? "SERE"
-                                                           : "Transparent"))))));
-            return (topic1, topic2);
+            var topicList = new List<Topic>();
+            foreach (var topicId in _p.Topics.Split(','))
+            {
+                if (int.TryParse(topicId, out int id))
+                {
+                    var topic = db.Topics.FirstOrDefault(t => t.Id == id);
+                    topicList.Add(topic);
+                }
+            }
+            return topicList;
         }
 
         public static bool MinimalClientInformationProvided(this Project _p)
@@ -851,7 +827,7 @@ namespace ProStudCreator
         /// <param name="_p"></param>
         public static void Submit(this Project _p, ProStudentCreatorDBDataContext _db)
         {
-            if (!CheckTransitionSubmit(_p)) HandleInvalidState(_p, "Submit");
+            if (!CheckTransitionSubmit(_p, _db)) HandleInvalidState(_p, "Submit");
             
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Submitted;
@@ -890,7 +866,7 @@ namespace ProStudCreator
         /// <param name="_p"></param>
         public static void Publish(this Project _p, ProStudentCreatorDBDataContext _db)
         {
-            if (!CheckTransitionPublish(_p)) HandleInvalidState(_p, "Publish");
+            if (!CheckTransitionPublish(_p, _db)) HandleInvalidState(_p, "Publish");
 
             if (_p.PreviousProject != null)
             {
@@ -985,7 +961,7 @@ namespace ProStudCreator
 
         #region Transition Checks
 
-        public static bool CheckTransitionSubmit(this Project _p)
+        public static bool CheckTransitionSubmit(this Project _p, ProStudentCreatorDBDataContext db)
         {
             // Permission
             return _p.UserCanSubmit()
@@ -994,11 +970,13 @@ namespace ProStudCreator
                 // Advisor1
                 && _p.Advisor1 != null
                 // 1-2 Topics
-                && _p.RightAmountOfTopics()
+                && _p.RightAmountOfTopics(db)
                 // Client Information (Depending on ClientType)
                 && _p.MinimalClientInformationProvided()
                 // Reservation (Depending on PreviousProject)
-                && _p.StudentsAccordingToPreviousProject();
+                && _p.StudentsAccordingToPreviousProject()
+                // Study course (at least one)
+                && (_p.SubmitToStudyCourseCS || _p.SubmitToStudyCourseDS);
         }
 
         public static bool CheckTransitionUnsubmit(this Project _p)
@@ -1015,7 +993,7 @@ namespace ProStudCreator
                 && !string.IsNullOrWhiteSpace(_p.Ablehnungsgrund);
         }
 
-        public static bool CheckTransitionPublish(this Project _p)
+        public static bool CheckTransitionPublish(this Project _p, ProStudentCreatorDBDataContext db)
         {
             // Permission
             return _p.UserCanPublish()
@@ -1024,11 +1002,13 @@ namespace ProStudCreator
                 // Advisor1
                 && _p.Advisor1 != null
                 // 1-2 Topics
-                && _p.RightAmountOfTopics()
+                && _p.RightAmountOfTopics(db)
                 // Client Information (Depending on ClientType)
                 && _p.MinimalClientInformationProvided()
                 // Reservation (Depending on PreviousProject)
-                && _p.StudentsAccordingToPreviousProject();
+                && _p.StudentsAccordingToPreviousProject()
+                // Study course (at least one)
+                && (_p.SubmitToStudyCourseCS || _p.SubmitToStudyCourseDS);
         }
 
         public static bool CheckTransitionKickoff(this Project _p)
@@ -1039,6 +1019,8 @@ namespace ProStudCreator
                 && (_p.LogProjectType.P5 || _p.LogProjectType.P6)
                 // ProjectDuration
                 && _p.LogProjectDuration.HasValue
+                // Study course
+                && _p.LogStudyCourse.HasValue
                 // Student1
                 && _p.CheckStudent1()
                 // Student2
@@ -1355,6 +1337,7 @@ namespace ProStudCreator
         public string ClientAddressCity { get; set; }
         public string ClientReferenceNumber { get; set; }
         public bool UnderNDA { get; set; }
+        public string Topics { get; set; }
 
         // Edit
         public System.Nullable<int> SemesterId { get; set; }
@@ -1393,6 +1376,8 @@ namespace ProStudCreator
         public string References { get; set; }
         public string Remarks { get; set; }
         public string Notes { get; set; }
+        public bool SubmitToStudyCourseCS { get; set; }
+        public bool SubmitToStudyCourseDS { get; set; }
 
         // Info Page
         public string LogStudent1Evento { get; set; }
@@ -1417,6 +1402,7 @@ namespace ProStudCreator
 
         public System.Nullable<float> LogGradeStudent1 { get; set; }
         public System.Nullable<float> LogGradeStudent2 { get; set; }
+        public System.Nullable<int> LogStudyCourse { get; set; }
     }
 
     public partial class Project

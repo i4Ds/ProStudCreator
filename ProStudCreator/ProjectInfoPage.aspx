@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Projekt Information" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProjectInfoPage.aspx.cs" Inherits="ProStudCreator.ProjectInfoPage" EnableEventValidation="false" %>
-<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImage" Src="~/UserControls/ProjectTopicImage.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="ProjectTopicImageControl" Src="~/UserControls/ProjectTopicImageControl.ascx" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 <asp:Content ID="ProjectInofpageContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -55,8 +55,8 @@
                     <asp:TextBox runat="server" ID="ProjectTitleAdmin" CssClass="form-control maxWidth" MaxLength="120"></asp:TextBox>
                 </div>
                 <div class="col-md-3">
-                    <UserControl:ProjectTopicImage runat="server" ID="ProjectTopicImage1" Margin="4"/>
-                    <UserControl:ProjectTopicImage runat="server" ID="ProjectTopicImage2" Margin="4"/>
+                    <UserControl:ProjectTopicImageControl runat="server" ID="ProjectTopicImage1" Margin="4"/>
+                    <UserControl:ProjectTopicImageControl runat="server" ID="ProjectTopicImage2" Margin="4"/>
                 </div>
             </div>
             <div class="form-group" style="text-align: left">
@@ -135,6 +135,21 @@
                     </asp:DropDownList>
                 </div>
             </div>
+
+            <div runat="server" id="DivStudyCourse" class="form-group">
+                <asp:Label runat="server" Text="Studiengang:" CssClass="control-label col-md-3"></asp:Label>
+                <asp:Label runat="server" ID="LabelStudyCourse" CssClass="col-md-3 alignbottom"></asp:Label>
+            </div>
+            <div runat="server" id="DivStudyCourseAdmin" class="form-group">
+                <asp:Label runat="server" Text="Studiengang:" CssClass="control-label col-md-3"></asp:Label>
+                <div class="col-md-6">
+                    <asp:DropDownList runat="server" ID="DropStudyCourse" DataValueField="Id" DataTextField="Description" CssClass="form-control">
+                        <asp:ListItem Text="(Bitte Auswählen)" Value="dropStudyCourseImpossibleValue" />
+                        <asp:ListItem Text="Informatik" Value="1"/>
+                        <asp:ListItem Text="Data Science" Value="2"/>
+                    </asp:DropDownList>
+                </div>
+            </div>
             <hr />
 
             <div runat="server" id="DivDelivery" class="form-group">
@@ -161,7 +176,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-3">
-                        <asp:TextBox runat="server" ID="TextBoxLabelPresentationRoom" CssClass="form-control" placeholder="Raum"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="TextBoxLabelPresentationRoom" CssClass="form-control" placeholder="Raum" MaxLength="500"></asp:TextBox>
                     </div>
                 </div>
             </div>

@@ -11,17 +11,8 @@ namespace ProStudCreator.UserControls
 {
 
 
-    public partial class ProjectTopic
+    public partial class ProjectTopicImageControl
     {
-
-        /// <summary>
-        /// TopicUpdatePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel TopicUpdatePanel;
 
         /// <summary>
         /// DivWrapper control.
@@ -31,15 +22,6 @@ namespace ProStudCreator.UserControls
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel DivWrapper;
-
-        /// <summary>
-        /// ButToggle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ButToggle;
 
         /// <summary>
         /// DivFirstTopic control.

@@ -10,9 +10,9 @@ using System.Web.UI.WebControls;
 
 namespace ProStudCreator.UserControls
 {
-    public partial class ProjectTopic : System.Web.UI.UserControl
+    public partial class ProjectTopicControl : System.Web.UI.UserControl
     {
-        public string Name { get; set; }
+        public Topic Topic { get; set; }
         public bool Selected
         {
             get
@@ -26,7 +26,7 @@ namespace ProStudCreator.UserControls
         }
 
         private bool internalSelected = false;
-        private string ViewStateKey { get => $"ProjectTopic_{Name}"; }
+        private string ViewStateKey { get => $"ProjectTopic_{Topic?.Id ?? 0}"; }
         private string SelectedBackColor { get; set; }
         private string UnselectedBackColor { get => "#E8E6E6"; }
         private string SelectedFontColor { get => "#000000"; }
@@ -34,8 +34,7 @@ namespace ProStudCreator.UserControls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var res = getTopicValues(Name);
-            SelectedBackColor = res.color;
+            SelectedBackColor = $"#{Topic.Color}";
 
             if (IsPostBack)
             {
@@ -43,15 +42,15 @@ namespace ProStudCreator.UserControls
             }
             else
             {
-                DivWrapper.ToolTip = res.toolTip;
-                DivFirstTopic.InnerText = res.firstTopic;
-                if (string.IsNullOrWhiteSpace(res.secondTopic))
+                DivWrapper.ToolTip = Topic.Tooltip;
+                DivFirstTopic.InnerText = Topic.FirstText;
+                if (string.IsNullOrWhiteSpace(Topic.SecondText))
                 {
                     DivSecondTopic.Visible = false;
                 }
                 else
                 {
-                    DivSecondTopic.InnerText = res.secondTopic;
+                    DivSecondTopic.InnerText = Topic.SecondText;
                 }
                 Selected = Selected;
                 UpdateColors();
@@ -91,6 +90,7 @@ namespace ProStudCreator.UserControls
             DivSecondTopic.Style["color"] = UnselectedFontColor;
         }
 
+        /*
         public static (string firstTopic, string secondTopic, string toolTip, string color) getTopicValues(string name)
         {
             switch(name)
@@ -119,5 +119,6 @@ namespace ProStudCreator.UserControls
                     throw new Exception("No topic with this name");
             }
         }
+        */
     }
 }

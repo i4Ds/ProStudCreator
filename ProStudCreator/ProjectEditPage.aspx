@@ -1,5 +1,4 @@
 ﻿<%@ Page Title="Projekt bearbeiten" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="ProjectEditPage.aspx.cs" Inherits="ProStudCreator.ProjectEditPage" %>
-<%@ Register TagPrefix="UserControl" TagName="ProjectTopic" Src="~/UserControls/ProjectTopic.ascx" %>
 
 <%@ Import Namespace="ProStudCreator" %>
 
@@ -224,6 +223,15 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
+            <div class="form-group">
+                <asp:Label runat="server" CssClass="control-label col-md-3" Text="Ausschreiben in:"></asp:Label>
+                <div class="col-md-3">
+                    <asp:CheckBox runat="server" ID="chkSCCS" CssClass="form-control" Text=" Studiengang Informatik" />
+                </div>
+                <div class="col-md-3">
+                    <asp:CheckBox runat="server" ID="chkSCDS" CssClass="form-control" Text=" Studiengang Data Science" />
+                </div>
+            </div>
             <hr />
             <asp:UpdatePanel UpdateMode="Conditional" runat="server" ID="updateClient">
                 <Triggers>

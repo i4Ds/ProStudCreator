@@ -22,8 +22,6 @@ namespace ProStudCreator
         private bool imageDeleted = false;
         //private Binary picture;
 
-        private List<string> topics = new List<string>() { "DesignUX", "HW", "CGIP", "MLAlg", "DBBigData", "AppWeb", "SysSec", "SERE" };
-
         private readonly string dropSemesterImpossibleValue = "dropSemesterImpossibleValue";
         private readonly string dropPreviousProjectImpossibleValue = "dropPreviousProjectImpossibleValue";
         private readonly string dropAdvisor1ImpossibleValue = "dropAdvisor1ImpossibleValue";
@@ -58,11 +56,11 @@ namespace ProStudCreator
 
         protected void Page_Init(object sender, EventArgs e)
         {
-            foreach (var name in topics)
+            foreach (var t in db.Topics.ToList())
             {
-                ProjectTopic pt = (ProjectTopic)Page.LoadControl("~/UserControls/ProjectTopic.ascx");
-                pt.ID = $"Topic{name}";
-                pt.Name = name;
+                ProjectTopicControl pt = (ProjectTopicControl)Page.LoadControl("~/UserControls/ProjectTopicControl.ascx");
+                pt.ID = $"Topic{t.Id}";
+                pt.Topic = t;
                 projectTopics.Controls.Add(pt);
             }
         }
@@ -192,6 +190,10 @@ namespace ProStudCreator
             FillDropPriority(isNewProject);
             DisplayPriority();
 
+            //Study Course
+            chkSCCS.Checked = pageProject?.SubmitToStudyCourseCS ?? false;
+            chkSCDS.Checked = pageProject?.SubmitToStudyCourseDS ?? false;
+
             //Client
             DisplayClient(isNewProject);
 
@@ -276,7 +278,7 @@ namespace ProStudCreator
 
                 if (isNewProject)
                 {
-                    dropSemester.SelectedValue = Semester.NextSemester(db).Id.ToString();
+                    dropSemester.SelectedValue = dropSemesterImpossibleValue;
                 }
                 else
                 {
@@ -599,14 +601,12 @@ namespace ProStudCreator
         {
             if (!isNewProject)
             {
-                ((ProjectTopic)projectTopics.FindControl("TopicDesignUX")).Selected = pageProject.TypeDesignUX;
-                ((ProjectTopic)projectTopics.FindControl("TopicHW")).Selected = pageProject.TypeHW;
-                ((ProjectTopic)projectTopics.FindControl("TopicCGIP")).Selected = pageProject.TypeCGIP;
-                ((ProjectTopic)projectTopics.FindControl("TopicMLAlg")).Selected = pageProject.TypeMlAlg;
-                ((ProjectTopic)projectTopics.FindControl("TopicAppWeb")).Selected = pageProject.TypeAppWeb;
-                ((ProjectTopic)projectTopics.FindControl("TopicDBBigData")).Selected = pageProject.TypeDBBigData;
-                ((ProjectTopic)projectTopics.FindControl("TopicSysSec")).Selected = pageProject.TypeSysSec;
-                ((ProjectTopic)projectTopics.FindControl("TopicSERE")).Selected = pageProject.TypeSE;
+                var pTopics = pageProject.GetProjectTopics(db);
+
+                foreach (var topic in pTopics)
+                {
+                    ((ProjectTopicControl)projectTopics.FindControl($"Topic{topic.Id}")).Selected = true;
+                }
             }
         }
 
@@ -704,6 +704,10 @@ namespace ProStudCreator
                 project.PTwoTeamSize = null;
             }
 
+            // Study Course
+            project.SubmitToStudyCourseCS = chkSCCS.Checked;
+            project.SubmitToStudyCourseDS = chkSCDS.Checked;
+
             //Client
             if (radioClientType.SelectedIndex != (int)ClientType.Internal)
             {
@@ -761,14 +765,13 @@ namespace ProStudCreator
             }
 
             // Project topics
-            project.TypeDesignUX = ((ProjectTopic)projectTopics.FindControl("TopicDesignUX")).Selected;
-            project.TypeHW = ((ProjectTopic)projectTopics.FindControl("TopicHW")).Selected;
-            project.TypeCGIP = ((ProjectTopic)projectTopics.FindControl("TopicCGIP")).Selected;
-            project.TypeMlAlg = ((ProjectTopic)projectTopics.FindControl("TopicMLAlg")).Selected;
-            project.TypeAppWeb = ((ProjectTopic)projectTopics.FindControl("TopicAppWeb")).Selected;
-            project.TypeDBBigData = ((ProjectTopic)projectTopics.FindControl("TopicDBBigData")).Selected;
-            project.TypeSysSec = ((ProjectTopic)projectTopics.FindControl("TopicSysSec")).Selected;
-            project.TypeSE = ((ProjectTopic)projectTopics.FindControl("TopicSERE")).Selected;
+            var idList = new List<int>();
+            foreach (var topic in db.Topics.ToList()) {
+                if (((ProjectTopicControl)projectTopics.FindControl($"Topic{topic.Id}")).Selected)
+                    idList.Add(topic.Id);
+            }
+            idList.Sort();
+            project.Topics = string.Join(",", idList);
 
             //Picture description
             project.ImgDescription = imgdescription.Text.FixupParagraph();
@@ -864,6 +867,10 @@ namespace ProStudCreator
                 project.P2TeamSizeId = null;
             }
 
+            // Study Course
+            project.SubmitToStudyCourseCS = chkSCCS.Checked;
+            project.SubmitToStudyCourseDS = chkSCDS.Checked;
+
             //Client
             if (radioClientType.SelectedIndex != (int)ClientType.Internal)
             {
@@ -921,14 +928,14 @@ namespace ProStudCreator
             }
 
             // Project topics
-            project.TypeDesignUX = ((ProjectTopic)projectTopics.FindControl("TopicDesignUX")).Selected;
-            project.TypeHW = ((ProjectTopic)projectTopics.FindControl("TopicHW")).Selected;
-            project.TypeCGIP = ((ProjectTopic)projectTopics.FindControl("TopicCGIP")).Selected;
-            project.TypeMlAlg = ((ProjectTopic)projectTopics.FindControl("TopicMLAlg")).Selected;
-            project.TypeAppWeb = ((ProjectTopic)projectTopics.FindControl("TopicAppWeb")).Selected;
-            project.TypeDBBigData = ((ProjectTopic)projectTopics.FindControl("TopicDBBigData")).Selected;
-            project.TypeSysSec = ((ProjectTopic)projectTopics.FindControl("TopicSysSec")).Selected;
-            project.TypeSE = ((ProjectTopic)projectTopics.FindControl("TopicSERE")).Selected;
+            var idList = new List<int>();
+            foreach (var topic in db.Topics.ToList())
+            {
+                if (((ProjectTopicControl)projectTopics.FindControl($"Topic{topic.Id}")).Selected)
+                    idList.Add(topic.Id);
+            }
+            idList.Sort();
+            project.Topics = string.Join(",", idList);
 
             // Picture changed
             if (AddPicture.HasFile) imageChanged = true;
@@ -1519,11 +1526,15 @@ namespace ProStudCreator
             if (DivSemester.Visible && dropSemester.SelectedValue != dropSemesterImpossibleValue && dropSemester.SelectedValue != Semester.CurrentSemester(db).Id.ToString() && dropSemester.SelectedValue != Semester.NextSemester(db).Id.ToString())
                 return "Nur Projekte für das aktuelle oder das nächste Semester können veröffentlicht werden.";
 
+            // Study course
+            if (!(chkSCCS.Checked || chkSCDS.Checked))
+                return "Bitte wählen Sie mindestens einen Studiengang in dem das Projekt veröffentlicht wird aus.";
+
             //1-2 selected ProjectTopics
             var numAssignedTypes = 0;
-            foreach (var name in topics)
+            foreach (var topic in db.Topics.ToList())
             {
-                if (((ProjectTopic)projectTopics.FindControl($"Topic{name}")).Selected)
+                if (((ProjectTopicControl)projectTopics.FindControl($"Topic{topic.Id}")).Selected)
                 {
                     numAssignedTypes++;
                 }

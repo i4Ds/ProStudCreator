@@ -57,7 +57,7 @@ namespace ProStudCreator
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ProStudCreator.UserControls.ProjectTopicImage ProjectTopicImage1;
+        protected global::ProStudCreator.UserControls.ProjectTopicImageControl ProjectTopicImage1;
 
         /// <summary>
         /// ProjectTopicImage2 control.
@@ -66,7 +66,7 @@ namespace ProStudCreator
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ProStudCreator.UserControls.ProjectTopicImage ProjectTopicImage2;
+        protected global::ProStudCreator.UserControls.ProjectTopicImageControl ProjectTopicImage2;
 
         /// <summary>
         /// ChangeTitleDate control.
@@ -265,6 +265,42 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDuration;
+
+        /// <summary>
+        /// DivStudyCourse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivStudyCourse;
+
+        /// <summary>
+        /// LabelStudyCourse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelStudyCourse;
+
+        /// <summary>
+        /// DivStudyCourseAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivStudyCourseAdmin;
+
+        /// <summary>
+        /// DropStudyCourse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropStudyCourse;
 
         /// <summary>
         /// DivDelivery control.

@@ -25,6 +25,7 @@ namespace ProStudCreator
         
         private readonly string dropTypeImpossibleValue = "dropTypeImpossibleValue";
         private readonly string dropDurationImpossibleValue = "dropDurationImpossibleValue";
+        private readonly string dropStudyCourseImpossibleValue = "dropStudyCourseImpossibleValue";
         private readonly string dropExpertImpossibleValue = "dropExpertImpossibleValue";
         private readonly string dropBillingStatusImpossibleValue = "dropBillingStatusImpossibleValue";
         private readonly string dropLanguageImpossibleValue = "dropLanguageImpossibleValue";
@@ -196,49 +197,9 @@ namespace ProStudCreator
 
         private void DisplayProjectTopics()
         {
-            var (topic1, topic2) = pageProject.GetTopicStrings();
-            ProjectTopicImage1.Name = topic1;
-            ProjectTopicImage2.Name = topic2;
-
-            /*
-            Topic1.ImageUrl = "pictures/projectTyp" + (pageProject.TypeDesignUX
-                   ? "DesignUX"
-                   : (pageProject.TypeHW
-                       ? "HW"
-                       : (pageProject.TypeCGIP
-                           ? "CGIP"
-                           : (pageProject.TypeMlAlg
-                               ? "MlAlg"
-                               : (pageProject.TypeAppWeb
-                                   ? "AppWeb"
-                                   : (pageProject.TypeDBBigData
-                                       ? "DBBigData"
-                                       : (pageProject.TypeSysSec
-                                           ? "SysSec"
-                                           : (pageProject.TypeSE ? "SE" : "Transparent")))))))) + ".png";
-            Topic2.ImageUrl = "pictures/projectTyp" + (pageProject.TypeHW && pageProject.TypeDesignUX
-                               ? "HW"
-                               : (pageProject.TypeCGIP && (pageProject.TypeDesignUX || pageProject.TypeHW)
-                                   ? "CGIP"
-                                   : (pageProject.TypeMlAlg && (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP)
-                                       ? "MlAlg"
-                                       : (pageProject.TypeAppWeb &&
-                                          (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP || pageProject.TypeMlAlg)
-                                           ? "AppWeb"
-                                           : (pageProject.TypeDBBigData &&
-                                              (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP || pageProject.TypeMlAlg ||
-                                               pageProject.TypeAppWeb)
-                                               ? "DBBigData"
-                                               : (pageProject.TypeSysSec &&
-                                                  (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP || pageProject.TypeMlAlg ||
-                                                   pageProject.TypeAppWeb || pageProject.TypeDBBigData)
-                                                   ? "SysSec"
-                                                   : (pageProject.TypeSE && (pageProject.TypeDesignUX || pageProject.TypeHW || pageProject.TypeCGIP ||
-                                                                   pageProject.TypeMlAlg || pageProject.TypeAppWeb ||
-                                                                   pageProject.TypeDBBigData || pageProject.TypeSysSec)
-                                                       ? "SE"
-                                                       : "Transparent"))))))) + ".png";
-            */
+            var topics = pageProject.GetProjectTopics(db);
+            ProjectTopicImage1.Topic = topics.ElementAtOrDefault(0);
+            ProjectTopicImage2.Topic = topics.ElementAtOrDefault(1);
         }
 
         private void DisplayStudents()
@@ -316,6 +277,7 @@ namespace ProStudCreator
         private void DisplayTypeAndDuration()
         {
             DivType.Visible = DivTypeAdmin.Visible = false;
+            DivStudyCourse.Visible = DivStudyCourseAdmin.Visible = false;
 
             switch (pageProject.State)
             {
@@ -326,6 +288,8 @@ namespace ProStudCreator
                         FillDropType(true);
                         DropDuration.SelectedValue = pageProject.LogProjectDuration?.ToString() ?? dropDurationImpossibleValue;
                         DivTypeAdmin.Visible = true;
+                        DropStudyCourse.SelectedValue = pageProject.LogStudyCourse?.ToString() ?? dropStudyCourseImpossibleValue;
+                        DivStudyCourseAdmin.Visible = true;
 
                         //TODO: Set DropDuration.visible depending on DropType
                     }
@@ -334,6 +298,8 @@ namespace ProStudCreator
                         //show ?
                         LabelProjectType.Text = "?";
                         DivType.Visible = true;
+                        LabelStudyCourse.Text = "?";
+                        DivStudyCourse.Visible = true;
                     }
                     break;
                 case ProjectState.Ongoing:
@@ -344,6 +310,10 @@ namespace ProStudCreator
                         DropDuration.Items.Remove(DropDuration.Items.FindByValue(dropDurationImpossibleValue));
                         DropDuration.SelectedValue = pageProject.LogProjectDuration.ToString();
                         DivTypeAdmin.Visible = true;
+
+                        DropStudyCourse.Items.Remove(DropStudyCourse.Items.FindByValue(dropStudyCourseImpossibleValue));
+                        DropStudyCourse.SelectedValue = pageProject.LogStudyCourse.ToString();
+                        DivStudyCourseAdmin.Visible = true;
 
                         //TODO: Set DropDuration.visible depending on DropType
                     }
@@ -363,6 +333,14 @@ namespace ProStudCreator
                             LabelProjectType.Text = "?";
                         }
                         DivType.Visible = true;
+
+                        if (pageProject.LogStudyCourse == 1)
+                            LabelStudyCourse.Text = "Informatik";
+                        else if (pageProject.LogStudyCourse == 2)
+                            LabelStudyCourse.Text = "Data Science";
+                        else
+                            LabelStudyCourse.Text = "?";
+                        DivStudyCourse.Visible = true;
                     }
                     break;
                 case ProjectState.Finished:
@@ -387,11 +365,24 @@ namespace ProStudCreator
                         LabelProjectType.Text = "?";
                     }
                     DivType.Visible = true;
+
+                    if (pageProject.LogStudyCourse is null)
+                        LabelStudyCourse.Text = "?";
+                    else if (pageProject.LogStudyCourse == 1)
+                        LabelStudyCourse.Text = "Informatik";
+                    else if (pageProject.LogStudyCourse == 2)
+                        LabelStudyCourse.Text = "Data Science";
+                    else
+                        LabelStudyCourse.Text = "?";
+                    DivStudyCourse.Visible = true;
+
                     break;
                 default:
                     //show ?
                     LabelProjectType.Text = "?";
                     DivType.Visible = true;
+                    LabelStudyCourse.Text = "?";
+                    DivStudyCourse.Visible = true;
                     break;
             }
         }
@@ -438,8 +429,8 @@ namespace ProStudCreator
                             var defenceDate = pageProject.LogDefenceDate.Value;
                             TextBoxLabelPresentationDate.Text = defenceDate.ToString("dd.MM.yyyy");
                             TextBoxLabelPresentationTime.Text = defenceDate.ToString("HH:mm");
-                            TextBoxLabelPresentationRoom.Text = pageProject.LogDefenceRoom;
                         }
+                        TextBoxLabelPresentationRoom.Text = pageProject.LogDefenceRoom;
                         DivPresentationAdmin.Visible = true;
                     }
                     else
@@ -1071,6 +1062,10 @@ namespace ProStudCreator
                             ? (byte?)null
                             : byte.Parse(DropDuration.SelectedValue);
 
+                        // Study course
+                        pageProject.LogStudyCourse = DropStudyCourse.SelectedValue == dropStudyCourseImpossibleValue
+                            ? (byte?)null
+                            : byte.Parse(DropStudyCourse.SelectedValue);
                     }
                     break;
                 case ProjectState.Ongoing:
@@ -1186,6 +1181,9 @@ namespace ProStudCreator
                         pageProject.LogProjectType = db.ProjectTypes.Single(t => t.Id == int.Parse(DropType.SelectedValue));
                         pageProject.LogProjectDuration = byte.Parse(DropDuration.SelectedValue);
 
+                        // Study course
+                        pageProject.LogStudyCourse = byte.Parse(DropStudyCourse.SelectedValue);
+
                         //Expert
                         if (pageProject.LogProjectType.P6 && DropExpert.Visible)
                         {
@@ -1272,6 +1270,10 @@ namespace ProStudCreator
             //Duration
             if (DropDuration.SelectedValue == dropDurationImpossibleValue)
                 return "Bitte wählen Sie eine Projektdauer aus.";
+
+            // Study course
+            if (DropStudyCourse.SelectedValue == dropStudyCourseImpossibleValue)
+                return "Bitte wählen Sie einen Studiengang aus.";
 
             //Long IP6 ar no longer possible
             if (db.ProjectTypes.Single(t => t.Id == int.Parse(DropType.SelectedValue)).P6 && int.Parse(DropDuration.SelectedValue) == 2)

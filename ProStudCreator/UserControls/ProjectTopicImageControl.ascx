@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProjectTopicImage.ascx.cs" Inherits="ProStudCreator.UserControls.ProjectTopicImage" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProjectTopicImageControl.ascx.cs" Inherits="ProStudCreator.UserControls.ProjectTopicImageControl" %>
 
 <asp:Panel runat="server" CssClass="projectTopicWrapper projectTopicFlexbox" ID="DivWrapper">
     <div class="projectTopicContent">
