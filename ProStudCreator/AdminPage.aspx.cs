@@ -46,8 +46,8 @@ namespace ProStudCreator
             }
 
             DivAdminProjects.Visible = ShibUser.CanPublishProject();
-            DivAdminUsers.Visible = ShibUser.IsWebAdmin() || ShibUser.GetEmail() == "dominik.gruntz@fhnw.ch"; // || ShibUser.IsDepartmentManager();
-            DivAdminExperts.Visible = ShibUser.IsWebAdmin() || ShibUser.GetEmail() == "dominik.gruntz@fhnw.ch"; // || ShibUser.IsDepartmentManager();
+            DivAdminUsers.Visible = ShibUser.IsWebAdmin() || ShibUser.IsDepartmentManager();
+            DivAdminExperts.Visible = ShibUser.IsWebAdmin() || ShibUser.IsDepartmentManager();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
             btnGradeExport.Visible = ShibUser.CanExportExcel();
 

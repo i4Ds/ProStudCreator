@@ -35,6 +35,8 @@ namespace ProStudCreator
             "Continuation",
             "German",
             "English",
+            // "SubmitToStudyCourseCS",
+            // "SubmitToStudyCourseDS",
             "TypeAppWeb",
             "TypeCGIP",
             "TypeDBBigData",
@@ -42,10 +44,11 @@ namespace ProStudCreator
             "TypeHW",
             "TypeMlAlg",
             "TypeSE",
-            "TypeSysSec"
+            "TypeSysSec",
+            "TypeDataScience"
         };
 
-        private static readonly string[] AdminHeader =
+        private static readonly string[] ExportHeader =
         {
             "Projektnummer",
             "Institut",
@@ -166,30 +169,38 @@ namespace ProStudCreator
             var db = new ProStudentCreatorDBDataContext();
             p.Semester = p.Semester == null ? Semester.NextSemester(db) : p.Semester = p.Semester;
 
-            row.CreateCell(0).SetCellValue(p.GetProjectLabel());
-            row.CreateCell(1).SetCellValue(p.Name);
-            row.CreateCell(2).SetCellValue(p.GetFullTitle());
-            row.CreateCell(3).SetCellValue(p.POneType.ExportValue);
-            row.CreateCell(4).SetCellValue(p.PTwoType != null ? p.PTwoType.ExportValue : p.POneType.ExportValue);
-            row.CreateCell(5).SetCellValue(p.POneTeamSize.ExportValue);
-            row.CreateCell(6).SetCellValue(p.PTwoTeamSize != null ? p.PTwoTeamSize.ExportValue : p.POneTeamSize.ExportValue);
-            row.CreateCell(7).SetCellValue(p.Advisor1?.Mail ?? "");
-            row.CreateCell(8).SetCellValue(p.Advisor2?.Mail ?? "");
-            row.CreateCell(9).SetCellValue(p.Reservation1Mail);
-            row.CreateCell(10).SetCellValue(p.Reservation2Mail);
-            row.CreateCell(11).SetCellValue(p.Id);
+            var i = 0;
+            row.CreateCell(i++).SetCellValue(p.GetProjectLabel());
+            row.CreateCell(i++).SetCellValue(p.Name);
+            row.CreateCell(i++).SetCellValue(p.GetFullTitle());
+            row.CreateCell(i++).SetCellValue(p.POneType.ExportValue);
+            row.CreateCell(i++).SetCellValue(p.PTwoType != null ? p.PTwoType.ExportValue : p.POneType.ExportValue);
+            row.CreateCell(i++).SetCellValue(p.POneTeamSize.ExportValue);
+            row.CreateCell(i++).SetCellValue(p.PTwoTeamSize != null ? p.PTwoTeamSize.ExportValue : p.POneTeamSize.ExportValue);
+            row.CreateCell(i++).SetCellValue(p.Advisor1?.Mail ?? "");
+            row.CreateCell(i++).SetCellValue(p.Advisor2?.Mail ?? "");
+            row.CreateCell(i++).SetCellValue(p.Reservation1Mail);
+            row.CreateCell(i++).SetCellValue(p.Reservation2Mail);
+            row.CreateCell(i++).SetCellValue(p.Id);
 
-            row.CreateCell(12).SetCellValue(p.PreviousProject != null ? 1 : 0);
-            row.CreateCell(13).SetCellValue(p.LanguageGerman ? 1 : 0);
-            row.CreateCell(14).SetCellValue(p.LanguageEnglish ? 1 : 0);
-            row.CreateCell(15).SetCellValue(p.TypeAppWeb);
-            row.CreateCell(16).SetCellValue(p.TypeCGIP);
-            row.CreateCell(17).SetCellValue(p.TypeDBBigData);
-            row.CreateCell(18).SetCellValue(p.TypeDesignUX);
-            row.CreateCell(19).SetCellValue(p.TypeHW);
-            row.CreateCell(20).SetCellValue(p.TypeMlAlg);
-            row.CreateCell(21).SetCellValue(p.TypeSE);
-            row.CreateCell(22).SetCellValue(p.TypeSysSec);
+            row.CreateCell(i++).SetCellValue(p.PreviousProject != null ? 1 : 0);
+            row.CreateCell(i++).SetCellValue(p.LanguageGerman ? 1 : 0);
+            row.CreateCell(i++).SetCellValue(p.LanguageEnglish ? 1 : 0);
+
+            // row.CreateCell(i++).SetCellValue(p.SubmitToStudyCourseCS);
+            // row.CreateCell(i++).SetCellValue(p.SubmitToStudyCourseDS);
+
+            var topics = p.GetProjectTopics(db);
+
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 1)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 4)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 6)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 2)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 3)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 5)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 8)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 7)));
+            row.CreateCell(i++).SetCellValue(topics.Contains(db.Topics.First(t => t.Id == 9)));
         }
 
 
@@ -213,11 +224,11 @@ namespace ProStudCreator
 
             // Header
             worksheet.CreateRow(0);
-            for (var i = 0; i < AdminHeader.Length; i++)
+            for (var i = 0; i < ExportHeader.Length; i++)
             {
                 var cell = worksheet.GetRow(0).CreateCell(i);
                 cell.CellStyle = HeaderStyle;
-                cell.SetCellValue(AdminHeader[i]);
+                cell.SetCellValue(ExportHeader[i]);
             }
 
             // Project entries
@@ -231,7 +242,7 @@ namespace ProStudCreator
             for (var i = 0; i < ProjectListHeader.Length; i++)
                 worksheet.AutoSizeColumn(i);
 
-            worksheet.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(0, 0, 0, AdminHeader.Length - 1));
+            worksheet.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(0, 0, 0, ExportHeader.Length - 1));
 
             // Save
             workbook.Write(outStream);

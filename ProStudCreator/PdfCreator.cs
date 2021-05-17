@@ -383,52 +383,6 @@ namespace ProStudCreator
             document.NewPage();
         }
 
-        private string GetCurrentProjectTypeOne(Project proj)
-        {
-            if (proj.TypeDesignUX)
-                return "DesignUX";
-            if (proj.TypeHW)
-                return "HW";
-            if (proj.TypeCGIP)
-                return "CGIP";
-            if (proj.TypeMlAlg)
-                return "MLAlg";
-            if (proj.TypeAppWeb)
-                return "AppWeb";
-            if (proj.TypeDBBigData)
-                return "DBBigData";
-            if (proj.TypeSysSec)
-                return "SysSec";
-            if (proj.TypeSE)
-                return "SERE";
-            return "Transparent";
-        }
-
-        private string GetCurrentProjectTypeTwo(Project proj)
-        {
-            // Note: Complicated conditional statements relate to the order of returns in GetCurrentProjectTypeOne
-            // TODO Consider extracting logic to a method that returns two project types. e.g. put in a list and pull out first two relevant types.
-
-            if (proj.TypeHW && proj.TypeDesignUX)
-                return "HW";
-            if (proj.TypeCGIP && (proj.TypeDesignUX || proj.TypeHW))
-                return "CGIP";
-            if (proj.TypeMlAlg && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP))
-                return "MLAlg";
-            if (proj.TypeAppWeb && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg))
-                return "AppWeb";
-            if (proj.TypeDBBigData && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg ||
-                                       proj.TypeAppWeb))
-                return "DBBigData";
-            if (proj.TypeSysSec && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg ||
-                                    proj.TypeAppWeb || proj.TypeDBBigData))
-                return "SysSec";
-            if (proj.TypeSE && (proj.TypeDesignUX || proj.TypeHW || proj.TypeCGIP || proj.TypeMlAlg ||
-                                proj.TypeAppWeb || proj.TypeDBBigData || proj.TypeSysSec))
-                return "SERE";
-            return "Transparent";
-        }
-
         public int CalcNumberOfPages(Project PDF)
         {
             var minimumNumberOfPages = int.MaxValue;
