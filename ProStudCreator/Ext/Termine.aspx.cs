@@ -59,26 +59,36 @@ namespace ProStudCreator.Ext
                 dt.Columns.Add(header);
 
             foreach (var semester in semestersToDisplay)
-                dt.Rows.Add(semester.Name,
-                    $"{semester.StartDate.ToShortDateString()} bis {semester.EndDate.ToShortDateString()}",
-                    semester.ProjectSubmissionUntil.AddDays(-7 * 6).ToShortDateString(),
-                    semester.InfoEvent?.ToString("g", CultureInfo.CurrentCulture) ?? "?",
-                    semester.ProAppApplication,
-                    semester.ProjectAllocation,
-                    semester.SubmissionIP5FullPartTime, 
-                    semester.SubmissionIP5Accompanying,
-                    semester.SubmissionIP6Normal + "<br/>" + (semester.DefenseIP6Start == null
-                        ? ""
-                        : $"{semester.DefenseIP6Start} bis {semester.DefenseIP6End}"),
-                    /*semester.SubmissionIP6Variant2 + "<br/>" + (semester.DefenseIP6BStart == null
-                        ? ""
-                        : $"{semester.DefenseIP6BStart} bis {semester.DefenseIP6BEnd}"),*/
-                    semester.ExhibitionBachelorThesis);
+            {
+                var semName = semester?.Name ?? "?";
+                var semFromTo = $"{semester?.StartDate.ToShortDateString() ?? "?"} bis {semester?.EndDate.ToShortDateString() ?? "?"}";
+                var semProjSubExtern = semester?.ProjectSubmissionUntil.AddDays(-7 * 6).ToShortDateString() ?? "?";
+                var semInfoEvent = semester?.InfoEvent?.ToString("g", CultureInfo.CurrentCulture) ?? "?";
+                var semProAppApp = semester?.ProAppApplication ?? "?";
+                var semProjAllo = semester?.ProjectAllocation ?? "?";
+                var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
+                var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "?";
+                var semSubIP6 = $"{semester?.SubmissionIP6Normal ?? "?"}<br/>{(semester?.DefenseIP6Start == null ? "" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}")}";
+                var semExhib = semester?.ExhibitionBachelorThesis ?? "?";
+
+                dt.Rows.Add(
+                    semName,
+                    semFromTo,
+                    semProjSubExtern,
+                    semInfoEvent,
+                    semProAppApp,
+                    semProjAllo,
+                    semSubIP5N,
+                    semSubIP5L,
+                    semSubIP6,
+                    semExhib
+                );
+            }
 
 
             var flipHeaders = new string[5];
             flipHeaders[0] = "Semester";
-            var semesterHeaders = semestersToDisplay.Select(s => s.Name).ToArray();
+            var semesterHeaders = semestersToDisplay.Select(s => s?.Name ?? "?").ToArray();
             for (var i = 1; i < 5; i++)
                 flipHeaders[i] = semesterHeaders[i - 1];
 
