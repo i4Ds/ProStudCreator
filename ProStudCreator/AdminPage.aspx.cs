@@ -45,7 +45,7 @@ namespace ProStudCreator
                 Response.End();
             }
 
-            DivAdminProjects.Visible = ShibUser.CanPublishProject();
+            DivAdminProjects.Visible = ShibUser.CanPublishProject() || ShibUser.CanSeeAllProjectsInProgress();
             DivAdminUsers.Visible = ShibUser.IsWebAdmin() || ShibUser.IsDepartmentManager();
             DivAdminExperts.Visible = ShibUser.IsWebAdmin() || ShibUser.IsDepartmentManager();
             DivExcelExport.Visible = ShibUser.CanExportExcel();
@@ -137,8 +137,7 @@ namespace ProStudCreator
                 case "inProgress":
                     return db.Projects.Where(p => p.IsMainVersion
                                                && (p.State == ProjectState.InProgress || p.State == ProjectState.Submitted || p.State == ProjectState.Rejected))
-                                      .OrderBy(i => i.Department.DepartmentName)
-                                      .ThenBy(i => i.ProjectNr);
+                                      .OrderByDescending(i => i.ModificationDate);
                 case "toPublish":
                     return db.Projects.Where(p => p.State == ProjectState.Submitted
                                                && p.IsMainVersion
