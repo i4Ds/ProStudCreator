@@ -80,6 +80,10 @@
             Studierenden in Fachfragen unterstützen und Risiken minimieren. Speziell zu Beginn der Arbeit eignen sich dazu kurze, wöchentliche Sitzungen
             gut. Die Studierenden sollen aber selbstständig arbeiten und Verantwortung übernehmen.
         </p>
+        <h4>Wie viele Stunden stehen für die Betreuung zur Verfügung?</h4>
+        <p>
+            50h in Einzelbetreuung und 25h je Betreuer bei Co-Betreuung.
+        </p>
         <h4>Kann ich Einzelprojekte einreichen?</h4>
         <p>
             Einzelprojekte sind aus Skalierungsgründen nur in Ausnahmefällen möglich. Der Betreuungsaufwand für viele Einzelprojekte wäre zu gross.
