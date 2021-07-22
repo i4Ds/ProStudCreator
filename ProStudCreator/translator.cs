@@ -41,7 +41,21 @@ namespace ProStudCreator
             this.language = language;
         }
 
-          public string GetHeadingInitialPosition()
+        public string GetAnd()
+        {
+            if (language == Language.English)
+                return "and";
+            return "und";
+        }
+
+        public string GetOr()
+        {
+            if (language == Language.English)
+                return "or";
+            return "oder";
+        }
+
+        public string GetHeadingInitialPosition()
         {
             if(language == Language.English)
                 return "Initial position";
@@ -131,12 +145,6 @@ namespace ProStudCreator
                 return "Languages";
             return "Sprachen";
         }
-        public string GetLanguageBoth()
-        {
-            if (language == Language.English)
-                return "German or English";
-            return "Deutsch oder Englisch";
-        }
         public string GetLanguageGerman()
         {
             if (language == Language.English)
@@ -148,6 +156,22 @@ namespace ProStudCreator
             if (language == Language.English)
                 return "English";
             return "Englisch";
+        }
+        public string GetStudyCourseTitle()
+        {
+            if (language == Language.English)
+                return "Study course";
+            return "Studiengang";
+        }
+        public string GetStudyCourseCS()
+        {
+            if (language == Language.English)
+                return "Computer Science";
+            return "Informatik";
+        }
+        public string GetStudyCourseDS()
+        {
+            return "Data Science";
         }
 
         public string GetHeadingFooter(Project CurrentProject, ProStudentCreatorDBDataContext db)

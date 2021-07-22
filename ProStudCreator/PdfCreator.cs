@@ -252,7 +252,7 @@ namespace ProStudCreator
                 fontRegular));
 
             // Row 4
-            strLang = translator.GetLanguageBoth();
+            strLang = $"{translator.GetLanguageGerman()} {translator.GetOr()} {translator.GetLanguageEnglish()}";
             if(currentProject.LanguageEnglish && !currentProject.LanguageGerman)
             {
                 strLang = translator.GetLanguageEnglish();
@@ -263,6 +263,23 @@ namespace ProStudCreator
             }
             projectTable.AddCell(new Paragraph(translator.GetHeadingLangugages()+":", fontHeading));
             projectTable.AddCell(new Paragraph(strLang, fontRegular));
+            projectTable.AddCell("");
+            projectTable.AddCell("");
+            projectTable.AddCell("");
+
+            // Row 5
+            var strStudyCourse = "";
+            if (currentProject.SubmitToStudyCourseCS)
+            {
+                if (currentProject.SubmitToStudyCourseDS)
+                    strStudyCourse = $"{translator.GetStudyCourseCS()} {translator.GetAnd()} {translator.GetStudyCourseDS()}";
+                else
+                    strStudyCourse = translator.GetStudyCourseCS();
+            }
+            else if (currentProject.SubmitToStudyCourseDS)
+                strStudyCourse = translator.GetStudyCourseDS();
+            projectTable.AddCell(new Paragraph(translator.GetStudyCourseTitle() + ":", fontHeading));
+            projectTable.AddCell(new Paragraph(strStudyCourse, fontRegular));
             projectTable.AddCell("");
             projectTable.AddCell("");
             projectTable.AddCell("");
