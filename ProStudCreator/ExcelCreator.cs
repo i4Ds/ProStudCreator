@@ -35,8 +35,8 @@ namespace ProStudCreator
             "Continuation",
             "German",
             "English",
-            // "SubmitToStudyCourseCS",
-            // "SubmitToStudyCourseDS",
+            "SubmitToStudyCourseCS",
+            "SubmitToStudyCourseDS",
             "TypeAppWeb",
             "TypeCGIP",
             "TypeDBBigData",
@@ -187,8 +187,8 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.LanguageGerman ? 1 : 0);
             row.CreateCell(i++).SetCellValue(p.LanguageEnglish ? 1 : 0);
 
-            // row.CreateCell(i++).SetCellValue(p.SubmitToStudyCourseCS);
-            // row.CreateCell(i++).SetCellValue(p.SubmitToStudyCourseDS);
+            row.CreateCell(i++).SetCellValue(p.SubmitToStudyCourseCS);
+            row.CreateCell(i++).SetCellValue(p.SubmitToStudyCourseDS);
 
             var topics = p.GetProjectTopics(db);
 

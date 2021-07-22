@@ -252,7 +252,6 @@ namespace ProStudCreator
             {
                 ExcelCreator.GenerateProjectList(output, ((IEnumerable<ProjectRowElement>) ProjectGrid.Grid.DataSource)
                     .Select(p => db.Projects.Single(pr => pr.Id == p.id && pr.IsMainVersion))
-                    .Where(p => p.SubmitToStudyCourseCS)
                     .OrderBy(p => p.Reservation1Name != "")
                     .ThenBy(p => p.Department.DepartmentName)
                     .ThenBy(p => p.ProjectNr));
