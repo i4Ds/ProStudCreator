@@ -1724,8 +1724,8 @@ namespace ProStudCreator
                 throw new InvalidOperationException("Unsubmit not permitted");
             }
 
-            SaveProject(true);
             pageProject.Unsubmit(db);
+            SaveProject(true);
             db.SubmitChanges();
             Response.Redirect(Session["LastPage"] == null ? "projectlist" : (string)Session["LastPage"]);
         }
