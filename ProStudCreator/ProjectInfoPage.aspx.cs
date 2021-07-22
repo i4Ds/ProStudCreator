@@ -996,6 +996,8 @@ namespace ProStudCreator
             {
                 case "Intern":
                     divClientForm.Visible = false;
+                    divClientCompany.Visible = true;
+                    divClientDepartment.Visible = false;
                     break;
                 case "Company":
                     divClientForm.Visible = true;
@@ -1222,7 +1224,7 @@ namespace ProStudCreator
                     }
 
                     //Client
-                    if (radioClientType.SelectedIndex != (int)ClientType.Internal && (txtClientCompanyAdmin.Text + txtClientNameAdmin.Text == "" || txtClientStreetAdmin.Text == "" || txtClientPLZAdmin.Text == "" || txtClientCityAdmin.Text == "" || txtClientEmailAdmin.Text == ""))
+                    if (radioClientType.SelectedIndex != (int)ClientType.Internal && (txtClientCompanyAdmin.Text + txtClientNameAdmin.Text == "" || txtClientEmailAdmin.Text == ""))
                     {
                         return "Bitte füllen Sie alle Pflichtfelder aus.";
                     }

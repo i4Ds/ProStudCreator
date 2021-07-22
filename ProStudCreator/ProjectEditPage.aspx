@@ -250,14 +250,14 @@
                             </asp:RadioButtonList>
                         </div>
                     </div>
-                    <div class="form-group no-margin" runat="server" id="divClientForm" visible="false">
-                        <div class="form-group" style="text-align: left" runat="server" id="divClientCompany">
-                            <asp:Label runat="server" Text="Unternehmen:" CssClass="control-label col-md-3"></asp:Label>
-                            <div class="col-md-6">
-                                <asp:TextBox runat="server" ID="txtClientCompany" CssClass="form-control"></asp:TextBox>
-                                <asp:Label runat="server" ID="txtClientCompanyLabel" CssClass="form-control" Visible="false"></asp:Label>
-                            </div>
+                    <div class="form-group" style="text-align: left" runat="server" id="divClientCompany" visible="false">
+                        <asp:Label runat="server" Text="Unternehmen:" CssClass="control-label col-md-3"></asp:Label>
+                        <div class="col-md-6">
+                            <asp:TextBox runat="server" ID="txtClientCompany" CssClass="form-control"></asp:TextBox>
+                            <asp:Label runat="server" ID="txtClientCompanyLabel" CssClass="form-control" Visible="false"></asp:Label>
                         </div>
+                    </div>
+                    <div class="form-group no-margin" runat="server" id="divClientForm" visible="false">
                         <div class="form-group" style="text-align: left">
                             <asp:Label runat="server" Text="Anrede:" CssClass="control-label col-md-3"></asp:Label>
                             <div class="col-md-6">

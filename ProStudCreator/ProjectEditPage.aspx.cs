@@ -510,8 +510,9 @@ namespace ProStudCreator
                                             txtClientEmail.Text = 
                                                 txtClientPhoneNumber.Text = "";
 
-                divClientForm.Visible = false;
                 radioClientType.SelectedIndex = (int)ClientType.Internal;
+                divClientCompany.Visible = true;
+                divClientForm.Visible = false;
             }
             else
             {
@@ -591,7 +592,8 @@ namespace ProStudCreator
                     break;
 
                 case (int)ClientType.Internal:
-                    divClientCompany.Visible = divClientForm.Visible = false;
+                    divClientCompany.Visible = true;
+                    divClientForm.Visible = false;
                     radioClientType.SelectedIndex = (int)ClientType.Internal;
                     break;
             }
@@ -735,16 +737,16 @@ namespace ProStudCreator
             {
                 project.ClientType = (int)ClientType.Internal;
                 project.ClientAddressTitle = "Herr";
+                project.ClientCompany = txtClientCompany.Text.FixupParagraph();
 
-                project.ClientCompany =
-                    project.ClientPerson =
-                        project.ClientAddressDepartment =
-                            project.ClientAddressStreet =
-                                project.ClientAddressPostcode =
-                                    project.ClientAddressCity =
-                                        project.ClientReferenceNumber =
-                                            project.ClientMail = 
-                                                project.ClientPhoneNumber = "";
+                project.ClientPerson =
+                    project.ClientAddressDepartment =
+                        project.ClientAddressStreet =
+                            project.ClientAddressPostcode =
+                                project.ClientAddressCity =
+                                    project.ClientReferenceNumber =
+                                        project.ClientMail = 
+                                            project.ClientPhoneNumber = "";
             }
 
             //NDA
@@ -898,16 +900,16 @@ namespace ProStudCreator
             {
                 project.ClientType = (int)ClientType.Internal;
                 project.ClientAddressTitle = "Herr";
+                project.ClientCompany = txtClientCompany.Text.FixupParagraph();
 
-                project.ClientCompany =
-                    project.ClientPerson =
-                        project.ClientAddressDepartment =
-                            project.ClientAddressStreet =
-                                project.ClientAddressPostcode =
-                                    project.ClientAddressCity =
-                                        project.ClientReferenceNumber =
-                                            project.ClientMail = 
-                                                project.ClientPhoneNumber = "";
+                project.ClientPerson =
+                    project.ClientAddressDepartment =
+                        project.ClientAddressStreet =
+                            project.ClientAddressPostcode =
+                                project.ClientAddressCity =
+                                    project.ClientReferenceNumber =
+                                        project.ClientMail = 
+                                            project.ClientPhoneNumber = "";
             }
 
             //NDA
@@ -1042,6 +1044,7 @@ namespace ProStudCreator
             pageProject = pageProject.CopyAndUseCopyAsMainVersion(db);
         }
 
+        /*
         private bool HasProjectChanged()
         {
             var comparisonProject = pageProject.CopyProject();
@@ -1057,6 +1060,7 @@ namespace ProStudCreator
             db.SubmitChanges();
             return isChanged;
         }
+        */
 
         private bool NEW_HasProjectChanged()
         {
@@ -1794,6 +1798,8 @@ namespace ProStudCreator
             {
                 case "Intern":
                     divClientForm.Visible = false;
+                    divClientCompany.Visible = true;
+                    divClientDepartment.Visible = false;
                     break;
                 case "Company":
                     divClientForm.Visible = true;

@@ -293,14 +293,14 @@
                                 </asp:RadioButtonList>
                             </div>
                         </div>
-                        <div runat="server" id="divClientForm">
-                            <div class="form-group" runat="server" id="divClientCompany">
-                                <asp:Label runat="server" Text="Unternehmen*:" CssClass="control-label col-md-3"></asp:Label>
-                                <asp:Label runat="server" ID="LabelClientCompany" CssClass="col-md-6 alignbottom"></asp:Label>
-                                <div class="col-md-6">
-                                    <asp:TextBox runat="server" ID="txtClientCompanyAdmin" CssClass="form-control maxWidth" MaxLength="255"></asp:TextBox>
-                                </div>
+                        <div class="form-group" runat="server" id="divClientCompany">
+                            <asp:Label runat="server" Text="Unternehmen*:" CssClass="control-label col-md-3"></asp:Label>
+                            <asp:Label runat="server" ID="LabelClientCompany" CssClass="col-md-6 alignbottom"></asp:Label>
+                            <div class="col-md-6">
+                                <asp:TextBox runat="server" ID="txtClientCompanyAdmin" CssClass="form-control maxWidth" MaxLength="255"></asp:TextBox>
                             </div>
+                        </div>
+                        <div runat="server" id="divClientForm">
                             <div class="form-group">
                                 <asp:Label runat="server" Text="Anrede*:" CssClass="control-label col-md-3"></asp:Label>
                                 <asp:Label runat="server" ID="LabelClientTitle" CssClass="col-md-6 alignbottom"></asp:Label>
@@ -340,21 +340,21 @@
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: left">
-                                <asp:Label runat="server" Text="Strasse und Nummer*:" CssClass="control-label col-md-3"></asp:Label>
+                                <asp:Label runat="server" Text="Strasse und Nummer:" CssClass="control-label col-md-3"></asp:Label>
                                 <asp:Label runat="server" ID="LabelClientStreet" CssClass="col-md-6 alignbottom"></asp:Label>
                                 <div class="col-md-6">
                                     <asp:TextBox runat="server" ID="txtClientStreetAdmin" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: left">
-                                <asp:Label runat="server" Text="PLZ*:" CssClass="control-label col-md-3"></asp:Label>
+                                <asp:Label runat="server" Text="PLZ:" CssClass="control-label col-md-3"></asp:Label>
                                 <asp:Label runat="server" ID="LabelClientPLZ" CssClass="col-md-6 alignbottom"></asp:Label>
                                 <div class="col-md-6">
                                     <asp:TextBox runat="server" ID="txtClientPLZAdmin" CssClass="form-control maxWidth" MaxLength="10"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: left">
-                                <asp:Label runat="server" Text="Ort*:" CssClass="control-label col-md-3"></asp:Label>
+                                <asp:Label runat="server" Text="Ort:" CssClass="control-label col-md-3"></asp:Label>
                                 <asp:Label runat="server" ID="LabelClientCity" CssClass="col-md-9 alignbottom"></asp:Label>
                                 <div class="col-md-6">
                                     <asp:TextBox runat="server" ID="txtClientCityAdmin" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>

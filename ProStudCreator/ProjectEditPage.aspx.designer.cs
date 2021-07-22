@@ -357,15 +357,6 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.RadioButtonList radioClientType;
 
         /// <summary>
-        /// divClientForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientForm;
-
-        /// <summary>
         /// divClientCompany control.
         /// </summary>
         /// <remarks>
@@ -391,6 +382,15 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientCompanyLabel;
+
+        /// <summary>
+        /// divClientForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClientForm;
 
         /// <summary>
         /// drpClientTitle control.
