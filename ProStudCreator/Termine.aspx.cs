@@ -76,6 +76,14 @@ namespace ProStudCreator
                 var semGradeIP6 = semester?.GradeIP6Deadline.ToShortDateString() ?? "?";
                 var semExhib = semester?.ExhibitionBachelorThesis ?? "?";
 
+                if (semester != null)
+                {
+                    if (semester.GradeIP5Deadline.Year > 2500)
+                        semGradeIP5N = "?";
+                    if (semester.GradeIP6Deadline.Year > 2500)
+                        semGradeIP6 = "?";
+                }
+
                 dt.Rows.Add(
                     semName,
                     semFromTo,
