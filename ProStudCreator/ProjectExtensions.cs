@@ -733,44 +733,48 @@ namespace ProStudCreator
 
             if (_p.LogDefenceDate.HasValue)
             {
-                //Defense Date is set
+                // Defense Date is set
                 return _p.LogDefenceDate.Value + Global.GradingDuration;
             }
             else
             {
-                //No defense date set -> take end date of defense time span
+                // No defense date set -> take end date of defense time span
                 if (_p.LogProjectType.P5)
                 {
-                    //P5
-                    DateTime? submissionDate;
-
+                    // P5
                     if (_p.LogProjectDuration == 1)
                     {
                         //Normal duration
-                        submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                        var submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                             ? dbDate
                             : (DateTime?)null;
+
+                        if (!submissionDate.HasValue)
+                            throw new InvalidOperationException($"No SubmissionIP5FullPartTime date found for {_p.Semester.Name}.");
+
+                        return submissionDate.Value + Global.ExpectFinalPresentationAfterSubmissionForIP5;
                     }
+                    // P5 lang
                     else if (_p.LogProjectDuration == 2)
                     {
                         //Long duration
-                        submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5Accompanying, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                        var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                             ? dbDate
                             : (DateTime?)null;
+
+                        if (!endOfDefenseTimeSpan.HasValue)
+                            throw new InvalidOperationException($"No DefenseIP6End date found for {_p.Semester.Name}.");
+
+                        return endOfDefenseTimeSpan.Value + Global.GradingDuration;
                     }
                     else
                     {
                         throw new InvalidOperationException("LogProjectDuration must be 1 or 2");
                     }
-
-                    if (!submissionDate.HasValue)
-                        throw new InvalidOperationException($"No SubmissionIP5 date found for {_p.Semester.Name}.");
-
-                    return submissionDate.Value + Global.ExpectFinalPresentationAfterSubmissionForIP5;
                 }
                 else if (_p.LogProjectType.P6)
                 {
-                    //P6
+                    // P6
                     var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbdate)
                         ? dbdate
                         : (DateTime?)null;
