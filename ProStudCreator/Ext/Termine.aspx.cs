@@ -52,9 +52,10 @@ namespace ProStudCreator.Ext
                 "Anmeldung ProApp",
                 "Projektzuteilung",
                 "Abgabe IP5",
-                "Abgabe IP5 (BB/lang)",
-                "Abgabe IP6<br/>Verteidigung",
-                "Ausstellung Bachelorthesen"
+                "Abgabe IP5 (Lang)",
+                "Abgabe IP6",
+                "Ausstellung Bachelorthesen",
+                "Verteidigung"
             })
                 dt.Columns.Add(header);
 
@@ -68,7 +69,8 @@ namespace ProStudCreator.Ext
                 var semProjAllo = semester?.ProjectAllocation ?? "?";
                 var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
                 var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "?";
-                var semSubIP6 = $"{semester?.SubmissionIP6Normal ?? "?"}<br/>{(semester?.DefenseIP6Start == null ? "" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}")}";
+                var semSubIP6 = semester?.SubmissionIP6Normal ?? "?";
+                var semDefense = semester?.DefenseIP6Start == null ? "?" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}";
                 var semExhib = semester?.ExhibitionBachelorThesis ?? "?";
 
                 dt.Rows.Add(
@@ -81,7 +83,8 @@ namespace ProStudCreator.Ext
                     semSubIP5N,
                     semSubIP5L,
                     semSubIP6,
-                    semExhib
+                    semExhib,
+                    semDefense
                 );
             }
 

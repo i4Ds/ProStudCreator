@@ -54,9 +54,10 @@ namespace ProStudCreator
                 "Abgabe IP5",
                 "Notenabgabe IP5",
                 "Abgabe IP5 (Lang)",
-                "Abgabe IP6<br/>Verteidigung",
-                "Notenabgabe IP5 (Lang) / IP6",
-                "Ausstellung Bachelorthesen"
+                "Abgabe IP6",
+                "Ausstellung Bachelorthesen",
+                "Verteidigung",
+                "Notenabgabe IP5 (Lang) / IP6"
             })
                 dt.Columns.Add(header);
 
@@ -72,7 +73,8 @@ namespace ProStudCreator
                 var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
                 var semGradeIP5N = semester?.GradeIP5Deadline.ToShortDateString() ?? "?";
                 var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "?";
-                var semSubIP6 = $"{semester?.SubmissionIP6Normal ?? "?"}<br/>{(semester?.DefenseIP6Start == null ? "" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}")}";
+                var semSubIP6 = semester?.SubmissionIP6Normal ?? "?";
+                var semDefense = semester?.DefenseIP6Start == null ? "?" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}";
                 var semGradeIP6 = semester?.GradeIP6Deadline.ToShortDateString() ?? "?";
                 var semExhib = semester?.ExhibitionBachelorThesis ?? "?";
 
@@ -96,8 +98,9 @@ namespace ProStudCreator
                     semGradeIP5N,
                     semSubIP5L,
                     semSubIP6,
-                    semGradeIP6,
-                    semExhib
+                    semExhib,
+                    semDefense,
+                    semGradeIP6
                 );
             }
 
