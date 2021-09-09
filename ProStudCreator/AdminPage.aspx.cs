@@ -328,7 +328,8 @@ namespace ProStudCreator
                 projectsToExport = db.Projects
                     .Where(i => (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
                              && i.IsMainVersion)
-                    .OrderByDescending(i => i.BillingStatus.Billable)
+                    .OrderByDescending(i => i.State > ProjectState.Ongoing)
+                    .ThenByDescending(i => i.BillingStatus.Billable)
                     .ThenBy(i => i.ClientCompany)
                     .ThenBy(i => i.ClientPerson);
             }
@@ -339,7 +340,8 @@ namespace ProStudCreator
                     .Where(i => i.SemesterId == semesterId
                              && (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
                              && i.IsMainVersion)
-                    .OrderByDescending(i => i.BillingStatus.Billable)
+                    .OrderByDescending(i => i.State > ProjectState.Ongoing)
+                    .ThenByDescending(i => i.BillingStatus.Billable)
                     .ThenBy(i => i.ClientCompany)
                     .ThenBy(i => i.ClientPerson);
             }

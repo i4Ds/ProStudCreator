@@ -235,9 +235,6 @@
                         <asp:DropDownList runat="server" DataValueField="Id" DataTextField="DisplayName" ID="DropBillingStatus" AutoPostBack="true" OnSelectedIndexChanged="DropBillingStatusChanged" CssClass="form-control"></asp:DropDownList>
                     </div>
                 </div>
-                <div class="form-group">
-                    <asp:Label runat="server" ID="Label2" CssClass="col-md-6 col-md-offset-3" Text="Hinweis: Für verrechenbare Projekte werden unmittelbar Rechnungen ausgelöst. Bitte NUR definitiven Status eintragen!"></asp:Label>
-                </div>
             </div>
 
             <div runat="server" id="DivWebSummary" class="form-group">

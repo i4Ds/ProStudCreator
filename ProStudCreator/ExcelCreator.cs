@@ -514,7 +514,7 @@ namespace ProStudCreator
                     row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
 
                 row.CreateCell(13).SetCellValue(p.ClientReferenceNumber ?? "");
-                row.CreateCell(14).SetCellValue(p.BillingStatus?.DisplayName ?? "");
+                row.CreateCell(14).SetCellValue(p.State > ProjectState.Ongoing ? (p.BillingStatus?.DisplayName ?? "") : "");
                 row.CreateCell(15);
                 row.CreateCell(16);
 
@@ -526,7 +526,7 @@ namespace ProStudCreator
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
                 ICellStyle cellStyle;
-                if (p.BillingStatus != null)
+                if (p.State > ProjectState.Ongoing && p.BillingStatus != null)
                 {
                     //color the later columns, according to 
                     cellStyle = p.BillingStatus.Billable ? cellStyleGreen : cellStyleRed;
