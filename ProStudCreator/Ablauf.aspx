@@ -12,8 +12,11 @@
                     <li>Information, dass pro Student/-in eine individuelle Note festgelegt wird.</li>
                     <li>Bitte kommuniziere, wie Du informiert werden möchtest (z.B. jede Woche ein kurzes Treffen).</li>
                     <li>Terminplan besprechen (Abgabetermin, Ausstellung, Projektwoche, Präsentation/Verteidigung, z.B. Inhaltsverzeichnis der Doku nach einem Drittel, ...)</li>
-                    <li>Ein Hinweis, dass auf dem Netzwerkshare (\\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene) Unterlagen zu finden sind.</li>
-                    <li>Optional: <a href="Content/P5_P6_Guide_20180914.pdf" class="pdf">Guide von Marco Soldati für IP5 und IP6</a>, <a href="Content/Leitfaden_Berichte_4.01.pdf" class="pdf">Offizieller Leitfaden für Berichte</a>, <a href="Content/Vorlage_Bericht_17.dotx" class="doc">Offizielle Vorlage für Berichte</a></li>
+                    <li>Ein Hinweis, dass auf dem Netzwerkshare (\\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene) Unterlagen zu finden sind (wie z.B. das Projekthandbuch oder Infos zur Webseite welche die Studierenden am Ende des Projektes bereitstellen müssen).</li>
+                    <li>Ein Hinweis auf die <a href="http://server1216.cs.technik.fhnw.ch/pf-ik/">Plattform Informationskompetenz</a> auf der viele Informationen zum Schreiben von Berichten (inkl. Vorlagen) zu finden sind.</li>
+<!--
+                    <li>Als Ergänzung zur Plattform Informationskompetenz kann optional auf die ergänzenden Informationen im <a href="Content/P5_P6_Guide_20180914.pdf" class="pdf">Guide von Marco Soldati für IP5 und IP6</a> hingewiesen werden.</li>
+-->
                     <li>Besprich den <a href="Content/Bewertungsbogen Projekte 5 und 6.xlsx" class="xls">Bewertungsbogen</a> mit den Studierenden</li>
                     <li>Die Studierenden müssen in den ersten Wochen eine Projektvereinbarung verfassen. Eine Vorlage dafür
                         existiert nicht. Die Projektvereinbarung umfasst 1-2 Seiten und enthält folgende Punkte:
