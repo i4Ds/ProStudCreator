@@ -221,15 +221,11 @@
     <Content Include="pictures\old\projectTypTransparent.png" />
     <Content Include="Content\Prozess.PNG" />
     <Content Include="Content\Poster_TemplateI_150923.pptx" />
-    <Content Include="Content\Leitfaden_Berichte_4.01.pdf" />
-    <Content Include="Content\Webauftritt_2015HS.pdf" />
     <Content Include="ProStudentCreatorDB.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>ProStudentCreatorDB.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\IP56_Handbuch_Studierende_V170913.pdf" />
-    <Content Include="Content\Vorlage_Bericht_17.dotx" />
     <Content Include="Content\P5_P6_Guide_20180914.pdf" />
     <Content Include="Content\Projekteingabe_Firma.pdf" />
     <Content Include="Content\Bewertungsbogen Projekte 5 und 6.xlsx" />
