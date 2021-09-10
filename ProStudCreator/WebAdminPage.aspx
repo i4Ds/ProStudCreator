@@ -62,5 +62,7 @@
         <h5>P6 Noten nach Hauptbetreuer</h5>
         <ul ID="P6Grades" runat="server"></ul>
         -->
+        <h3>Semesterdaten (berechnet)</h3>
+        <ul id="SemesterData" runat="server"></ul>
     </div>
 </asp:Content>
