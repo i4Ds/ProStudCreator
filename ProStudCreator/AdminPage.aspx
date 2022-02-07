@@ -86,6 +86,14 @@
                         <div class="col-sm-3">
                             <asp:DropDownList runat="server" DataValueField="Id" DataTextField="Name" ID="SelectedSemester" AutoPostBack="false" CssClass="form-control col-sm-3 alignbottom "></asp:DropDownList>
                         </div>
+                        <asp:Label runat="server" Text="Studiengang (nur für Noten Export):" CssClass="control-label col-sm-3"></asp:Label>
+                        <div class="col-sm-3">
+                            <asp:DropDownList runat="server" ID="SelectedStudyCourse" DataValueField="Id" DataTextField="Description" CssClass="form-control">
+                                <asp:ListItem Text="Alle" Value="all" />
+                                <asp:ListItem Text="Informatik" Value="cs"/>
+                                <asp:ListItem Text="Data Science" Value="ds"/>
+                            </asp:DropDownList>
+                        </div>
                         <br />
                         <%--<br />
                         <hr />

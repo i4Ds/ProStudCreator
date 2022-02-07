@@ -72,6 +72,7 @@ namespace ProStudCreator
             "Projekttyp",
             "Anzahl Semester",
             "Durchführungssprache",
+            "Studiengang",
             "Experte",
             "Experte E-Mail",
             "Experte Bezahlt",
@@ -256,6 +257,13 @@ namespace ProStudCreator
             var sGrad1 = p.LogGradeStudent1;
             var pLang = GetLanguage(p);
             var pBilS = p.BillingStatus?.DisplayName ?? "";
+            var pSC = "";
+            if (p.LogStudyCourse == 1)
+                pSC = "Informatik";
+            else if (p.LogStudyCourse == 2)
+                pSC = "Data Science";
+            else
+                pSC = "";
 
             string sName2 = null;
             string sMail2 = null;
@@ -339,6 +347,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(p.LogProjectType?.ExportValue ?? "-");
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(pLang);
+            row.CreateCell(i++).SetCellValue(pSC);
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.Expert?.Name ?? "");
             row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString() ?? "");

@@ -190,69 +190,6 @@ namespace ProStudCreator
             btnAddInfoCollapse.Text = collapse ? "◄" : "▼";
         }
 
-        protected void BtnMarketingExport_OnClick(object sender, EventArgs e)
-        {
-            IEnumerable<Project> projectsToExport = null;
-            //if (radioProjectStart.SelectedValue == "StartingProjects") //Projects which start in this Sem.
-            if (SelectedSemester.SelectedValue == "") //Alle Semester
-            {
-                projectsToExport = db.Projects
-                    .Where(i => (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
-                             && i.IsMainVersion)
-                    .OrderBy(i => i.Semester.Name)
-                    .ThenBy(i => i.Department.DepartmentName)
-                    .ThenBy(i => i.ProjectNr);
-            }
-            else
-            {
-                var semesterId = int.Parse(SelectedSemester.SelectedValue);
-                projectsToExport = db.Projects
-                    .Where(i => i.SemesterId == semesterId
-                             && (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
-                             && i.IsMainVersion)
-                    .OrderBy(i => i.Semester.Name)
-                    .ThenBy(i => i.Department.DepartmentName)
-                    .ThenBy(i => i.ProjectNr);
-            }
-            /*else if (radioProjectStart.SelectedValue == "EndingProjects") //Projects which end in this Sem.
-                if (SelectedSemester.SelectedValue == "") //Alle Semester
-                {
-                    projectsToExport = db.Projects
-                        .Where(i => i.State == ProjectState.Published && i.IsMainVersion && i.LogStudent1Mail != null &&
-                                    i.LogStudent1Mail != "")
-                        .OrderBy(i => i.Semester.Name)
-                        .ThenBy(i => i.Department.DepartmentName)
-                        .ThenBy(i => i.ProjectNr);
-                }
-                else
-                {
-                    var selectedSemester = db.Semester.Single(s => s.Id == int.Parse(SelectedSemester.SelectedValue));
-                    var previousSemester = db.Semester.OrderByDescending(s => s.StartDate)
-                        .FirstOrDefault(s => s.StartDate < selectedSemester.StartDate);
-                    projectsToExport = db.Projects
-                        .Where(i => i.State == ProjectState.Published && i.IsMainVersion && i.LogStudent1Mail != null &&
-                                    i.LogStudent1Mail != ""
-                                    && (i.LogProjectDuration == 1 && i.Semester == selectedSemester ||
-                                        i.LogProjectDuration == 2 && i.Semester == previousSemester))
-                        .OrderBy(i => i.Semester.Name)
-                        .ThenBy(i => i.Department.DepartmentName)
-                        .ThenBy(i => i.ProjectNr);
-                }
-            else
-                throw new Exception($"Unexpected selection: {radioProjectStart.SelectedValue}");*/
-
-            //Response
-            Response.Clear();
-            Response.ContentType = "application/Excel";
-            Response.AddHeader("content-disposition",
-                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_IP56_Informatikprojekte.xlsx");
-
-
-            ExcelCreator.GenerateMarketingList(Response.OutputStream, projectsToExport, db,
-            SelectedSemester.SelectedItem.Text);
-            Response.End();
-        }
-
         protected void RadioSelectedProjects_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             Session["SelectedAdminProjects"] = radioSelectedProjects.SelectedIndex;
@@ -319,6 +256,81 @@ namespace ProStudCreator
             Response.Redirect("ExpertEditPage");
         }
 
+        protected IEnumerable<Project> GetSelectedExcelExportProjects()
+        {
+            IEnumerable<Project> projectsForExcelExport = null;
+
+            // Semester
+            if (SelectedSemester.SelectedValue == "") // Alle Semester
+            {
+                projectsForExcelExport = db.Projects.Where(p => p.IsMainVersion);
+            }
+            else
+            {
+                var semesterId = int.Parse(SelectedSemester.SelectedValue);
+                projectsForExcelExport = db.Projects.Where(p => p.IsMainVersion && p.SemesterId == semesterId);
+            }
+
+            // Study Course
+            if (SelectedStudyCourse.SelectedValue == "all")
+            {
+                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourse != null);
+            }
+            else if (SelectedStudyCourse.SelectedValue == "cs")
+            {
+                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourse == 1);
+            }
+            else if (SelectedStudyCourse.SelectedValue == "ds")
+            {
+                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourse == 2);
+            }
+            else
+            {
+                throw new Exception("Unknown study course");
+            }
+
+            return projectsForExcelExport;
+        }
+
+        protected void BtnGradeExport_Click(object sender, EventArgs e)
+        {
+
+            var projectsToExport = GetSelectedExcelExportProjects()
+                    .Where(p => (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled))
+                    .OrderByDescending(p => p.Department)
+                    .ThenBy(p => p.ProjectNr);
+            
+            /*
+            IEnumerable<Project> projectsToExport = null;
+
+            if (SelectedSemester.SelectedValue == "") //Alle Semester
+            {
+                projectsToExport = db.Projects
+                    .Where(i => (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
+                    .OrderByDescending(i => i.Department)
+                    .ThenBy(i => i.ProjectNr);
+            }
+            else
+            {
+                var semesterId = int.Parse(SelectedSemester.SelectedValue);
+                projectsToExport = db.Projects
+                    .Where(i => i.SemesterId == semesterId
+                             && (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && i.IsMainVersion)
+                    .OrderByDescending(i => i.Department.Id)
+                    .ThenBy(i => i.ProjectNr);
+            }
+            */
+            Response.Clear();
+            Response.ContentType = "application/Excel";
+            Response.AddHeader("content-disposition",
+                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Noten_Excel.xlsx");
+
+            ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db);
+            Response.End();
+        }
+
         protected void BtnBillingExport_Click(object sender, EventArgs e)
         {
             IEnumerable<Project> projectsToExport = null;
@@ -355,16 +367,17 @@ namespace ProStudCreator
             Response.End();
         }
 
-        protected void BtnGradeExport_Click(object sender, EventArgs e)
+        protected void BtnMarketingExport_OnClick(object sender, EventArgs e)
         {
             IEnumerable<Project> projectsToExport = null;
-
+            //if (radioProjectStart.SelectedValue == "StartingProjects") //Projects which start in this Sem.
             if (SelectedSemester.SelectedValue == "") //Alle Semester
             {
                 projectsToExport = db.Projects
-                    .Where(i => (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                    .Where(i => (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
                              && i.IsMainVersion)
-                    .OrderByDescending(i => i.Department)
+                    .OrderBy(i => i.Semester.Name)
+                    .ThenBy(i => i.Department.DepartmentName)
                     .ThenBy(i => i.ProjectNr);
             }
             else
@@ -372,17 +385,20 @@ namespace ProStudCreator
                 var semesterId = int.Parse(SelectedSemester.SelectedValue);
                 projectsToExport = db.Projects
                     .Where(i => i.SemesterId == semesterId
-                             && (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
+                             && (i.State == ProjectState.Published || i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
                              && i.IsMainVersion)
-                    .OrderByDescending(i => i.Department.Id)
+                    .OrderBy(i => i.Semester.Name)
+                    .ThenBy(i => i.Department.DepartmentName)
                     .ThenBy(i => i.ProjectNr);
             }
             Response.Clear();
             Response.ContentType = "application/Excel";
             Response.AddHeader("content-disposition",
-                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Noten_Excel.xlsx");
+                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_IP56_Informatikprojekte.xlsx");
 
-            ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db);
+
+            ExcelCreator.GenerateMarketingList(Response.OutputStream, projectsToExport, db,
+            SelectedSemester.SelectedItem.Text);
             Response.End();
         }
     }

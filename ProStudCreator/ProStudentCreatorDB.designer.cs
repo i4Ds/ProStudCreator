@@ -207,7 +207,7 @@ namespace ProStudCreator
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
-	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged, IComparable<Department>
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -466,7 +466,12 @@ namespace ProStudCreator
 			this.SendPropertyChanging();
 			entity.Department = null;
 		}
-	}
+
+        public int CompareTo(Department other)
+        {
+			return this._Id.CompareTo(other._Id);
+        }
+    }
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProjectTeamSize")]
 	public partial class ProjectTeamSize : INotifyPropertyChanging, INotifyPropertyChanged

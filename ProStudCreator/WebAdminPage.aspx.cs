@@ -177,7 +177,7 @@ namespace ProStudCreator
                 sbSemDates.Append($"<li>Info Veranstaltung: {fsInfoEvent:d} 11:15</li>");
 
                 // Anmeldung ProApp
-                var fsProAppApp = FirstDateOfWeekISO8601(y, 1).AddDays(4);
+                var fsProAppApp = FirstDateOfWeekISO8601(y, 2).AddDays(4);
                 sbSemDates.Append($"<li>Anmeldung ProApp: {fsProAppApp:d}</li>");
 
                 // Projekt Zuteilung
