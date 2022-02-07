@@ -157,7 +157,8 @@ namespace ProStudCreator
             }
         }
 
-        private static List<int> noFinishReminderMails = new List<int>() { 7 };
+        private static List<int> noFinishReminderMailsForAdvisors = new List<int>() { 7 };
+        private static List<int> noFinishReminderMailsForProjects = new List<int>() { 10342 };
 
         private static void CheckFinishProject(ProStudentCreatorDBDataContext db)
         {
@@ -169,7 +170,8 @@ namespace ProStudCreator
 
             foreach (var project in allOngoingProjects)
             {
-                if (noFinishReminderMails.Contains(project?.Advisor1?.Id ?? -1)) continue; // no reminder mails
+                if (noFinishReminderMailsForAdvisors.Contains(project?.Advisor1?.Id ?? -1)) continue; // no reminder mails for these advisors
+                if (noFinishReminderMailsForProjects.Contains(project?.Id ?? -1)) continue; // no reminder mails for these projects
 
                 if (!projectIdsWithTask.Contains(project.Id))
                 {
