@@ -459,7 +459,7 @@ namespace ProStudCreator
 
             if (activeTask2Weeks == null)
             {
-                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal.Trim(), "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                     ? dbDate : (DateTime?)null;
 
@@ -530,7 +530,7 @@ namespace ProStudCreator
 
             if (activeTask2Days == null)
             {
-                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal.Trim(), "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                     ? dbDate : (DateTime?)null;
 
@@ -744,7 +744,7 @@ namespace ProStudCreator
 
             if (activeTask == null)
             {
-                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                var deliveryDateCurrentSemester = DateTime.TryParseExact(currentSemester.SubmissionIP6Normal.Trim(), "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                     ? dbDate : (DateTime?)null;
 
@@ -792,7 +792,7 @@ namespace ProStudCreator
 
             if (nextSemesterTask == null)
             {
-                var deliveryDateNextSemester = DateTime.TryParseExact(nextSemester.SubmissionIP6Normal, "dd.MM.yyyy",
+                var deliveryDateNextSemester = DateTime.TryParseExact(nextSemester.SubmissionIP6Normal.Trim(), "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDateNext)
                     ? dbDateNext : (DateTime?)null;
 

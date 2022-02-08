@@ -574,19 +574,19 @@ namespace ProStudCreator
                 DateTime dbDate;
 
                 if (_p.LogProjectDuration == 1 && (_p.LogProjectType?.P5 ?? false)) //IP5 Projekt Voll/TeilZeit
-                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP5FullPartTime, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP5FullPartTime.Trim(), "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
                 if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P5 ?? false)) //IP5 Berufsbegleitend
-                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP5Accompanying, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP5Accompanying.Trim(), "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
                 if (_p.LogProjectDuration == 1 && (_p.LogProjectType?.P6 ?? false)) //IP6 Variante 1 Semester
-                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Normal, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Normal.Trim(), "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
                 if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P6 ?? false)) //IP6 Variante 2 Semester
-                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Variant2, "dd.MM.yyyy",
+                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Variant2.Trim(), "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
 
@@ -671,11 +671,11 @@ namespace ProStudCreator
 
             DateTime dbDate;
             if (_p.LogProjectDuration == 1 && (_p.LogProjectType?.P5 ?? false)) //IP5 Projekt Voll/TeilZeit
-                return DateTime.TryParseExact(_p.Semester?.SubmissionIP5FullPartTime, "dd.MM.yyyy",
+                return DateTime.TryParseExact(_p.Semester?.SubmissionIP5FullPartTime.Trim(), "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                     ? dbDate + Global.ExpectFinalPresentationAfterSubmissionForIP5 : (DateTime?)null;
             if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P5 ?? false)) //IP5 Berufsbegleitend
-                return DateTime.TryParseExact(_p.Semester?.SubmissionIP5Accompanying, "dd.MM.yyyy",
+                return DateTime.TryParseExact(_p.Semester?.SubmissionIP5Accompanying.Trim(), "dd.MM.yyyy",
                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                     ? dbDate + Global.ExpectFinalPresentationAfterSubmissionForIP5 : (DateTime?)null;
 
@@ -745,7 +745,7 @@ namespace ProStudCreator
                     if (_p.LogProjectDuration == 1)
                     {
                         //Normal duration
-                        var submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                        var submissionDate = DateTime.TryParseExact(_p.Semester.SubmissionIP5FullPartTime.Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                             ? dbDate
                             : (DateTime?)null;
 
@@ -758,7 +758,7 @@ namespace ProStudCreator
                     else if (_p.LogProjectDuration == 2)
                     {
                         //Long duration
-                        var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
+                        var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End.Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbDate)
                             ? dbDate
                             : (DateTime?)null;
 
@@ -775,7 +775,7 @@ namespace ProStudCreator
                 else if (_p.LogProjectType.P6)
                 {
                     // P6
-                    var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbdate)
+                    var endOfDefenseTimeSpan = DateTime.TryParseExact(_p.Semester.DefenseIP6End.Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dbdate)
                         ? dbdate
                         : (DateTime?)null;
 
