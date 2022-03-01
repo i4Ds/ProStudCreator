@@ -29,7 +29,7 @@
                 </ul>
             </li>
             <li>Falls sich eine ungenügende Note abzeichnet, sind für den Rekursfall <a href="FAQ#rekurs">einige Dinge</a> zu beachten. Melde Dich möglichst früh bei uns.</li>
-            <li>Titeländerungen können bis <%: (ProStudCreator.Global.AllowTitleChangesBeforeSubmission.Days/7) %> Wochen vor Abgabe auf der jeweiligen Projekt-Infoseite vorgenommen werden.</li>
+            <li>Nur für P6-Projekte: Titeländerungen können bis <%: (ProStudCreator.Global.AllowTitleChangesBeforeSubmission.Days/7) %> Wochen vor Abgabe auf der jeweiligen Projekt-Infoseite vorgenommen werden.</li>
             <li>Die Studierenden erstellen das obligatorische Websummary. Auf dem Netzwerkshare gibts dazu einen Leitfaden (\\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene).</li>
             <li>Nur für Projekte, die im Herbst abschliessen: Die Studierenden stellen Ihr IP6 an der Ausstellung mit einem <a href="Content/Poster_TemplateI_150923.pptx" class="ppt">Poster</a> vor. Poster
                 können vom Empfang in A0-Grösse gedruckt werden.</li>
