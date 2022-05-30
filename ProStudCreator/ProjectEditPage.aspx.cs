@@ -104,8 +104,10 @@ namespace ProStudCreator
             else
             {
                 divHistory.Visible = false;
+                /*
                 if (Request.QueryString["showChanges"] == null)
                     duplicateProject.Visible = false;
+                */
             }
 
 
@@ -1339,7 +1341,7 @@ namespace ProStudCreator
             refuseProject.Visible = false;
             rollbackProject.Visible = false;
             saveCloseProject.Visible = false;
-            duplicateProject.Visible = false;
+            // duplicateProject.Visible = false;
 
             POneTypeLabel.Text = CreateSimpleDiffString(pageProject.POneType.Description, currentProject.POneType.Description);
             dropPOneTeamSize.SelectedValue = CreateSimpleDiffString(pageProject.POneTeamSize.Description, currentProject.POneTeamSize.Description);
@@ -1658,7 +1660,7 @@ namespace ProStudCreator
             refusedReason.Visible = true;
             refuseProject.Visible = false;
             publishProject.Visible = false;
-            duplicateProject.Visible = false;
+            // duplicateProject.Visible = false;
             saveProject.Visible = false;
 
             refusedReasonText.Text = $"Dein Projekt '{pageProject.Name}' wurde leider nicht gewählt. Bitte informiere allfällige externe Auftraggeber!\n"
@@ -1714,7 +1716,7 @@ namespace ProStudCreator
             refusedReason.Visible = false;
             refuseProject.Visible = true;
             publishProject.Visible = true;
-            duplicateProject.Visible = true;
+            // duplicateProject.Visible = true;
         }
 
         protected void RollbackProject_Click(object sender, EventArgs e)
@@ -1820,6 +1822,7 @@ namespace ProStudCreator
             CollapseHistory(!(bool)Session["AddInfoCollapsed"]);
         }
 
+        /*
         protected void DuplicateProject_Click(object sender, EventArgs e)
         {
             SaveProject(false);
@@ -1831,6 +1834,7 @@ namespace ProStudCreator
                 Response.Redirect("~/ProjectEditPage.aspx?id=" + duplicate.Id);
             }
         }
+        */
 
         #endregion
 
