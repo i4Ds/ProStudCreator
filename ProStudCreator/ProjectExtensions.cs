@@ -1207,6 +1207,7 @@ namespace ProStudCreator
                 case ProjectState.Rejected:
                     return _p.UserHasCreatorRights() || ShibUser.CanEditAllProjects();
                 case ProjectState.Published:
+                    return _p.UserHasDepartmentManagerRights() || ShibUser.CanPublishProject();
                 case ProjectState.Ongoing:
                     return _p.UserHasDepartmentManagerRights();
                 case ProjectState.Finished:
@@ -1228,12 +1229,14 @@ namespace ProStudCreator
                     return _p.UserHasCreatorRights() || ShibUser.CanEditAllProjects();
                 case ProjectState.Submitted:
                 case ProjectState.Published:
+                    return _p.UserHasDepartmentManagerRights() || ShibUser.CanPublishProject();
                 case ProjectState.Ongoing:
                     return _p.UserHasDepartmentManagerRights();
                 case ProjectState.Finished:
                 case ProjectState.Canceled:
                 case ProjectState.ArchivedFinished:
                 case ProjectState.ArchivedCanceled:
+                    return ShibUser.IsWebAdmin();
                 default:
                     return false;
             }
