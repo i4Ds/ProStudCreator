@@ -157,27 +157,27 @@ namespace ProStudCreator
                 sbSemDates.Append("<li>FS<ul>");
 
                 // Semester Start
-                var fsSemStart = FirstDateOfWeekISO8601(y, 8);
+                var fsSemStart = Semester.StartOfWeek(y, 8);
                 sbSemDates.Append($"<li>Semester Start: {fsSemStart:d}</li>");
 
                 // Semester End
-                var fsSemEnd = FirstDateOfWeekISO8601(y, 24).AddDays(5);
+                var fsSemEnd = Semester.StartOfWeek(y, 24).AddDays(5);
                 sbSemDates.Append($"<li>Semester End: {fsSemEnd:d}</li>");
 
                 // Projekt Einreichung (extern)
-                var fsProjSubExt = FirstDateOfWeekISO8601(y - 1, 41).AddDays(2);
+                var fsProjSubExt = Semester.StartOfWeek(y - 1, 41).AddDays(2);
                 sbSemDates.Append($"<li>Projekt Einreichung (extern): {fsProjSubExt:d}</li>");
 
                 // Projekt Einreichung (intern)
-                var fsProjSubInt = FirstDateOfWeekISO8601(y - 1, 47).AddDays(2);
+                var fsProjSubInt = Semester.StartOfWeek(y - 1, 47).AddDays(2);
                 sbSemDates.Append($"<li>Projekt Einreichung (intern): {fsProjSubInt:d}</li>");
 
                 // Info Veranstaltung
-                var fsInfoEvent = FirstDateOfWeekISO8601(y - 1, 50);
+                var fsInfoEvent = Semester.StartOfWeek(y - 1, 50);
                 sbSemDates.Append($"<li>Info Veranstaltung: {fsInfoEvent:d} 11:15</li>");
 
                 // Anmeldung ProApp
-                var fsProAppApp = FirstDateOfWeekISO8601(y, 2).AddDays(4);
+                var fsProAppApp = Semester.StartOfWeek(y, 2).AddDays(4);
                 sbSemDates.Append($"<li>Anmeldung ProApp: {fsProAppApp:d}</li>");
 
                 // Projekt Zuteilung
@@ -185,31 +185,31 @@ namespace ProStudCreator
                 sbSemDates.Append($"<li>Projekt Zuteilung: {fsProjAlloc}</li>");
 
                 // Abgabe IP5
-                var fsSubIP5Norm = FirstDateOfWeekISO8601(y, 24).AddDays(4);
+                var fsSubIP5Norm = Semester.StartOfWeek(y, 24).AddDays(4);
                 sbSemDates.Append($"<li>Abgabe IP5: {fsSubIP5Norm:d}</li>");
 
                 // Notenabgabe IP5
-                var fsGradeIP5 = FirstDateOfWeekISO8601(y, 30).AddDays(4);
+                var fsGradeIP5 = Semester.StartOfWeek(y, 30).AddDays(4);
                 sbSemDates.Append($"<li>Notenabgabe IP5: {fsGradeIP5:d}</li>");
 
                 // Abgabe IP5 (lang) / IP6
-                var fsSubIP6Norm = FirstDateOfWeekISO8601(y, 33).AddDays(4);
+                var fsSubIP6Norm = Semester.StartOfWeek(y, 33).AddDays(4);
                 sbSemDates.Append($"<li>Abgabe IP5 (long) / IP6: {fsSubIP6Norm:d}</li>");
 
                 // Ausstellung Thesis
-                var fsExhibThesis = FirstDateOfWeekISO8601(y, 33).AddDays(4);
+                var fsExhibThesis = Semester.StartOfWeek(y, 33).AddDays(4);
                 sbSemDates.Append($"<li>Ausstellung Thesis: {fsExhibThesis:d}</li>");
 
                 // Verteidigung Start
-                var fsDefenseStart = FirstDateOfWeekISO8601(y, 36);
+                var fsDefenseStart = Semester.StartOfWeek(y, 36);
                 sbSemDates.Append($"<li>Verteidigung Start: {fsDefenseStart:d}</li>");
 
                 // Verteidigung End
-                var fsDefenseEnd = FirstDateOfWeekISO8601(y, 37).AddDays(4);
+                var fsDefenseEnd = Semester.StartOfWeek(y, 37).AddDays(4);
                 sbSemDates.Append($"<li>Verteidigung End: {fsDefenseEnd:d}</li>");
 
                 // Notenabgabe IP5 (lang) / IP6
-                var fsGradeIP6 = FirstDateOfWeekISO8601(y, 38);
+                var fsGradeIP6 = Semester.StartOfWeek(y, 38);
                 sbSemDates.Append($"<li>Notenabgabe IP5 (lang) / IP6: {fsGradeIP6:d}</li>");
 
                 sbSemDates.Append("</ul></li>");
@@ -218,27 +218,27 @@ namespace ProStudCreator
                 sbSemDates.Append("<li>HS<ul>");
 
                 // Semester Start
-                var hsSemStart = FirstDateOfWeekISO8601(y, 38);
+                var hsSemStart = Semester.StartOfWeek(y, 38);
                 sbSemDates.Append($"<li>Semester Start: {hsSemStart:d}</li>");
 
                 // Semester End
-                var hsSemEnd = FirstDateOfWeekISO8601(y + 1, 3).AddDays(5);
+                var hsSemEnd = Semester.StartOfWeek(y + 1, 3).AddDays(5);
                 sbSemDates.Append($"<li>Semester End: {hsSemEnd:d}</li>");
 
                 // Projekt Einreichung (extern)
-                var hsProjSubExt = FirstDateOfWeekISO8601(y, 15).AddDays(2);
+                var hsProjSubExt = Semester.StartOfWeek(y, 15).AddDays(2);
                 sbSemDates.Append($"<li>Projekt Einreichung (extern): {hsProjSubExt:d}</li>");
 
                 // Projekt Einreichung (intern)
-                var hsProjSubInt = FirstDateOfWeekISO8601(y, 21).AddDays(2);
+                var hsProjSubInt = Semester.StartOfWeek(y, 21).AddDays(2);
                 sbSemDates.Append($"<li>Projekt Einreichung (intern): {hsProjSubInt:d}</li>");
 
                 // Info Veranstaltung
-                var hsInfoEvent = FirstDateOfWeekISO8601(y, 24);
+                var hsInfoEvent = Semester.StartOfWeek(y, 24);
                 sbSemDates.Append($"<li>Info Veranstaltung: {hsInfoEvent:d} 11:15</li>");
 
                 // Anmeldung ProApp
-                var hsProAppApp = FirstDateOfWeekISO8601(y, 26).AddDays(4);
+                var hsProAppApp = Semester.StartOfWeek(y, 26).AddDays(4);
                 sbSemDates.Append($"<li>Anmeldung ProApp: {hsProAppApp:d}</li>");
 
                 // Projekt Zuteilung
@@ -246,15 +246,15 @@ namespace ProStudCreator
                 sbSemDates.Append($"<li>Projekt Zuteilung: {hsProjAlloc}</li>");
 
                 // Abgabe IP5
-                var hsSubIP5Norm = FirstDateOfWeekISO8601(y + 1, 3).AddDays(4);
+                var hsSubIP5Norm = Semester.StartOfWeek(y + 1, 3).AddDays(4);
                 sbSemDates.Append($"<li>Abgabe IP5: {hsSubIP5Norm:d}</li>");
 
                 // Notenabgabe IP5
-                var hsGradeIP5 = FirstDateOfWeekISO8601(y + 1, 7).AddDays(4);
+                var hsGradeIP5 = Semester.StartOfWeek(y + 1, 7).AddDays(4);
                 sbSemDates.Append($"<li>Notenabgabe IP5: {hsGradeIP5:d}</li>");
 
                 // Abgabe IP5 (lang) / IP6
-                var hsSubIP6Norm = FirstDateOfWeekISO8601(y + 1, 12).AddDays(4);
+                var hsSubIP6Norm = Semester.StartOfWeek(y + 1, 12).AddDays(4);
                 sbSemDates.Append($"<li>Abgabe IP5 (long) / IP6: {hsSubIP6Norm:d}</li>");
 
                 // Ausstellung Thesis
@@ -262,15 +262,15 @@ namespace ProStudCreator
                 sbSemDates.Append($"<li>Ausstellung Thesis: {hsExhibThesis:d}</li>");
 
                 // Verteidigung Start
-                var hsDefenseStart = FirstDateOfWeekISO8601(y + 1, 16);
+                var hsDefenseStart = Semester.StartOfWeek(y + 1, 16);
                 sbSemDates.Append($"<li>Verteidigung Start: {hsDefenseStart:d}</li>");
 
                 // Verteidigung End
-                var hsDefenseEnd = FirstDateOfWeekISO8601(y + 1, 17).AddDays(4);
+                var hsDefenseEnd = Semester.StartOfWeek(y + 1, 17).AddDays(4);
                 sbSemDates.Append($"<li>Verteidigung End: {hsDefenseEnd:d}</li>");
 
                 // Notenabgabe IP5 (lang) / IP6
-                var hsGradeIP6 = FirstDateOfWeekISO8601(y + 1, 18);
+                var hsGradeIP6 = Semester.StartOfWeek(y + 1, 18);
                 sbSemDates.Append($"<li>Notenabgabe IP5 (lang) / IP6: {hsGradeIP6:d}</li>");
 
                 sbSemDates.Append("</ul></li>");
@@ -302,34 +302,6 @@ namespace ProStudCreator
             mail.IsBodyHtml = true;
             mail.Body = msg;
             TaskHandler.SendMail(mail);
-        }
-
-        // Copied from https://stackoverflow.com/questions/662379/calculate-date-from-week-number (10.09.2021)
-        public static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
-        {
-            DateTime jan1 = new DateTime(year, 1, 1);
-            int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
-
-            // Use first Thursday in January to get first week of the year as
-            // it will never be in Week 52/53
-            DateTime firstThursday = jan1.AddDays(daysOffset);
-            var cal = CultureInfo.CurrentCulture.Calendar;
-            int firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-            var weekNum = weekOfYear;
-            // As we're adding days to a date in Week 1,
-            // we need to subtract 1 in order to get the right date for week #1
-            if (firstWeek == 1)
-            {
-                weekNum -= 1;
-            }
-
-            // Using the first Thursday as starting week ensures that we are starting in the right year
-            // then we add number of weeks multiplied with days
-            var result = firstThursday.AddDays(weekNum * 7);
-
-            // Subtract 3 days from Thursday to get Monday, which is the first weekday in ISO8601
-            return result.AddDays(-3);
         }
     }
 }

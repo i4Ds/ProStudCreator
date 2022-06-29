@@ -87,12 +87,9 @@ namespace ProStudCreator
         {
 #if DEBUG
             inDebugMode = true;
+#elif !DEBUG
+            inDebugMode = false;
 #endif
-            //register new Users
-            /*if (!db.UserDepartmentMap.Select(i => i.Mail).Contains(ShibUser.GetEmail()))
-            {
-                db.UserDepartmentMap.InsertOnSubmit(new UserDepartmentMap(){DepartmentId = ShibUser.GetDepartment(db).Id, Mail = ShibUser.GetEmail(), Name = ShibUser.GetFullName()});
-            }*/
         }
 
         private void Page_Error(object sender, EventArgs e)
