@@ -297,7 +297,8 @@ namespace ProStudCreator
 
             var projectsToExport = GetSelectedExcelExportProjects()
                     .Where(p => (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled))
-                    .OrderByDescending(p => p.Department)
+                    .OrderByDescending(p => p.Semester.StartDate)
+                    .ThenBy(p => p.Department)
                     .ThenBy(p => p.ProjectNr);
             
             /*

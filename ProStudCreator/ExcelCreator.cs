@@ -654,7 +654,7 @@ namespace ProStudCreator
                 row1.CreateCell(7).SetCellValue(projects[i].LogStudent1Mail ?? "");
 
                 // Typ
-                row1.CreateCell(8).SetCellValue(projects[i].LogProjectType.ExportValue);
+                row1.CreateCell(8).SetCellValue(projects[i].LogProjectType?.ExportValue ?? "");
 
                 // Dauer
                 if (projects[i].LogProjectDuration.HasValue)
