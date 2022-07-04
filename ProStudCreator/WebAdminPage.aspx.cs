@@ -172,13 +172,13 @@ namespace ProStudCreator
                 var fsProjSubInt = Semester.StartOfWeek(y - 1, 47).AddDays(2);
                 sbSemDates.Append($"<li>Projekt Einreichung (intern): {fsProjSubInt:d}</li>");
 
-                // Info Veranstaltung
+                // Infoveranstaltung / Start ProApp
                 var fsInfoEvent = Semester.StartOfWeek(y - 1, 50);
-                sbSemDates.Append($"<li>Info Veranstaltung: {fsInfoEvent:d} 11:15</li>");
+                sbSemDates.Append($"<li>Infoveranstaltung / Start ProApp: {fsInfoEvent:d} 11:15</li>");
 
-                // Anmeldung ProApp
+                // Anmeldeschluss ProApp
                 var fsProAppApp = Semester.StartOfWeek(y, 2).AddDays(4);
-                sbSemDates.Append($"<li>Anmeldung ProApp: {fsProAppApp:d}</li>");
+                sbSemDates.Append($"<li>Anmeldeschluss ProApp: {fsProAppApp:d}</li>");
 
                 // Projekt Zuteilung
                 var fsProjAlloc = $"Ende 01.{y}";
@@ -233,13 +233,13 @@ namespace ProStudCreator
                 var hsProjSubInt = Semester.StartOfWeek(y, 21).AddDays(2);
                 sbSemDates.Append($"<li>Projekt Einreichung (intern): {hsProjSubInt:d}</li>");
 
-                // Info Veranstaltung
+                // Infoveranstaltung / Start ProApp
                 var hsInfoEvent = Semester.StartOfWeek(y, 24);
-                sbSemDates.Append($"<li>Info Veranstaltung: {hsInfoEvent:d} 11:15</li>");
+                sbSemDates.Append($"<li>Infoveranstaltung / Start ProApp: {hsInfoEvent:d} 11:15</li>");
 
-                // Anmeldung ProApp
+                // Anmeldeschluss ProApp
                 var hsProAppApp = Semester.StartOfWeek(y, 26).AddDays(4);
-                sbSemDates.Append($"<li>Anmeldung ProApp: {hsProAppApp:d}</li>");
+                sbSemDates.Append($"<li>Anmeldeschluss ProApp: {hsProAppApp:d}</li>");
 
                 // Projekt Zuteilung
                 var hsProjAlloc = $"Anfang 07.{y}";

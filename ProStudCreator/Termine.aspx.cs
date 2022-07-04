@@ -48,8 +48,8 @@ namespace ProStudCreator
                 " ",
                 "Projekteinreichung (extern)",
                 "Projekteinreichung (intern)",
-                "Info Veranstaltung",
-                "Anmeldung ProApp",
+                "Infoveranstaltung / Start ProApp",
+                "Anmeldeschluss ProApp",
                 "Projektzuteilung",
                 "Abgabe IP5",
                 "Notenabgabe IP5",
@@ -59,7 +59,7 @@ namespace ProStudCreator
                 "Verteidigung",
                 "Notenabgabe IP5 (Lang) / IP6"
             })
-                dt.Columns.Add(header);
+            dt.Columns.Add(header);
 
             foreach (var semester in semestersToDisplay)
             {
