@@ -93,7 +93,7 @@ namespace ProStudCreator
             "XN--UNUP4Y", "XN--VERMGENSBERATER - CTB", "XN--VERMGENSBERATUNG - PWB", "XN--VHQUV", "XN--VUQ861B",
             "XN--WGBH1C", "XN--WGBL6A", "XN--XHQ521B", "XN--XKC2AL3HYE2A", "XN--XKC2DL3A5EE0H", "XN--Y9A3AQ",
             "XN--YFRO4I67O", "XN--YGBI2AMMX", "XN--ZFR164B", "XXX", "XYZ", "YACHTS", "YANDEX", "YE", "YODOBASHI",
-            "YOGA", "YOKOHAMA", "YOUTUBE", "YT", "ZA", "ZIP", "ZM", "ZONE", "ZUERICH", "ZW"
+            "YOGA", "YOKOHAMA", "YOUTUBE", "YT", "ZA", "ZIP", "ZM", "ZONE", "ZUERICH", "ZW", "VIP"
         };
 
         private static readonly Regex protocolExtender = new Regex("^[a-zA-Z0-9\\+]*://\\z");
