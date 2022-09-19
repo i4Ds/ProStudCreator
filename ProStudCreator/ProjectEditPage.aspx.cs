@@ -584,17 +584,20 @@ namespace ProStudCreator
             {
                 case (int)ClientType.Company:
                     divClientCompany.Visible = divClientForm.Visible = true;
+                    labelCompany.Text = "Unternehmen*:";
                     radioClientType.SelectedIndex = (int)ClientType.Company;
                     break;
 
                 case (int)ClientType.PrivatePerson:
                     divClientCompany.Visible = false;
+                    labelCompany.Text = "Unternehmen:";
                     divClientForm.Visible = true;
                     radioClientType.SelectedIndex = (int)ClientType.PrivatePerson;
                     break;
 
                 case (int)ClientType.Internal:
                     divClientCompany.Visible = true;
+                    labelCompany.Text = "Unternehmen:";
                     divClientForm.Visible = false;
                     radioClientType.SelectedIndex = (int)ClientType.Internal;
                     break;
@@ -1801,16 +1804,19 @@ namespace ProStudCreator
                 case "Intern":
                     divClientForm.Visible = false;
                     divClientCompany.Visible = true;
+                    labelCompany.Text = "Unternehmen:";
                     divClientDepartment.Visible = false;
                     break;
                 case "Company":
                     divClientForm.Visible = true;
                     divClientCompany.Visible = true;
+                    labelCompany.Text = "Unternehmen*:";
                     divClientDepartment.Visible = true;
                     break;
                 case "PrivatePerson":
                     divClientForm.Visible = true;
                     divClientCompany.Visible = false;
+                    labelCompany.Text = "Unternehmen:";
                     divClientDepartment.Visible = false;
                     break;
                 default:

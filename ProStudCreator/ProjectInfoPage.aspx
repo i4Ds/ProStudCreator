@@ -291,7 +291,7 @@
                             </div>
                         </div>
                         <div class="form-group" runat="server" id="divClientCompany">
-                            <asp:Label runat="server" Text="Unternehmen*:" CssClass="control-label col-md-3"></asp:Label>
+                            <asp:Label runat="server" ID="LabelCompany" Text="Unternehmen*:" CssClass="control-label col-md-3"></asp:Label>
                             <asp:Label runat="server" ID="LabelClientCompany" CssClass="col-md-6 alignbottom"></asp:Label>
                             <div class="col-md-6">
                                 <asp:TextBox runat="server" ID="txtClientCompanyAdmin" CssClass="form-control maxWidth" MaxLength="255"></asp:TextBox>

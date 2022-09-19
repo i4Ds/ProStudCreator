@@ -158,7 +158,7 @@ namespace ProStudCreator
         }
 
         private static List<int> noFinishReminderMailsForAdvisors = new List<int>() { 7 };
-        private static List<int> noFinishReminderMailsForProjects = new List<int>() { 10342 };
+        private static List<int> noFinishReminderMailsForProjects = new List<int>() { 10342, 11148 };
 
         private static void CheckFinishProject(ProStudentCreatorDBDataContext db)
         {

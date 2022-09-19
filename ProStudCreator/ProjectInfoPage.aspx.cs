@@ -997,16 +997,19 @@ namespace ProStudCreator
                 case "Intern":
                     divClientForm.Visible = false;
                     divClientCompany.Visible = true;
+                    LabelCompany.Text = "Unternehmen:";
                     divClientDepartment.Visible = false;
                     break;
                 case "Company":
                     divClientForm.Visible = true;
                     divClientCompany.Visible = true;
+                    LabelCompany.Text = "Unternehmen*:";
                     divClientDepartment.Visible = true;
                     break;
                 case "PrivatePerson":
                     divClientForm.Visible = true;
                     divClientCompany.Visible = false;
+                    LabelCompany.Text = "Unternehmen:";
                     divClientDepartment.Visible = false;
                     break;
                 default:
