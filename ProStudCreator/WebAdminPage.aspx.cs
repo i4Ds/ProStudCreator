@@ -53,9 +53,10 @@ namespace ProStudCreator
 
             NoExpertTheses.InnerHtml = String.Join("", db.Projects.Where(p => p.LogProjectType.P6 && !p.LogProjectType.P5 && p.IsMainVersion && p.State >= ProjectState.Ongoing && p.State <= ProjectState.Finished && p.Expert == null).Select(p => $"<li><a href=\"ProjectInfoPage?id={p.Id}\">{p.GetProjectLabel()}</a> : {p.StateAsString}</li>").ToArray());
 
-            (var etbp, var entbp, var msg) = TaskHandler.new_SendPayExperts(db);
+            var (expertsToBePaid, expertsNotToBePaid) = TaskHandler.getAllPayExperts(db);
+
             StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<Expert, List<Project>> entry in etbp)
+            foreach (KeyValuePair<Expert, List<Project>> entry in expertsToBePaid)
             {
                 sb.Append($"<li>{entry.Key.Name}<ul>");
                 foreach (Project p in entry.Value)
@@ -66,7 +67,7 @@ namespace ProStudCreator
             }
             ExpertsToBePaid.InnerHtml = sb.ToString();
             sb = new StringBuilder();
-            foreach (KeyValuePair<Expert, List<Project>> entry in entbp)
+            foreach (KeyValuePair<Expert, List<Project>> entry in expertsNotToBePaid)
             {
                 sb.Append($"<li>{entry.Key.Name}<ul>");
                 foreach (Project p in entry.Value)
@@ -77,7 +78,8 @@ namespace ProStudCreator
             }
             ExpertsNotToBePaid.InnerHtml = sb.ToString();
 
-            ExpertMailMessage.InnerHtml = msg;
+            var mailMessage = TaskHandler.createPayExpertsString(db, expertsToBePaid, expertsNotToBePaid, true, false);
+            ExpertMailMessage.InnerHtml = mailMessage;
 
             TasksTitles.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 18).OrderBy(t => t.DueDate).Select(t => $"<li>Datum: {t.DueDate}</li>").ToArray());
             TitleReminder2Weeks.InnerHtml = String.Join("", db.Tasks.Where(t => t.Done == false && t.TaskTypeId == 20).OrderBy(t => t.DueDate).Select(t => $"<li>Datum: {t.DueDate}</li>").ToArray());
@@ -294,13 +296,14 @@ namespace ProStudCreator
 
         protected void SendExpertMailToWebAdmin_Click(object sender, EventArgs e)
         {
-            (_, _, var msg) = TaskHandler.new_SendPayExperts(db);
+            var (expertsToBePaid, expertsNotToBePaid) = TaskHandler.getAllPayExperts(db);
+            var mailMessage = TaskHandler.createPayExpertsString(db, expertsToBePaid, expertsNotToBePaid, true, false);
 
             var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
             mail.To.Add(new MailAddress(Global.WebAdmin));
             mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
             mail.IsBodyHtml = true;
-            mail.Body = msg;
+            mail.Body = mailMessage;
             TaskHandler.SendMail(mail);
         }
     }

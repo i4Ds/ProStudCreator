@@ -120,7 +120,7 @@ namespace ProStudCreator
                     SendThesisTitlesToAdmin(db);
                     // SendGradesToAdmin(db);
                     // SendPayExperts(db);
-                    var _ = new_SendPayExperts(db);
+                    new_SendPayExperts(db);
 
                     // vvvvvvvvvvvvv NOT YET IMPLEMENTED
                     // SendInvoiceCustomers(db); //<-- not yet implemented
@@ -993,7 +993,7 @@ namespace ProStudCreator
         }
         */
 
-        public static (Dictionary<Expert, List<Project>>, Dictionary<Expert, List<Project>>, string) new_SendPayExperts(ProStudentCreatorDBDataContext db)
+        public static (Dictionary<Expert, List<Project>>, Dictionary<Expert, List<Project>>) getAllPayExperts(ProStudentCreatorDBDataContext db)
         {
             var type = db.TaskTypes.Single(t => t.Id == (int)Type.PayExperts);
             var currSemester = Semester.CurrentSemester(db);
@@ -1022,29 +1022,29 @@ namespace ProStudCreator
 
                 if (DateTime.Now < taskSemester.GradeIP6Deadline) continue;
 
-                var thesisProjects = db.Projects.Where(p => p.IsMainVersion
-                    && p.Semester == taskSemester
-                    && (p.LogProjectType.P6 && !p.LogProjectType.P5)
-                    && p.State != ProjectState.Deleted
-                    && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished)
-                    && !p.LogExpertPaid
-                    && p.Expert != null
-                    && p.Expert.AutomaticPayout
-                );
+                var (tempToBePaid, tempNotToBePaid) = getPayExperts(db, taskSemester);
 
-                var allExperts = thesisProjects.Select(p => p.Expert).Distinct();
-
-                foreach (Expert e in allExperts)
+                foreach (var kvp in tempToBePaid)
                 {
-                    if (thesisProjects.Where(p => p.Expert == e).Any(p => p.State == ProjectState.Ongoing))
+                    if (expertsToBePaid.ContainsKey(kvp.Key))
                     {
-                        var expertProjects = thesisProjects.Where(p => p.Expert == e);
-                        expertsNotToBePaid.Add(e, expertProjects.ToList());
+                        expertsToBePaid[kvp.Key].AddRange(kvp.Value);
                     }
                     else
                     {
-                        var expertProjects = thesisProjects.Where(p => p.Expert == e);
-                        expertsToBePaid.Add(e, expertProjects.ToList());
+                        expertsToBePaid.Add(kvp.Key, kvp.Value);
+                    }
+                }
+
+                foreach (var kvp in tempNotToBePaid)
+                {
+                    if (expertsNotToBePaid.ContainsKey(kvp.Key))
+                    {
+                        expertsNotToBePaid[kvp.Key].AddRange(kvp.Value);
+                    }
+                    else
+                    {
+                        expertsNotToBePaid.Add(kvp.Key, kvp.Value);
                     }
                 }
 
@@ -1052,7 +1052,7 @@ namespace ProStudCreator
                 {
                     task.LastReminded = DateTime.Now;
 
-                    if (!thesisProjects.Any())
+                    if (!expertsToBePaid.Any() && !expertsNotToBePaid.Any())
                     {
                         task.Done = true;
                     }
@@ -1060,9 +1060,52 @@ namespace ProStudCreator
                     db.SubmitChanges();
                 }
             }
+            return (expertsToBePaid, expertsNotToBePaid);
+        }
+
+        public static (Dictionary<Expert, List<Project>>, Dictionary<Expert, List<Project>>) getPayExperts(ProStudentCreatorDBDataContext db, Semester semester)
+        {
+            var expertsToBePaid = new Dictionary<Expert, List<Project>>();
+            var expertsNotToBePaid = new Dictionary<Expert, List<Project>>();
+
+            var thesisProjects = db.Projects.Where(p => p.IsMainVersion
+                && p.Semester == semester
+                && (p.LogProjectType.P6 && !p.LogProjectType.P5)
+                && p.State != ProjectState.Deleted
+                && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished)
+                && !p.LogExpertPaid
+                && p.Expert != null
+                && p.Expert.AutomaticPayout
+            );
+
+            var allExperts = thesisProjects.Select(p => p.Expert).Distinct();
+
+            foreach (Expert e in allExperts)
+            {
+                if (thesisProjects.Where(p => p.Expert == e).Any(p => p.State == ProjectState.Ongoing))
+                {
+                    var expertProjects = thesisProjects.Where(p => p.Expert == e);
+                    expertsNotToBePaid.Add(e, expertProjects.ToList());
+                }
+                else
+                {
+                    var expertProjects = thesisProjects.Where(p => p.Expert == e);
+                    expertsToBePaid.Add(e, expertProjects.ToList());
+                }
+            }
+
+            return (expertsToBePaid, expertsNotToBePaid);
+        }
+
+        public static string createPayExpertsString(ProStudentCreatorDBDataContext db, Dictionary<Expert, List<Project>> expertsToBePaid, Dictionary<Expert, List<Project>> expertsNotToBePaid, bool allExpertsInMail = false, bool setLogExpertPaid = false)
+        {
+            var mailExperts = expertsToBePaid;
+            if (allExpertsInMail)
+                foreach (var kvp in expertsNotToBePaid)
+                    mailExperts.Add(kvp.Key, kvp.Value);
 
             var mailMessage = new StringBuilder();
-            if (expertsToBePaid.Any())
+            if (mailExperts.Any())
             {
                 mailMessage.Append(
                     "<div style=\"font-family: Arial\">" +
@@ -1077,13 +1120,15 @@ namespace ProStudCreator
                         "<th>Projekttitel</th>" +
                     "</tr>");
 
-                foreach (var p in expertsToBePaid.SelectMany(kvpair => kvpair.Value)
+                foreach (var p in mailExperts.SelectMany(kvpair => kvpair.Value)
                     .OrderBy(p => p.Expert.Name)
                     .ThenBy(p => p.Semester.StartDate)
                     .ThenBy(p => p.Department.DepartmentName)
                     .ThenBy(p => p.ProjectNr))
                 {
-                    p.LogExpertPaid = true;
+                    if (setLogExpertPaid)
+                        p.LogExpertPaid = true;
+                        db.SubmitChanges();
 
                     mailMessage.Append(
                     "<tr>" +
@@ -1104,6 +1149,17 @@ namespace ProStudCreator
                     $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                     "</div>"
                 );
+            }
+            return mailMessage.ToString();
+        }
+
+        public static void new_SendPayExperts(ProStudentCreatorDBDataContext db)
+        {
+            var (expertsToBePaid, expertsNotToBePaid) = getAllPayExperts(db);
+
+            if (expertsToBePaid.Any() && !expertsNotToBePaid.Any())
+            {
+                var mailMessage = createPayExpertsString(db, expertsToBePaid, expertsNotToBePaid, false, true);
 
                 var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
                 mail.To.Add(new MailAddress(Global.WebAdmin));
@@ -1111,14 +1167,12 @@ namespace ProStudCreator
                 //mail.CC.Add(new MailAddress("hanna.troxler@fhnw.ch"));
                 mail.Subject = "Informatikprojekte P5/P6: Experten-Honorare auszahlen";
                 mail.IsBodyHtml = true;
-                mail.Body = mailMessage.ToString();
+                mail.Body = mailMessage;
                 SendMail(mail);
-
-                db.SubmitChanges();
             }
-
-            return (expertsToBePaid, expertsNotToBePaid, mailMessage.ToString());
         }
+
+        /*
 
         public static void SendPayExperts(ProStudentCreatorDBDataContext db)
         {
@@ -1183,7 +1237,7 @@ namespace ProStudCreator
 
                         foreach (var p in unpaidExperts)
                         {
-                            p.LogExpertPaid = true;
+                            // p.LogExpertPaid = true;
 
                             mailMessage.Append(
                             "<tr>" +
@@ -1213,6 +1267,8 @@ namespace ProStudCreator
 
             db.SubmitChanges();
         }
+
+        */
 
 
         //public static void SendInvoiceCustomers(ProStudentCreatorDBDataContext db)
