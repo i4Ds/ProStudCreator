@@ -33,7 +33,7 @@
         <h2>Zugriff verweigert</h2>
         <div class="alert alert-danger">Sie sind (noch) nicht berechtigt, auf diese Webseite zuzugreifen. Diese steht nur Mitarbeitenden der Informatikinstitute zur Verfügung.<br />
             <br />
-            Accounts können bei <a href="mailto:<%: ProStudCreator.Global.WebAdmin %>"><%: ProStudCreator.Global.WebAdmin %></a> beantragt werden.
+            Accounts können bei <a href="mailto:<%: responsibleDepartmentManager %>"><%: responsibleDepartmentManager %></a> beantragt werden.
         </div>
 
         <b>Angaben zum Fehler</b>
