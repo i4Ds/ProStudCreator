@@ -52,7 +52,7 @@
             <a href="mailto:simon.felix@fhnw.ch">Simon Felix</a> für Projekte am I4DS.
         </p>
         <p id="iit2" visible="false" runat="server">
-            <a href="mailto:marcel.gygli@fhnw.ch">Marcel Gygli</a> für Projekte am IIT. 
+            <a href="mailto:hilko.cords@fhnw.ch">Hilko Coords</a> für Projekte am IIT. 
         </p>
         <h4>Wie können externe Auftraggeber Projekte einreichen?</h4>
         <p>
@@ -87,6 +87,7 @@
         <h4>Kann ich Einzelprojekte einreichen?</h4>
         <p>
             Einzelprojekte sind aus Skalierungsgründen nur in Ausnahmefällen möglich. Der Betreuungsaufwand für viele Einzelprojekte wäre zu gross.
+            Es ist jedoch möglich, ein Projekt für 1-2 Studierende auszuschreiben. Der Zuteilungsalgorithmus teilt in diesem Fall einen oder zwei Studierende zu.
         </p>
         <h4>Wie läuft die Zuteilung der Projekte?</h4>
         <p>
@@ -118,10 +119,10 @@
             Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:simon.felix@fhnw.ch">Simon Felix</a>.
         </p>
         <p id="imvs1" visible="false" runat="server">
-            Du bist für die Organisation des Experten und der Verteidigung verantwortlich.
+            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:dominik.gruntz@fhnw.ch">Dominik Gruntz</a>.
         </p>
         <p id="iit1" visible="false" runat="server">
-            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:marcel.gygli@fhnw.ch">Marcel Gygli</a>.
+            Der Experte und die Verteidigung wird organisiert. Falls Du aber bereits einen Experten im Hinterkopf hast den Du gerne beiziehen möchtest oder der gut passen würde, dann informiere doch <a href="mailto:hilko.cords@fhnw.ch">Hilko Coords</a>.
         </p>
         <h4>Wo sollen die Studierenden Ihren Code ablegen? Woher kriegen meine Studierenden eine VM?</h4>
         <p>
