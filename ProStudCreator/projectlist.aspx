@@ -124,19 +124,19 @@
         <br />
         <br />
         <div class="col-sm-10" style="font-size: 70%">
-            <asp:Button id="colExInProgress" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#CEECF5"/>
+            <asp:Button id="colExInProgress" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = In Bearbeitung&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExSubmitted" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#ffcc99"/>
+            <asp:Button id="colExSubmitted" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = Eingereicht&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExRejected" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#F5A9A9"/>
+            <asp:Button id="colExRejected" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = Abgelehnt&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExPublished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#A9F5A9"/>
+            <asp:Button id="colExPublished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = Veröffentlicht&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExOngoing" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#64ed64"/>
+            <asp:Button id="colExOngoing" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = In Durchführung&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExFinished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#1adb1a"/>
+            <asp:Button id="colExFinished" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = Abgeschlossen&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button id="colExCanceled" runat="server" Enabled="false" CssClass="btn btn-default btnHeight" BackColor="#e8463b"/>
+            <asp:Button id="colExCanceled" runat="server" Enabled="false" CssClass="btn btn-default btnHeight btn-colored" BackColor="Magenta"/>
             = Abgebrochen&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <br />
