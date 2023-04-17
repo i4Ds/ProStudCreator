@@ -39,7 +39,7 @@
                 </ul>
             </li>
             <li>Fülle nach der Projektabgabe den <a href="Content/Bewertungsbogen Projekte 5 und 6.xlsx" class="xls">Bewertungsbogen</a> aus.</li>
-            <li>Lade Kollegen (_D_A18_47_Mitarbeitende_IIT@adm.mx.ds.fhnw.ch; _D_A18_41_Mitarbeitende_I4DS@adm.mx.ds.fhnw.ch; _D_A18_39_Mitarbeitende_IMVS@adm.mx.ds.fhnw.ch) und andere interessierte Gasthörer zur Schlusspräsentation ein.</li>
+            <li>Lade Kollegen (_D_A18_47_Mitarbeitende_IIT@fhnw365.onmicrosoft.com; _D_A18_41_Mitarbeitende_I4DS@fhnw365.onmicrosoft.com; _D_A18_39_Mitarbeitende_IMVS@fhnw365.onmicrosoft.com) und andere interessierte Gasthörer zur Schlusspräsentation ein.</li>
             <li>Schlusspräsentation mit ca. 30 Minuten Präsentation, und ca. 30 Minuten Fragen von Betreuern, Experten (IP6) und interessierten Gästen.</li>
             <li>Notenbesprechung mit den Experten (IP6), ggf. Anpassung der Bewertung. Pro Student/-in soll eine <i>individuelle</i> Note festgelegt werden. Noten >5.8 müssen an die SGL gemeldet werden.</li>
             <li>Auf der Projekt-Infoseite die Note, Verrechenbarkeit und Sprache des Projekts eintragen. Dort auch alle Projektartefakte (Doku, Code, ...) hochladen.</li>
