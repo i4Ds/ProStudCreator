@@ -353,7 +353,6 @@ namespace ProStudCreator
 
             if (proj.Reservation1Name != "")
             {
-                strRemarks += "\n\n";
                 strReservations += translator.GetReservedString(proj.Reservation1Name, proj.Reservation2Name);
             }
 
