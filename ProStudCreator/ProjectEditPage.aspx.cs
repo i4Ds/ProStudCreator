@@ -87,7 +87,6 @@ namespace ProStudCreator
                     Response.End();
                 }
 
-                /* //TODO
                 var history = db.Projects.Where(p => p.BaseVersionId == pageProject.BaseVersionId && !p.IsMainVersion);
                 if (history.ToList().Count > 0)
                 {
@@ -98,7 +97,7 @@ namespace ProStudCreator
                 {
                     DivHistoryCollapsable.InnerText = "Keine früheren Versionen vorhanden.";
                 }
-                */
+
 
             }
             else
@@ -299,7 +298,11 @@ namespace ProStudCreator
 
             if (DivSemester.Visible && dropSemester.SelectedValue != dropSemesterImpossibleValue)
             {
-                projectSemester = db.Semester.Single(s => s.Id.ToString() == dropSemester.SelectedValue);
+                projectSemester = db.Semester.SingleOrDefault(s => s.Id.ToString() == dropSemester.SelectedValue);
+                if (projectSemester == null)
+                {
+                    projectSemester = Semester.NextSemester(db);
+                }
             }
             else
             {
