@@ -349,8 +349,8 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(pLang);
             row.CreateCell(i++).SetCellValue(pSC);
-            row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.Expert?.Name ?? "");
+            row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString() ?? "");
             row.CreateCell(i++).SetCellValue(p.Expert?.AutomaticPayout.ToString() ?? "");
             row.CreateCell(i++).SetCellValue(p.LogDefenceDate?.ToString() ?? "-");
