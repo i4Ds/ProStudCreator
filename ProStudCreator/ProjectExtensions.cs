@@ -421,7 +421,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 100; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 92; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -499,14 +499,6 @@ namespace ProStudCreator
             target.Semester = _p.Semester;
             target.State = _p.State;
             //target.Tasks = _p.Tasks;
-            target.TypeAppWeb = _p.TypeAppWeb;
-            target.TypeCGIP = _p.TypeCGIP;
-            target.TypeDBBigData = _p.TypeDBBigData;
-            target.TypeDesignUX = _p.TypeDesignUX;
-            target.TypeHW = _p.TypeHW;
-            target.TypeMlAlg = _p.TypeMlAlg;
-            target.TypeSE = _p.TypeSE;
-            target.TypeSysSec = _p.TypeSysSec;
             target.UnderNDA = _p.UnderNDA;
             target.WebSummaryChecked = _p.WebSummaryChecked;
             target.GradeSentToAdmin = _p.GradeSentToAdmin;
