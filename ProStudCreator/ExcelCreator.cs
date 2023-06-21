@@ -72,7 +72,7 @@ namespace ProStudCreator
             "Projekttyp",
             "Anzahl Semester",
             "Durchführungssprache",
-            "Studiengang",
+            "Zuweisung SG für Verrechnung",
             "Experte",
             "Experte E-Mail",
             "Experte Bezahlt",
@@ -99,10 +99,11 @@ namespace ProStudCreator
             "Projekt-nummer",
             "Projekttittel",
             "Studierende",
+            "Studiengang",
             "Betreuer",
             "Projekt x",
             "Institut",
-            "Vertiefungs-richtung",
+            "Vertiefungsrichtung",
             "Vertraulich",
             "Experte (P6)",
             "Auftraggeber",
@@ -372,7 +373,7 @@ namespace ProStudCreator
                 cell5.CellStyle = StateStyle;
             }
         }
-         
+
         private static string GetLanguage(Project p)
         {
             if ((p.LogLanguageGerman ?? false) && !(p.LogLanguageEnglish ?? false))
@@ -424,7 +425,7 @@ namespace ProStudCreator
         {
             var workbook = new XSSFWorkbook();
             var worksheet = workbook.CreateSheet(Billing_SHEET_NAME);
-            
+
             var cellStyleGreen = workbook.CreateCellStyle();
             cellStyleGreen.FillForegroundColor = HSSFColor.LightGreen.Index;
             cellStyleGreen.BorderBottom = BorderStyle.Thin;
@@ -485,9 +486,9 @@ namespace ProStudCreator
             for (var i = 0; i < BillingHeader.Length; i++)
             {
                 var cell = worksheet.GetRow(0).CreateCell(i);
-                cell.CellStyle = i < 15 ? cellStyleHeader : cellStyleHeaderYellow;
+                cell.CellStyle = i < 16 ? cellStyleHeader : cellStyleHeaderYellow;
                 cell.SetCellValue(BillingHeader[i]);
-                if (i < 11 || i > 14)
+                if (i < 12 || i > 15)
                 {
                     cell.CellStyle.WrapText = true;
                     worksheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 2, i, i));
@@ -501,37 +502,51 @@ namespace ProStudCreator
                 var row = worksheet.CreateRow(3 + i);
                 var p = projects[i];
 
-                row.CreateCell(0).SetCellValue(p.Semester.Name);
-                row.CreateCell(1).SetCellValue(p.GetProjectLabel());
-                row.CreateCell(2).SetCellValue(p.Name);
-                if(!string.IsNullOrWhiteSpace(p.GetStudent2FullName()))
-                    row.CreateCell(3).SetCellValue(p.GetStudent1FullName() + " / " + p.GetStudent2FullName());
-                else
-                    row.CreateCell(3).SetCellValue(p.GetStudent1FullName());
-                row.CreateCell(4).SetCellValue(p.Advisor1?.Name ?? "");
-                row.CreateCell(5).SetCellValue(p.LogProjectType?.ExportValue ?? "");
-                row.CreateCell(6).SetCellValue(p.Department.DepartmentName);
-                row.CreateCell(7).SetCellValue("");
-                row.CreateCell(8).SetCellValue("");
-                row.CreateCell(9).SetCellValue(p.Expert?.Mail ?? "");
-                row.CreateCell(10).SetCellValue(p.ClientCompany);
-                row.CreateCell(11).SetCellValue(p.ClientPerson);
+                int currentCellColumn = 0;
 
-                if(!string.IsNullOrEmpty(p.ClientAddressStreet) && (!string.IsNullOrEmpty(p.ClientAddressPostcode) || !string.IsNullOrEmpty(p.ClientAddressCity)))
-                    row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}, {p.ClientAddressPostcode} {p.ClientAddressCity}");
-                else
-                    row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
+                row.CreateCell(currentCellColumn++).SetCellValue(p.Semester.Name);
+                row.CreateCell(currentCellColumn++).SetCellValue(p.GetProjectLabel());
+                row.CreateCell(currentCellColumn++).SetCellValue(p.Name);
 
-                row.CreateCell(13).SetCellValue(p.ClientReferenceNumber ?? "");
-                row.CreateCell(14).SetCellValue(p.State > ProjectState.Ongoing ? (p.BillingStatus?.DisplayName ?? "") : "");
-                row.CreateCell(15);
-                row.CreateCell(16);
+                if (!string.IsNullOrWhiteSpace(p.GetStudent2FullName()))
+                    row.CreateCell(currentCellColumn++).SetCellValue(p.GetStudent1FullName() + " / " + p.GetStudent2FullName());
+                else
+                    row.CreateCell(currentCellColumn++).SetCellValue(p.GetStudent1FullName());
+
+                // Adding "Zuweisung SG für Verrechnung" for the "Verechnung" - Excel Sheet
+
+                if (p.LogStudyCourse == 1)
+                    row.CreateCell(currentCellColumn++).SetCellValue("Informatik");
+                else if (p.LogStudyCourse == 2)
+                    row.CreateCell(currentCellColumn++).SetCellValue("Data Science");
+                else
+                    row.CreateCell(currentCellColumn++).SetCellValue("?");
+
+
+                row.CreateCell(currentCellColumn++).SetCellValue(p.Advisor1?.Name ?? "");
+                row.CreateCell(currentCellColumn++).SetCellValue(p.LogProjectType?.ExportValue ?? "");
+                row.CreateCell(currentCellColumn++).SetCellValue(p.Department.DepartmentName);
+                row.CreateCell(currentCellColumn++).SetCellValue("");
+                row.CreateCell(currentCellColumn++).SetCellValue("");
+                row.CreateCell(currentCellColumn++).SetCellValue(p.Expert?.Mail ?? "");
+                row.CreateCell(currentCellColumn++).SetCellValue(p.ClientCompany);
+                row.CreateCell(currentCellColumn++).SetCellValue(p.ClientPerson);
+
+                if (!string.IsNullOrEmpty(p.ClientAddressStreet) && (!string.IsNullOrEmpty(p.ClientAddressPostcode) || !string.IsNullOrEmpty(p.ClientAddressCity)))
+                    row.CreateCell(currentCellColumn++).SetCellValue($"{p.ClientAddressStreet}, {p.ClientAddressPostcode} {p.ClientAddressCity}");
+                else
+                    row.CreateCell(currentCellColumn++).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
+
+                row.CreateCell(currentCellColumn++).SetCellValue(p.ClientReferenceNumber ?? "");
+                row.CreateCell(currentCellColumn++).SetCellValue(p.State > ProjectState.Ongoing ? (p.BillingStatus?.DisplayName ?? "") : "");
+                row.CreateCell(currentCellColumn++);
+                row.CreateCell(currentCellColumn++);
 
 
                 //add border to the first few columns
-                for (var cellcount = 0; cellcount < 11; cellcount++)
+                for (var cellcount = 0; cellcount <= 11; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-                for (var cellcount = 15; cellcount < 17; cellcount++)
+                for (var cellcount = 16; cellcount <= 17; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
                 ICellStyle cellStyle;
@@ -545,13 +560,13 @@ namespace ProStudCreator
                 else
                     cellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
-                for (var cellcount = 11; cellcount < 15; cellcount++)
+                for (var cellcount = 12; cellcount < 16; cellcount++)
                     row.GetCell(cellcount).CellStyle = cellStyle;
             }
 
-            //j = 11 because until the 11 column the Headers look the same 
-            //thats why it has to start filling in with the 11th column 
-            var j = 11;
+            //j = 12 because until the 12 column the Headers look the same 
+            //thats why it has to start filling in with the 12th column
+            var j = 12;
             var SecondHeaders = worksheet.CreateRow(1);
             var SecondHeadersCells = worksheet.GetRow(1).CreateCell(j);
 
@@ -576,9 +591,9 @@ namespace ProStudCreator
             SecondHeadersCells = worksheet.GetRow(1).CreateCell(j);
 
             //Third line 
-            //j = 11 because until the 11 column the Headers look the same 
+            //j = 12 because until the 12 column the Headers look the same 
             //thats why it has to start filling in with the 11th column 
-            j = 11;
+            j = 12;
             SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;
             SecondHeadersCells.SetCellValue("Kontaktperson");
@@ -697,7 +712,7 @@ namespace ProStudCreator
 
             var lastProjectRow = rowCounter;
 
-            worksheetGrades.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(firstProjectRow-1, firstProjectRow-1, 0, GradeHeader.Length - 1));
+            worksheetGrades.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(firstProjectRow - 1, firstProjectRow - 1, 0, GradeHeader.Length - 1));
 
             for (var i = 0; i < GradeHeader.Length; i++)
                 worksheetGrades.AutoSizeColumn(i);
