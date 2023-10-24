@@ -96,13 +96,13 @@ namespace ProStudCreator
         private static readonly string[] BillingHeader =
         {
             "Semester",
-            "Projekt-nummer",
+            "Projektnummer",
             "Projekttittel",
             "Studierende",
             "Betreuer",
             "Projekt x",
             "Institut",
-            "Vertiefungs-richtung",
+            "Studiengang",
             "Vertraulich",
             "Experte (P6)",
             "Auftraggeber",
@@ -511,7 +511,16 @@ namespace ProStudCreator
                 row.CreateCell(4).SetCellValue(p.Advisor1?.Name ?? "");
                 row.CreateCell(5).SetCellValue(p.LogProjectType?.ExportValue ?? "");
                 row.CreateCell(6).SetCellValue(p.Department.DepartmentName);
-                row.CreateCell(7).SetCellValue("");
+
+                var pSC = "";
+                if (p.LogStudyCourse == 1)
+                    pSC = "Informatik";
+                else if (p.LogStudyCourse == 2)
+                    pSC = "Data Science";
+                else
+                    pSC = "";
+                row.CreateCell(7).SetCellValue(pSC);
+
                 row.CreateCell(8).SetCellValue("");
                 row.CreateCell(9).SetCellValue(p.Expert?.Mail ?? "");
                 row.CreateCell(10).SetCellValue(p.ClientCompany);
