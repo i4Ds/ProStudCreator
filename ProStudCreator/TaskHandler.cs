@@ -815,6 +815,16 @@ namespace ProStudCreator
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
                     mail.To.Add(new MailAddress(Global.WebAdmin)); // TODO: change to Global.GradeAdmin
+                    
+                    // Add recipients to the "To" field
+                    mail.To.Add("marketing.technik@fhnw.ch");
+                    mail.To.Add("maren.watermann@fhnw.ch");
+
+                    // Add CC recipients
+                    mail.CC.Add("regula.scherrer@fhnw.ch");
+                    mail.CC.Add("daria.zgraggen@fhnw.ch");
+                    mail.CC.Add("sibylle.peter@fhnw.ch");
+
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel";
                     mail.IsBodyHtml = true;
 
@@ -826,7 +836,8 @@ namespace ProStudCreator
                         "<table>" +
                         "<tr>" +
                             "<th>Projekttitel</th>" +
-                            "<th>Betreuer</th>" +
+                            "<th>Betreuer1</th>" +
+                            "<th>Betreuer2</th>" +
                             "<th>Mail1</th>" +
                             "<th>Mail2</th>" +
                         "</tr>");
@@ -839,6 +850,7 @@ namespace ProStudCreator
                             "<tr>" +
                                 $"<td>{HttpUtility.HtmlEncode(p.GetFullTitle())}</td>" +
                                 $"<td>{HttpUtility.HtmlEncode(p.Advisor1.Mail)}</td>" +
+                                $"<td>{((p.Advisor2 != null) ? HttpUtility.HtmlEncode(p.Advisor2.Mail) : "-")}</td>" +
                                 $"<td>{HttpUtility.HtmlEncode(p.LogStudent1Mail)}</td>" +
                                 $"<td>{((p.LogStudent2Mail != null) ? HttpUtility.HtmlEncode(p.LogStudent2Mail) : "-")}</td>" +
                             "</tr>"
@@ -854,6 +866,23 @@ namespace ProStudCreator
                         $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                         "</div>"
                         );
+
+                    var lastSendDate = new DateTime(DateTime.Now.Year, 6, 1);
+                    if (DateTime.Now < lastSendDate)
+                        lastSendDate = lastSendDate.AddYears(-1);
+
+                    var activeSem = Semester.ActiveSemester(lastSendDate, db);
+
+                    var projs = db.Projects.Where(p => p.IsMainVersion && p.LogProjectType.P6 && p.Semester.Id == activeSem.Id && p.State == (int)ProjectState.Ongoing && !p.UnderNDA).ToArray();
+
+                    var ms = new System.IO.MemoryStream();
+                    ExcelCreator.GenerateMarKomExcel(ms, projs, db, activeSem.Name);
+                    byte[] byteArr = ms.ToArray();
+                    var ms2 = new System.IO.MemoryStream(byteArr, true);
+                    ms2.Write(byteArr, 0, byteArr.Length);
+                    ms2.Position = 0;
+                    var attach = new System.Net.Mail.Attachment(ms2, $"{activeSem.Name}_IP6_Ausstellung.xlsx", "application/vnd.ms-excel");
+                    mail.Attachments.Add(attach);
 
                     mail.Body = mailMessage.ToString();
                     SendMail(mail);
@@ -877,6 +906,7 @@ namespace ProStudCreator
                         $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                         "</div>"
                         );
+                                       
 
                     mail.Body = mailMessage.ToString();
                     SendMail(mail);

@@ -23,7 +23,7 @@ namespace ProStudCreator.error
                 responsibleDepartmentManager = depManager;
             }
 
-            errorMsg += "Login:\t" + (ShibUser.GetEmail() ?? "(Nicht verfübar)") + "\n";
+            errorMsg += "Login:\t" + (ShibUser.GetEmail() ?? "(Nicht verfügbar)") + "\n";
             errorMsg += "Abteilung: " + (dep?.DepartmentName ?? "(Unbekannt)") + "\n";
             errorMsg += "Called URL: " + (Request.QueryString["url"] != null ? Request.QueryString["url"].ToString() : "(Unbekannt)") + "\n";
             SendMail(errorMsg);
