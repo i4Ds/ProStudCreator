@@ -35,7 +35,8 @@ namespace ProStudCreator
 
             string prefix = "https://web0.fhnw.ch";
             string school = "ht";
-            string course = _p.LogStudyCourse == 1 ? "informatik" : "datascience";
+            // string course = _p.LogStudyCourse == 1 ? "informatik" : "datascience";
+            string course = "informatik";	// always informatik, see issue 358
             string projectType = _p.LogProjectType?.P6 == true ? "ip6" : "ip5";
             string sem = _p.Semester?.Name?.ToLower() ?? "00fs";
             string fullNr = _p.GetFullNr().ToLower();
