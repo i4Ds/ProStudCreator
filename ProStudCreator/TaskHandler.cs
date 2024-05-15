@@ -889,7 +889,7 @@ namespace ProStudCreator
                 }
                 else
                 {
-                    var mail = new MailMessage { From = new MailAddress("kushtrim.sylejmani@fhnw.ch") };
+                    var mail = new MailMessage { From = new MailAddress("delberin.ali@fhnw.ch") };
                     mail.To.Add(new MailAddress(Global.WebAdmin));
                     mail.Subject = "Keine Thesis Titel an Admin geschickt";
                     mail.IsBodyHtml = true;
