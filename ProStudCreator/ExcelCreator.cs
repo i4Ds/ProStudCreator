@@ -610,6 +610,13 @@ namespace ProStudCreator
             workbook.Write(outStream);
         }
 
+        /// <summary>
+        /// Generates an Excel file with the grades of the selected projects.
+        /// </summary>
+        /// <param name="outStream">Stream to write the excel to</param>
+        /// <param name="_projects">List of the project of one or of all semesters</param>
+        /// <param name="db">Reference to the context</param>
+        /// <param name="selectedStudyCourse">Selected Study Program (one of "all", "cs" or "ds")</param>
         public static void GenerateGradeExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db, string selectedStudyCourse)
         {
             var workbook = new XSSFWorkbook();
