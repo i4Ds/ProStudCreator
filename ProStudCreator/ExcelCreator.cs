@@ -136,7 +136,8 @@ namespace ProStudCreator
             "Email",
             "Typ",
             "Dauer",
-            "Sprache"
+            "Sprache",
+            "Studiengang"
         };
 
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
@@ -652,7 +653,9 @@ namespace ProStudCreator
             for (var i = 0; i < projects.Length; i++)
             {
                 // Filter student 1 based on study program
-                if (selectedStudyCourse == "all" || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent1 == 1) || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent1 == 2))
+                if (selectedStudyCourse == "all"
+                    || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent1 == 1)
+                    || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent1 == 2))
                 {
                     var row1 = worksheetGrades.CreateRow(rowCounter++);
 
@@ -687,7 +690,10 @@ namespace ProStudCreator
                 }
 
                 // Filter student 2 based on study program
-                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail) && (selectedStudyCourse == "all" || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent2 == 1) || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent2 == 2)))
+                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail)
+                    && (selectedStudyCourse == "all"
+                        || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent2 == 1)
+                        || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent2 == 2)))
                 {
                     var row2 = worksheetGrades.CreateRow(rowCounter++);
 
@@ -729,7 +735,7 @@ namespace ProStudCreator
             for (var i = 0; i < GradeHeader.Length; i++)
                 worksheetGrades.AutoSizeColumn(i);
 
-            // Konfig with a K
+            // Konfig with a "K" is intended
             var worksheetKonfig = workbook.CreateSheet("Konfig");
             worksheetKonfig.CreateRow(0);
             worksheetKonfig.GetRow(0).CreateCell(0).SetCellValue("Version");
