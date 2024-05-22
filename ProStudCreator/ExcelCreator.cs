@@ -136,7 +136,8 @@ namespace ProStudCreator
             "Email",
             "Typ",
             "Dauer",
-            "Sprache"
+            "Sprache",
+            "Studiengang"
         };
 
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
@@ -610,7 +611,14 @@ namespace ProStudCreator
             workbook.Write(outStream);
         }
 
-        public static void GenerateGradeExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db)
+        /// <summary>
+        /// Generates an Excel file with the grades of the selected projects.
+        /// </summary>
+        /// <param name="outStream">Stream to write the excel to</param>
+        /// <param name="_projects">List of the project of one or of all semesters</param>
+        /// <param name="db">Reference to the context</param>
+        /// <param name="selectedStudyCourse">Selected Study Program (one of "all", "cs" or "ds")</param>
+        public static void GenerateGradeExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db, string selectedStudyCourse)
         {
             var workbook = new XSSFWorkbook();
 
@@ -644,35 +652,48 @@ namespace ProStudCreator
             var rowCounter = firstProjectRow;
             for (var i = 0; i < projects.Length; i++)
             {
-                var row1 = worksheetGrades.CreateRow(rowCounter++);
+                // Filter student 1 based on study program
+                if (selectedStudyCourse == "all"
+                    || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent1 == 1)
+                    || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent1 == 2))
+                {
+                    var row1 = worksheetGrades.CreateRow(rowCounter++);
 
-                // IDPerson
-                row1.CreateCell(0).SetCellValue(projects[i].LogStudent1Evento ?? "");
+                    // IDPerson
+                    row1.CreateCell(0).SetCellValue(projects[i].LogStudent1Evento ?? "");
 
-                // Nachname
-                row1.CreateCell(2).SetCellValue(projects[i].LogStudent1LastName ?? "");
+                    // Nachname
+                    row1.CreateCell(2).SetCellValue(projects[i].LogStudent1LastName ?? "");
 
-                // Vorname
-                row1.CreateCell(3).SetCellValue(projects[i].LogStudent1FirstName ?? "");
+                    // Vorname
+                    row1.CreateCell(3).SetCellValue(projects[i].LogStudent1FirstName ?? "");
 
-                // Bewertung für Upload
-                if (projects[i].LogGradeStudent1.HasValue && projects[i].State > ProjectState.Ongoing && projects[i].State < ProjectState.Deleted)
-                    row1.CreateCell(5).SetCellValue(Math.Round(projects[i].LogGradeStudent1.Value, 4));
+                    // Bewertung für Upload
+                    if (projects[i].LogGradeStudent1.HasValue && projects[i].State > ProjectState.Ongoing && projects[i].State < ProjectState.Deleted)
+                        row1.CreateCell(5).SetCellValue(Math.Round(projects[i].LogGradeStudent1.Value, 4));
 
-                // Email
-                row1.CreateCell(7).SetCellValue(projects[i].LogStudent1Mail ?? "");
+                    // Email
+                    row1.CreateCell(7).SetCellValue(projects[i].LogStudent1Mail ?? "");
 
-                // Typ
-                row1.CreateCell(8).SetCellValue(projects[i].LogProjectType?.ExportValue ?? "");
+                    // Typ
+                    row1.CreateCell(8).SetCellValue(projects[i].LogProjectType?.ExportValue ?? "");
 
-                // Dauer
-                if (projects[i].LogProjectDuration.HasValue)
-                    row1.CreateCell(9).SetCellValue(projects[i].LogProjectDuration == 1 ? "KURZ" : "LANG");
+                    // Dauer
+                    if (projects[i].LogProjectDuration.HasValue)
+                        row1.CreateCell(9).SetCellValue(projects[i].LogProjectDuration == 1 ? "KURZ" : "LANG");
 
-                // Sprache
-                row1.CreateCell(10).SetCellValue(GetLanguage(projects[i]));
+                    // Sprache
+                    row1.CreateCell(10).SetCellValue(GetLanguage(projects[i]));
 
-                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail))
+                    // Study Program
+                    row1.CreateCell(11).SetCellValue(projects[i].LogStudyCourseStudent1 == 1 ? "Informatik" : "Data Science");
+                }
+
+                // Filter student 2 based on study program
+                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail)
+                    && (selectedStudyCourse == "all"
+                        || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent2 == 1)
+                        || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent2 == 2)))
                 {
                     var row2 = worksheetGrades.CreateRow(rowCounter++);
 
@@ -701,33 +722,20 @@ namespace ProStudCreator
 
                     // Sprache
                     row2.CreateCell(10).SetCellValue(GetLanguage(projects[i]));
+
+                    // Study Program
+                    row2.CreateCell(11).SetCellValue(projects[i].LogStudyCourseStudent2 == 1 ? "Informatik" : "Data Science");
                 }
             }
 
             var lastProjectRow = rowCounter;
 
-            worksheetGrades.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(firstProjectRow-1, firstProjectRow-1, 0, GradeHeader.Length - 1));
+            worksheetGrades.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(firstProjectRow - 1, firstProjectRow - 1, 0, GradeHeader.Length - 1));
 
             for (var i = 0; i < GradeHeader.Length; i++)
                 worksheetGrades.AutoSizeColumn(i);
 
-            /*
-            var table = ((XSSFSheet)worksheetGrades).CreateTable();
-            var ctTable = table.GetCTTable();
-            var ctTableStyle = ctTable.tableStyleInfo;
-            ctTableStyle.showColumnStripes = true;
-            ctTableStyle.showRowStripes = true;
-            var area = $"A{firstProjectRow}:{(char)('A')}{rowCounter - 2}";
-            ctTable.tableColumns = new CT_TableColumns();
-            ctTable.tableColumns.count = (uint)GradeHeader.Length;
-            var col = new CT_TableColumn();
-            ctTable.tableColumns.tableColumn = new List<CT_TableColumn>();
-            col.id = 1;
-            ctTable.tableColumns.tableColumn.Add(col);
-            ctTable.@ref = area;
-            */
-
-            // Konfig with a K
+            // Konfig with a "K" is intended
             var worksheetKonfig = workbook.CreateSheet("Konfig");
             worksheetKonfig.CreateRow(0);
             worksheetKonfig.GetRow(0).CreateCell(0).SetCellValue("Version");
@@ -754,6 +762,7 @@ namespace ProStudCreator
             workbook.SetSheetHidden(0, SheetState.Hidden);
             workbook.Write(outStream);
         }
+
 
         private static void AddName(XSSFWorkbook wb, string name, string refersTo)
         {
