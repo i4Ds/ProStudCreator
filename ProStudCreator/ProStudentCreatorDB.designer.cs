@@ -207,7 +207,7 @@ namespace ProStudCreator
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
-	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged, IComparable<Department>
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -466,12 +466,7 @@ namespace ProStudCreator
 			this.SendPropertyChanging();
 			entity.Department = null;
 		}
-
-        public int CompareTo(Department other)
-        {
-			return this._Id.CompareTo(other._Id);
-        }
-    }
+	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProjectTeamSize")]
 	public partial class ProjectTeamSize : INotifyPropertyChanging, INotifyPropertyChanged
@@ -1367,6 +1362,18 @@ namespace ProStudCreator
 		
 		private string _ClientMail;
 		
+		private bool _TypeDesignUX;
+		
+		private bool _TypeHW;
+		
+		private bool _TypeCGIP;
+		
+		private bool _TypeMathAlg;
+		
+		private bool _TypeAppWeb;
+		
+		private bool _TypeDBBigData;
+		
 		private int _P1TypeId;
 		
 		private int _P1TeamSizeId;
@@ -1418,6 +1425,10 @@ namespace ProStudCreator
 		private bool _LanguageEnglish;
 		
 		private bool _DurationOneSemester;
+		
+		private bool _TypeSysSec;
+		
+		private bool _TypeSE;
 		
 		private string _ImgDescription;
 		
@@ -1551,6 +1562,18 @@ namespace ProStudCreator
     partial void OnClientPersonChanged();
     partial void OnClientMailChanging(string value);
     partial void OnClientMailChanged();
+    partial void OnTypeDesignUXChanging(bool value);
+    partial void OnTypeDesignUXChanged();
+    partial void OnTypeHWChanging(bool value);
+    partial void OnTypeHWChanged();
+    partial void OnTypeCGIPChanging(bool value);
+    partial void OnTypeCGIPChanged();
+    partial void OnTypeMlAlgChanging(bool value);
+    partial void OnTypeMlAlgChanged();
+    partial void OnTypeAppWebChanging(bool value);
+    partial void OnTypeAppWebChanged();
+    partial void OnTypeDBBigDataChanging(bool value);
+    partial void OnTypeDBBigDataChanged();
     partial void OnP1TypeIdChanging(int value);
     partial void OnP1TypeIdChanged();
     partial void OnP1TeamSizeIdChanging(int value);
@@ -1603,6 +1626,10 @@ namespace ProStudCreator
     partial void OnLanguageEnglishChanged();
     partial void OnDurationOneSemesterChanging(bool value);
     partial void OnDurationOneSemesterChanged();
+    partial void OnTypeSysSecChanging(bool value);
+    partial void OnTypeSysSecChanged();
+    partial void OnTypeSEChanging(bool value);
+    partial void OnTypeSEChanged();
     partial void OnImgDescriptionChanging(string value);
     partial void OnImgDescriptionChanged();
     partial void OnPreviousProjectIDChanging(System.Nullable<int> value);
@@ -1827,6 +1854,126 @@ namespace ProStudCreator
 					this._ClientMail = value;
 					this.SendPropertyChanged("ClientMail");
 					this.OnClientMailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeDesignUX", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeDesignUX
+		{
+			get
+			{
+				return this._TypeDesignUX;
+			}
+			set
+			{
+				if ((this._TypeDesignUX != value))
+				{
+					this.OnTypeDesignUXChanging(value);
+					this.SendPropertyChanging();
+					this._TypeDesignUX = value;
+					this.SendPropertyChanged("TypeDesignUX");
+					this.OnTypeDesignUXChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeHW", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeHW
+		{
+			get
+			{
+				return this._TypeHW;
+			}
+			set
+			{
+				if ((this._TypeHW != value))
+				{
+					this.OnTypeHWChanging(value);
+					this.SendPropertyChanging();
+					this._TypeHW = value;
+					this.SendPropertyChanged("TypeHW");
+					this.OnTypeHWChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeCGIP", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeCGIP
+		{
+			get
+			{
+				return this._TypeCGIP;
+			}
+			set
+			{
+				if ((this._TypeCGIP != value))
+				{
+					this.OnTypeCGIPChanging(value);
+					this.SendPropertyChanging();
+					this._TypeCGIP = value;
+					this.SendPropertyChanged("TypeCGIP");
+					this.OnTypeCGIPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeMathAlg", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeMlAlg
+		{
+			get
+			{
+				return this._TypeMathAlg;
+			}
+			set
+			{
+				if ((this._TypeMathAlg != value))
+				{
+					this.OnTypeMlAlgChanging(value);
+					this.SendPropertyChanging();
+					this._TypeMathAlg = value;
+					this.SendPropertyChanged("TypeMlAlg");
+					this.OnTypeMlAlgChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeAppWeb", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeAppWeb
+		{
+			get
+			{
+				return this._TypeAppWeb;
+			}
+			set
+			{
+				if ((this._TypeAppWeb != value))
+				{
+					this.OnTypeAppWebChanging(value);
+					this.SendPropertyChanging();
+					this._TypeAppWeb = value;
+					this.SendPropertyChanged("TypeAppWeb");
+					this.OnTypeAppWebChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeDBBigData", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeDBBigData
+		{
+			get
+			{
+				return this._TypeDBBigData;
+			}
+			set
+			{
+				if ((this._TypeDBBigData != value))
+				{
+					this.OnTypeDBBigDataChanging(value);
+					this.SendPropertyChanging();
+					this._TypeDBBigData = value;
+					this.SendPropertyChanged("TypeDBBigData");
+					this.OnTypeDBBigDataChanged();
 				}
 			}
 		}
@@ -2367,6 +2514,46 @@ namespace ProStudCreator
 					this._DurationOneSemester = value;
 					this.SendPropertyChanged("DurationOneSemester");
 					this.OnDurationOneSemesterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeSysSec", DbType="Bit NOT NULL")]
+		public bool TypeSysSec
+		{
+			get
+			{
+				return this._TypeSysSec;
+			}
+			set
+			{
+				if ((this._TypeSysSec != value))
+				{
+					this.OnTypeSysSecChanging(value);
+					this.SendPropertyChanging();
+					this._TypeSysSec = value;
+					this.SendPropertyChanged("TypeSysSec");
+					this.OnTypeSysSecChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeSE", DbType="Bit NOT NULL")]
+		public bool TypeSE
+		{
+			get
+			{
+				return this._TypeSE;
+			}
+			set
+			{
+				if ((this._TypeSE != value))
+				{
+					this.OnTypeSEChanging(value);
+					this.SendPropertyChanging();
+					this._TypeSE = value;
+					this.SendPropertyChanged("TypeSE");
+					this.OnTypeSEChanged();
 				}
 			}
 		}
