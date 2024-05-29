@@ -653,9 +653,12 @@ namespace ProStudCreator
             for (var i = 0; i < projects.Length; i++)
             {
                 // Filter student 1 based on study program
-                if (selectedStudyCourse == "all"
-                    || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent1 == 1)
-                    || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent1 == 2))
+                if (selectedStudyCourse != "all"
+                    && (selectedStudyCourse != "cs" || projects[i].LogStudyCourseStudent1 != 1)
+                    && (selectedStudyCourse != "ds" || projects[i].LogStudyCourseStudent1!= 2))
+                {
+                }
+                else
                 {
                     var row1 = worksheetGrades.CreateRow(rowCounter++);
 
