@@ -143,6 +143,8 @@
       <Column Name="SubmitToStudyCourseDS" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" />
       <Column Name="LogStudyCourse" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="Topics" Type="System.String" DbType="nvarchar(200)" CanBeNull="false" />
+      <Column Name="LogStudyCourseStudent1" Type="System.Int32" CanBeNull="true" />
+      <Column Name="LogStudyCourseStudent2" Type="System.Int32" CanBeNull="true" />
       <Association Name="Project_Project" Member="Projects" ThisKey="Id" OtherKey="PreviousProjectID" Type="Project" />
       <Association Name="Project_Attachements" Member="Attachements" ThisKey="Id" OtherKey="ProjectId" Type="Attachements" />
       <Association Name="Project_Task" Member="Tasks" ThisKey="Id" OtherKey="ProjectId" Type="Task" />
