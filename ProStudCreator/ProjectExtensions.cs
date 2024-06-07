@@ -1499,8 +1499,5 @@ namespace ProStudCreator
                 return Project.GetStateAsString(State);
             }
         }
-
-        public int LogStudyCourseStudent1 { get; internal set; }
-        public int LogStudyCourseStudent2 { get; internal set; }
     }
 }
