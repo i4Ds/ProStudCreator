@@ -328,7 +328,7 @@ namespace ProStudCreator
             Response.AddHeader("content-disposition",
                 $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Noten_Excel.xlsx");
 
-            ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db);
+            ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db, SelectedStudyCourse.SelectedValue);
             Response.End();
         }
 
