@@ -373,7 +373,7 @@ namespace ProStudCreator
                 cell5.CellStyle = StateStyle;
             }
         }
-         
+
         private static string GetLanguage(Project p)
         {
             if ((p.LogLanguageGerman ?? false) && !(p.LogLanguageEnglish ?? false))
@@ -425,7 +425,7 @@ namespace ProStudCreator
         {
             var workbook = new XSSFWorkbook();
             var worksheet = workbook.CreateSheet(Billing_SHEET_NAME);
-            
+
             var cellStyleGreen = workbook.CreateCellStyle();
             cellStyleGreen.FillForegroundColor = HSSFColor.LightGreen.Index;
             cellStyleGreen.BorderBottom = BorderStyle.Thin;
@@ -505,7 +505,7 @@ namespace ProStudCreator
                 row.CreateCell(0).SetCellValue(p.Semester.Name);
                 row.CreateCell(1).SetCellValue(p.GetProjectLabel());
                 row.CreateCell(2).SetCellValue(p.Name);
-                if(!string.IsNullOrWhiteSpace(p.GetStudent2FullName()))
+                if (!string.IsNullOrWhiteSpace(p.GetStudent2FullName()))
                     row.CreateCell(3).SetCellValue(p.GetStudent1FullName() + " / " + p.GetStudent2FullName());
                 else
                     row.CreateCell(3).SetCellValue(p.GetStudent1FullName());
@@ -527,7 +527,7 @@ namespace ProStudCreator
                 row.CreateCell(10).SetCellValue(p.ClientCompany);
                 row.CreateCell(11).SetCellValue(p.ClientPerson);
 
-                if(!string.IsNullOrEmpty(p.ClientAddressStreet) && (!string.IsNullOrEmpty(p.ClientAddressPostcode) || !string.IsNullOrEmpty(p.ClientAddressCity)))
+                if (!string.IsNullOrEmpty(p.ClientAddressStreet) && (!string.IsNullOrEmpty(p.ClientAddressPostcode) || !string.IsNullOrEmpty(p.ClientAddressCity)))
                     row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}, {p.ClientAddressPostcode} {p.ClientAddressCity}");
                 else
                     row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
@@ -655,7 +655,7 @@ namespace ProStudCreator
                 // Filter student 1 based on study program
                 if (selectedStudyCourse != "all"
                     && (selectedStudyCourse != "cs" || projects[i].LogStudyCourseStudent1 != 1)
-                    && (selectedStudyCourse != "ds" || projects[i].LogStudyCourseStudent1!= 2))
+                    && (selectedStudyCourse != "ds" || projects[i].LogStudyCourseStudent1 != 2))
                 {
                 }
                 else
