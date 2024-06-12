@@ -1492,7 +1492,6 @@ namespace ProStudCreator
         public System.Nullable<int> LogStudyCourse { get; set; }
         public System.Nullable<int> LogStudyCourseStudent1 { get; set; }
         public System.Nullable<int> LogStudyCourseStudent2 { get; set; }
-
     }
     public partial class Project
     {
