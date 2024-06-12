@@ -136,7 +136,8 @@ namespace ProStudCreator
             "Email",
             "Typ",
             "Dauer",
-            "Sprache"
+            "Sprache",
+            "Studiengang"
         };
 
         // Reference http://poi.apache.org/spreadsheet/quick-guide.html#NewWorkbook
@@ -610,6 +611,13 @@ namespace ProStudCreator
             workbook.Write(outStream);
         }
 
+        /// <summary>
+        /// Generates an Excel file with the grades of the selected projects.
+        /// </summary>
+        /// <param name="outStream">Stream to write the excel to</param>
+        /// <param name="_projects">List of the project of one or of all semesters</param>
+        /// <param name="db">Reference to the context</param>
+        /// <param name="selectedStudyCourse">Selected Study Program (one of "all", "cs" or "ds")</param>
         public static void GenerateGradeExcel(Stream outStream, IEnumerable<Project> _projects, ProStudentCreatorDBDataContext db, string selectedStudyCourse)
         {
             var workbook = new XSSFWorkbook();
@@ -645,7 +653,9 @@ namespace ProStudCreator
             for (var i = 0; i < projects.Length; i++)
             {
                 // Filter student 1 based on study program
-                if (selectedStudyCourse == "all" || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent1 == 1) || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent1 == 2))
+                if (selectedStudyCourse == "all"
+                    || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent1 == 1)
+                    || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent1 == 2))
                 {
                     var row1 = worksheetGrades.CreateRow(rowCounter++);
 
@@ -680,7 +690,10 @@ namespace ProStudCreator
                 }
 
                 // Filter student 2 based on study program
-                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail) && (selectedStudyCourse == "all" || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent2 == 1) || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent2 == 2)))
+                if (!string.IsNullOrWhiteSpace(projects[i].LogStudent2Mail)
+                    && (selectedStudyCourse == "all"
+                        || (selectedStudyCourse == "cs" && projects[i].LogStudyCourseStudent2 == 1)
+                        || (selectedStudyCourse == "ds" && projects[i].LogStudyCourseStudent2 == 2)))
                 {
                     var row2 = worksheetGrades.CreateRow(rowCounter++);
 
@@ -722,7 +735,7 @@ namespace ProStudCreator
             for (var i = 0; i < GradeHeader.Length; i++)
                 worksheetGrades.AutoSizeColumn(i);
 
-            // Konfig with a K
+            // Konfig with a "K" is intended
             var worksheetKonfig = workbook.CreateSheet("Konfig");
             worksheetKonfig.CreateRow(0);
             worksheetKonfig.GetRow(0).CreateCell(0).SetCellValue("Version");
