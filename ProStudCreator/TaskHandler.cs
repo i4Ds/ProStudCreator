@@ -817,8 +817,8 @@ namespace ProStudCreator
                     mail.To.Add(new MailAddress(Global.WebAdmin)); // TODO: change to Global.GradeAdmin
                     
                     // Add recipients to the "To" field
-                    mail.To.Add("marketing.technik@fhnw.ch");
-                    mail.To.Add("maren.watermann@fhnw.ch");
+                    mail.To.Add("marketing.technik@fhnw.ch"); 
+                    mail.To.Add("nicole.stamm@fhnw.ch"); // added this address to the list of recipients for the email. 
 
                     // Add CC recipients
                     mail.CC.Add("regula.scherrer@fhnw.ch");
