@@ -818,7 +818,7 @@ namespace ProStudCreator
                     
                     // Add recipients to the "To" field
                     mail.To.Add("marketing.technik@fhnw.ch"); 
-                    mail.To.Add("nicole.stamm@fhnw.ch"); // added this address to the list of recipients for the email. 
+                    mail.To.Add("nicole.stamm@fhnw.ch"); 
 
                     // Add CC recipients
                     mail.CC.Add("regula.scherrer@fhnw.ch");
