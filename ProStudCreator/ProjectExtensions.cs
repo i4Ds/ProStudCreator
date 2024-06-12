@@ -9,10 +9,22 @@ using System.Text.RegularExpressions;
 
 namespace ProStudCreator
 {
+    /// <summary>
+    /// Provides extension methods for the Project class.
+    /// </summary>
     public static class ProjectExtensions
     {
+        /// <summary>
+        /// The expected number of properties in the Project class.
+        /// </summary>
+        public static readonly int EXPECTEDPROPCOUNT = typeof(Project).GetProperties().Length;
+
         #region Actions
 
+        /// <summary>
+        /// Initializes a new Project with default values.
+        /// </summary>
+        /// <param name="_p">The Project to initialize.</param>
         public static void InitNew(this Project _p)
         {
             _p.Creator = ShibUser.GetEmail();
@@ -21,22 +33,46 @@ namespace ProStudCreator
             _p.IsMainVersion = true;
         }
 
+        /// <summary>
+        /// Gets the full project number.
+        /// </summary>
+        /// <param name="_p">The Project.</param>
+        /// <returns>The full project number as a string.</returns>
         public static string GetFullNr(this Project _p) => $"{(_p.Semester == null ? "" : _p.Semester.Name + "_")}{_p.Department.DepartmentName}{_p.ProjectNr:D2}";
 
+        /// <summary>
+        /// Gets the project label.
+        /// </summary>
+        /// <param name="_p">The Project.</param>
+        /// <returns>The project label as a string.</returns>
         public static string GetProjectLabel(this Project _p) => $"{(_p.Semester == null ? "????" : _p.Semester.Name)}_{_p.Department.DepartmentName}{(_p.ProjectNr > 0 ? string.Format("{0:D2}", _p.ProjectNr) : "??")}";
 
+        /// <summary>
+        /// Gets the full title of the project.
+        /// </summary>
+        /// <param name="_p">The Project.</param>
+        /// <returns>The full title of the project as a string.</returns>
         public static string GetFullTitle(this Project _p) => $"{(_p.Semester == null ? "" : _p.Semester.Name + "_")}{_p.Department.DepartmentName}{_p.ProjectNr:D2}: {_p.Name}";
 
+        /// <summary>
+        /// Gets the filename for the project.
+        /// </summary>
+        /// <param name="_p">The Project.</param>
+        /// <returns>The filename as a string.</returns>
         public static string GetFilename(this Project _p) => _p.GetFullTitle().Replace('"', '_');
 
+        /// <summary>
+        /// Gets the web summary link for the project.
+        /// </summary>
+        /// <param name="_p">The Project.</param>
+        /// <returns>The web summary link as a string, or null if the project state is not appropriate.</returns>
         public static string GetWebSummaryLink(this Project _p)
         {
             if (_p.State < ProjectState.Ongoing || _p.State >= ProjectState.Deleted) return null;
 
             string prefix = "https://web0.fhnw.ch";
             string school = "ht";
-            // string course = _p.LogStudyCourse == 1 ? "informatik" : "datascience";
-            string course = "informatik";	// always informatik, see issue 358
+            string course = "informatik"; // always informatik, see issue 358
             string projectType = _p.LogProjectType?.P6 == true ? "ip6" : "ip5";
             string sem = _p.Semester?.Name?.ToLower() ?? "00fs";
             string fullNr = _p.GetFullNr().ToLower();
@@ -44,6 +80,12 @@ namespace ProStudCreator
             return $"{prefix}/{school}/{course}/{projectType}/{sem}/{fullNr}";
         }
 
+
+        /// <summary>
+        /// Creates a copy of the given Project.
+        /// </summary>
+        /// <param name="_p">The Project to be copied.</param>
+        /// <returns>A new Project that is a copy of the original Project.</returns>
         public static Project CopyProject(this Project _p)
         {
             Project copy = new Project();
@@ -54,6 +96,11 @@ namespace ProStudCreator
             return copy;
         }
 
+        /// <summary>
+        /// Saves the given Project as the main version, updating relevant properties and the database.
+        /// </summary>
+        /// <param name="_p">The Project to be saved as the main version.</param>
+        /// <param name="db">The database context.</param>
         public static void SaveProjectAsMainVersion(this Project _p, ProStudentCreatorDBDataContext db)
         {
             _p.ModificationDate = DateTime.Now;
@@ -68,6 +115,13 @@ namespace ProStudCreator
             db.SubmitChanges();
         }
 
+
+        /// <summary>
+        /// Creates a copy of the given Project and sets the copy as the main version in the database.
+        /// </summary>
+        /// <param name="_p">The Project to be copied.</param>
+        /// <param name="db">The database context.</param>
+        /// <returns>A new Project that is a copy of the original Project and set as the main version.</returns>
         public static Project CopyAndUseCopyAsMainVersion(this Project _p, ProStudentCreatorDBDataContext db)
         {
             Project copy = new Project();
@@ -87,6 +141,13 @@ namespace ProStudCreator
             return copy;
         }
 
+
+        /// <summary>
+        /// Creates a duplicate of the given Project, resets specific properties, and sets the duplicate as the main version.
+        /// </summary>
+        /// <param name="_p">The Project to be duplicated.</param>
+        /// <param name="db">The database context.</param>
+        /// <returns>A new Project that is a duplicate of the original Project with specific properties reset.</returns>
         public static Project DuplicateProject(this Project _p, ProStudentCreatorDBDataContext db)
         {
             var duplicate = _p.Duplicate(db);
@@ -111,6 +172,12 @@ namespace ProStudCreator
             return duplicate;
         }
 
+
+        /// <summary>
+        /// Clears the log-related properties of the given Project and saves the changes to the database.
+        /// </summary>
+        /// <param name="_p">The Project whose log properties are to be cleared.</param>
+        /// <param name="db">The database context.</param>
         public static void ClearLog(this Project _p, ProStudentCreatorDBDataContext db)
         {
             _p.LogDefenceDate = null;
@@ -136,6 +203,13 @@ namespace ProStudCreator
             db.SubmitChanges();
         }
 
+
+        /// <summary>
+        /// Compares two Project instances to determine if they have been modified, ignoring specified properties.
+        /// </summary>
+        /// <param name="p1">The first Project instance to compare.</param>
+        /// <param name="p2">The second Project instance to compare.</param>
+        /// <returns>True if any non-excluded properties have different values; otherwise, false.</returns>
         public static bool IsModified(this Project p1, Project p2)
         {
 
@@ -217,6 +291,17 @@ namespace ProStudCreator
             return false;
         }
 
+
+
+        /// <summary>
+        /// Compares a Project instance with a NonDBProject instance to determine if they have been modified.
+        /// Specific properties can be excluded from the comparison based on the checkEdit and checkInfo flags.
+        /// </summary>
+        /// <param name="p1">The Project instance to compare.</param>
+        /// <param name="p2">The NonDBProject instance to compare.</param>
+        /// <param name="checkEdit">Flag indicating whether to check editable properties.</param>
+        /// <param name="checkInfo">Flag indicating whether to check information-related properties.</param>
+        /// <returns>True if any compared properties have different values; otherwise, false.</returns>
         public static bool IsModified(this Project p1, NonDBProject p2, bool checkEdit, bool checkInfo)
         {
             if (!string.Equals(p1.Name, p2.Name)) return true;
@@ -422,8 +507,8 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 102; // has to be updated after the project class has changed and the method has been updated
-
+            // int EXPECTEDPROPCOUNT = 102; // has to be updated after the project class has changed and the method has been updated
+            //  int EXPECTEDPROPCOUNT = typeof(Project).GetProperties().Count();
             var actualPropCount = typeof(Project).GetProperties().Count();
 
             if (actualPropCount != EXPECTEDPROPCOUNT)
@@ -1409,7 +1494,6 @@ namespace ProStudCreator
         public System.Nullable<int> LogStudyCourseStudent2 { get; set; }
 
     }
-
     public partial class Project
     {
         public static string GetStateColor(int _state)
