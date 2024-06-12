@@ -315,10 +315,6 @@
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ExcelImporter\DatabaseUpdater.cs" />
-    <Compile Include="ExcelImporter\ExcelImporter.cs" />
-    <Compile Include="ExcelImporter\ImporterRun.cs" />
-    <Compile Include="ExcelImporter\LocalExcelImporter.cs" />
     <Compile Include="UserControls\ProjectTopicImageControl.ascx.cs">
       <DependentUpon>ProjectTopicImageControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
