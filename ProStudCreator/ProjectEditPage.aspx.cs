@@ -1675,7 +1675,7 @@ namespace ProStudCreator
                                      + "https://www.cs.technik.fhnw.ch/prostud/\n"
                                      + "\n"
                                      + "\n"
-                                     + "Freundliche Grüsse\n"
+                                     + "Liebe Grüsse\n"
                                      + ShibUser.GetFirstName();
 
             /*
