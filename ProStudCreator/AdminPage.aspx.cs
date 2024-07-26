@@ -274,15 +274,15 @@ namespace ProStudCreator
             // Study Course
             if (SelectedStudyCourse.SelectedValue == "all")
             {
-                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourse != null);
+                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourseStudent1 != null || p.LogStudyCourseStudent2 != null);
             }
             else if (SelectedStudyCourse.SelectedValue == "cs")
             {
-                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourse == 1);
+                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourseStudent1 == 1 || p.LogStudyCourseStudent2 == 1);
             }
             else if (SelectedStudyCourse.SelectedValue == "ds")
             {
-                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourse == 2);
+                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourseStudent1 == 2 || p.LogStudyCourseStudent2 == 2);
             }
             else
             {
