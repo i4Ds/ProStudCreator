@@ -1502,8 +1502,11 @@ namespace ProStudCreator
 		private bool _SubmitToStudyCourseDS;
 		
 		private System.Nullable<byte> _LogStudyCourse;
-		
-		private string _Topics;
+
+        private int? _LogStudyCourseStudent1;
+        private int? _LogStudyCourseStudent2;
+
+        private string _Topics;
 		
 		private EntitySet<Project> _Projects;
 		
@@ -3218,8 +3221,45 @@ namespace ProStudCreator
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent1", DbType = "Int NULL")]
+        public int? LogStudyCourseStudent1
+        {
+            get
+            {
+                return this._LogStudyCourseStudent1;
+            }
+            set
+            {
+                if ((this._LogStudyCourseStudent1 != value))
+                {
+                   
+                    this.SendPropertyChanging();
+                    this._LogStudyCourseStudent1 = value;
+                    this.SendPropertyChanged("LogStudyCourseStudent1");
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent2", DbType = "Int NULL")]
+        public int? LogStudyCourseStudent2
+        {
+            get
+            {
+                return this._LogStudyCourseStudent2;
+            }
+            set
+            {
+                if ((this._LogStudyCourseStudent2 != value))
+                {
+                    this.SendPropertyChanging();
+                    this._LogStudyCourseStudent2 = value;
+                    this.SendPropertyChanged("LogStudyCourseStudent2");
+                }
+            }
+        }
+
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
 		public System.Nullable<byte> LogStudyCourse
 		{
 			get
