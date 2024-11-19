@@ -507,8 +507,8 @@ namespace ProStudCreator
             target.SubmitToStudyCourseCS = _p.SubmitToStudyCourseCS;
             target.SubmitToStudyCourseDS = _p.SubmitToStudyCourseDS;
             target.LogStudyCourse = _p.LogStudyCourse;
-          //  target.LogStudyCourseStudent1 = _p.LogStudyCourseStudent1;
-          //  target.LogStudyCourseStudent2 = _p.LogStudyCourseStudent2;
+            target.LogStudyCourseStudent1 = _p.LogStudyCourseStudent1;
+            target.LogStudyCourseStudent2 = _p.LogStudyCourseStudent2;
             target.Topics = _p.Topics;
         }
 
