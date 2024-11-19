@@ -21,13 +21,29 @@ namespace ProStudCreator
 
         protected void Page_Init(object sender, EventArgs e)
         {
-            dropSemester.DataSource = db.Semester.OrderByDescending(s => s.StartDate);
-            dropSemester.DataBind();
-            dropSemester.Items.Insert(0, new ListItem("Alle Semester", "allSemester"));
-            dropSemester.Items.Insert(1, new ListItem("――――――――――――――――", "."));
-            dropSemester.SelectedValue = Semester.NextSemester(db).Id.ToString();
+            if (db != null)
+            {
+                dropSemester.DataSource = db.Semester.OrderByDescending(s => s.StartDate);
+                dropSemester.DataBind();
+                dropSemester.Items.Insert(0, new ListItem("Alle Semester", "allSemester"));
+                dropSemester.Items.Insert(1, new ListItem("――――――――――――――――", "."));
 
-            ProjectGrid.db = db;
+                var nextSemester = Semester.NextSemester(db);
+                if (nextSemester != null)
+                {
+                    dropSemester.SelectedValue = nextSemester.Id.ToString();
+                }
+                else
+                {
+                    dropSemester.SelectedValue = "default";
+                }
+
+                ProjectGrid.db = db;
+            }
+            else
+            {
+                // Handle the case where db is null
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
