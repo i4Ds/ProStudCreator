@@ -422,7 +422,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 92; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 94; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -507,6 +507,8 @@ namespace ProStudCreator
             target.SubmitToStudyCourseCS = _p.SubmitToStudyCourseCS;
             target.SubmitToStudyCourseDS = _p.SubmitToStudyCourseDS;
             target.LogStudyCourse = _p.LogStudyCourse;
+          //  target.LogStudyCourseStudent1 = _p.LogStudyCourseStudent1;
+          //  target.LogStudyCourseStudent2 = _p.LogStudyCourseStudent2;
             target.Topics = _p.Topics;
         }
 
@@ -1499,5 +1501,8 @@ namespace ProStudCreator
                 return Project.GetStateAsString(State);
             }
         }
+
+      //  public object LogStudyCourseStudent2 { get; internal set; }
+      //  public object LogStudyCourseStudent1 { get; internal set; }
     }
 }
