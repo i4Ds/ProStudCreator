@@ -58,7 +58,7 @@ namespace ProStudCreator
         public string GetHeadingInitialPosition()
         {
             if(language == Language.English)
-                return "Initial position";
+                return "Initial situation";
             return "Ausgangslage";
         }
         public string GetHeadingObjective()
