@@ -648,7 +648,7 @@ namespace ProStudCreator
 
             var firstProjectRow = 7;
 
-            var projects = _projects.ToArray();
+            var projects = _projects.OrderBy(p => p.Name).ToArray();
             var rowCounter = firstProjectRow;
             for (var i = 0; i < projects.Length; i++)
             {
