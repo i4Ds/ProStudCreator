@@ -260,77 +260,100 @@ namespace ProStudCreator
         {
             IEnumerable<Project> projectsForExcelExport = null;
 
-            // Semester
-            if (SelectedSemester.SelectedValue == "") // Alle Semester
+            // Filter by Semester
+            if (string.IsNullOrEmpty(SelectedSemester.SelectedValue)) // "All Semesters"
             {
                 projectsForExcelExport = db.Projects.Where(p => p.IsMainVersion);
             }
             else
             {
-                var semesterId = int.Parse(SelectedSemester.SelectedValue);
+                int semesterId = int.Parse(SelectedSemester.SelectedValue);
                 projectsForExcelExport = db.Projects.Where(p => p.IsMainVersion && p.SemesterId == semesterId);
             }
 
-            // Study Course
-            if (SelectedStudyCourse.SelectedValue == "all")
+            // Ensure we have projects at this stage
+            if (!projectsForExcelExport.Any())
             {
-                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourseStudent1 != null || p.LogStudyCourseStudent2 != null);
+                return new List<Project>(); // Return empty list to prevent errors
             }
-            else if (SelectedStudyCourse.SelectedValue == "cs")
+
+            // Filter by Study Course
+            switch (SelectedStudyCourse.SelectedValue)
             {
-                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourseStudent1 == 1 || p.LogStudyCourseStudent2 == 1);
-            }
-            else if (SelectedStudyCourse.SelectedValue == "ds")
-            {
-                projectsForExcelExport = projectsForExcelExport.Where(p => p.LogStudyCourseStudent1 == 2 || p.LogStudyCourseStudent2 == 2);
-            }
-            else
-            {
-                throw new Exception("Unknown study course");
+                case "all":
+                    // Include projects where at least one student is assigned a study program
+                    projectsForExcelExport = projectsForExcelExport.Where(p =>
+                        p.LogStudyCourseStudent1 != 0 || p.LogStudyCourseStudent2 != 0);
+                    break;
+
+                case "cs": // Informatik 
+                    projectsForExcelExport = projectsForExcelExport.Where(p =>
+                        (p.LogStudyCourseStudent1 == 1 || p.LogStudyCourseStudent2 == 1)); // At least one student is CS
+                    break;
+
+                case "ds": // Data Science
+                    projectsForExcelExport = projectsForExcelExport.Where(p =>
+                        (p.LogStudyCourseStudent1 == 2 || p.LogStudyCourseStudent2 == 2)); // At least one student is DS
+                    break;
+
+                default:
+                    throw new Exception($"Unknown study course selection: {SelectedStudyCourse.SelectedValue}");
             }
 
             return projectsForExcelExport;
         }
 
+
         protected void BtnGradeExport_Click(object sender, EventArgs e)
         {
-
-            var projectsToExport = GetSelectedExcelExportProjects()
-                    .Where(p => (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.Canceled || p.State == ProjectState.ArchivedFinished || p.State == ProjectState.ArchivedCanceled))
-                    .OrderByDescending(p => p.Semester.StartDate)
-                    .ThenBy(p => p.Department)
-                    .ThenBy(p => p.ProjectNr);
-            
-            /*
-            IEnumerable<Project> projectsToExport = null;
-
-            if (SelectedSemester.SelectedValue == "") //Alle Semester
+            try
             {
-                projectsToExport = db.Projects
-                    .Where(i => (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
-                             && i.IsMainVersion)
-                    .OrderByDescending(i => i.Department)
-                    .ThenBy(i => i.ProjectNr);
-            }
-            else
-            {
-                var semesterId = int.Parse(SelectedSemester.SelectedValue);
-                projectsToExport = db.Projects
-                    .Where(i => i.SemesterId == semesterId
-                             && (i.State == ProjectState.Ongoing || i.State == ProjectState.Finished || i.State == ProjectState.Canceled || i.State == ProjectState.ArchivedFinished || i.State == ProjectState.ArchivedCanceled)
-                             && i.IsMainVersion)
-                    .OrderByDescending(i => i.Department.Id)
-                    .ThenBy(i => i.ProjectNr);
-            }
-            */
-            Response.Clear();
-            Response.ContentType = "application/Excel";
-            Response.AddHeader("content-disposition",
-                $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Noten_Excel.xlsx");
+                // Retrieve selected projects for export
+                var projectsToExport = GetSelectedExcelExportProjects()
+                    .Where(p => p != null) // Ensure no null projects
+                    .Where(p =>
+                        p.State == ProjectState.Ongoing ||
+                        p.State == ProjectState.Finished ||
+                        p.State == ProjectState.Canceled ||
+                        p.State == ProjectState.ArchivedFinished ||
+                        p.State == ProjectState.ArchivedCanceled)
+                    .OrderByDescending(p => p.Semester?.StartDate ?? DateTime.MinValue) // Handle null Semester
+                    .ThenBy(p => p.Department?.DepartmentName ?? string.Empty) // Handle null Department
+                    .ThenBy(p => p.ProjectNr)
+                    .ToList(); // Convert to a list for easier handling
 
-            ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db, SelectedStudyCourse.SelectedValue);
-            Response.End();
+                // Check if any projects are found
+                if (!projectsToExport.Any())
+                {
+                    // Log and notify the user if no projects are found
+                    System.Diagnostics.Debug.WriteLine("No projects found to export.");
+                    Response.Write("<script>alert('No projects found to export for the selected criteria.');</script>");
+                    return;
+                }
+
+                // Prepare the response for Excel download
+                Response.Clear();
+                Response.ContentType = "application/Excel";
+                Response.AddHeader("content-disposition",
+                    $"attachment; filename={SelectedSemester.SelectedItem.Text.Replace(" ", "_")}_Noten_Excel.xlsx");
+
+                // Generate the Excel file
+                ExcelCreator.GenerateGradeExcel(Response.OutputStream, projectsToExport, db, SelectedStudyCourse.SelectedValue);
+
+                // Flush the response to send the file to the user
+                Response.Flush();
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                System.Diagnostics.Debug.WriteLine($"Error in BtnGradeExport_Click: {ex.Message}\n{ex.StackTrace}");
+
+                // Inform the user about the error
+                Response.Write("<script>alert('An error occurred while exporting the grades. Please try again later.');</script>");
+            }
         }
+
 
         protected void BtnBillingExport_Click(object sender, EventArgs e)
         {
