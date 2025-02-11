@@ -101,15 +101,16 @@ namespace ProStudCreator
             "Studierende",
             "Betreuer",
             "Projekt x",
+            "IP5 Duration", 
             "Institut",
             "Studiengang",
+            "Folgeprojekt",
             "Vertraulich",
             "Experte (P6)",
             "Auftraggeber",
             "Verrechnung",
             "",
-            "",
-            "",
+            "Papier-Rechnung",
             "Mitglied AIHK",
             "bezahlt"
         };
@@ -454,8 +455,8 @@ namespace ProStudCreator
             cellStyleRedThick.FillForegroundColor = HSSFColor.Rose.Index;
             cellStyleRedThick.BorderBottom = BorderStyle.Thin;
             cellStyleRedThick.BorderTop = BorderStyle.Thick;
-            cellStyleRedThick.BorderLeft = BorderStyle.Thin;
             cellStyleRedThick.BorderRight = BorderStyle.Thin;
+            cellStyleRedThick.BorderLeft = BorderStyle.Thin;
             cellStyleRedThick.FillPattern = FillPattern.SolidForeground;
 
             var cellStyleBorder = workbook.CreateCellStyle();
@@ -481,7 +482,7 @@ namespace ProStudCreator
             var DateStyle = workbook.CreateCellStyle();
             DateStyle.DataFormat = workbook.CreateDataFormat().GetFormat("dd.MM.yyyy");
 
-            //add header
+            // Add header
             worksheet.CreateRow(0);
             for (var i = 0; i < BillingHeader.Length; i++)
             {
@@ -511,7 +512,11 @@ namespace ProStudCreator
                     row.CreateCell(3).SetCellValue(p.GetStudent1FullName());
                 row.CreateCell(4).SetCellValue(p.Advisor1?.Name ?? "");
                 row.CreateCell(5).SetCellValue(p.LogProjectType?.ExportValue ?? "");
-                row.CreateCell(6).SetCellValue(p.Department.DepartmentName);
+
+                // Add IP5 Duration
+                row.CreateCell(6).SetCellValue(GetProjectDuration(p));
+
+                row.CreateCell(7).SetCellValue(p.Department.DepartmentName);
 
                 var pSC = "";
                 if (p.LogStudyCourse == 1)
@@ -520,43 +525,32 @@ namespace ProStudCreator
                     pSC = "Data Science";
                 else
                     pSC = "";
-                row.CreateCell(7).SetCellValue(pSC);
+                row.CreateCell(8).SetCellValue(pSC);
 
-                row.CreateCell(8).SetCellValue("");
-                row.CreateCell(9).SetCellValue(p.Expert?.Mail ?? "");
-                row.CreateCell(10).SetCellValue(p.ClientCompany);
-                row.CreateCell(11).SetCellValue(p.ClientPerson);
+                // Add Follow-Up Project logic to column 9
+                row.CreateCell(9).SetCellValue(p.PreviousProject != null ? "Yes" : "No");
+
+                // Move the empty column to column 10
+                row.CreateCell(10).SetCellValue("");
+
+                row.CreateCell(11).SetCellValue(p.Expert?.Mail ?? "");
+                row.CreateCell(12).SetCellValue(p.ClientCompany);
+                row.CreateCell(13).SetCellValue(p.ClientPerson);
 
                 if (!string.IsNullOrEmpty(p.ClientAddressStreet) && (!string.IsNullOrEmpty(p.ClientAddressPostcode) || !string.IsNullOrEmpty(p.ClientAddressCity)))
-                    row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}, {p.ClientAddressPostcode} {p.ClientAddressCity}");
+                    row.CreateCell(14).SetCellValue($"{p.ClientAddressStreet}, {p.ClientAddressPostcode} {p.ClientAddressCity}");
                 else
-                    row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
+                    row.CreateCell(14).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
 
-                row.CreateCell(13).SetCellValue(p.ClientReferenceNumber ?? "");
-                row.CreateCell(14).SetCellValue(p.State > ProjectState.Ongoing ? (p.BillingStatus?.DisplayName ?? "") : "");
-                row.CreateCell(15);
+                // Add the Paper Invoice Flag - Column 15
+                row.CreateCell(15).SetCellValue(p.BillingStatus?.Billable == true && p.WantsPaperInvoice ? "Ja" : "Nein");
+
                 row.CreateCell(16);
+                row.CreateCell(17);
 
-
-                //add border to the first few columns
-                for (var cellcount = 0; cellcount < 11; cellcount++)
+                // Add border styling
+                for (var cellcount = 0; cellcount < 18; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-                for (var cellcount = 15; cellcount < 17; cellcount++)
-                    row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-
-                ICellStyle cellStyle;
-                if (p.State > ProjectState.Ongoing && p.BillingStatus != null)
-                {
-                    //color the later columns, according to 
-                    cellStyle = p.BillingStatus.Billable ? cellStyleGreen : cellStyleRed;
-                    if (row.RowNum == 3) //add thick border for row 3, after the header
-                        cellStyle = p.BillingStatus.Billable ? cellStyleGreenThick : cellStyleRedThick;
-                }
-                else
-                    cellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-
-                for (var cellcount = 11; cellcount < 15; cellcount++)
-                    row.GetCell(cellcount).CellStyle = cellStyle;
             }
 
             //j = 11 because until the 11 column the Headers look the same 
@@ -605,11 +599,13 @@ namespace ProStudCreator
             SecondHeadersCells.CellStyle = cellStyleRed;
             SecondHeadersCells.SetCellValue("Verrechenbar");
 
+            // Auto-size columns
             for (var i = 0; i < BillingHeader.Length; i++)
                 worksheet.AutoSizeColumn(i, true);
 
             workbook.Write(outStream);
         }
+
 
         /// <summary>
         /// Generates an Excel file with the grades of the selected projects.
