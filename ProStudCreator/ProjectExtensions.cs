@@ -422,7 +422,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 92; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 102; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -1405,9 +1405,10 @@ namespace ProStudCreator
         public System.Nullable<int> LogStudyCourse { get; set; }
         public System.Nullable<int> LogStudyCourseStudent1 { get; set; }
         public System.Nullable<int> LogStudyCourseStudent2 { get; set; }
+        public bool WantsPaperInvoice { get; set; }  // New Property
+    
 
-
-    }
+}
 
     public partial class Project
     {
@@ -1499,5 +1500,7 @@ namespace ProStudCreator
                 return Project.GetStateAsString(State);
             }
         }
+
+        public bool WantsPaperInvoice { get; internal set; }
     }
 }
