@@ -261,21 +261,16 @@ namespace ProStudCreator
             IEnumerable<Project> projectsForExcelExport = null;
 
             // Filter by Semester
-            if (string.IsNullOrEmpty(SelectedSemester.SelectedValue)) // "All Semesters"
+            if (SelectedSemester.SelectedValue == "") // Alle Semester
             {
                 projectsForExcelExport = db.Projects.Where(p => p.IsMainVersion);
             }
             else
             {
-                int semesterId = int.Parse(SelectedSemester.SelectedValue);
+                var semesterId = int.Parse(SelectedSemester.SelectedValue);
                 projectsForExcelExport = db.Projects.Where(p => p.IsMainVersion && p.SemesterId == semesterId);
             }
 
-            // Ensure we have projects at this stage
-            if (!projectsForExcelExport.Any())
-            {
-                return new List<Project>(); // Return empty list to prevent errors
-            }
 
             // Filter by Study Course
             switch (SelectedStudyCourse.SelectedValue)
@@ -283,7 +278,7 @@ namespace ProStudCreator
                 case "all":
                     // Include projects where at least one student is assigned a study program
                     projectsForExcelExport = projectsForExcelExport.Where(p =>
-                        p.LogStudyCourseStudent1 != 0 || p.LogStudyCourseStudent2 != 0);
+                        p.LogStudyCourseStudent1 != null || p.LogStudyCourseStudent2 != null);
                     break;
 
                 case "cs": // Informatik 
@@ -310,17 +305,16 @@ namespace ProStudCreator
             {
                 // Retrieve selected projects for export
                 var projectsToExport = GetSelectedExcelExportProjects()
-                    .Where(p => p != null) // Ensure no null projects
                     .Where(p =>
                         p.State == ProjectState.Ongoing ||
                         p.State == ProjectState.Finished ||
                         p.State == ProjectState.Canceled ||
                         p.State == ProjectState.ArchivedFinished ||
                         p.State == ProjectState.ArchivedCanceled)
-                    .OrderByDescending(p => p.Semester?.StartDate ?? DateTime.MinValue) // Handle null Semester
-                    .ThenBy(p => p.Department?.DepartmentName ?? string.Empty) // Handle null Department
-                    .ThenBy(p => p.ProjectNr)
-                    .ToList(); // Convert to a list for easier handling
+                        .OrderByDescending(p => p.Semester.StartDate)
+                        .ThenBy(p => p.Department?.DepartmentName ?? string.Empty)
+                        .ThenBy(p => p.ProjectNr);
+                       
 
                 // Check if any projects are found
                 if (!projectsToExport.Any())
