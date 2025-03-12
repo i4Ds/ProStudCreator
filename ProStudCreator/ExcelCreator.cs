@@ -103,10 +103,12 @@ namespace ProStudCreator
             "Projekt x",
             "Institut",
             "Studiengang",
-            "Vertraulich",
-            "Experte (P6)",
+            "IP5 Duration",
+            "Folgeprojekt",
             "Auftraggeber",
             "Verrechnung",
+            "",
+            "",
             "",
             "",
             "",
@@ -486,9 +488,9 @@ namespace ProStudCreator
             for (var i = 0; i < BillingHeader.Length; i++)
             {
                 var cell = worksheet.GetRow(0).CreateCell(i);
-                cell.CellStyle = i < 15 ? cellStyleHeader : cellStyleHeaderYellow;
+                cell.CellStyle = i < 17 ? cellStyleHeader : cellStyleHeaderYellow;
                 cell.SetCellValue(BillingHeader[i]);
-                if (i < 11 || i > 14)
+                if (i < 11 || i > 16)
                 {
                     cell.CellStyle.WrapText = true;
                     worksheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 2, i, i));
@@ -521,9 +523,8 @@ namespace ProStudCreator
                 else
                     pSC = "";
                 row.CreateCell(7).SetCellValue(pSC);
-
-                row.CreateCell(8).SetCellValue("");
-                row.CreateCell(9).SetCellValue(p.Expert?.Mail ?? "");
+                row.CreateCell(8).SetCellValue(GetProjectDuration(p));
+                row.CreateCell(9).SetCellValue(p.PreviousProject != null ? "Yes" : "No");
                 row.CreateCell(10).SetCellValue(p.ClientCompany);
                 row.CreateCell(11).SetCellValue(p.ClientPerson);
 
@@ -532,16 +533,18 @@ namespace ProStudCreator
                 else
                     row.CreateCell(12).SetCellValue($"{p.ClientAddressStreet}{p.ClientAddressPostcode} {p.ClientAddressCity}");
 
-                row.CreateCell(13).SetCellValue(p.ClientReferenceNumber ?? "");
-                row.CreateCell(14).SetCellValue(p.State > ProjectState.Ongoing ? (p.BillingStatus?.DisplayName ?? "") : "");
-                row.CreateCell(15);
-                row.CreateCell(16);
-
+                row.CreateCell(13).SetCellValue(p.InvoiceType ?? "Paper");  // Default to Paper if null
+                row.CreateCell(14).SetCellValue(p.InvoiceType == "Email" ? (p.InvoiceContact ?? "No Email Provided") : "N/A");
+                row.CreateCell(15).SetCellValue(p.ClientReferenceNumber ?? "");
+                row.CreateCell(16).SetCellValue(p.State > ProjectState.Ongoing ? (p.BillingStatus?.DisplayName ?? "") : "");
+                row.CreateCell(17);
+                row.CreateCell(18);
+                
 
                 //add border to the first few columns
                 for (var cellcount = 0; cellcount < 11; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
-                for (var cellcount = 15; cellcount < 17; cellcount++)
+                for (var cellcount = 15; cellcount < 19; cellcount++)
                     row.GetCell(cellcount).CellStyle = (row.RowNum == 3) ? cellStyleBorderThickTop : cellStyleBorder;
 
                 ICellStyle cellStyle;
@@ -557,7 +560,7 @@ namespace ProStudCreator
 
                 for (var cellcount = 11; cellcount < 15; cellcount++)
                     row.GetCell(cellcount).CellStyle = cellStyle;
-            }
+        }
 
             //j = 11 because until the 11 column the Headers look the same 
             //thats why it has to start filling in with the 11th column 
@@ -569,6 +572,14 @@ namespace ProStudCreator
             SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;
             SecondHeadersCells.SetCellValue("ja");
+
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue(" ");
+
+            SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue(" ");
 
             SecondHeadersCells = worksheet.GetRow(1).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;
@@ -596,6 +607,15 @@ namespace ProStudCreator
             SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;
             SecondHeadersCells.SetCellValue("Rechnungsadresse");
+
+            SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("Rechnungsart");
+
+            SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
+            SecondHeadersCells.CellStyle = cellStyleGreen;
+            SecondHeadersCells.SetCellValue("Rechnungsemail");
+
 
             SecondHeadersCells = worksheet.GetRow(2).CreateCell(j++);
             SecondHeadersCells.CellStyle = cellStyleGreen;

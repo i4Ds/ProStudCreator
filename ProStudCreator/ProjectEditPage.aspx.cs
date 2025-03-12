@@ -128,6 +128,7 @@ namespace ProStudCreator
                 publishProject.BackColor = ColorTranslator.FromHtml(Project.GetStateColor(ProjectState.Published));
 
                 btnHistoryCollapse.CausesValidation = false;
+                LoadInvoiceTypeFromSessionOrDB();
 
                 if (id.HasValue)
                 {
@@ -136,7 +137,7 @@ namespace ProStudCreator
                     SiteTitle.Text = "Projekt bearbeiten";
 
                     if (!pageProject.IsMainVersion && Request.QueryString["showChanges"] == null)
-                    {
+                    { 
                         //TODO
                         //PopulateHistoryGUI(pageProject.Id);
                     }
@@ -200,6 +201,16 @@ namespace ProStudCreator
 
             //NDA
             chkNDA.Checked = pageProject?.UnderNDA ?? false;
+
+            // Invoice Type (Ensure selected value persists)
+            if (Session["SelectedInvoiceType"] != null)
+            {
+                radioInvoiceType.SelectedValue = Session["SelectedInvoiceType"].ToString();
+            }
+            else
+            {
+                radioInvoiceType.SelectedValue = pageProject?.InvoiceType ?? "Paper";
+            }
 
             //Reservation
             DisplayReservations();
@@ -503,7 +514,7 @@ namespace ProStudCreator
         {
             if (isNewProject)
             {
-                drpClientTitle.SelectedIndex = 0; //Default
+                drpClientTitle.SelectedIndex = 0; // Default
 
                 txtClientCompany.Text =
                     txtClientName.Text =
@@ -512,12 +523,15 @@ namespace ProStudCreator
                                 txtClientPLZ.Text =
                                     txtClientCity.Text =
                                         txtClientReference.Text =
-                                            txtClientEmail.Text = 
+                                            txtClientEmail.Text =
                                                 txtClientPhoneNumber.Text = "";
 
                 radioClientType.SelectedIndex = (int)ClientType.Internal;
                 divClientCompany.Visible = true;
                 divClientForm.Visible = false;
+
+                // Load invoice type from session first, otherwise default to "Paper"
+                radioInvoiceType.SelectedValue = Session["SelectedInvoiceType"]?.ToString() ?? "Paper";
             }
             else
             {
@@ -538,6 +552,9 @@ namespace ProStudCreator
                 txtClientReference.Text = pageProject?.ClientReferenceNumber;
                 txtClientEmail.Text = pageProject?.ClientMail;
                 txtClientPhoneNumber.Text = pageProject?.ClientPhoneNumber;
+
+                // Load invoice type from session first, otherwise from the project, defaulting to "Paper"
+                radioInvoiceType.SelectedValue = Session["SelectedInvoiceType"]?.ToString() ?? pageProject?.InvoiceType ?? "Paper";
 
                 PrepareClientForm();
             }
@@ -753,10 +770,19 @@ namespace ProStudCreator
                             project.ClientAddressPostcode =
                                 project.ClientAddressCity =
                                     project.ClientReferenceNumber =
-                                        project.ClientMail = 
+                                        project.ClientMail =
                                             project.ClientPhoneNumber = "";
             }
 
+            // Invoice Type
+            if (!string.IsNullOrEmpty(radioInvoiceType.SelectedValue))
+            {
+                project.InvoiceType = radioInvoiceType.SelectedValue;
+                project.InvoiceContact = (project.InvoiceType == "Email") ? txtClientEmail.Text.Trim() : null;
+
+                // ✅ Save selection in Session to persist across postbacks
+                Session["SelectedInvoiceType"] = project.InvoiceType;
+            }
             //NDA
             project.UnderNDA = chkNDA.Checked;
 
@@ -793,6 +819,8 @@ namespace ProStudCreator
             project.References = ReferencesContent.Text.FixupParagraph();
             project.Remarks = RemarksContent.Text.FixupParagraph();
             project.Notes = NotesContent.Text.FixupParagraph();
+
+            db.SubmitChanges();
         }
 
         private void UpdateNonDBProjectFromFormData(NonDBProject project)
@@ -1565,7 +1593,7 @@ namespace ProStudCreator
                     return "Bitte geben Sie den Namen des Kundenkontakts im Format (Vorname Nachname) an.";
 
                 if (string.IsNullOrWhiteSpace(txtClientEmail.Text))
-                    return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
+                   return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
 
                 if (!txtClientEmail.Text.IsValidEmail())
                     return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts im Format (xxx@yyy.zzz) an.";
@@ -1826,6 +1854,41 @@ namespace ProStudCreator
                     throw new Exception($"Unexpected radioClientType {radioClientType.SelectedValue}");
             }
         }
+        protected void radioInvoiceType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool isEmailInvoice = radioInvoiceType.SelectedValue == "Email";
+
+            // Show or hide the additional email field
+            divAdditionalEmail.Visible = isEmailInvoice;
+
+            if (!isEmailInvoice)
+            {
+                // Clear additional email field if "Papierrechnung" is selected
+                txtAdditionalClientEmail.Text = "";
+            }
+
+            // Save selection in session
+            Session["SelectedInvoiceType"] = radioInvoiceType.SelectedValue;
+        }
+
+        private void LoadInvoiceTypeFromSessionOrDB()
+        {
+            if (Session["SelectedInvoiceType"] != null)
+            {
+                radioInvoiceType.SelectedValue = Session["SelectedInvoiceType"].ToString();
+            }
+            else
+            {
+                // Default to Paper if no selection was made before
+                radioInvoiceType.SelectedValue = "Paper";
+            }
+
+            // Set visibility of additional email field based on selection
+            divAdditionalEmail.Visible = (radioInvoiceType.SelectedValue == "Email");
+        }
+
+
+
         protected void BtnHistoryCollapse_OnClick(object sender, EventArgs e)
         {
             CollapseHistory(!(bool)Session["AddInfoCollapsed"]);
