@@ -422,7 +422,7 @@ namespace ProStudCreator
          */
         public static void MapProject(this Project _p, Project target)
         {
-            int EXPECTEDPROPCOUNT = 94; // has to be updated after the project class has changed and the method has been updated
+            int EXPECTEDPROPCOUNT = 96; // has to be updated after the project class has changed and the method has been updated
 
             var actualPropCount = typeof(Project).GetProperties().Count();
 
@@ -510,6 +510,8 @@ namespace ProStudCreator
             target.LogStudyCourseStudent1 = _p.LogStudyCourseStudent1;
             target.LogStudyCourseStudent2 = _p.LogStudyCourseStudent2;
             target.Topics = _p.Topics;
+            target.InvoiceType = _p.InvoiceType;
+
         }
 
         public static Project CreateNewProject(ProStudentCreatorDBDataContext db)
@@ -1361,14 +1363,7 @@ namespace ProStudCreator
         public string Reservation2Name { get; set; }
         public string Reservation2Mail { get; set; }
 
-        public bool TypeDesignUX { get; set; }
-        public bool TypeHW { get; set; }
-        public bool TypeCGIP { get; set; }
-        public bool TypeMlAlg { get; set; }
-        public bool TypeAppWeb { get; set; }
-        public bool TypeDBBigData { get; set; }
-        public bool TypeSysSec { get; set; }
-        public bool TypeSE { get; set; }
+ 
         public System.Data.Linq.Link<System.Data.Linq.Binary> Picture { get; set; }
         public string ImgDescription { get; set; }
 
@@ -1407,6 +1402,7 @@ namespace ProStudCreator
         public System.Nullable<int> LogStudyCourse { get; set; }
         public System.Nullable<int> LogStudyCourseStudent1 { get; set; }
         public System.Nullable<int> LogStudyCourseStudent2 { get; set; }
+        public bool WantsPaperInvoice { get; set; }
 
 
     }
@@ -1502,7 +1498,67 @@ namespace ProStudCreator
             }
         }
 
-      //  public object LogStudyCourseStudent2 { get; internal set; }
-      //  public object LogStudyCourseStudent1 { get; internal set; }
+        private string _invoiceType = "Paper"; // Default value
+        private string _invoiceEmail; // Internal storage for email
+
+        public string InvoiceType
+        {
+            get => _invoiceType;
+            set
+            {
+                if (string.Equals(value, "Paper", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(value, "Email", StringComparison.OrdinalIgnoreCase))
+                {
+                    _invoiceType = value;
+
+                    // Reset email if Paper is selected
+                    if (_invoiceType.Equals("Paper", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _invoiceEmail = null;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid InvoiceType. Allowed values: 'Paper' or 'Email'.");
+                }
+            }
+        }
+
+        public string InvoiceContact
+        {
+            get => _invoiceType.Equals("Email", StringComparison.OrdinalIgnoreCase) ? _invoiceEmail ?? "" : "";
+            set
+            {
+                if (_invoiceType.Equals("Email", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!IsValidEmail(value))
+                    {
+                        throw new ArgumentException($"Invalid email address format: '{value}'");
+                    }
+                    _invoiceEmail = value.Trim();
+                }
+                else
+                {
+                    _invoiceEmail = null; // No email needed for Paper invoices
+                }
+            }
+        }
+
+        // Email validation helper
+        private static bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+
+            try
+            {
+                var mail = new System.Net.Mail.MailAddress(email);
+                return mail.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }
