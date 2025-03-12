@@ -564,6 +564,60 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Label txtClientCityLabel;
 
         /// <summary>
+        /// LabelInvoiceType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelInvoiceType;
+
+        /// <summary>
+        /// radioInvoiceType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList radioInvoiceType;
+
+        /// <summary>
+        /// divAdditionalEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAdditionalEmail;
+
+        /// <summary>
+        /// txtAdditionalClientEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAdditionalClientEmail;
+
+        /// <summary>
+        /// txtAdditionalClientEmailLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label txtAdditionalClientEmailLabel;
+
+        /// <summary>
+        /// AdditionalClientEmailFormatValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator AdditionalClientEmailFormatValidator;
+
+        /// <summary>
         /// txtClientReference control.
         /// </summary>
         /// <remarks>
@@ -580,6 +634,15 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtClientReferenceLabel;
+
+        /// <summary>
+        /// lblClientReferenceHint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblClientReferenceHint;
 
         /// <summary>
         /// chkNDA control.
