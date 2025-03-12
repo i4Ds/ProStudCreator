@@ -55,6 +55,8 @@
             }
         }
 
+
+
         // Attach event handlers once page is loaded
         $(document).ready(function () {
             $(":input").not(document.getElementsByTagName("select")).change(function () {
@@ -87,22 +89,32 @@
             });
         });
 
-        // should resolve the jumping issue during scrolling because of the pdf UpdatePanel
-        // https://forums.asp.net/post/1904273.aspx
-        var prm = Sys.WebForms.PageRequestManager.getInstance();
-        prm.add_beginRequest(beginRequest);
-        function beginRequest()
-        {
-            prm._scrollPosition = null;
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            var divAdditionalEmail = document.getElementById('<%= divAdditionalEmail.ClientID %>');
 
-        $(window).on('beforeunload',
-            function () {
-                if (hasUnsavedChanges) {
-                    return "Änderungen wurden noch nicht gespeichert. Seite wirklich verlassen?";
+            function toggleAdditionalEmail() {
+                var selectedValue = document.querySelector('input[name="<%= radioInvoiceType.UniqueID %>"]:checked')?.value;
+
+                if (selectedValue === "Email") {
+                    divAdditionalEmail.style.display = "block";
+                } else {
+                    divAdditionalEmail.style.display = "none";
                 }
             }
-        );
+
+            // Attach change event to all radio buttons
+            document.querySelectorAll('input[name="<%= radioInvoiceType.UniqueID %>"]').forEach(function (radio) {
+                radio.addEventListener("change", toggleAdditionalEmail);
+            });
+
+            // Run function on page load to set correct state
+            toggleAdditionalEmail();
+        });
+
+
+
+
+
     </script>
     <asp:UpdatePanel runat="server" UpdateMode="Conditional" ID="refuseProjectUpdatePanel">
         <ContentTemplate>
@@ -317,13 +329,41 @@
                             </div>
                         </div>
                         <div class="form-group" style="text-align: left">
+                            <asp:Label runat="server" CssClass="control-label col-md-3" ID="LabelInvoiceType" Text="Rechnungsart:" Style="margin-right: 10px;"></asp:Label>
+                            <div class="col-md-6 d-flex align-items-center">
+                                <asp:RadioButtonList ID="radioInvoiceType" runat="server" RepeatDirection="Horizontal" AutoPostBack="true" OnSelectedIndexChanged="radioInvoiceType_SelectedIndexChanged">
+                                    <asp:ListItem Value="Email" style="margin-right: 15px;">Rechnung per Email</asp:ListItem>
+                                    <asp:ListItem Value="Paper">Papierrechnung</asp:ListItem>
+                                </asp:RadioButtonList>
+                            </div>
+                        </div>
+
+                        <!-- Additional Email Field (Only Visible When "Rechnung per Email" is Selected) -->
+                        <div class="form-group" id="divAdditionalEmail" runat="server" visible="false">
+                            <asp:Label runat="server" Text="Zusätzliche E-Mail für Rechnung (optional):" CssClass="control-label col-md-3"></asp:Label>
+                            <div class="col-md-6">
+                                <asp:TextBox runat="server" ID="txtAdditionalClientEmail" CssClass="form-control maxWidth" MaxLength="100"></asp:TextBox>
+                                <asp:Label runat="server" ID="txtAdditionalClientEmailLabel" CssClass="form-control" Visible="false"></asp:Label>
+
+                                <asp:RegularExpressionValidator ID="AdditionalClientEmailFormatValidator" ValidationExpression=".+@.+\...+" 
+                                    ForeColor="Red" Display="Dynamic" ControlToValidate="txtAdditionalClientEmail" runat="server" 
+                                    SetFocusOnError="true" ErrorMessage="Bitte geben Sie eine gültige E-Mail-Adresse ein.">
+                                </asp:RegularExpressionValidator>
+                            </div>
+                        </div>
+
+                        <!-- Verrechnungs-/Auftragsnummer Field with Hint -->
+                        <div class="form-group" style="text-align: left">
                             <asp:Label runat="server" Text="Verrechnungs- / Auftragsnummer:" CssClass="control-label col-md-3"></asp:Label>
                             <div class="col-md-6">
                                 <asp:TextBox runat="server" ID="txtClientReference" CssClass="form-control maxWidth" Placeholder="Falls vorhanden." ToolTip="z.B. Bestellnummer des Auftraggebers." MaxLength="50"></asp:TextBox>
                                 <asp:Label runat="server" ID="txtClientReferenceLabel" CssClass="form-control" Visible="false"></asp:Label>
+                                <asp:Label runat="server" ID="lblClientReferenceHint" CssClass="help-block text-muted" Visible="false">
+                                    Falls eine andere E-Mail für die Rechnung benötigt wird, geben Sie diese hier an.
+                                </asp:Label>
                             </div>
                         </div>
-                    </div>
+                    </div>  
                 </ContentTemplate>
             </asp:UpdatePanel>
 
