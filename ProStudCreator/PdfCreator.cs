@@ -245,23 +245,6 @@ namespace ProStudCreator
                 projectTable.AddCell("");
                 projectTable.AddCell("");
             }
-            // Invoice Type
-            projectTable.AddCell(new Paragraph("Rechnungsart:", fontHeading));
-            projectTable.AddCell(new Paragraph(proj.InvoiceType ?? "Paper", fontRegular)); // Default to "Paper"
-            projectTable.AddCell("");
-
-            // Invoice Email (only if Invoice Type is "Email")
-            if (proj.InvoiceType == "Email")
-            {
-                projectTable.AddCell(new Paragraph("Rechnungs-E-Mail:", fontHeading));
-                projectTable.AddCell(new Paragraph(proj.InvoiceContact ?? "-", fontRegular));
-            }
-            else
-            {
-                projectTable.AddCell("");
-                projectTable.AddCell("");
-            }
-
 
             projectTable.AddCell(new Paragraph(translator.GetHeadingTeamSize()+":", fontHeading));
             projectTable.AddCell(new Paragraph(proj.POneTeamSize.Description, fontRegular));
