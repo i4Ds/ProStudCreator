@@ -4,12 +4,11 @@
 
     Projektmodul	FS                  HS                  Aufwand
    -----------------------------------------------------------------
-    IP5     	    KW  8 - 24          KW 38 - 3           180 h
-    IP5 lang	    KW  8 - 33 	        KW 38 - 12          180 h
-    IP6     	    KW  8 - 33          KW 38 - 12          360 h
+    IP5     	    KW  9 - 32          KW 38 - 6           180 h
+    IP6     	    KW  9 - 32          KW 38 - 12          360 h
 
 
-    TODO: konkrete termine automatisch aus KW berechnen
+    TODO: konkrete Termine automatisch aus KW berechnen
     
 --%>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
