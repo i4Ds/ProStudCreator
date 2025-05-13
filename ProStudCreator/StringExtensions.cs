@@ -403,7 +403,7 @@ namespace ProStudCreator
         }
 
         public static IEnumerable<Paragraph> ToLinkedParagraph(this string _paragraph, Font _font,
-            HyphenationAuto _hyph = null)
+    HyphenationAuto _hyph = null)
         {
             var paragraphs = new List<Paragraph>();
 
@@ -411,102 +411,27 @@ namespace ProStudCreator
             linkStyle.Color = BaseColor.BLUE;
             linkStyle.SetStyle(Font.UNDERLINE);
 
-            List currentList = null;
             var lines = _paragraph.Split('\n');
 
-            for (int i = 0; i < lines.Length; i++)
+            foreach (var rawLine in lines)
             {
-                var line = lines[i];
+                var line = rawLine.Trim();
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    paragraphs.Add(new Paragraph("\n", _font));
+                    continue;
+                }
+
+                // If line starts with "-" or "*" or similar, keep it (don't convert to List)
+                if (Regex.IsMatch(line, @"^\s*[\-\*]\s*"))
+                {
+                    line = "- " + Regex.Replace(line, @"^\s*[\-\*]\s*", "");
+                }
+
                 var para = new Paragraph();
                 para.Font = new Font(_font);
 
-                var currentLine = line;
-
-                var listIndexOffset = 0;
-
-                // Check if line represents a list.
-                // If so, start new list of corresponding type (unordered, alphabetical, numerical)
-                var isAlphaList = false;
-                var isUnorderedList = false;
-                var isNumericList = false;
-
-                if (lines.Length >= 3)
-                {
-                    if (listUnordered.IsMatch(currentLine))
-                    {
-                        if (i < lines.Length - 1 && listUnordered.IsMatch(lines[i + 1]))
-                            isUnorderedList = true;
-                        if (i > 0 && listUnordered.IsMatch(lines[i - 1]))
-                            isUnorderedList = true;
-                    }
-                    else if (listAlpha.IsMatch(currentLine))
-                    {
-                        if (i < lines.Length - 1 && listAlpha.IsMatch(lines[i + 1]))
-                            isAlphaList = true;
-                        if (i > 0 && listAlpha.IsMatch(lines[i - 1]))
-                            isAlphaList = true;
-                    }
-                    else if (listNumeric.IsMatch(currentLine))
-                    {
-                        if (i < lines.Length - 1 && listNumeric.IsMatch(lines[i + 1]))
-                            isNumericList = true;
-                        if (i > 0 && listNumeric.IsMatch(lines[i - 1]))
-                            isNumericList = true;
-                    }
-                }
-                if (isAlphaList)
-                {
-                    var itemSymbol = listAlpha.Match(currentLine).Groups["index"].Value.ToLower().ToCharArray()[0];
-                    listIndexOffset = itemSymbol - 'a';
-
-                    currentLine = listAlpha.Replace(currentLine, "");
-
-                    if (currentList == null)
-                    {
-                        currentList = new List(false, List.ALPHABETICAL, 10f);
-                        currentList.Lowercase = true;
-                        currentList.PostSymbol = ")";
-                        currentList.IndentationLeft = 5f;
-                    }
-                }
-                else if (isUnorderedList)
-                {
-                    currentLine = currentLine.TrimStart('*', '-', ' ');
-
-                    if (currentList == null)
-                    {
-                        currentList = new List(List.UNORDERED, 10f);
-                        currentList.SetListSymbol("\u2022");
-                        currentList.IndentationLeft = 5f;
-                    }
-                }
-                else if (isNumericList)
-                {
-                    var itemSymbol = int.Parse(listNumeric.Match(currentLine).Groups["index"].Value);
-                    listIndexOffset = itemSymbol - 1;
-
-                    currentLine = listNumeric.Replace(currentLine, "");
-
-                    if (currentList == null)
-                    {
-                        currentList = new List(true, false, 10f);
-                        currentList.IndentationLeft = 5f;
-                    }
-                }
-                else
-                {
-                    // This line isn't part of a list.
-                    // If we just reached the end of a list, save it & start a new paragraph.
-                    if (currentList != null)
-                    {
-                        para.Add(currentList);
-                        paragraphs.Add(para);
-                        para = new Paragraph();
-                        currentList = null;
-                    }
-                }
-
-                foreach (var chk in currentLine.RecognizeURLs())
+                foreach (var chk in line.RecognizeURLs())
                 {
                     var c = new Chunk(chk.Text, chk.URL == null ? _font : linkStyle);
                     if (_hyph != null)
@@ -521,27 +446,10 @@ namespace ProStudCreator
                     }
                 }
 
-                if (currentList == null)
-                {
-                    if (emptyLine.IsMatch(currentLine))
-                        para.Add("\n");
-                    
-                    para.SpacingAfter = 2f;
-                    paragraphs.Add(para);
-                }
-                else
-                {
-                    // We're in a list, store paragraph in the list for outputting later
-                    currentList.First = 1 + listIndexOffset - currentList.Size; // Maintain user's list index
-                    currentList.Add(new ListItem(para));
-                }
-            }
+                para.SpacingAfter = 2f;
+                para.SetLeading(0.0f, 1.1f);
+                para.Alignment = Element.ALIGN_JUSTIFIED;
 
-            // Last line -> List finished
-            if (currentList != null)
-            {
-                var para = new Paragraph();
-                para.Add(currentList);
                 paragraphs.Add(para);
             }
 
