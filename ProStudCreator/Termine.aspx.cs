@@ -19,7 +19,8 @@ namespace ProStudCreator
 
             //change date
             var changeDate = DateTime.ParseExact(changeDateString, "dd.MM.yyyy", CultureInfo.InvariantCulture)
-                + TimeSpan.FromDays(2 * 7);
+                // + TimeSpan.FromDays(2 * 7);
+                   + TimeSpan.FromDays(4 * 7);
 
             if (DateTime.Now >= changeDate)
             {
