@@ -480,7 +480,7 @@ namespace ProStudCreator
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet.</p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in zwei Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet.</p>" +
                         "<p>Ich möchte Sie bitten, die Titel zu überprüfen und Änderungen gleich im ProStud vorzunehmen.</p>" +
                         "<br/>" +
                         "<p>Herzliche Grüsse,<br/>" +
@@ -638,7 +638,7 @@ namespace ProStudCreator
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Deadline für die Notenabgabe der IP5 (kurz) für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP5Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
+                        $"<p>Die Deadline für die Notenabgabe der IP5 für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP5Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
                         "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen.</p>" +
                         "<br/>" +
                         "<p>Herzliche Grüsse,<br/>" +
