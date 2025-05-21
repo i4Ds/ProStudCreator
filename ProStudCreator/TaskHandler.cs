@@ -74,7 +74,8 @@ namespace ProStudCreator
                 var lastRun = db.TaskRuns.Where(r => !r.Forced).OrderByDescending(r => r.Date).FirstOrDefault();
                 if (lastRun == null) return true;
 
-                return now.Date > lastRun.Date.Date && now.Hour >= CheckHour;
+               // return now.Date > lastRun.Date.Date && now.Hour >= CheckHour;
+                return (now - lastRun.Date).TotalMinutes > 5;
             }
         }
 
@@ -148,13 +149,16 @@ namespace ProStudCreator
 
                 var mailMessage = new StringBuilder();
                 mailMessage.Append("<div style=\"font-family: Arial\">");
-                mailMessage.Append(
-                    $"<p>Time: {DateTime.Now}<p>" +
-                    $"<p>{e.Message}<p>");
+                mailMessage.Append($"<p><strong>Time:</strong> {DateTime.Now}</p>");
+                mailMessage.Append($"<p><strong>Message:</strong><br/>{System.Net.WebUtility.HtmlEncode(e.Message)}</p>");
+                mailMessage.Append($"<p><strong>Stack Trace:</strong><br/><pre>{System.Net.WebUtility.HtmlEncode(e.StackTrace)}</pre></p>");
+                mailMessage.Append("</div>");
+
                 mail.Body = mailMessage.ToString();
 
                 SendMail(mail);
             }
+
         }
 
         private static List<int> noFinishReminderMailsForAdvisors = new List<int>() { 7 };
@@ -442,7 +446,8 @@ namespace ProStudCreator
                 db.SubmitChanges();
             }
 
-            if (!activeTask2Weeks.Done && DateTime.Now > activeTask2Weeks.DueDate)
+            //if (!activeTask2Weeks.Done && DateTime.Now > activeTask2Weeks.DueDate)
+            if (true || (!activeTask2Weeks.Done && DateTime.Now > activeTask2Weeks.DueDate))
             {
                 activeTask2Weeks.Done = true;
 
@@ -472,7 +477,7 @@ namespace ProStudCreator
                             }
                         }
                     }
-
+                   
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
                     mail.IsBodyHtml = true;
 
@@ -567,6 +572,8 @@ namespace ProStudCreator
 
         public static void SendGradeDeadlineHints(ProStudentCreatorDBDataContext db)
         {
+           // SendDebugMail("SendGradeDeadlineHints() has been invoked.", "Grade Hint Trigger");
+
             var currentSemester = Semester.CurrentSemester(db);
             var lastSemester = Semester.LastSemester(db);
             var typeIP5Deadline = db.TaskTypes.Single(t => t.Id == (int)Type.GradeDeadlineIP5);
@@ -607,8 +614,12 @@ namespace ProStudCreator
             var activeIP5Tasks = db.Tasks.Where(t => t.TaskType == typeIP5Deadline && !t.Done);
             var activeIP6Tasks = db.Tasks.Where(t => t.TaskType == typeIP6Deadline && !t.Done);
 
+            //SendDebugMail($"Active IP5 tasks: {activeIP5Tasks.Count()}, IP6 tasks: {activeIP6Tasks.Count()}", "Grade Hint Task Counts");
+
             foreach (var task in activeIP5Tasks)
             {
+                //SendDebugMail($"Checking IP5 task: Due={task.DueDate}, Now={DateTime.Now}", "Grade Hint Task Check");
+
                 if (DateTime.Now >= task.DueDate)
                 {
 
@@ -617,6 +628,9 @@ namespace ProStudCreator
                         && p.LogProjectTypeID == 1
                         && p.LogProjectDuration == 1
                         && p.State == ProjectState.Ongoing);
+
+                    //var count = projectsIP5.Count();
+                    //SendDebugMail($"IP5 projects found: {count}", "Grade Hint Project Match");
 
                     var adv1 = projectsIP5.Select(p => p.Advisor1);
                     var adv2 = projectsIP5.Where(p => p.Advisor2 != null).Select(p => p.Advisor2);
@@ -648,6 +662,7 @@ namespace ProStudCreator
                     mail.Body = mailMessage.ToString();
 
                     SendMail(mail);
+                   // SendDebugMail($"Sent IP5 reminder for semester {task.Semester.Name}", "Grade Hint Email Sent");
 
                     task.FirstReminded = task.LastReminded = DateTime.Now;
                     task.Done = true;
@@ -656,13 +671,17 @@ namespace ProStudCreator
 
             foreach (var task in activeIP6Tasks)
             {
+                //SendDebugMail($"Checking IP6 task: Due={task.DueDate}, Now={DateTime.Now}", "Grade Hint Task Check");
+
                 if (DateTime.Now >= task.DueDate)
                 {
-
                     var projectsIP6 = db.Projects.Where(p => p.IsMainVersion
                         && p.Semester == task.Semester
                         && (p.LogProjectTypeID == 2 || p.LogProjectTypeID == 1 && p.LogProjectDuration == 2)
                         && p.State == ProjectState.Ongoing);
+
+                    var count = projectsIP6.Count();
+                    //SendDebugMail($"IP6 projects found: {count}", "Grade Hint Project Match");
 
                     var adv1 = projectsIP6.Select(p => p.Advisor1);
                     var adv2 = projectsIP6.Where(p => p.Advisor2 != null).Select(p => p.Advisor2);
@@ -694,6 +713,7 @@ namespace ProStudCreator
                     mail.Body = mailMessage.ToString();
 
                     SendMail(mail);
+                    //SendDebugMail($"Sent IP6 reminder for semester {task.Semester.Name}", "Grade Hint Email Sent");
 
                     task.FirstReminded = task.LastReminded = DateTime.Now;
                     task.Done = true;
@@ -1562,6 +1582,7 @@ namespace ProStudCreator
         public static void SendDebugMail(string body, string subject = "ProStud")
         {
             var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
+            //mail.To.Add(new MailAddress("dominik.gruntz@fhnw.ch"));
             mail.To.Add(new MailAddress(Global.WebAdmin));
             mail.Subject = $"DEBUG: {subject}";
             mail.Body = body;
@@ -1574,24 +1595,32 @@ namespace ProStudCreator
 
         public static void SendMail(MailMessage mail, bool webAdminCC = true)
         {
-#if !DEBUG
+        #if !DEBUG
             using (var smtpClient = new SmtpClient())
             {
                 if (webAdminCC)
                     mail.CC.Add(new MailAddress(Global.WebAdmin));
+
+                // ✅ Check if mail has any recipients
+                if (!mail.To.Any())
+                {
+                    SendDebugMail("Attempted to send email with no recipients (mail.To was empty).", "WARNING: Email Not Sent");
+                    return;
+                }
+
                 smtpClient.Send(mail);
             }
-#else
-            using (var smtpClient = new SmtpClient())
-            {
-                mail.To.Clear();
-                mail.CC.Clear();
-                mail.Bcc.Clear();
-                mail.Subject = "DEBUG: " + mail.Subject;
-                mail.To.Add(Global.WebAdmin);
-                smtpClient.Send(mail);
+        #else
+                    using (var smtpClient = new SmtpClient())
+                    {
+                        mail.To.Clear();
+                        mail.CC.Clear();
+                        mail.Bcc.Clear();
+                        mail.Subject = "DEBUG: " + mail.Subject;
+                        mail.To.Add(Global.WebAdmin);
+                        smtpClient.Send(mail);
+                    }
+        #endif
+                }
             }
-#endif
-        }
-    }
 }
