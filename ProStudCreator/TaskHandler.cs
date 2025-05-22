@@ -80,6 +80,7 @@ namespace ProStudCreator
 
         public static void ForceCheckAllTasks()
         {
+            // if the lock is not available, the entire body is simply skipped
             if (Monitor.TryEnter(TaskCheckLock))
             {
                 try
