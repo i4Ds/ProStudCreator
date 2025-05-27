@@ -44,6 +44,14 @@ namespace ProStudCreator
         private static readonly object TaskCheckLock = new object();
         public const int CheckHour = 23;
 
+        /// <summary>
+        /// Determines the next scheduled time to check for tasks.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="DateTime"/> representing the next task check time:
+        /// If no previous non-forced task run is found, returns today's date at the configured check hour;
+        /// otherwise, returns the date of the last non-forced task run plus one day at the check hour.
+        /// </returns>
         public static DateTime GetNextTaskCheck()
         {
             using (var db = new ProStudentCreatorDBDataContext())
@@ -57,7 +65,7 @@ namespace ProStudCreator
 
         public static void CheckAllTasks()
         {
-            //protect against reentrancy-problems. this lock is enough as long as the method runs in less than 24h
+            // protect against reentrancy-problems. this lock is enough as long as the method runs in less than 24h
             lock (TaskCheckLock)
             {
                 if (!ShouldTaskCheckBeRun()) return;
@@ -159,7 +167,9 @@ namespace ProStudCreator
         }
 
         private static List<int> noFinishReminderMailsForAdvisors = new List<int>() { 7 };
-        private static List<int> noFinishReminderMailsForProjects = new List<int>() { 10342, 11148 };
+
+        // This list contains project IDs for which no finish reminder mails should be sent, e.g. for projects that are delayed.
+        private static List<int> noFinishReminderMailsForProjects = new List<int>() { };
 
         private static void CheckFinishProject(ProStudentCreatorDBDataContext db)
         {
@@ -484,7 +494,7 @@ namespace ProStudCreator
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in zwei Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet. Die Ausbildungsadministration wird diese Titel in Evento erfassen.</p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in zwei Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet. Die Ausbildungsadministration wird diese Titel in Evento erfassen, denn sie erscheinen im TOR (Transcript of Records) der Studierenden.</p>" +
                         "<p>Ich möchte Sie bitten, die Titel zu überprüfen (bzw. mit den Studierenden zu besprechen) und Änderungen gleich im ProStud vorzunehmen.</p>" +
                         "<br/>" +
                         "<p>Freundliche Grüsse,<br/>" +
@@ -557,7 +567,7 @@ namespace ProStudCreator
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Tagen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet. Die Ausbildungsadministration wird diese Titel in Evento erfassen.</p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Tagen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet. Die Ausbildungsadministration wird diese Titel in Evento erfassen, denn sie erscheinen im TOR (Transcript of Records) der Studierenden.</p>" +
                         "<p>Ich möchte Sie bitten, die Titel zu überprüfen (bzw. mit den Studierenden zu besprechen) und Änderungen gleich im ProStud vorzunehmen.</p>" +
                         "<br/>" +
                         "<p>Freundliche Grüsse,<br/>" +
@@ -646,7 +656,8 @@ namespace ProStudCreator
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
                         $"<p>Die Deadline für die Notenabgabe der IP5 für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP5Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
-                        "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen.</p>" +
+                        "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen. " +
+                        "Artefakte (wie Bericht, Notenblatt, etc.) könnnen auch nach dem Abschliessen noch hochgeladen werden.</p>" +
                         "<br/>" +
                         "<p>Herzliche Grüsse,<br/>" +
                         "ProStud-Team</p>" +
@@ -692,9 +703,10 @@ namespace ProStudCreator
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
                         $"<p>Die Deadline für die Notenabgabe der IP5 (lang) und IP6 für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP6Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
-                        "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen.</p>" +
+                        "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen. " +
+                        "Artefakte (wie Bericht, Notenblatt, etc.) könnnen auch nach dem Abschliessen noch hochgeladen werden.</p>" +                        "<br/>" +
                         "<br/>" +
-                        "<p>Herzliche Grüsse,<br/>" +
+                        "<p>Freundliche Grüsse,<br/>" +
                         "ProStud-Team</p>" +
                         $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                         "</div>");
@@ -821,10 +833,10 @@ namespace ProStudCreator
                 if (thesisProjects.Any())
                 {
                     var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-                    mail.To.Add(new MailAddress(Global.WebAdmin)); // TODO: change to Global.GradeAdmin
+                    mail.To.Add(new MailAddress(Global.GradeAdmin));
                     
                     // Add recipients to the "To" field
-                    mail.To.Add("marketing.technik@fhnw.ch"); 
+                    mail.To.Add(new MailAddress(Global.MarKomAdmin));
                     mail.To.Add("nicole.stamm@fhnw.ch"); 
 
                     // Add CC recipients
@@ -1433,8 +1445,9 @@ namespace ProStudCreator
             db.SubmitChanges();
 
             var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-            mail.To.Add(new MailAddress(Global.WebAdmin)); // TODO: change to Global.MarKomAdmin
-            //mail.CC.Add(new MailAddress("sibylle.peter@fhnw.ch"));
+            mail.To.Add(new MailAddress(Global.MarKomAdmin));
+            mail.CC.Add(new MailAddress("sibylle.peter@fhnw.ch"));
+            mail.CC.Add(new MailAddress("nicole.stamm@fhnw.ch"));
             mail.Subject = "Informatikprojekte P6: Projektliste für Broschüre";
             mail.IsBodyHtml = true;
 
