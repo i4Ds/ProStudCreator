@@ -372,6 +372,7 @@
                 <asp:Label runat="server" Text="Geheimhaltung:" CssClass="control-label col-md-3"></asp:Label>
                 <div class="col-md-6">
                     <asp:CheckBox runat="server" ID="chkNDA" CssClass="form-control" ToolTip="NDA-Projekte werden nicht in öffentlichen Broschüren aufgeführt" Text=" Projekt/Auftraggeber unter NDA" />
+                    NDA-Projekte werden nicht in öffentlichen Broschüren aufgeführt. Daten können auch in Nicht-NDA-Projekten geheim bleiben.
                 </div>
             </div>
 
