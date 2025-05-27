@@ -477,14 +477,17 @@ namespace ProStudCreator
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
                     mail.IsBodyHtml = true;
 
+                    // Add CC recipients
+                    mail.CC.Add("sibylle.peter@fhnw.ch");
+
                     var mailMessage = new StringBuilder();
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in zwei Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet.</p>" +
-                        "<p>Ich möchte Sie bitten, die Titel zu überprüfen und Änderungen gleich im ProStud vorzunehmen.</p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in zwei Wochen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet. Die Ausbildungsadministration wird diese Titel in Evento erfassen.</p>" +
+                        "<p>Ich möchte Sie bitten, die Titel zu überprüfen (bzw. mit den Studierenden zu besprechen) und Änderungen gleich im ProStud vorzunehmen.</p>" +
                         "<br/>" +
-                        "<p>Herzliche Grüsse,<br/>" +
+                        "<p>Freundliche Grüsse,<br/>" +
                         "ProStud-Team</p>" +
                         $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                         "</div>");
@@ -547,14 +550,17 @@ namespace ProStudCreator
                     mail.Subject = "Informatikprojekte P6: Thesis-Titel Erinnerung";
                     mail.IsBodyHtml = true;
 
+                    // Add CC recipients
+                    mail.CC.Add("sibylle.peter@fhnw.ch");
+
                     var mailMessage = new StringBuilder();
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Tagen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet.</p>" +
-                        "<p>Ich möchte Sie bitten, die Titel zu überprüfen und Änderungen gleich im ProStud vorzunehmen.</p>" +
+                        $"<p>Die Titel der Bachelorthesen für das {currentSemester.Name} werden in 2 Tagen, so wie sie im ProStud eingetragen sind, an die Ausbildungsadministration gesendet. Die Ausbildungsadministration wird diese Titel in Evento erfassen.</p>" +
+                        "<p>Ich möchte Sie bitten, die Titel zu überprüfen (bzw. mit den Studierenden zu besprechen) und Änderungen gleich im ProStud vorzunehmen.</p>" +
                         "<br/>" +
-                        "<p>Herzliche Grüsse,<br/>" +
+                        "<p>Freundliche Grüsse,<br/>" +
                         "ProStud-Team</p>" +
                         $"<p>Feedback an {HttpUtility.HtmlEncode(Global.WebAdmin)}</p>" +
                         "</div>");
