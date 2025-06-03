@@ -111,7 +111,7 @@ The system manages the following task types:
    - **To**: Not explicitly stated but intended for verifying MarKom data
 
 7. **MarKom Brochure Email**
-   - **To**: `Global.WebAdmin` (should be `Global.MarKomAdmin`)
+   - **To**: `Global.MarKomAdmin`
 
 8. **Reminder for Responsible Users Email**
    - **To**: Responsible users for tasks (mostly advisors or department managers)
