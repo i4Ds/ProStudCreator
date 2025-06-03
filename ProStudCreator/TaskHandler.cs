@@ -154,18 +154,17 @@ namespace ProStudCreator
                 mail.To.Add(new MailAddress(Global.WebAdmin));
                 mail.Subject = "TaskCheck has thrown an Exception";
                 mail.IsBodyHtml = true;
-
                 var mailMessage = new StringBuilder();
                 mailMessage.Append("<div style=\"font-family: Arial\">");
-                mailMessage.Append(
-                    $"<p>Time: {DateTime.Now}<p>" +
-                    $"<p>{e.Message}<p>");
+                mailMessage.Append($"<p><strong>Time:</strong> {DateTime.Now}</p>");
+                mailMessage.Append($"<p><strong>Message:</strong><br/>{System.Net.WebUtility.HtmlEncode(e.Message)}</p>");
+                mailMessage.Append($"<p><strong>Stack Trace:</strong><br/><pre>{System.Net.WebUtility.HtmlEncode(e.StackTrace)}</pre></p>");
+                mailMessage.Append("</div>");
                 mail.Body = mailMessage.ToString();
-
                 SendMail(mail);
             }
         }
-
+        
         private static List<int> noFinishReminderMailsForAdvisors = new List<int>() { 7 };
 
         // This list contains project IDs for which no finish reminder mails should be sent, e.g. for projects that are delayed.
