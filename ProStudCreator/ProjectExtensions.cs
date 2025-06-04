@@ -582,11 +582,6 @@ namespace ProStudCreator
                     return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Normal.Trim(), "dd.MM.yyyy",
                         CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
                         ? dbDate : (DateTime?)null;
-                if (_p.LogProjectDuration == 2 && (_p.LogProjectType?.P6 ?? false)) //IP6 Variante 2 Semester
-                    return DateTime.TryParseExact(_p.Semester?.SubmissionIP6Variant2.Trim(), "dd.MM.yyyy",
-                        CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dbDate)
-                        ? dbDate : (DateTime?)null;
-
                 return null;
             }
         }
