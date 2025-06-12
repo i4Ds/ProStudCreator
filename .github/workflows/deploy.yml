@@ -1,0 +1,26 @@
+name: Build and Deploy ProStudCreator
+
+on:
+  push:
+    branches:
+      - main  # Only deploy when pushing to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.3
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore ProStudCreator.sln
+
+    - name: Build and Deploy with MSBuild and Web Deploy
+      run: msbuild ProStudCreator/ProStudCreator.csproj /p:DeployOnBuild=true /p:PublishProfile=prostudcreator.cs.technik.fhnw.ch /p:Configuration=Release /p:UserName=${{ secrets.DEPLOY_USERNAME }} /p:Password=${{ secrets.DEPLOY_PASSWORD }}
