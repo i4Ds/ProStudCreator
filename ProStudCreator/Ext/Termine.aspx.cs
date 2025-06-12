@@ -70,7 +70,7 @@ namespace ProStudCreator.Ext
                 var semProjAllo = semester?.ProjectAllocation ?? "?";
                 var semProjectStart = semester?.ProjectStart ?? "?";
                 var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
-                var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "?";
+                var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "";
                 var semSubIP6 = semester?.SubmissionIP6Normal ?? "?";
                 var semDefense = semester?.DefenseIP6Start == null ? "?" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}";
                 var semExhib = semester?.ExhibitionBachelorThesis ?? "?";
