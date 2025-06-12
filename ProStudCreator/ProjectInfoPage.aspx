@@ -7,11 +7,11 @@
         function isContentStud(currentObject) {
             var txtBoxValue = currentObject.value;
             var term = "@students.fhnw.ch";
-            var term2 = "@fhnw.ch";
+            //var term2 = "@fhnw.ch";
             var index = txtBoxValue.indexOf(term);
-            var index2 = txtBoxValue.indexOf(term2);
+            //var index2 = txtBoxValue.indexOf(term2);
             if (currentObject.value != "") {
-                if (index == -1 && index2 == -1) {
+                if (index == -1 /*&& index2 == -1*/) {
                     alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch oder @fhnw.ch endet");
                     currentObject.style.borderColor = 'red';
                 } else {
@@ -28,7 +28,7 @@
                 hasUnsavedChanges = false;
             }
             return ok;
-        }
+        } <a href="Translator.cs">Translator.cs</a>
 
         function Confirm() {
             var confirm_value = document.createElement("INPUT");
