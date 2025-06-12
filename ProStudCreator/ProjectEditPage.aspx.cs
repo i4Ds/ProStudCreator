@@ -155,6 +155,14 @@ namespace ProStudCreator
                     UpdateUIFromProjectObject(true);
                 }
             }
+
+            var selectedPTypeP1 = int.TryParse(dropPOneType.SelectedValue, out var ptP1Id) ? db.ProjectTypes.Single(p => p.Id == ptP1Id) : null;
+            var selectedPTypeP2 = int.TryParse(dropPTwoType.SelectedValue, out var ptP2Id) ? db.ProjectTypes.Single(p => p.Id == ptP2Id) : null;
+
+            //if p5/p6 are both selected, users should specify the scope difference
+            DescribeP5P6ScopeDifferenceHint.Visible =
+                   ((selectedPTypeP1?.P5 ?? false) || (selectedPTypeP2?.P5 ?? false))
+                && ((selectedPTypeP1?.P6 ?? false) || (selectedPTypeP2?.P6 ?? false));
         }
 
         #region Form
