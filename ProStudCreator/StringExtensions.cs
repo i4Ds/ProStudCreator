@@ -402,8 +402,7 @@ namespace ProStudCreator
             return _paragraph;
         }
 
-        public static IEnumerable<Paragraph> ToLinkedParagraph(this string _paragraph, Font _font,
-    HyphenationAuto _hyph = null)
+        public static IEnumerable<Paragraph> ToLinkedParagraph(this string _paragraph, Font _font, HyphenationAuto _hyph = null)
         {
             var paragraphs = new List<Paragraph>();
 
@@ -411,45 +410,133 @@ namespace ProStudCreator
             linkStyle.Color = BaseColor.BLUE;
             linkStyle.SetStyle(Font.UNDERLINE);
 
+            List currentList = null;
             var lines = _paragraph.Split('\n');
 
-            foreach (var rawLine in lines)
+            for (int i = 0; i < lines.Length; i++)
             {
-                var line = rawLine.Trim();
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    paragraphs.Add(new Paragraph("\n", _font));
-                    continue;
-                }
-
-                // If line starts with "-" or "*" or similar, keep it (don't convert to List)
-                if (Regex.IsMatch(line, @"^\s*[\-\*]\s*"))
-                {
-                    line = "- " + Regex.Replace(line, @"^\s*[\-\*]\s*", "");
-                }
-
+                var line = lines[i];
                 var para = new Paragraph();
                 para.Font = new Font(_font);
 
-                foreach (var chk in line.RecognizeURLs())
+                var currentLine = line;
+                var listIndexOffset = 0;
+
+                // Detect list type
+                var isAlphaList = false;
+                var isUnorderedList = false;
+                var isNumericList = false;
+
+                if (lines.Length >= 3)
+                {
+                    if (listUnordered.IsMatch(currentLine))
+                    {
+                        if ((i < lines.Length - 1 && listUnordered.IsMatch(lines[i + 1])) ||
+                            (i > 0 && listUnordered.IsMatch(lines[i - 1])))
+                            isUnorderedList = true;
+                    }
+                    else if (listAlpha.IsMatch(currentLine))
+                    {
+                        if ((i < lines.Length - 1 && listAlpha.IsMatch(lines[i + 1])) ||
+                            (i > 0 && listAlpha.IsMatch(lines[i - 1])))
+                            isAlphaList = true;
+                    }
+                    else if (listNumeric.IsMatch(currentLine))
+                    {
+                        if ((i < lines.Length - 1 && listNumeric.IsMatch(lines[i + 1])) ||
+                            (i > 0 && listNumeric.IsMatch(lines[i - 1])))
+                            isNumericList = true;
+                    }
+                }
+
+                if (isAlphaList)
+                {
+                    var itemSymbol = listAlpha.Match(currentLine).Groups["index"].Value.ToLower().ToCharArray()[0];
+                    listIndexOffset = itemSymbol - 'a';
+                    currentLine = listAlpha.Replace(currentLine, "");
+
+                    if (currentList == null)
+                    {
+                        currentList = new List(false, List.ALPHABETICAL, 20f);
+                        currentList.Lowercase = true;
+                        currentList.PostSymbol = ")";
+                        currentList.IndentationLeft = 10f;
+                        currentList.Autoindent = false;
+                        currentList.SymbolIndent = 10f;
+                    }
+                }
+                else if (isUnorderedList)
+                {
+                    currentLine = currentLine.TrimStart('*', '-', 'o', ' ');
+
+                    if (currentList == null)
+                    {
+                        currentList = new List(List.UNORDERED, 20f);
+                        currentList.SetListSymbol("o ");
+                        currentList.IndentationLeft = 0f;
+                        currentList.Autoindent = false;
+                        currentList.SymbolIndent = 10f;
+                    }
+                }
+                else if (isNumericList)
+                {
+                    var itemSymbol = int.Parse(listNumeric.Match(currentLine).Groups["index"].Value);
+                    listIndexOffset = itemSymbol - 1;
+                    currentLine = listNumeric.Replace(currentLine, "");
+
+                    if (currentList == null)
+                    {
+                        currentList = new List(true, false, 20f);
+                        currentList.IndentationLeft = 0f;
+                        currentList.Autoindent = false;
+                        currentList.SymbolIndent = 10f;
+                    }
+                }
+                else
+                {
+                    if (currentList != null)
+                    {
+                        var p = new Paragraph();
+                        p.Add(currentList);
+                        paragraphs.Add(p);
+                        currentList = null;
+                    }
+                }
+
+                foreach (var chk in currentLine.RecognizeURLs())
                 {
                     var c = new Chunk(chk.Text, chk.URL == null ? _font : linkStyle);
                     if (_hyph != null)
                         c.SetHyphenation(_hyph);
 
-                    if (chk.URL == null)
-                        para.Add(c);
-                    else
-                    {
+                    if (chk.URL != null)
                         c.SetAnchor(chk.URL);
-                        para.Add(c);
-                    }
+
+                    para.Add(c);
                 }
 
-                para.SpacingAfter = 2f;
-                para.SetLeading(0.0f, 1.1f);
-                para.Alignment = Element.ALIGN_JUSTIFIED;
+                para.SetLeading(0f, 1.1f);
+                para.SpacingAfter = 1f;
 
+                if (currentList == null)
+                {
+                    if (emptyLine.IsMatch(currentLine))
+                        para.Add("\n");
+                    paragraphs.Add(para);
+                }
+                else
+                {
+                    currentList.First = 1 + listIndexOffset - currentList.Size;
+                    var item = new ListItem(para);
+                    item.SpacingAfter = 1f;
+                    currentList.Add(item);
+                }
+            }
+
+            if (currentList != null)
+            {
+                var para = new Paragraph();
+                para.Add(currentList);
                 paragraphs.Add(para);
             }
 
