@@ -73,7 +73,7 @@ namespace ProStudCreator
                 var semProjAllo = semester?.ProjectAllocation ?? "?";
                 var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
                 var semGradeIP5N = semester?.GradeIP5Deadline.ToString("g", CultureInfo.CurrentCulture) ?? "?";
-                var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "?";
+                var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "";
                 var semSubIP6 = semester?.SubmissionIP6Normal ?? "?";
                 var semDefense = semester?.DefenseIP6Start == null ? "?" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}";
                 var semGradeIP6 = semester?.GradeIP6Deadline.ToString("g", CultureInfo.CurrentCulture) ?? "?";
