@@ -259,7 +259,8 @@
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent1Admin" CssClass="form-control"></asp:TextBox>
                         </div>
                         <div class="col-md-4 alignbottom">
-                            <a href="#">Bewertungsformular öffnen</a>
+                            <asp:Button runat="server" OnClick="Student1OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
+                            <a runat="server" onclick=""></a>
                         </div>
                     </div>
                     <div runat="server" id="DivGradeStudent2" class="form-group">
@@ -269,16 +270,93 @@
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent2Admin" CssClass="form-control"></asp:TextBox>
                         </div>
                         <div class="col-md-4 alignbottom">
-                            <a href="#">Bewertungsformular öffnen</a>
+                            <asp:Button runat="server" OnClick="Student2OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
                         </div>
                     </div>
                     <div class="form-group" style="text-align: left" runat="server" visible="false" id="DivGradeWarning">
                         <asp:Label runat="server" ID="Label1" CssClass="col-md-6 col-md-offset-3"><small>Hinweis: Bitte das Projekt nach dem Eintragen der Noten abschliessen, damit die Noten an die Administration gesendet werden können.</small></asp:Label>
                     </div>
+
+
+                    <div id="GradingV1Popup" style="display: none; height:80%; width:80%; padding: 16px; background-color: #f5f5f5;">
+                        <div style="position:relative;height:100%;width:100%;left:0px;top:0px;padding-bottom:96px;">
+                            <h3><asp:Label runat="server" ID="PopupTitle">Bewertungsformular</asp:Label></h3>
+                            <ajaxToolkit:TabContainer runat="server" Width="100%" Height="100%" ScrollBars="Auto" TabStripPlacement="Bottom">
+                                <ajaxToolkit:TabPanel runat="server" HeaderText="Gesamtbewertung">
+                                    <ContentTemplate>
+                                        ...
+                                    </ContentTemplate>
+                                </ajaxToolkit:TabPanel>
+                                <ajaxToolkit:TabPanel runat="server" HeaderText="Detailbewertung">
+                                    <ContentTemplate>
+                                        ...
+                                    </ContentTemplate>
+                                </ajaxToolkit:TabPanel>
+                                <ajaxToolkit:TabPanel runat="server" HeaderText="Anleitung">
+                                    <ContentTemplate>
+                                        <h4>Anleitung zum Ausfüllen der Detailbewertung</h4>
+                                        <p>
+                                            Nur die grau unterlegten Felder ausfüllen.
+                                        </p>
+                                        <p>
+                                            Gewichtungsfaktoren (Spalte C) in der Anphangsphase des Projektes festlegen.
+                                        </p>
+                                        <p>
+                                            Die Gewichtungen der Blocknoten (Zellen C10, C17, C22 und C27) sind vorgegeben.
+                                        </p>
+                                        <p>
+                                            Bonuspunkte: nur für grössere bzw. unvorhergesehene Herausforderungen in 3 Bereichen.
+                                            Diese Punkte gehen nicht in eine Rechnung ein, sie sind nur ein Hilfsmittel für den Betreuer.<br />
+                                            Achtung: Bonus nicht doppelt vergeben, d.h. grössere Herausforderungen entweder bei der
+                                            Benotung im oberen Teil berücksichtigen oder mit dem Bonus.<br />
+                                            Mit dem Bonus keine Notenkosmetik betreiben.
+                                        </p>
+                                        <p>
+                                            Bonusnote (Feld C33):  Zusatznotenpunkte, gerundet auf 1/10.<br />
+                                            Sparsam einsetzen, max. 0.2 Notenpunkte!
+                                        </p>
+                                    </ContentTemplate>
+                                </ajaxToolkit:TabPanel>
+                                <ajaxToolkit:TabPanel runat="server" HeaderText="Kommunikation der Bewertung">
+                                    <ContentTemplate>
+                                        <h4>Ziel</h4>
+                                        <p>
+                                            Lerneffekt durch die Bewertung und die Rückmeldungen.
+                                        </p>
+                                        <h4>Grundsatz</h4>
+                                        <p>
+                                            Eine detaillierte Kommunikation der Bewertung ist bei den P5 obligatorisch (kann auch erst zu Beginn des Folgesemesters stattfinden) und bei den P6 wünschenswert (manchmal sind die Studierenden gar nicht mehr verfügbar). Ist die Thesis im ersten Anlauf nicht bestanden, ist ein Feedback obligatorisch.
+                                        </p>
+                                        <h4>Einzelheiten</h4>
+                                        <p>
+                                            Die Studierenden kennen den Bewertungsbogen ab Beginn P5, P6.
+                                        </p>
+                                        <p>
+                                            Die Gewichtungsfaktoren im Blatt "2. Detailbewertung" werden in der Anfangsphase des Projektes festgelegt (der Aufgabenstellung angepasst) und den Studierenden abgegeben.
+                                        </p>
+                                        <p>
+                                            Bei der Abschlussbesprechung der Arbeit wird das Blatt "1. Gesamtbewertung" an die Studierenden abgegeben.
+                                        </p>
+                                        <p>
+                                            Das Blatt "2. Detailbewertung" wird ebenfalls an die Studierenden abgegeben, ggf. aber ohne die Kommentare (Spalte G). Die Teilnoten (Spalte D) werden abgegeben.
+                                        </p>
+                                        <p>
+                                            Die Kommentare (Spalte G) sind ein Hilfsmittel für die Projektbetreuer und u.U. nicht geeignet, weitergegeben zu werden. Sie dienen darum primär als Grundlage für die Notengebung und die Schlussbesprechung, aber nicht direkt für die Kommunikation der Bewertung.
+                                        </p>
+                                    </ContentTemplate>
+                                </ajaxToolkit:TabPanel>
+                            </ajaxToolkit:TabContainer>
+                            <div style="clear:both;text-align:center;padding-top:12px;">
+                                <asp:Button OnClick="GradingPopupClose_Click" runat="server" Text="Ok" />
+                            </div>
+                        </div>
+                    </div>
+                    <asp:Button style="display:none;" runat="server" id="DummyPopupTarget" />
+                    <ajaxToolkit:ModalPopupExtender runat="server" TargetControlID="DummyPopupTarget" BackgroundCssClass="PopupBackground" PopupDragHandleControlID="PopupTitle" PopupControlID="GradingV1Popup" RepositionMode="RepositionOnWindowResizeAndScroll" ID="PopupExtender" />
+
                 </ContentTemplate>
             </asp:UpdatePanel>
             <hr />
-
             <asp:PlaceHolder runat="server" ID="BillAddressPlaceholder">
                 <h3>Kundeninformationen</h3>
                 <asp:UpdatePanel runat="server" ID="updateClientCompany" UpdateMode="Conditional">

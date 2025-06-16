@@ -1746,7 +1746,25 @@ namespace ProStudCreator
             }
         }
 
+
         #endregion
+
+        protected void Student1OpenGradingPopup_Click(object sender, EventArgs e)
+        {
+            PopupTitle.Text = $"Bewertung von {pageProject.GetStudent1FullName()}";
+            PopupExtender.Show();
+        }
+
+        protected void Student2OpenGradingPopup_Click(object sender, EventArgs e)
+        {
+            PopupTitle.Text = $"Bewertung von {pageProject.GetStudent2FullName()}";
+            PopupExtender.Show();
+        }
+
+        protected void GradingPopupClose_Click(object sender, EventArgs e)
+        {
+            PopupExtender.Hide();
+        }
     }
     public class StreamToZipDataSource : IStaticDataSource
     {

@@ -690,6 +690,33 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// PopupTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PopupTitle;
+
+        /// <summary>
+        /// DummyPopupTarget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DummyPopupTarget;
+
+        /// <summary>
+        /// PopupExtender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender PopupExtender;
+
+        /// <summary>
         /// BillAddressPlaceholder control.
         /// </summary>
         /// <remarks>
