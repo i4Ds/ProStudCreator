@@ -12,7 +12,7 @@
             //var index2 = txtBoxValue.indexOf(term2);
             if (currentObject.value != "") {
                 if (index == -1 /*&& index2 == -1*/) {
-                    alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch oder @fhnw.ch endet");
+                    alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch endet");
                     currentObject.style.borderColor = 'red';
                 } else {
                     currentObject.style.borderColor = 'green';
@@ -28,7 +28,7 @@
                 hasUnsavedChanges = false;
             }
             return ok;
-        } <a href="Translator.cs">Translator.cs</a>
+        }
 
         function Confirm() {
             var confirm_value = document.createElement("INPUT");

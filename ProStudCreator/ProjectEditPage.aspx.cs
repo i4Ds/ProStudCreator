@@ -137,7 +137,7 @@ namespace ProStudCreator
                     SiteTitle.Text = "Projekt bearbeiten";
 
                     if (!pageProject.IsMainVersion && Request.QueryString["showChanges"] == null)
-                    { 
+                    {
                         //TODO
                         //PopulateHistoryGUI(pageProject.Id);
                     }
@@ -156,13 +156,35 @@ namespace ProStudCreator
                 }
             }
 
-            var selectedPTypeP1 = int.TryParse(dropPOneType.SelectedValue, out var ptP1Id) ? db.ProjectTypes.Single(p => p.Id == ptP1Id) : null;
-            var selectedPTypeP2 = int.TryParse(dropPTwoType.SelectedValue, out var ptP2Id) ? db.ProjectTypes.Single(p => p.Id == ptP2Id) : null;
+            var selectedPTypeP1 = int.TryParse(dropPOneType.SelectedValue, out var ptP1Id) ? db.ProjectTypes.Single(pt => pt.Id == ptP1Id) : null;
+            var selectedPTypeP2 = int.TryParse(dropPTwoType.SelectedValue, out var ptP2Id) ? db.ProjectTypes.Single(pt => pt.Id == ptP2Id) : null;
+            var selectedPSizeP1 = int.TryParse(dropPOneTeamSize.SelectedValue, out var ptsP1Id) ? db.ProjectTeamSizes.Single(pts => pts.Id == ptsP1Id) : null;
+            var selectedPSizeP2 = int.TryParse(dropPTwoTeamSize.SelectedValue, out var ptsP2Id) ? db.ProjectTeamSizes.Single(pts => pts.Id == ptsP2Id) : null;
 
-            //if p5/p6 are both selected, users should specify the scope difference
-            DescribeP5P6ScopeDifferenceHint.Visible =
-                   ((selectedPTypeP1?.P5 ?? false) || (selectedPTypeP2?.P5 ?? false))
-                && ((selectedPTypeP1?.P6 ?? false) || (selectedPTypeP2?.P6 ?? false));
+            var minHours = int.MaxValue;
+            int maxHours = 0;
+
+            if (selectedPTypeP1 != null && selectedPSizeP1 != null)
+            {
+                var minTeamSize = selectedPSizeP1.Size1 ? 1 : 2;
+                var maxTeamSize = selectedPSizeP1.Size2 ? 2 : 1;
+
+                minHours = Math.Min(minHours, minTeamSize * (selectedPTypeP1.P5 ? 180 : 360));
+                maxHours = Math.Max(maxHours, maxTeamSize * (selectedPTypeP1.P6 ? 360 : 180));
+            }
+
+            if (selectedPTypeP2 != null && selectedPSizeP2 != null)
+            {
+                var minTeamSize = selectedPSizeP2.Size1 ? 1 : 2;
+                var maxTeamSize = selectedPSizeP2.Size2 ? 2 : 1;
+
+                minHours = Math.Min(minHours, minTeamSize * (selectedPTypeP2.P5 ? 180 : 360));
+                maxHours = Math.Max(maxHours, maxTeamSize * (selectedPTypeP2.P6 ? 360 : 180));
+            }
+
+            //if priorities are selected in such a way to lead to potentially different work hours,
+            //users should describe the scope difference
+            DescribeP5P6ScopeDifferenceHint.Visible = (minHours != maxHours);
         }
 
         #region Form
@@ -268,7 +290,7 @@ namespace ProStudCreator
                 // save buttons
                 saveProject.Visible = saveCloseProject.Visible = pageProject.UserCanEdit();
                 if (pageProject.State == ProjectState.Submitted
-                    && pageProject.UserCanView() 
+                    && pageProject.UserCanView()
                     && !pageProject.UserCanEdit())
                 {
                     saveProject.Visible = false;
@@ -347,7 +369,7 @@ namespace ProStudCreator
                 {
                     dropPreviousProject.DataSource = db.Projects.Where(p =>
                             p.IsMainVersion
-                        &&  p.LogProjectType.P5
+                        && p.LogProjectType.P5
                         && !p.LogProjectType.P6
                         && (p.State == ProjectState.Ongoing || p.State == ProjectState.Finished || p.State == ProjectState.ArchivedFinished)
                         && (p.SemesterId == lastSem.Id))
@@ -810,7 +832,8 @@ namespace ProStudCreator
 
             // Project topics
             var idList = new List<int>();
-            foreach (var topic in db.Topics.ToList()) {
+            foreach (var topic in db.Topics.ToList())
+            {
                 if (((ProjectTopicControl)projectTopics.FindControl($"Topic{topic.Id}")).Selected)
                     idList.Add(topic.Id);
             }
@@ -952,7 +975,7 @@ namespace ProStudCreator
                             project.ClientAddressPostcode =
                                 project.ClientAddressCity =
                                     project.ClientReferenceNumber =
-                                        project.ClientMail = 
+                                        project.ClientMail =
                                             project.ClientPhoneNumber = "";
             }
 
@@ -1524,7 +1547,7 @@ namespace ProStudCreator
                         mail.From = new MailAddress("noreply@fhnw.ch");
                         mail.Subject = $"ERROR";
                         mail.Body = $"No DepartmentManager found for Department ID: {pageProject.DepartmentId}";
-                        
+
                     }
                     else
                     {
@@ -1601,7 +1624,7 @@ namespace ProStudCreator
                     return "Bitte geben Sie den Namen des Kundenkontakts im Format (Vorname Nachname) an.";
 
                 if (string.IsNullOrWhiteSpace(txtClientEmail.Text))
-                   return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
+                    return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts an.";
 
                 if (!txtClientEmail.Text.IsValidEmail())
                     return "Bitte geben Sie die E-Mail-Adresse des Kundenkontakts im Format (xxx@yyy.zzz) an.";
@@ -1782,11 +1805,11 @@ namespace ProStudCreator
         {
             if (pageProject != null)
             {
-                DisplayPicture(false, imageDeleted=true);
+                DisplayPicture(false, imageDeleted = true);
             }
             else
             {
-                DisplayPicture(true, imageDeleted=true);
+                DisplayPicture(true, imageDeleted = true);
             }
         }
 
@@ -1829,10 +1852,10 @@ namespace ProStudCreator
                 updatePriority.Update();
                 DisplayReservations();
                 updateReservation.Update();
-                DisplayClient(pageProject==null);
+                DisplayClient(pageProject == null);
                 updateClient.Update();
             }
-            
+
             updatePreviousProject.Update();
         }
 

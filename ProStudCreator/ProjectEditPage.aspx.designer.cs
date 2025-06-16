@@ -294,15 +294,6 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.DropDownList dropPTwoType;
 
         /// <summary>
-        /// DescribeP5P6ScopeDifferenceHint control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label DescribeP5P6ScopeDifferenceHint;
-
-        /// <summary>
         /// PTwoTypeLabel control.
         /// </summary>
         /// <remarks>
@@ -328,6 +319,15 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label PTwoTeamSizeLabel;
+
+        /// <summary>
+        /// DescribeP5P6ScopeDifferenceHint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DescribeP5P6ScopeDifferenceHint;
 
         /// <summary>
         /// chkSCCS control.

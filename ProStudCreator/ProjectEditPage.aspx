@@ -159,7 +159,7 @@
                             <asp:DropDownList runat="server" ID="dropPreviousProject" DataValueField="Id" DataTextField="Name" AutoPostBack="true" CausesValidation="false" CssClass="form-control dropPreviousProject" OnSelectedIndexChanged="DropPreviousProject_SelectedIndexChanged" />
                             <asp:Label runat="server" ID="dropPreviousProjectLabel" CssClass="form-control" Style="width: 75%;" Visible="false"></asp:Label>
                         </div>
-                        <asp:Label runat="server" ID="Label1" visible="false"><small>Bewirkt die automatische Zuteilung des Teams des Vorgängerprojektes zu diesem IP6 Projekt!</small></asp:Label>
+                        <asp:Label runat="server" ID="Label1" visible="false"><small>Bewirkt die automatische Zuteilung des Teams des Vorgängerprojektes zu diesem P6 Projekt!</small></asp:Label>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -208,6 +208,8 @@
                     <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="dropPOneType" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="dropPTwoType" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPOneTeamSize" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPTwoTeamSize" EventName="SelectedIndexChanged" />
                 </Triggers>
                 <ContentTemplate>
                     <div class="form-group">
@@ -225,13 +227,16 @@
                         <asp:Label runat="server" CssClass="control-label col-md-3" Text="Priorität 2:"></asp:Label>
                         <div class="col-md-3">
                             <asp:DropDownList runat="server" ID="dropPTwoType" DataValueField="Id" DataTextField="Description" CssClass="form-control"/>
-                            <asp:Label runat="server" ID="DescribeP5P6ScopeDifferenceHint" visible="false"><small>Bitte Scope-Unterschied P5 vs. P6 beschreiben</small></asp:Label>
                             <asp:Label runat="server" ID="PTwoTypeLabel" CssClass="form-control ellipsisLabel" Visible="false"></asp:Label>
                         </div>
                         <div class="col-md-3">
                             <asp:DropDownList runat="server" ID="dropPTwoTeamSize" DataValueField="Id" DataTextField="Description" CssClass="form-control" OnSelectedIndexChanged="TeamSize_SelectedIndexChanged" AutoPostBack="true" />
                             <asp:Label runat="server" ID="PTwoTeamSizeLabel" CssClass="form-control ellipsisLabel" Visible="false"></asp:Label>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label col-md-3"></span>
+                        <asp:Label CssClass="col-md-6" runat="server" ID="DescribeP5P6ScopeDifferenceHint" visible="false"><small>Bitte den Scope-Unterschied P5/P6 bzw. Einzel-/Zweierprojekt beschreiben</small></asp:Label>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
