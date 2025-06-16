@@ -38,18 +38,7 @@ namespace ProStudCreator
             Application.Add("dummyRequest", "");
 
             TaskHandler.CheckAllTasks();
-
-            //Solves problem which  occures if you installed a different language on your Pc 
-            //with out it the Encoding may not work on every Pc.
-            ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage = System.Text.Encoding.Default.CodePage;
-
-
-            
-
         }
-
-
-
 
         private void RegisterChacheEntry()
         {
@@ -60,9 +49,7 @@ namespace ProStudCreator
                 DateTime.MaxValue, TimeSpan.FromHours(3),
                 CacheItemPriority.Normal,
                 new CacheItemRemovedCallback(CacheItemRemovedCallback));
-
         }
-
 
         public void CacheItemRemovedCallback(string key, object value, CacheItemRemovedReason reason)
         {
