@@ -207,7 +207,7 @@ namespace ProStudCreator
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
-	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged, IComparable<Department>
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -466,12 +466,7 @@ namespace ProStudCreator
 			this.SendPropertyChanging();
 			entity.Department = null;
 		}
-
-        public int CompareTo(Department other)
-        {
-			return this._Id.CompareTo(other._Id);
-        }
-    }
+	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProjectTeamSize")]
 	public partial class ProjectTeamSize : INotifyPropertyChanging, INotifyPropertyChanged
@@ -1502,11 +1497,12 @@ namespace ProStudCreator
 		private bool _SubmitToStudyCourseDS;
 		
 		private System.Nullable<byte> _LogStudyCourse;
-
-        private int? _LogStudyCourseStudent1;
-        private int? _LogStudyCourseStudent2;
-
-        private string _Topics;
+		
+		private string _Topics;
+		
+		private System.Nullable<int> _LogStudyCourseStudent1;
+		
+		private System.Nullable<int> _LogStudyCourseStudent2;
 		
 		private EntitySet<Project> _Projects;
 		
@@ -1692,6 +1688,10 @@ namespace ProStudCreator
     partial void OnLogStudyCourseChanged();
     partial void OnTopicsChanging(string value);
     partial void OnTopicsChanged();
+    partial void OnLogStudyCourseStudent1Changing(System.Nullable<int> value);
+    partial void OnLogStudyCourseStudent1Changed();
+    partial void OnLogStudyCourseStudent2Changing(System.Nullable<int> value);
+    partial void OnLogStudyCourseStudent2Changed();
     #endregion
 		
 		public Project()
@@ -3221,45 +3221,8 @@ namespace ProStudCreator
 				}
 			}
 		}
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent1", DbType = "Int NULL")]
-        public int? LogStudyCourseStudent1
-        {
-            get
-            {
-                return this._LogStudyCourseStudent1;
-            }
-            set
-            {
-                if ((this._LogStudyCourseStudent1 != value))
-                {
-                   
-                    this.SendPropertyChanging();
-                    this._LogStudyCourseStudent1 = value;
-                    this.SendPropertyChanged("LogStudyCourseStudent1");
-                }
-            }
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent2", DbType = "Int NULL")]
-        public int? LogStudyCourseStudent2
-        {
-            get
-            {
-                return this._LogStudyCourseStudent2;
-            }
-            set
-            {
-                if ((this._LogStudyCourseStudent2 != value))
-                {
-                    this.SendPropertyChanging();
-                    this._LogStudyCourseStudent2 = value;
-                    this.SendPropertyChanged("LogStudyCourseStudent2");
-                }
-            }
-        }
-
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
 		public System.Nullable<byte> LogStudyCourse
 		{
 			get
@@ -3295,6 +3258,46 @@ namespace ProStudCreator
 					this._Topics = value;
 					this.SendPropertyChanged("Topics");
 					this.OnTopicsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourseStudent1", DbType="int")]
+		public System.Nullable<int> LogStudyCourseStudent1
+		{
+			get
+			{
+				return this._LogStudyCourseStudent1;
+			}
+			set
+			{
+				if ((this._LogStudyCourseStudent1 != value))
+				{
+					this.OnLogStudyCourseStudent1Changing(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourseStudent1 = value;
+					this.SendPropertyChanged("LogStudyCourseStudent1");
+					this.OnLogStudyCourseStudent1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourseStudent2", DbType="int ")]
+		public System.Nullable<int> LogStudyCourseStudent2
+		{
+			get
+			{
+				return this._LogStudyCourseStudent2;
+			}
+			set
+			{
+				if ((this._LogStudyCourseStudent2 != value))
+				{
+					this.OnLogStudyCourseStudent2Changing(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourseStudent2 = value;
+					this.SendPropertyChanged("LogStudyCourseStudent2");
+					this.OnLogStudyCourseStudent2Changed();
 				}
 			}
 		}
