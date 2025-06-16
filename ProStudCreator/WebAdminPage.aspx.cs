@@ -25,7 +25,7 @@ namespace ProStudCreator
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!ShibUser.IsWebAdmin())
+            if (!(ShibUser.IsWebAdmin() || ShibUser.IsProjectOwner()))
             {
                 Response.Redirect($"error/AccessDenied.aspx?url={HttpContext.Current.Request.Url.PathAndQuery}");
                 Response.End();

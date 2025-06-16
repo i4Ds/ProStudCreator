@@ -116,8 +116,8 @@ namespace ProStudCreator
 
         public static bool IsShibWebAdmin() => GetShibEmail() == Global.WebAdmin;
 
-        public static bool IsWebAdmin() => GetEmail() == Global.WebAdmin || GetEmail() == Global.ProjectOwner;
-
+        public static bool IsWebAdmin() => GetEmail() == Global.WebAdmin;
+        public static bool IsProjectOwner() => GetEmail() == Global.ProjectOwner;
         public static bool IsDepartmentManager(Department _d)
         {
 #if DEBUG
