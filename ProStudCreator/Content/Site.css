@@ -716,3 +716,113 @@ del {
     background-color: #000;
     opacity: 0.4;
 }
+
+.gradingV1 td
+{
+    vertical-align:top;
+    border-collapse:collapse;
+    border:1px solid #000;
+}
+
+.gradingV1 .sectionTitleRow td {
+    background-color: #D8E4BC;
+    font-weight: bold;
+    height: 3em;
+    vertical-align: middle;
+    text-align:center;
+}
+
+.gradingV1 .name
+{
+    font-style:italic;
+}
+
+.gradingV1 .sectionSummaryCell {
+    font-weight: bold;
+    font-style: italic;
+    background-color: #E6B8B7;
+    height: 3em;
+    vertical-align:middle;
+}
+
+.gradingV1 .bonusCell {
+    font-style: italic;
+    background-color: #B1A0C7;
+    height: 3em;
+    vertical-align: middle;
+}
+
+.gradingV1 .finalCell {
+    font-weight: bold;
+    font-size:150%;
+    background-color: #ff0000;
+    vertical-align: middle;
+}
+
+.gradingV1 input, textarea {
+    background-color: #d9d9d9;
+    color: #0000ff;
+}
+
+.gradingV1 textarea {
+    height: initial !important;
+    min-height: initial !important;
+    max-height: initial !important;
+}
+
+.gradingV1 input {
+    width: 6em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gradingV1 input
+{
+    text-align:center;
+}
+
+.gradingV1 .small
+{
+    font-size:80%;
+}
+
+.gradingV1 .centered
+{
+    text-align:center;
+}
+
+.gradingV1Overview
+{
+    width:100%;
+    font-weight:bold;
+    margin-bottom:1.5em;
+}
+
+.gradingV1Overview label
+{
+    font-weight:normal;
+    padding-left:0.5em;
+}
+
+.gradingV1Overview td
+{
+    border: 1px solid #000;
+    border-collapse:collapse;
+    vertical-align: top;
+}
+
+.gradingV1OverviewTextarea
+{
+    width:100%;
+    margin-bottom:1.5em;
+}
+
+.gradingV1OverviewFinalTable
+{
+    width:100%;
+    border:1px solid #000;
+}
+
+.gradingV1OverviewFinalTable td {
+    height: 4em;
+}

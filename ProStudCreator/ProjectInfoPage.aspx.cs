@@ -1761,11 +1761,17 @@ namespace ProStudCreator
             PopupExtender.Show();
         }
 
-        protected void GradingPopupClose_Click(object sender, EventArgs e)
+        protected void GradingPopupCloseOk_Click(object sender, EventArgs e)
+        {
+            PopupExtender.Hide();
+        }
+
+        protected void GradingPopupCloseCancel_Click(object sender, EventArgs e)
         {
             PopupExtender.Hide();
         }
     }
+
     public class StreamToZipDataSource : IStaticDataSource
     {
         private Stream _stream;
