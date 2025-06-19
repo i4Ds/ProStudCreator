@@ -780,364 +780,418 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox txtAProjectSummaryPlanningComment;
 
         /// <summary>
-        /// TextBox1 control.
+        /// Grade1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.Label Grade1;
 
         /// <summary>
-        /// TextBox2 control.
+        /// txtBTheoreticalWorkWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox txtBTheoreticalWorkWeight;
 
         /// <summary>
-        /// TextBox3 control.
+        /// txtBTheoreticalWork control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtBTheoreticalWork;
 
         /// <summary>
-        /// TextBox4 control.
+        /// txtBTheoreticalWorkComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.TextBox txtBTheoreticalWorkComment;
 
         /// <summary>
-        /// TextBox5 control.
+        /// txtBPracticalWorkWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox5;
+        protected global::System.Web.UI.WebControls.TextBox txtBPracticalWorkWeight;
 
         /// <summary>
-        /// TextBox6 control.
+        /// txtBPracticalWork control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox6;
+        protected global::System.Web.UI.WebControls.TextBox txtBPracticalWork;
 
         /// <summary>
-        /// TextBox7 control.
+        /// txtBPracticalWorkComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox7;
+        protected global::System.Web.UI.WebControls.TextBox txtBPracticalWorkComment;
 
         /// <summary>
-        /// TextBox8 control.
+        /// txtBEvaluationWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox8;
+        protected global::System.Web.UI.WebControls.TextBox txtBEvaluationWeight;
 
         /// <summary>
-        /// TextBox9 control.
+        /// txtBEvaluation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox9;
+        protected global::System.Web.UI.WebControls.TextBox txtBEvaluation;
 
         /// <summary>
-        /// TextBox10 control.
+        /// txtBEvaluationComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox10;
+        protected global::System.Web.UI.WebControls.TextBox txtBEvaluationComment;
 
         /// <summary>
-        /// TextBox11 control.
+        /// txtResultsWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox11;
+        protected global::System.Web.UI.WebControls.TextBox txtResultsWeight;
 
         /// <summary>
-        /// TextBox12 control.
+        /// txtResults control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox12;
+        protected global::System.Web.UI.WebControls.TextBox txtResults;
 
         /// <summary>
-        /// TextBox13 control.
+        /// txtResultsComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox13;
+        protected global::System.Web.UI.WebControls.TextBox txtResultsComment;
 
         /// <summary>
-        /// TextBox14 control.
+        /// txtBAutonomyWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox14;
+        protected global::System.Web.UI.WebControls.TextBox txtBAutonomyWeight;
 
         /// <summary>
-        /// TextBox15 control.
+        /// txtBAutonomy control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox15;
+        protected global::System.Web.UI.WebControls.TextBox txtBAutonomy;
 
         /// <summary>
-        /// TextBox16 control.
+        /// txtBAutonomyComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox16;
+        protected global::System.Web.UI.WebControls.TextBox txtBAutonomyComment;
 
         /// <summary>
-        /// TextBox17 control.
+        /// Grade2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox17;
+        protected global::System.Web.UI.WebControls.Label Grade2;
 
         /// <summary>
-        /// TextBox18 control.
+        /// txtCDocumentationWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox18;
+        protected global::System.Web.UI.WebControls.TextBox txtCDocumentationWeight;
 
         /// <summary>
-        /// TextBox19 control.
+        /// txtCDocumentation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox19;
+        protected global::System.Web.UI.WebControls.TextBox txtCDocumentation;
 
         /// <summary>
-        /// TextBox20 control.
+        /// txtCDocumentationComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox20;
+        protected global::System.Web.UI.WebControls.TextBox txtCDocumentationComment;
 
         /// <summary>
-        /// TextBox21 control.
+        /// txtCDefenseWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox21;
+        protected global::System.Web.UI.WebControls.TextBox txtCDefenseWeight;
 
         /// <summary>
-        /// TextBox22 control.
+        /// txtCDefense control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox22;
+        protected global::System.Web.UI.WebControls.TextBox txtCDefense;
 
         /// <summary>
-        /// TextBox23 control.
+        /// txtCDefenseComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox23;
+        protected global::System.Web.UI.WebControls.TextBox txtCDefenseComment;
 
         /// <summary>
-        /// TextBox24 control.
+        /// txtCPresentationsWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox24;
+        protected global::System.Web.UI.WebControls.TextBox txtCPresentationsWeight;
 
         /// <summary>
-        /// TextBox25 control.
+        /// txtCPresentations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox25;
+        protected global::System.Web.UI.WebControls.TextBox txtCPresentations;
 
         /// <summary>
-        /// TextBox26 control.
+        /// txtCPresentationsComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox26;
+        protected global::System.Web.UI.WebControls.TextBox txtCPresentationsComment;
 
         /// <summary>
-        /// TextBox27 control.
+        /// Grade3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox27;
+        protected global::System.Web.UI.WebControls.Label Grade3;
 
         /// <summary>
-        /// TextBox28 control.
+        /// txtDCollaborationInternalWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox28;
+        protected global::System.Web.UI.WebControls.TextBox txtDCollaborationInternalWeight;
 
         /// <summary>
-        /// TextBox29 control.
+        /// txtDCollaborationInternal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox29;
+        protected global::System.Web.UI.WebControls.TextBox txtDCollaborationInternal;
 
         /// <summary>
-        /// TextBox30 control.
+        /// txtDCollaborationInternalComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox30;
+        protected global::System.Web.UI.WebControls.TextBox txtDCollaborationInternalComment;
 
         /// <summary>
-        /// TextBox31 control.
+        /// txtDCollaborationExternalWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox31;
+        protected global::System.Web.UI.WebControls.TextBox txtDCollaborationExternalWeight;
 
         /// <summary>
-        /// TextBox32 control.
+        /// txtDCollaborationExternal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox32;
+        protected global::System.Web.UI.WebControls.TextBox txtDCollaborationExternal;
 
         /// <summary>
-        /// TextBox33 control.
+        /// txtDCollaborationExternalComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox33;
+        protected global::System.Web.UI.WebControls.TextBox txtDCollaborationExternalComment;
 
         /// <summary>
-        /// TextBox34 control.
+        /// txtDMotivationWeight control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox34;
+        protected global::System.Web.UI.WebControls.TextBox txtDMotivationWeight;
 
         /// <summary>
-        /// TextBox36 control.
+        /// txtDMotivation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox36;
+        protected global::System.Web.UI.WebControls.TextBox txtDMotivation;
 
         /// <summary>
-        /// TextBox35 control.
+        /// txtDMotivationComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox35;
+        protected global::System.Web.UI.WebControls.TextBox txtDMotivationComment;
 
         /// <summary>
-        /// TextBox43 control.
+        /// Grade4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox43;
+        protected global::System.Web.UI.WebControls.Label Grade4;
 
         /// <summary>
-        /// TextBox44 control.
+        /// GradePreBonus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox44;
+        protected global::System.Web.UI.WebControls.Label GradePreBonus;
 
         /// <summary>
-        /// TextBox45 control.
+        /// txtENewTopic control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox45;
+        protected global::System.Web.UI.WebControls.TextBox txtENewTopic;
 
         /// <summary>
-        /// TextBox46 control.
+        /// txtENewTopicComment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox46;
+        protected global::System.Web.UI.WebControls.TextBox txtENewTopicComment;
+
+        /// <summary>
+        /// txtEDifficulty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEDifficulty;
+
+        /// <summary>
+        /// txtEDifficultyComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEDifficultyComment;
+
+        /// <summary>
+        /// txtEEnvironment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEEnvironment;
+
+        /// <summary>
+        /// txtEEnvironmentComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEEnvironmentComment;
+
+        /// <summary>
+        /// txtEBonus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEBonus;
+
+        /// <summary>
+        /// GradeTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label GradeTotal;
 
         /// <summary>
         /// DummyPopupTarget control.

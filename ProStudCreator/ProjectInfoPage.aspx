@@ -423,7 +423,7 @@
                                                 <td></td>
                                                 <td class="sectionSummaryCell">Blocknote 1 - Gewicht: 1</td>
                                                 <td class="sectionSummaryCell centered">1</td>
-                                                <td class="sectionSummaryCell centered">xyz</td>
+                                                <td class="sectionSummaryCell centered"><asp:Label runat="server" ID="Grade1"></asp:Label></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -448,8 +448,8 @@
                                                     <b>Theoretische Arbeit</b><br />
                                                     Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Theorie oder Praxis verschoben werden.
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox1" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox2" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBTheoreticalWorkWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtBTheoreticalWork" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Neuartiger Lösungsansatz, der die üblichen theoretischen Grundlagenkenntnisse von Studierenden klar übertrifft, sehr gut und umfassend umgesetzt<br />
                                                     5: Problem umfassend in allen Aspekten gelöst<br />
@@ -458,7 +458,7 @@
                                                     2: Theoretischer Hintergrund nicht ersichtlich, keine logische Argumentation<br />
                                                     1: Keine Bearbeitung eines theoretischen Hintergrundes
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox3"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtBTheoreticalWorkComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>2.2</td>
@@ -466,8 +466,8 @@
                                                     <b>Praktische Arbeit</b><br />
                                                     Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Theorie oder Praxis verschoben werden.
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox4" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox5" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBPracticalWorkWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtBPracticalWork" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Äusserst umfassender und effizienter Einsatz der verfügbaren Mittel und Verfahren, Entwicklung problemspezifischer neuer Methoden<br />
                                                     5: Die in Frage kommenden Verfahren werden in korrekter Gewichtung umfassend und effektiv eingesetzt<br />
@@ -476,15 +476,15 @@
                                                     2: Keine oder falsche Verfahren angewendet, keine oder unbrauchbare Durchführung<br />
                                                     1: Mutwillig falscher Einsatz von Verfahren mit resultierenden Schäden an Personal und/oder Geräten
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox6"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtBPracticalWorkComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>2.3</td>
                                                 <td class="name">
                                                     <b>Analyse von Ergebnissen</b>
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox7" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox8" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBEvaluationWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtBEvaluation" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Sämtliche Fragestellungen aus der PV beantwortet, Ergebnisse umfassend und kritisch analysiert, klare Schlussfolgerungen gezogen und Vorschläge für Umsetzung und Vertiefung erarbeitet<br />
                                                     5: Bis auf wenige Details alle Fragestellungen der PV beantwortet, vollständige Analyse der Ergebnisse, ausgerichtet auf deren Umsetzung<br />
@@ -493,15 +493,15 @@
                                                     2: Fragestellungen der PV kaum beantwortet, nicht in der Lage, die Ergebnisse einzuordnen und zu bewerten<br />
                                                     1: Keine Bewertung der Ergebnisse durchgeführt und dokumentiert
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox9"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtBEvaluationComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>2.4</td>
                                                 <td class="name">
                                                     <b>Zielerreichung</b>
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox10" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox11" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtResultsWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtResults" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Ziel übertroffen, zusätzlicher  unerwarteter Kundennutzen und Erkenntnisgewinn<br />
                                                     5: Ziel vollumfänglich erreicht<br />
@@ -510,15 +510,15 @@
                                                     2: Die meisten Ziele wurden nicht erreicht, Ergebnisse nicht brauchbar<br />
                                                     1: Kein Ziel wurde erreicht
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox12"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtResultsComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>2.5</td>
                                                 <td class="name">
                                                     <b>Selbstständigkeit/Betreuungsintensität</b>
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox13" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox14" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBAutonomyWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtBAutonomy" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Sehr geringer Betreuungsaufwand. Kritik und Anregungen von Betreuenden und Aussenstehenden werden kritisch hinterfragt, selbstständig weiterentwickelt und bestmöglichst umgesetzt.<br />
                                                     5: Geringer Betreuungsaufwand. Kritik und Anregungen von Betreuenden und Aussenstehenden werden umfänglich und gut umgesetzt.<br />
@@ -527,13 +527,13 @@
                                                     2: Hoher Betreungsaufwand. Auch nach mehrmaliger Erinnerung nur einfachste Anregungen umgesetzt.<br />
                                                     1: Trotz sehr hohem Betreuungsaufwand wurden selbst einfache Anregungen nicht umgesetzt.
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox15"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtBAutonomyComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td class="sectionSummaryCell">Blocknote 2 - Gewicht: 4</td>
                                                 <td class="sectionSummaryCell centered">4</td>
-                                                <td class="sectionSummaryCell centered">xyz</td>
+                                                <td class="sectionSummaryCell centered"><asp:Label runat="server" ID="Grade2"></asp:Label></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -560,8 +560,8 @@
                                                 <td class="name">
                                                     <b>Bericht/Dokumentation</b>
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox16" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox17" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtCDocumentationWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtCDocumentation" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Bericht nachvollziehbar, sehr gute Leseführung, Inhalte logisch strukturiert, sehr umfassen informativ, formal sowie sprachlich und gestalterisch herausragend<br />
                                                     5: Bericht inhaltlich vollständig, gut nachvollziehbar, formal korrekt, sprachlich und gestalterisch ansprechend<br />
@@ -570,7 +570,7 @@
                                                     2: Wesentliche Aspekte nicht dokumentiert, Bericht unstrukturiert, Darstellung mangelhaft, formal ungenügend<br />
                                                     1: Keine Dokumentation zum Abgabetermin vorhanden
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox18"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtCDocumentationComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>3.2</td>
@@ -578,8 +578,8 @@
                                                     <b>Verteidigung (P6)</b><br />
                                                     Bei P5 Gewicht auf 0 setzen
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox19" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox20" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtCDefenseWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtCDefense" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Alle Fragen richtig und souverän beantwortet, Frage in Kontext eingeordnet, eine Venetzung der Fachinhalte ist klar ersichtlich
                                                     5: Alle Fragen korrekt und auf die Arbeit bezogen beantwortet
@@ -588,15 +588,15 @@
                                                     2: Überwiegende Mehrzahl der Fragen nicht oder nicht korrekt beantwortet, die übrigen nur mangelhaft
                                                     1: Nicht auf Fragen eingegangen, keine richtige Antwort
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox21"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtCDefenseComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>3.3</td>
                                                 <td class="name">
                                                     <b>Präsentationen (Zwischen- und Schlusspräsentation, P5 und P6)</b>
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox22" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox23" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtCPresentationsWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtCPresentations" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Inhaltlich vollständiger und logisch aufgebauter Vortrag,  grafisch sehr gut gestaltet (unterstützend) und souverän vorgetragen, Fragen korrekt und umfassend beantwortet<br />
                                                     5: Vortrag inhaltlich vollständig, Aufbau und Präsentation logisch und ansprechend, Fragen korrekt beantwortet<br />
@@ -605,13 +605,13 @@
                                                     2: Vortrag inhaltlich unzureichend, Präsentation mangelhaft, Fragen nicht oder kaum beantwortet<br />
                                                     1: Vortrag mit falschem/viel zu wenig Inhalt, Präsentation sehr schwach, keine Fragen beantwortet
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox24"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtCPresentationsComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td class="sectionSummaryCell">Blocknote 3 - Gewicht: 2</td>
                                                 <td class="sectionSummaryCell centered">2</td>
-                                                <td class="sectionSummaryCell centered">xyz</td>
+                                                <td class="sectionSummaryCell centered"><asp:Label runat="server" ID="Grade3"></asp:Label></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -636,8 +636,8 @@
                                                     <b>Zusammenarbeit und Kommunikation intern</b><br />
                                                     Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Intern oder Extern verschoben werden.
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox25" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox26" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtDCollaborationInternalWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtDCollaborationInternal" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     Eine gute Zusammenarbeit und Kommunikation beinhaltet die Einladung zu Sitzung mit Traktandenlisten, das Führen eines Sitzungsprotokolls mit Dokumentation der wichtigen Beschlüsse, das kommentierte Nachbessern von Zeitplänen sowie die Aktivierung von internem Wissen. Der/die Studierende setzte dies in folgendem Masse um:<br />
                                                     6: Äusserst selbständig<br />
@@ -647,7 +647,7 @@
                                                     2: Nach mehrmaligem Nachfragen<br />
                                                     1: Nicht/unzureichend
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox27"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtDCollaborationInternalComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>4.2</td>
@@ -655,8 +655,8 @@
                                                     <b>Zusammenarbeit und Kommunikation extern</b><br />
                                                     Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Intern oder Extern verschoben werden.
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox28" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox29" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtDCollaborationExternalWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtDCollaborationExternal" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     Eine gute Zusammenarbeit und Kommunikation beinhaltet die Einladung zu Sitzung mit Traktandenlisten, das Führen eines Sitzungsprotokolls mit Dokumentation der wichtigen Beschlüsse, das kommentierte Nachbessern von Zeitplänen sowie die Aktivierung von internem Wissen. Der/die Studierende setzte dies in folgendem Masse um:<br />
                                                     6: Äusserts selbständig<br />
@@ -666,15 +666,15 @@
                                                     2: Nach mehrmaligem Nachfragen<br />
                                                     1: Nicht/unzureichend
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox30"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtDCollaborationExternalComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td>4.3</td>
                                                 <td class="name">
                                                     <b>Motivation, pers. Einsatz, Umfang</b>
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="TextBox31" CssClass="form-control"></asp:TextBox></td>
-                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="TextBox32" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtDMotivationWeight" CssClass="form-control"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="txtDMotivation" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     6: Persönlicher Einsatz hervorragend, Arbeitsumfang ausserordentlich hoch<br />
                                                     5: Hoher persönlicher Einsatz, überdurchschnittlicher Arbeitsumfang<br />
@@ -683,13 +683,13 @@
                                                     2: Nicht motiviert, Einsatz mangelhaft, Arbeitsumfang unzureichend<br />
                                                     1: Demotiviert / destruktiv, Einsatz nicht vorhanden, kaum Arbeiten geleistet
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox33"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtDMotivationComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td class="sectionSummaryCell">Blocknote 4 - Gewicht: 1</td>
                                                 <td class="sectionSummaryCell centered">1</td>
-                                                <td class="sectionSummaryCell centered">xyz</td>
+                                                <td class="sectionSummaryCell centered"><asp:Label runat="server" ID="Grade4"></asp:Label></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -697,7 +697,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td style="font-weight:bold;" class="bonusCell">Zwischennote vor Bonus</td>
-                                                <td style="font-weight:bold;" colspan="2" class="bonusCell centered">xyz</td>
+                                                <td style="font-weight:bold;" colspan="2" class="bonusCell centered"><asp:Label runat="server" ID="GradePreBonus"></asp:Label></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -717,26 +717,26 @@
                                                 <td class="name">
                                                     <b>Neue Thematik</b>
                                                 </td>
-                                                <td colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="TextBox34" CssClass="form-control"></asp:TextBox></td>
+                                                <td colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="txtENewTopic" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     10: Mit der Thematik noch nie Kontakt gehabt<br />
                                                     5: Thematik bekannt (z.B. durch Unterricht)<br />
                                                     0: Mit Thema vertraut (z.B. durch Semesterarbeit)
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox36"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtENewTopicComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
                                                 <td class="name">
                                                     <b>Schwierigkeitsgrad</b>
                                                 </td>
-                                                <td colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="TextBox35" CssClass="form-control"></asp:TextBox></td>
+                                                <td colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="txtEDifficulty" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     10: Ausserordentlich hoch<br />
                                                     5: Überdurchschnittlich<br />
                                                     0: Standard
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox43"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtEDifficultyComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -744,13 +744,13 @@
                                                     <b>Umfeld</b><br />
                                                     (Projektpartner, Lieferanten, usw.)
                                                 </td>
-                                                <td colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="TextBox44" CssClass="form-control"></asp:TextBox></td>
+                                                <td colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="txtEEnvironment" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     10: Ausserordentlich schwierig<br />
                                                     5: Schwierig<br />
                                                     0: Standard
                                                 </td>
-                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="TextBox45"></asp:TextBox></td>
+                                                <td><asp:TextBox runat="server" TextMode="MultiLine" Columns="50" Rows="6" ID="txtEEnvironmentComment"></asp:TextBox></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -760,7 +760,7 @@
                                                     festgelegt durch Betreuer aufgrund der
                                                     Bonuspunkte (Wert wird nicht berechnet)
                                                 </td>
-                                                <td class="bonusCell" colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="0.2" step="0.1" ID="TextBox46" CssClass="form-control"></asp:TextBox></td>
+                                                <td class="bonusCell" colspan="2"><asp:TextBox runat="server" TextMode="Number" min="0" max="0.2" step="0.1" ID="txtEBonus" CssClass="form-control"></asp:TextBox></td>
                                                 <td class="small">
                                                     Absolute Korrektur;<br />
                                                     Anwendung z. B. bei mehreren Partnern mit unterschiedlichen Schwerpunkten; komplexer Datenanalyse; neuen, noch nicht erprobten Tools u.Ä.
@@ -771,7 +771,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td class="finalCell">GESAMTNOTE</td>
-                                                <td style="text-align:center" colspan="2" class="finalCell">xyz</td>
+                                                <td style="text-align:center" colspan="2" class="finalCell"><asp:Label runat="server" ID="GradeTotal"></asp:Label></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
