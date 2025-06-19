@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AjaxControlToolkit;
+using ICSharpCode.SharpZipLib.Zip;
+using ProStudCreator.UserControls;
+using System;
 using System.Data;
 using System.Data.Linq;
 using System.Data.SqlClient;
@@ -12,8 +15,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using AjaxControlToolkit;
-using ICSharpCode.SharpZipLib.Zip;
 
 namespace ProStudCreator
 {
@@ -1746,18 +1747,23 @@ namespace ProStudCreator
             }
         }
 
-
         #endregion
 
         protected void Student1OpenGradingPopup_Click(object sender, EventArgs e)
         {
+            //TODO: save
             PopupTitle.Text = $"Bewertung von {pageProject.GetStudent1FullName()}";
+            gradingControl.Project = pageProject;
+            gradingControl.Grading = pageProject.Student1GradingV1 ?? new GradingV1(); //todo: defaults
             PopupExtender.Show();
         }
 
         protected void Student2OpenGradingPopup_Click(object sender, EventArgs e)
         {
+            //TODO: save
             PopupTitle.Text = $"Bewertung von {pageProject.GetStudent2FullName()}";
+            gradingControl.Project = pageProject;
+            gradingControl.Grading = pageProject.Student2GradingV1 ?? new GradingV1(); //todo: defaults
             PopupExtender.Show();
         }
 

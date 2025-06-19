@@ -224,6 +224,7 @@
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
+    <Content Include="UserControls\GradingV1Control.ascx" />
     <Content Include="UserControls\ProjectTopicImageControl.ascx" />
     <Content Include="UserControls\ProjectTopicControl.ascx" />
     <Content Include="UserControls\ProjectTopic.css" />
@@ -360,6 +361,13 @@
     </Compile>
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GradingV1Control.ascx.cs">
+      <DependentUpon>GradingV1Control.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\GradingV1Control.ascx.designer.cs">
+      <DependentUpon>GradingV1Control.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ProjectTopicImageControl.ascx.cs">
       <DependentUpon>ProjectTopicImageControl.ascx</DependentUpon>
