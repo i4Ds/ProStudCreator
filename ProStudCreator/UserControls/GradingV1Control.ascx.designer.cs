@@ -60,6 +60,15 @@ namespace ProStudCreator.UserControls
         protected global::System.Web.UI.WebControls.TextBox txtCriticalAcclaim;
 
         /// <summary>
+        /// lblFinalGradeFrontPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFinalGradeFrontPage;
+
+        /// <summary>
         /// txtAStrategyWeight control.
         /// </summary>
         /// <remarks>
@@ -141,13 +150,13 @@ namespace ProStudCreator.UserControls
         protected global::System.Web.UI.WebControls.TextBox txtAProjectSummaryPlanningComment;
 
         /// <summary>
-        /// lblGrade1 control.
+        /// lblGradeA control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGrade1;
+        protected global::System.Web.UI.WebControls.Label lblGradeA;
 
         /// <summary>
         /// txtBTheoreticalWorkWeight control.
@@ -285,13 +294,13 @@ namespace ProStudCreator.UserControls
         protected global::System.Web.UI.WebControls.TextBox txtBAutonomyComment;
 
         /// <summary>
-        /// lblGrade2 control.
+        /// lblGradeB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGrade2;
+        protected global::System.Web.UI.WebControls.Label lblGradeB;
 
         /// <summary>
         /// txtCDocumentationWeight control.
@@ -375,13 +384,13 @@ namespace ProStudCreator.UserControls
         protected global::System.Web.UI.WebControls.TextBox txtCPresentationsComment;
 
         /// <summary>
-        /// lblGrade3 control.
+        /// lblGradeC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGrade3;
+        protected global::System.Web.UI.WebControls.Label lblGradeC;
 
         /// <summary>
         /// txtDCollaborationInternalWeight control.
@@ -465,13 +474,13 @@ namespace ProStudCreator.UserControls
         protected global::System.Web.UI.WebControls.TextBox txtDMotivationComment;
 
         /// <summary>
-        /// lblGrade4 control.
+        /// lblGradeD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGrade4;
+        protected global::System.Web.UI.WebControls.Label lblGradeD;
 
         /// <summary>
         /// lblGradePreBonus control.

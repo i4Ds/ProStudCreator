@@ -280,12 +280,18 @@
 
 
                     <div id="GradingV1Popup" style="display: none; height:80%; width:80%; padding: 16px; background-color: #f5f5f5;">
+                        <asp:HiddenField runat="server" ID="OpenedGradingFor" />
                         <div style="position:relative;height:100%;width:100%;left:0px;top:0px;padding-bottom:96px;">
                             <h3><asp:Label runat="server" ID="PopupTitle">Bewertungsformular</asp:Label></h3>
                             <UserControl:GradingV1Control runat="server" ID="gradingControl" />
-                            <div style="clear:both;text-align:center;padding-top:12px;">
-                                <asp:Button OnClick="GradingPopupCloseOk_Click" runat="server" Text="Ok" />
-                                <asp:Button OnClick="GradingPopupCloseCancel_Click" runat="server" Text="Abbrechen" />
+                            <div style="display: flex;width: 100%;align-items: center;margin-top: 32px;margin-bottom: 12px;">
+                                <div style="flex: 0 1 auto; text-align: left;">
+                                    <asp:Button ID="CopyGradingV1" OnClick="CopyGradingV1_Click" runat="server" Text="Bewertung von XYZ kopieren" />
+                                </div>
+                                <div style="flex: 1 1 0; display: flex; justify-content: center; gap: 12px;">
+                                    <asp:Button ID="GradingPopupCloseOk" OnClick="GradingPopupCloseOk_Click" runat="server" Text="Ok" />
+                                    <asp:Button ID="GradingPopupCloseCancel" OnClick="GradingPopupCloseCancel_Click" runat="server" Text="Abbrechen" />
+                                </div>
                             </div>
                         </div>
                     </div>

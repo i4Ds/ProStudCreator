@@ -690,6 +690,15 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// OpenedGradingFor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField OpenedGradingFor;
+
+        /// <summary>
         /// PopupTitle control.
         /// </summary>
         /// <remarks>
@@ -706,6 +715,33 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::ProStudCreator.UserControls.GradingV1Control gradingControl;
+
+        /// <summary>
+        /// CopyGradingV1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CopyGradingV1;
+
+        /// <summary>
+        /// GradingPopupCloseOk control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GradingPopupCloseOk;
+
+        /// <summary>
+        /// GradingPopupCloseCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GradingPopupCloseCancel;
 
         /// <summary>
         /// DummyPopupTarget control.

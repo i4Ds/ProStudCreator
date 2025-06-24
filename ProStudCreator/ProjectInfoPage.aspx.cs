@@ -1751,30 +1751,87 @@ namespace ProStudCreator
 
         protected void Student1OpenGradingPopup_Click(object sender, EventArgs e)
         {
-            //TODO: save
+            OpenedGradingFor.Value = "1";
             PopupTitle.Text = $"Bewertung von {pageProject.GetStudent1FullName()}";
+            gradingControl.StudentName = pageProject.GetStudent1FullName();
             gradingControl.Project = pageProject;
-            gradingControl.Grading = pageProject.Student1GradingV1 ?? new GradingV1(); //todo: defaults
+            gradingControl.LoadFormFields(pageProject.Student1GradingV1 ?? CreateDefaultGradingV1());
+
+            if (pageProject.Student2GradingV1 != null && pageProject.LogStudent2Mail != null)
+            {
+                CopyGradingV1.Text = $"Bewertung von {pageProject.GetStudent2FullName()} kopieren";
+                CopyGradingV1.Visible = true;
+            }
+            else
+                CopyGradingV1.Visible = false;
+
             PopupExtender.Show();
         }
 
         protected void Student2OpenGradingPopup_Click(object sender, EventArgs e)
         {
-            //TODO: save
+            OpenedGradingFor.Value = "2";
             PopupTitle.Text = $"Bewertung von {pageProject.GetStudent2FullName()}";
+
+            gradingControl.StudentName = pageProject.GetStudent2FullName();
             gradingControl.Project = pageProject;
-            gradingControl.Grading = pageProject.Student2GradingV1 ?? new GradingV1(); //todo: defaults
+            gradingControl.LoadFormFields(pageProject.Student2GradingV1 ?? CreateDefaultGradingV1());
+
+            if (pageProject.Student1GradingV1 != null && pageProject.LogStudent1Mail != null)
+            {
+                CopyGradingV1.Text = $"Bewertung von {pageProject.GetStudent1FullName()} kopieren";
+                CopyGradingV1.Visible = true;
+            }
+            else
+                CopyGradingV1.Visible = false;
+
             PopupExtender.Show();
+        }
+
+        private GradingV1 CreateDefaultGradingV1()
+        {
+            return GradingV1Extensions.CreateDefault(pageProject.LogProjectType.P6,
+                    pageProject.ClientType != (int)ClientType.Internal);
         }
 
         protected void GradingPopupCloseOk_Click(object sender, EventArgs e)
         {
-            PopupExtender.Hide();
+            //PopupExtender.Hide();
+
+            if (OpenedGradingFor.Value == "1")
+            {
+                if(pageProject.Student1GradingV1 == null)
+                    pageProject.Student1GradingV1 = CreateDefaultGradingV1();
+                gradingControl.SaveFormFields(pageProject.Student1GradingV1);
+                db.SubmitChanges();
+
+                NumGradeStudent1Admin.Text = gradingControl.ComputeFinalGrade().ToString("0.0", CultureInfo.InvariantCulture);
+            }
+            if (OpenedGradingFor.Value == "2")
+            {
+                if (pageProject.Student2GradingV1 == null)
+                    pageProject.Student2GradingV1 = CreateDefaultGradingV1();
+                gradingControl.SaveFormFields(pageProject.Student2GradingV1);
+                db.SubmitChanges();
+
+                NumGradeStudent2Admin.Text = gradingControl.ComputeFinalGrade().ToString("0.0", CultureInfo.InvariantCulture);
+            }
         }
 
         protected void GradingPopupCloseCancel_Click(object sender, EventArgs e)
         {
-            PopupExtender.Hide();
+            //PopupExtender.Hide();
+        }
+
+        protected void CopyGradingV1_Click(object sender, EventArgs e)
+        {
+            if (OpenedGradingFor.Value == "1" && pageProject.Student2GradingV1 != null)
+                gradingControl.LoadFormFields(pageProject.Student2GradingV1);
+
+            if (OpenedGradingFor.Value == "2" && pageProject.Student1GradingV1 != null)
+                gradingControl.LoadFormFields(pageProject.Student1GradingV1);
+
+            PopupExtender.Show();
         }
     }
 

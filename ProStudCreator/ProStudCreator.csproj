@@ -362,6 +362,7 @@
     <Compile Include="Ablauf.aspx.designer.cs">
       <DependentUpon>Ablauf.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GradingV1Extensions.cs" />
     <Compile Include="UserControls\GradingV1Control.ascx.cs">
       <DependentUpon>GradingV1Control.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -6,18 +6,6 @@ namespace ProStudCreator.UserControls
 {
     public partial class GradingV1Control : UserControl 
     {
-        private GradingV1 _grading;
-
-        public GradingV1 Grading
-        {
-            get => _grading;
-            set
-            {
-                _grading = value;
-                UpdateFormFields();
-            }
-        }
-
         private string _studentName;
         public string StudentName
         {
@@ -51,83 +39,82 @@ namespace ProStudCreator.UserControls
         {
         }
 
-        private void UpdateFormFields()
+        public void LoadFormFields(GradingV1 _grading)
         {
-            txtCriticalAcclaim.Text = Grading.CriticalAcclaim;
+            txtCriticalAcclaim.Text = _grading.CriticalAcclaim;
 
             // Block A fields
-            txtAStrategyWeight.Text = Grading.AStrategyWeight.ToString("0.0");
-            txtAStrategy.Text = Grading.AStrategy.ToString("0.0");
-            txtAStrategyComment.Text = Grading.AStrategyComment;
+            txtAStrategyWeight.Text = _grading.AStrategyWeight.ToString("0.0");
+            txtAStrategy.Text = _grading.AStrategy.ToString("0.0");
+            txtAStrategyComment.Text = _grading.AStrategyComment;
 
-            txtAProjectSummaryContentsWeight.Text = Grading.AProjectSummaryContentsWeight.ToString("0.0");
-            txtAProjectSummaryContents.Text = Grading.AProjectSummaryContents.ToString("0.0");
-            txtAProjectSummaryContentsComment.Text = Grading.AProjectSummaryContentsComment;
+            txtAProjectSummaryContentsWeight.Text = _grading.AProjectSummaryContentsWeight.ToString("0.0");
+            txtAProjectSummaryContents.Text = _grading.AProjectSummaryContents.ToString("0.0");
+            txtAProjectSummaryContentsComment.Text = _grading.AProjectSummaryContentsComment;
 
-            txtAProjectSummaryPlanningWeight.Text = Grading.AProjectSummaryPlanningWeight.ToString("0.0");
-            txtAProjectSummaryPlanning.Text = Grading.AProjectSummaryPlanning.ToString("0.0");
-            txtAProjectSummaryPlanningComment.Text = Grading.AProjectSummaryPlanningComment;
+            txtAProjectSummaryPlanningWeight.Text = _grading.AProjectSummaryPlanningWeight.ToString("0.0");
+            txtAProjectSummaryPlanning.Text = _grading.AProjectSummaryPlanning.ToString("0.0");
+            txtAProjectSummaryPlanningComment.Text = _grading.AProjectSummaryPlanningComment;
 
             // Block B fields
-            txtBTheoreticalWorkWeight.Text = Grading.BTheoreticalWorkWeight.ToString("0.0");
-            txtBTheoreticalWork.Text = Grading.BTheoreticalWork.ToString("0.0");
-            txtBTheoreticalWorkComment.Text = Grading.BTheoreticalWorkComment;
+            txtBTheoreticalWorkWeight.Text = _grading.BTheoreticalWorkWeight.ToString("0.0");
+            txtBTheoreticalWork.Text = _grading.BTheoreticalWork.ToString("0.0");
+            txtBTheoreticalWorkComment.Text = _grading.BTheoreticalWorkComment;
 
-            txtBPracticalWorkWeight.Text = Grading.BPracticalWorkWeight.ToString("0.0");
-            txtBPracticalWork.Text = Grading.BPracticalWork.ToString("0.0");
-            txtBPracticalWorkComment.Text = Grading.BPracticalWorkComment;
+            txtBPracticalWorkWeight.Text = _grading.BPracticalWorkWeight.ToString("0.0");
+            txtBPracticalWork.Text = _grading.BPracticalWork.ToString("0.0");
+            txtBPracticalWorkComment.Text = _grading.BPracticalWorkComment;
 
-            txtBEvaluationWeight.Text = Grading.BEvaluationWeight.ToString("0.0");
-            txtBEvaluation.Text = Grading.BEvaluation.ToString("0.0");
-            txtBEvaluationComment.Text = Grading.BEvaluationComment;
+            txtBEvaluationWeight.Text = _grading.BEvaluationWeight.ToString("0.0");
+            txtBEvaluation.Text = _grading.BEvaluation.ToString("0.0");
+            txtBEvaluationComment.Text = _grading.BEvaluationComment;
 
-            txtBResultsWeight.Text = Grading.BResultsWeight.ToString("0.0");
-            txtBResults.Text = Grading.BResults.ToString("0.0");
-            txtBResultsComment.Text = Grading.BResultsComment;
+            txtBResultsWeight.Text = _grading.BResultsWeight.ToString("0.0");
+            txtBResults.Text = _grading.BResults.ToString("0.0");
+            txtBResultsComment.Text = _grading.BResultsComment;
 
-            txtBAutonomyWeight.Text = Grading.BAutonomyWeight.ToString("0.0");
-            txtBAutonomy.Text = Grading.BAutonomy.ToString("0.0");
-            txtBAutonomyComment.Text = Grading.BAutonomyComment;
+            txtBAutonomyWeight.Text = _grading.BAutonomyWeight.ToString("0.0");
+            txtBAutonomy.Text = _grading.BAutonomy.ToString("0.0");
+            txtBAutonomyComment.Text = _grading.BAutonomyComment;
 
             // Block C fields
-            txtCDocumentationWeight.Text = Grading.CDocumentationWeight.ToString("0.0");
-            txtCDocumentation.Text = Grading.CDocumentation.ToString("0.0");
-            txtCDocumentationComment.Text = Grading.CDocumentationComment;
+            txtCDocumentationWeight.Text = _grading.CDocumentationWeight.ToString("0.0");
+            txtCDocumentation.Text = _grading.CDocumentation.ToString("0.0");
+            txtCDocumentationComment.Text = _grading.CDocumentationComment;
 
-            txtCDefenseWeight.Text = Grading.CDefenseWeight.ToString("0.0");
-            txtCDefense.Text = Grading.CDefense.ToString("0.0");
-            txtCDefenseComment.Text = Grading.CDefenseComment;
+            txtCDefenseWeight.Text = _grading.CDefenseWeight.ToString("0.0");
+            txtCDefense.Text = _grading.CDefense.ToString("0.0");
+            txtCDefenseComment.Text = _grading.CDefenseComment;
 
-            txtCPresentationsWeight.Text = Grading.CPresentationsWeight.ToString("0.0");
-            txtCPresentations.Text = Grading.CPresentations.ToString("0.0");
-            txtCPresentationsComment.Text = Grading.CPresentationsComment;
+            txtCPresentationsWeight.Text = _grading.CPresentationsWeight.ToString("0.0");
+            txtCPresentations.Text = _grading.CPresentations.ToString("0.0");
+            txtCPresentationsComment.Text = _grading.CPresentationsComment;
 
             // Block D fields
-            txtDCollaborationInternalWeight.Text = Grading.DCollaborationInternalWeight.ToString("0.0");
-            txtDCollaborationInternal.Text = Grading.DCollaborationInternal.ToString("0.0");
-            txtDCollaborationInternalComment.Text = Grading.DCollaborationInternalComment;
+            txtDCollaborationInternalWeight.Text = _grading.DCollaborationInternalWeight.ToString("0.0");
+            txtDCollaborationInternal.Text = _grading.DCollaborationInternal.ToString("0.0");
+            txtDCollaborationInternalComment.Text = _grading.DCollaborationInternalComment;
 
-            txtDCollaborationExternalWeight.Text = Grading.DCollaborationExternalWeight.ToString("0.0");
-            txtDCollaborationExternal.Text = Grading.DCollaborationExternal.ToString("0.0");
-            txtDCollaborationExternalComment.Text = Grading.DCollaborationExternalComment;
+            txtDCollaborationExternalWeight.Text = _grading.DCollaborationExternalWeight.ToString("0.0");
+            txtDCollaborationExternal.Text = _grading.DCollaborationExternal.ToString("0.0");
+            txtDCollaborationExternalComment.Text = _grading.DCollaborationExternalComment;
 
-            txtDMotivationWeight.Text = Grading.DMotivationWeight.ToString("0.0");
-            txtDMotivation.Text = Grading.DMotivation.ToString("0.0");
-            txtDMotivationComment.Text = Grading.DMotivationComment;
+            txtDMotivationWeight.Text = _grading.DMotivationWeight.ToString("0.0");
+            txtDMotivation.Text = _grading.DMotivation.ToString("0.0");
+            txtDMotivationComment.Text = _grading.DMotivationComment;
 
             // Bonus fields
-            txtENewTopic.Text = Grading.ENewTopic.ToString();
-            txtENewTopicComment.Text = Grading.ENewTopicComment;
+            txtENewTopic.Text = _grading.ENewTopic.ToString();
+            txtENewTopicComment.Text = _grading.ENewTopicComment;
 
-            txtEDifficulty.Text = Grading.EDifficulty.ToString();
-            txtEDifficultyComment.Text = Grading.EDifficultyComment;
+            txtEDifficulty.Text = _grading.EDifficulty.ToString();
+            txtEDifficultyComment.Text = _grading.EDifficultyComment;
 
-            txtEEnvironment.Text = Grading.EEnvironment.ToString();
-            txtEEnvironmentComment.Text = Grading.EEnvironmentComment;
+            txtEEnvironment.Text = _grading.EEnvironment.ToString();
+            txtEEnvironmentComment.Text = _grading.EEnvironmentComment;
 
-            txtEBonus.Text = Grading.EBonus.ToString("0.0");
+            txtEBonus.Text = _grading.EBonus.ToString("0.0");
 
-            // Update grade displays
             UpdateCalculatedGrades();
         }
 
@@ -136,125 +123,189 @@ namespace ProStudCreator.UserControls
             UpdateCalculatedGrades();
         }
 
-        public void SaveFormFields()
+        public void SaveFormFields(GradingV1 _grading)
         {
-            Grading.CriticalAcclaim = txtCriticalAcclaim.Text;
+            _grading.CriticalAcclaim = txtCriticalAcclaim.Text;
 
             // Block A fields
-            Grading.AStrategyWeight = double.Parse(txtAStrategyWeight.Text, CultureInfo.InvariantCulture);
-            Grading.AStrategy = double.Parse(txtAStrategy.Text, CultureInfo.InvariantCulture);
-            Grading.AStrategyComment = txtAStrategyComment.Text;
+            _grading.AStrategyWeight = double.Parse(txtAStrategyWeight.Text, CultureInfo.InvariantCulture);
+            _grading.AStrategy = double.Parse(txtAStrategy.Text, CultureInfo.InvariantCulture);
+            _grading.AStrategyComment = txtAStrategyComment.Text;
 
-            Grading.AProjectSummaryContentsWeight = double.Parse(txtAProjectSummaryContentsWeight.Text, CultureInfo.InvariantCulture);
-            Grading.AProjectSummaryContents = double.Parse(txtAProjectSummaryContents.Text, CultureInfo.InvariantCulture);
-            Grading.AProjectSummaryContentsComment = txtAProjectSummaryContentsComment.Text;
+            _grading.AProjectSummaryContentsWeight = double.Parse(txtAProjectSummaryContentsWeight.Text, CultureInfo.InvariantCulture);
+            _grading.AProjectSummaryContents = double.Parse(txtAProjectSummaryContents.Text, CultureInfo.InvariantCulture);
+            _grading.AProjectSummaryContentsComment = txtAProjectSummaryContentsComment.Text;
 
-            Grading.AProjectSummaryPlanningWeight = double.Parse(txtAProjectSummaryPlanningWeight.Text, CultureInfo.InvariantCulture);
-            Grading.AProjectSummaryPlanning = double.Parse(txtAProjectSummaryPlanning.Text, CultureInfo.InvariantCulture);
-            Grading.AProjectSummaryPlanningComment = txtAProjectSummaryPlanningComment.Text;
+            _grading.AProjectSummaryPlanningWeight = double.Parse(txtAProjectSummaryPlanningWeight.Text, CultureInfo.InvariantCulture);
+            _grading.AProjectSummaryPlanning = double.Parse(txtAProjectSummaryPlanning.Text, CultureInfo.InvariantCulture);
+            _grading.AProjectSummaryPlanningComment = txtAProjectSummaryPlanningComment.Text;
 
             // Block B fields
-            Grading.BTheoreticalWorkWeight = double.Parse(txtBTheoreticalWorkWeight.Text, CultureInfo.InvariantCulture);
-            Grading.BTheoreticalWork = double.Parse(txtBTheoreticalWork.Text, CultureInfo.InvariantCulture);
-            Grading.BTheoreticalWorkComment = txtBTheoreticalWorkComment.Text;
+            _grading.BTheoreticalWorkWeight = double.Parse(txtBTheoreticalWorkWeight.Text, CultureInfo.InvariantCulture);
+            _grading.BTheoreticalWork = double.Parse(txtBTheoreticalWork.Text, CultureInfo.InvariantCulture);
+            _grading.BTheoreticalWorkComment = txtBTheoreticalWorkComment.Text;
 
-            Grading.BPracticalWorkWeight = double.Parse(txtBPracticalWorkWeight.Text, CultureInfo.InvariantCulture);
-            Grading.BPracticalWork = double.Parse(txtBPracticalWork.Text, CultureInfo.InvariantCulture);
-            Grading.BPracticalWorkComment = txtBPracticalWorkComment.Text;
+            _grading.BPracticalWorkWeight = double.Parse(txtBPracticalWorkWeight.Text, CultureInfo.InvariantCulture);
+            _grading.BPracticalWork = double.Parse(txtBPracticalWork.Text, CultureInfo.InvariantCulture);
+            _grading.BPracticalWorkComment = txtBPracticalWorkComment.Text;
 
-            Grading.BEvaluationWeight = double.Parse(txtBEvaluationWeight.Text, CultureInfo.InvariantCulture);
-            Grading.BEvaluation = double.Parse(txtBEvaluation.Text, CultureInfo.InvariantCulture);
-            Grading.BEvaluationComment = txtBEvaluationComment.Text;
+            _grading.BEvaluationWeight = double.Parse(txtBEvaluationWeight.Text, CultureInfo.InvariantCulture);
+            _grading.BEvaluation = double.Parse(txtBEvaluation.Text, CultureInfo.InvariantCulture);
+            _grading.BEvaluationComment = txtBEvaluationComment.Text;
 
-            Grading.BResultsWeight = double.Parse(txtBResultsWeight.Text, CultureInfo.InvariantCulture);
-            Grading.BResults = double.Parse(txtBResults.Text, CultureInfo.InvariantCulture);
-            Grading.BResultsComment = txtBResultsComment.Text;
+            _grading.BResultsWeight = double.Parse(txtBResultsWeight.Text, CultureInfo.InvariantCulture);
+            _grading.BResults = double.Parse(txtBResults.Text, CultureInfo.InvariantCulture);
+            _grading.BResultsComment = txtBResultsComment.Text;
 
-            Grading.BAutonomyWeight = double.Parse(txtBAutonomyWeight.Text, CultureInfo.InvariantCulture);
-            Grading.BAutonomy = double.Parse(txtBAutonomy.Text, CultureInfo.InvariantCulture);
-            Grading.BAutonomyComment = txtBAutonomyComment.Text;
+            _grading.BAutonomyWeight = double.Parse(txtBAutonomyWeight.Text, CultureInfo.InvariantCulture);
+            _grading.BAutonomy = double.Parse(txtBAutonomy.Text, CultureInfo.InvariantCulture);
+            _grading.BAutonomyComment = txtBAutonomyComment.Text;
 
             // Block C fields
-            Grading.CDocumentationWeight = double.Parse(txtCDocumentationWeight.Text, CultureInfo.InvariantCulture);
-            Grading.CDocumentation = double.Parse(txtCDocumentation.Text, CultureInfo.InvariantCulture);
-            Grading.CDocumentationComment = txtCDocumentationComment.Text;
+            _grading.CDocumentationWeight = double.Parse(txtCDocumentationWeight.Text, CultureInfo.InvariantCulture);
+            _grading.CDocumentation = double.Parse(txtCDocumentation.Text, CultureInfo.InvariantCulture);
+            _grading.CDocumentationComment = txtCDocumentationComment.Text;
 
-            Grading.CDefenseWeight = double.Parse(txtCDefenseWeight.Text, CultureInfo.InvariantCulture);
-            Grading.CDefense = double.Parse(txtCDefense.Text, CultureInfo.InvariantCulture);
-            Grading.CDefenseComment = txtCDefenseComment.Text;
+            _grading.CDefenseWeight = double.Parse(txtCDefenseWeight.Text, CultureInfo.InvariantCulture);
+            _grading.CDefense = double.Parse(txtCDefense.Text, CultureInfo.InvariantCulture);
+            _grading.CDefenseComment = txtCDefenseComment.Text;
 
-            Grading.CPresentationsWeight = double.Parse(txtCPresentationsWeight.Text, CultureInfo.InvariantCulture);
-            Grading.CPresentations = double.Parse(txtCPresentations.Text, CultureInfo.InvariantCulture);
-            Grading.CPresentationsComment = txtCPresentationsComment.Text;
+            _grading.CPresentationsWeight = double.Parse(txtCPresentationsWeight.Text, CultureInfo.InvariantCulture);
+            _grading.CPresentations = double.Parse(txtCPresentations.Text, CultureInfo.InvariantCulture);
+            _grading.CPresentationsComment = txtCPresentationsComment.Text;
 
             // Block D fields
-            Grading.DCollaborationInternalWeight = double.Parse(txtDCollaborationInternalWeight.Text, CultureInfo.InvariantCulture);
-            Grading.DCollaborationInternal = double.Parse(txtDCollaborationInternal.Text, CultureInfo.InvariantCulture);
-            Grading.DCollaborationInternalComment = txtDCollaborationInternalComment.Text;
+            _grading.DCollaborationInternalWeight = double.Parse(txtDCollaborationInternalWeight.Text, CultureInfo.InvariantCulture);
+            _grading.DCollaborationInternal = double.Parse(txtDCollaborationInternal.Text, CultureInfo.InvariantCulture);
+            _grading.DCollaborationInternalComment = txtDCollaborationInternalComment.Text;
 
-            Grading.DCollaborationExternalWeight = double.Parse(txtDCollaborationExternalWeight.Text, CultureInfo.InvariantCulture);
-            Grading.DCollaborationExternal = double.Parse(txtDCollaborationExternal.Text, CultureInfo.InvariantCulture);
-            Grading.DCollaborationExternalComment = txtDCollaborationExternalComment.Text;
+            _grading.DCollaborationExternalWeight = double.Parse(txtDCollaborationExternalWeight.Text, CultureInfo.InvariantCulture);
+            _grading.DCollaborationExternal = double.Parse(txtDCollaborationExternal.Text, CultureInfo.InvariantCulture);
+            _grading.DCollaborationExternalComment = txtDCollaborationExternalComment.Text;
 
-            Grading.DMotivationWeight = double.Parse(txtDMotivationWeight.Text, CultureInfo.InvariantCulture);
-            Grading.DMotivation = double.Parse(txtDMotivation.Text, CultureInfo.InvariantCulture);
-            Grading.DMotivationComment = txtDMotivationComment.Text;
+            _grading.DMotivationWeight = double.Parse(txtDMotivationWeight.Text, CultureInfo.InvariantCulture);
+            _grading.DMotivation = double.Parse(txtDMotivation.Text, CultureInfo.InvariantCulture);
+            _grading.DMotivationComment = txtDMotivationComment.Text;
 
             // Bonus fields
-            Grading.ENewTopic = int.Parse(txtENewTopic.Text);
-            Grading.ENewTopicComment = txtENewTopicComment.Text;
+            _grading.ENewTopic = int.Parse(txtENewTopic.Text);
+            _grading.ENewTopicComment = txtENewTopicComment.Text;
 
-            Grading.EDifficulty = int.Parse(txtEDifficulty.Text);
-            Grading.EDifficultyComment = txtEDifficultyComment.Text;
+            _grading.EDifficulty = int.Parse(txtEDifficulty.Text);
+            _grading.EDifficultyComment = txtEDifficultyComment.Text;
 
-            Grading.EEnvironment = int.Parse(txtEEnvironment.Text);
-            Grading.EEnvironmentComment = txtEEnvironmentComment.Text;
+            _grading.EEnvironment = int.Parse(txtEEnvironment.Text);
+            _grading.EEnvironmentComment = txtEEnvironmentComment.Text;
 
-            Grading.EBonus = double.Parse(txtEBonus.Text, CultureInfo.InvariantCulture);
+            _grading.EBonus = double.Parse(txtEBonus.Text, CultureInfo.InvariantCulture);
+        }
+
+        private double SafeParseDouble(string text)
+        {
+            if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+                return result;
+            return 0.0;
+        }
+
+        private double ComputeBlockAGrade()
+        {
+            var aStrategyWeight = SafeParseDouble(txtAStrategyWeight.Text);
+            var aStrategy = SafeParseDouble(txtAStrategy.Text);
+            var aProjSummaryContentsWeight = SafeParseDouble(txtAProjectSummaryContentsWeight.Text);
+            var aProjSummaryContents = SafeParseDouble(txtAProjectSummaryContents.Text);
+            var aProjSummaryPlanningWeight = SafeParseDouble(txtAProjectSummaryPlanningWeight.Text);
+            var aProjSummaryPlanning = SafeParseDouble(txtAProjectSummaryPlanning.Text);
+
+            var blockAGrade = (aStrategy * aStrategyWeight +
+                             aProjSummaryContents * aProjSummaryContentsWeight +
+                             aProjSummaryPlanning * aProjSummaryPlanningWeight) /
+                            (aStrategyWeight + aProjSummaryContentsWeight + aProjSummaryPlanningWeight);
+
+            return double.IsNaN(blockAGrade) ? 0 : blockAGrade;
+        }
+
+        private double ComputeBlockBGrade()
+        {
+            var bTheoreticalWorkWeight = SafeParseDouble(txtBTheoreticalWorkWeight.Text);
+            var bTheoreticalWork = SafeParseDouble(txtBTheoreticalWork.Text);
+            var bPracticalWorkWeight = SafeParseDouble(txtBPracticalWorkWeight.Text);
+            var bPracticalWork = SafeParseDouble(txtBPracticalWork.Text);
+            var bEvaluationWeight = SafeParseDouble(txtBEvaluationWeight.Text);
+            var bEvaluation = SafeParseDouble(txtBEvaluation.Text);
+            var bResultsWeight = SafeParseDouble(txtBResultsWeight.Text);
+            var bResults = SafeParseDouble(txtBResults.Text);
+            var bAutonomyWeight = SafeParseDouble(txtBAutonomyWeight.Text);
+            var bAutonomy = SafeParseDouble(txtBAutonomy.Text);
+
+            var blockBGrade = (bTheoreticalWork * bTheoreticalWorkWeight +
+                             bPracticalWork * bPracticalWorkWeight +
+                             bEvaluation * bEvaluationWeight +
+                             bResults * bResultsWeight +
+                             bAutonomy * bAutonomyWeight) /
+                            (bTheoreticalWorkWeight + bPracticalWorkWeight +
+                             bEvaluationWeight + bResultsWeight + bAutonomyWeight);
+
+            return double.IsNaN(blockBGrade) ? 0 : blockBGrade;
+        }
+
+        private double ComputeBlockCGrade()
+        {
+            var cDocumentationWeight = SafeParseDouble(txtCDocumentationWeight.Text);
+            var cDocumentation = SafeParseDouble(txtCDocumentation.Text);
+            var cDefenseWeight = SafeParseDouble(txtCDefenseWeight.Text);
+            var cDefense = SafeParseDouble(txtCDefense.Text);
+            var cPresentationsWeight = SafeParseDouble(txtCPresentationsWeight.Text);
+            var cPresentations = SafeParseDouble(txtCPresentations.Text);
+
+            var blockCGrade = (cDocumentation * cDocumentationWeight +
+                             cDefense * cDefenseWeight +
+                             cPresentations * cPresentationsWeight) /
+                            (cDocumentationWeight + cDefenseWeight + cPresentationsWeight);
+
+            return double.IsNaN(blockCGrade) ? 0 : blockCGrade;
+        }
+
+        private double ComputeBlockDGrade()
+        {
+            var dCollabInternalWeight = SafeParseDouble(txtDCollaborationInternalWeight.Text);
+            var dCollabInternal = SafeParseDouble(txtDCollaborationInternal.Text);
+            var dCollabExternalWeight = SafeParseDouble(txtDCollaborationExternalWeight.Text);
+            var dCollabExternal = SafeParseDouble(txtDCollaborationExternal.Text);
+            var dMotivationWeight = SafeParseDouble(txtDMotivationWeight.Text);
+            var dMotivation = SafeParseDouble(txtDMotivation.Text);
+
+            var blockDGrade = (dCollabInternal * dCollabInternalWeight +
+                             dCollabExternal * dCollabExternalWeight +
+                             dMotivation * dMotivationWeight) /
+                            (dCollabInternalWeight + dCollabExternalWeight + dMotivationWeight);
+
+            return double.IsNaN(blockDGrade) ? 0 : blockDGrade;
+        }
+
+        public double ComputePreBonus()
+        {
+            var blockAGrade = ComputeBlockAGrade();
+            var blockBGrade = ComputeBlockBGrade();
+            var blockCGrade = ComputeBlockCGrade();
+            var blockDGrade = ComputeBlockDGrade();
+
+            return (blockAGrade * 1 + blockBGrade * 4 + blockCGrade * 2 + blockDGrade * 1) / 8;
+        }
+
+        public double ComputeFinalGrade()
+        {
+            var bonus = SafeParseDouble(txtEBonus.Text);
+            return Math.Min(6.0, ComputePreBonus() + bonus);
         }
 
         private void UpdateCalculatedGrades()
         {
-            // Block A - Weight 1
-            var blockAGrade = (Grading.AStrategy * Grading.AStrategyWeight +
-                             Grading.AProjectSummaryContents * Grading.AProjectSummaryContentsWeight +
-                             Grading.AProjectSummaryPlanning * Grading.AProjectSummaryPlanningWeight) /
-                            (Grading.AStrategyWeight + Grading.AProjectSummaryContentsWeight + Grading.AProjectSummaryPlanningWeight);
-
-            // Block B - Weight 4
-            var blockBGrade = (Grading.BTheoreticalWork * Grading.BTheoreticalWorkWeight +
-                             Grading.BPracticalWork * Grading.BPracticalWorkWeight +
-                             Grading.BEvaluation * Grading.BEvaluationWeight +
-                             Grading.BResults * Grading.BResultsWeight +
-                             Grading.BAutonomy * Grading.BAutonomyWeight) /
-                            (Grading.BTheoreticalWorkWeight + Grading.BPracticalWorkWeight + 
-                             Grading.BEvaluationWeight + Grading.BResultsWeight + Grading.BAutonomyWeight);
-
-            // Block C - Weight 2
-            var blockCGrade = (Grading.CDocumentation * Grading.CDocumentationWeight +
-                             Grading.CDefense * Grading.CDefenseWeight +
-                             Grading.CPresentations * Grading.CPresentationsWeight) /
-                            (Grading.CDocumentationWeight + Grading.CDefenseWeight + Grading.CPresentationsWeight);
-
-            // Block D - Weight 1
-            var blockDGrade = (Grading.DCollaborationInternal * Grading.DCollaborationInternalWeight +
-                             Grading.DCollaborationExternal * Grading.DCollaborationExternalWeight +
-                             Grading.DMotivation * Grading.DMotivationWeight) /
-                            (Grading.DCollaborationInternalWeight + Grading.DCollaborationExternalWeight + Grading.DMotivationWeight);
-
-            // Update block grade displays
-            lblGrade1.Text = blockAGrade.ToString("0.0", CultureInfo.InvariantCulture);
-            lblGrade2.Text = blockBGrade.ToString("0.0", CultureInfo.InvariantCulture);
-            lblGrade3.Text = blockCGrade.ToString("0.0", CultureInfo.InvariantCulture);
-            lblGrade4.Text = blockDGrade.ToString("0.0", CultureInfo.InvariantCulture);
-
-            // Calculate pre-bonus grade
-            var preBonus = (blockAGrade * 1 + blockBGrade * 4 + blockCGrade * 2 + blockDGrade * 1) / 8;
-            lblGradePreBonus.Text = preBonus.ToString("0.0", CultureInfo.InvariantCulture);
-
-            // Calculate final grade with bonus
-            var finalGrade = Math.Min(6.0, preBonus + Grading.EBonus);
-            lblGradeTotal.Text = finalGrade.ToString("0.0", CultureInfo.InvariantCulture);
+            lblGradeA.Text = ComputeBlockAGrade().ToString("0.0", CultureInfo.InvariantCulture);
+            lblGradeB.Text = ComputeBlockBGrade().ToString("0.0", CultureInfo.InvariantCulture);
+            lblGradeC.Text = ComputeBlockCGrade().ToString("0.0", CultureInfo.InvariantCulture);
+            lblGradeD.Text = ComputeBlockDGrade().ToString("0.0", CultureInfo.InvariantCulture);
+            lblGradePreBonus.Text = ComputePreBonus().ToString("0.0", CultureInfo.InvariantCulture);
+            lblGradeTotal.Text = lblFinalGradeFrontPage.Text = ComputeFinalGrade().ToString("0.0", CultureInfo.InvariantCulture);
         }
     }
 }
