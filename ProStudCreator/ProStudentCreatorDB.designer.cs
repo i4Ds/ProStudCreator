@@ -207,7 +207,7 @@ namespace ProStudCreator
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
-	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged, IComparable<Department>
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -466,12 +466,7 @@ namespace ProStudCreator
 			this.SendPropertyChanging();
 			entity.Department = null;
 		}
-
-        public int CompareTo(Department other)
-        {
-			return this._Id.CompareTo(other._Id);
-        }
-    }
+	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProjectTeamSize")]
 	public partial class ProjectTeamSize : INotifyPropertyChanging, INotifyPropertyChanged
@@ -1367,6 +1362,18 @@ namespace ProStudCreator
 		
 		private string _ClientMail;
 		
+		private bool _TypeDesignUX;
+		
+		private bool _TypeHW;
+		
+		private bool _TypeCGIP;
+		
+		private bool _TypeMathAlg;
+		
+		private bool _TypeAppWeb;
+		
+		private bool _TypeDBBigData;
+		
 		private int _P1TypeId;
 		
 		private int _P1TeamSizeId;
@@ -1418,6 +1425,10 @@ namespace ProStudCreator
 		private bool _LanguageEnglish;
 		
 		private bool _DurationOneSemester;
+		
+		private bool _TypeSysSec;
+		
+		private bool _TypeSE;
 		
 		private string _ImgDescription;
 		
@@ -1502,11 +1513,12 @@ namespace ProStudCreator
 		private bool _SubmitToStudyCourseDS;
 		
 		private System.Nullable<byte> _LogStudyCourse;
-
-        private int? _LogStudyCourseStudent1;
-        private int? _LogStudyCourseStudent2;
-
-        private string _Topics;
+		
+		private string _Topics;
+		
+		private System.Nullable<int> _LogStudyCourseStudent1;
+		
+		private System.Nullable<int> _LogStudyCourseStudent2;
 		
 		private EntitySet<Project> _Projects;
 		
@@ -1554,6 +1566,18 @@ namespace ProStudCreator
     partial void OnClientPersonChanged();
     partial void OnClientMailChanging(string value);
     partial void OnClientMailChanged();
+    partial void OnTypeDesignUXChanging(bool value);
+    partial void OnTypeDesignUXChanged();
+    partial void OnTypeHWChanging(bool value);
+    partial void OnTypeHWChanged();
+    partial void OnTypeCGIPChanging(bool value);
+    partial void OnTypeCGIPChanged();
+    partial void OnTypeMlAlgChanging(bool value);
+    partial void OnTypeMlAlgChanged();
+    partial void OnTypeAppWebChanging(bool value);
+    partial void OnTypeAppWebChanged();
+    partial void OnTypeDBBigDataChanging(bool value);
+    partial void OnTypeDBBigDataChanged();
     partial void OnP1TypeIdChanging(int value);
     partial void OnP1TypeIdChanged();
     partial void OnP1TeamSizeIdChanging(int value);
@@ -1606,6 +1630,10 @@ namespace ProStudCreator
     partial void OnLanguageEnglishChanged();
     partial void OnDurationOneSemesterChanging(bool value);
     partial void OnDurationOneSemesterChanged();
+    partial void OnTypeSysSecChanging(bool value);
+    partial void OnTypeSysSecChanged();
+    partial void OnTypeSEChanging(bool value);
+    partial void OnTypeSEChanged();
     partial void OnImgDescriptionChanging(string value);
     partial void OnImgDescriptionChanged();
     partial void OnPreviousProjectIDChanging(System.Nullable<int> value);
@@ -1692,6 +1720,10 @@ namespace ProStudCreator
     partial void OnLogStudyCourseChanged();
     partial void OnTopicsChanging(string value);
     partial void OnTopicsChanged();
+    partial void OnLogStudyCourseStudent1Changing(System.Nullable<int> value);
+    partial void OnLogStudyCourseStudent1Changed();
+    partial void OnLogStudyCourseStudent2Changing(System.Nullable<int> value);
+    partial void OnLogStudyCourseStudent2Changed();
     #endregion
 		
 		public Project()
@@ -1830,6 +1862,126 @@ namespace ProStudCreator
 					this._ClientMail = value;
 					this.SendPropertyChanged("ClientMail");
 					this.OnClientMailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeDesignUX", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeDesignUX
+		{
+			get
+			{
+				return this._TypeDesignUX;
+			}
+			set
+			{
+				if ((this._TypeDesignUX != value))
+				{
+					this.OnTypeDesignUXChanging(value);
+					this.SendPropertyChanging();
+					this._TypeDesignUX = value;
+					this.SendPropertyChanged("TypeDesignUX");
+					this.OnTypeDesignUXChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeHW", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeHW
+		{
+			get
+			{
+				return this._TypeHW;
+			}
+			set
+			{
+				if ((this._TypeHW != value))
+				{
+					this.OnTypeHWChanging(value);
+					this.SendPropertyChanging();
+					this._TypeHW = value;
+					this.SendPropertyChanged("TypeHW");
+					this.OnTypeHWChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeCGIP", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeCGIP
+		{
+			get
+			{
+				return this._TypeCGIP;
+			}
+			set
+			{
+				if ((this._TypeCGIP != value))
+				{
+					this.OnTypeCGIPChanging(value);
+					this.SendPropertyChanging();
+					this._TypeCGIP = value;
+					this.SendPropertyChanged("TypeCGIP");
+					this.OnTypeCGIPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeMathAlg", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeMlAlg
+		{
+			get
+			{
+				return this._TypeMathAlg;
+			}
+			set
+			{
+				if ((this._TypeMathAlg != value))
+				{
+					this.OnTypeMlAlgChanging(value);
+					this.SendPropertyChanging();
+					this._TypeMathAlg = value;
+					this.SendPropertyChanged("TypeMlAlg");
+					this.OnTypeMlAlgChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeAppWeb", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeAppWeb
+		{
+			get
+			{
+				return this._TypeAppWeb;
+			}
+			set
+			{
+				if ((this._TypeAppWeb != value))
+				{
+					this.OnTypeAppWebChanging(value);
+					this.SendPropertyChanging();
+					this._TypeAppWeb = value;
+					this.SendPropertyChanged("TypeAppWeb");
+					this.OnTypeAppWebChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeDBBigData", DbType="Bit NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public bool TypeDBBigData
+		{
+			get
+			{
+				return this._TypeDBBigData;
+			}
+			set
+			{
+				if ((this._TypeDBBigData != value))
+				{
+					this.OnTypeDBBigDataChanging(value);
+					this.SendPropertyChanging();
+					this._TypeDBBigData = value;
+					this.SendPropertyChanged("TypeDBBigData");
+					this.OnTypeDBBigDataChanged();
 				}
 			}
 		}
@@ -2370,6 +2522,46 @@ namespace ProStudCreator
 					this._DurationOneSemester = value;
 					this.SendPropertyChanged("DurationOneSemester");
 					this.OnDurationOneSemesterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeSysSec", DbType="Bit NOT NULL")]
+		public bool TypeSysSec
+		{
+			get
+			{
+				return this._TypeSysSec;
+			}
+			set
+			{
+				if ((this._TypeSysSec != value))
+				{
+					this.OnTypeSysSecChanging(value);
+					this.SendPropertyChanging();
+					this._TypeSysSec = value;
+					this.SendPropertyChanged("TypeSysSec");
+					this.OnTypeSysSecChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeSE", DbType="Bit NOT NULL")]
+		public bool TypeSE
+		{
+			get
+			{
+				return this._TypeSE;
+			}
+			set
+			{
+				if ((this._TypeSE != value))
+				{
+					this.OnTypeSEChanging(value);
+					this.SendPropertyChanging();
+					this._TypeSE = value;
+					this.SendPropertyChanged("TypeSE");
+					this.OnTypeSEChanged();
 				}
 			}
 		}
@@ -3221,45 +3413,8 @@ namespace ProStudCreator
 				}
 			}
 		}
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent1", DbType = "Int NULL")]
-        public int? LogStudyCourseStudent1
-        {
-            get
-            {
-                return this._LogStudyCourseStudent1;
-            }
-            set
-            {
-                if ((this._LogStudyCourseStudent1 != value))
-                {
-                   
-                    this.SendPropertyChanging();
-                    this._LogStudyCourseStudent1 = value;
-                    this.SendPropertyChanged("LogStudyCourseStudent1");
-                }
-            }
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent2", DbType = "Int NULL")]
-        public int? LogStudyCourseStudent2
-        {
-            get
-            {
-                return this._LogStudyCourseStudent2;
-            }
-            set
-            {
-                if ((this._LogStudyCourseStudent2 != value))
-                {
-                    this.SendPropertyChanging();
-                    this._LogStudyCourseStudent2 = value;
-                    this.SendPropertyChanged("LogStudyCourseStudent2");
-                }
-            }
-        }
-
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
 		public System.Nullable<byte> LogStudyCourse
 		{
 			get
@@ -3295,6 +3450,46 @@ namespace ProStudCreator
 					this._Topics = value;
 					this.SendPropertyChanged("Topics");
 					this.OnTopicsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourseStudent1", DbType="int")]
+		public System.Nullable<int> LogStudyCourseStudent1
+		{
+			get
+			{
+				return this._LogStudyCourseStudent1;
+			}
+			set
+			{
+				if ((this._LogStudyCourseStudent1 != value))
+				{
+					this.OnLogStudyCourseStudent1Changing(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourseStudent1 = value;
+					this.SendPropertyChanged("LogStudyCourseStudent1");
+					this.OnLogStudyCourseStudent1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourseStudent2", DbType="int ")]
+		public System.Nullable<int> LogStudyCourseStudent2
+		{
+			get
+			{
+				return this._LogStudyCourseStudent2;
+			}
+			set
+			{
+				if ((this._LogStudyCourseStudent2 != value))
+				{
+					this.OnLogStudyCourseStudent2Changing(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourseStudent2 = value;
+					this.SendPropertyChanged("LogStudyCourseStudent2");
+					this.OnLogStudyCourseStudent2Changed();
 				}
 			}
 		}
@@ -3849,6 +4044,8 @@ namespace ProStudCreator
 		
 		private System.Nullable<System.DateTime> _InfoEvent;
 		
+		private string _ProjectStart;
+		
 		private EntitySet<Project> _Project;
 		
 		private EntitySet<Task> _Tasks;
@@ -3897,6 +4094,8 @@ namespace ProStudCreator
     partial void OnGradeIP6DeadlineChanged();
     partial void OnInfoEventChanging(System.Nullable<System.DateTime> value);
     partial void OnInfoEventChanged();
+    partial void OnProjectStartChanging(string value);
+    partial void OnProjectStartChanged();
     #endregion
 		
 		public Semester()
@@ -4302,6 +4501,26 @@ namespace ProStudCreator
 					this._InfoEvent = value;
 					this.SendPropertyChanged("InfoEvent");
 					this.OnInfoEventChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectStart", DbType="NVarChar(50)")]
+		public string ProjectStart
+		{
+			get
+			{
+				return this._ProjectStart;
+			}
+			set
+			{
+				if ((this._ProjectStart != value))
+				{
+					this.OnProjectStartChanging(value);
+					this.SendPropertyChanging();
+					this._ProjectStart = value;
+					this.SendPropertyChanged("ProjectStart");
+					this.OnProjectStartChanged();
 				}
 			}
 		}

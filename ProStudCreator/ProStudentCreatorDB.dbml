@@ -184,6 +184,7 @@
       <Column Name="GradeIP5Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="GradeIP6Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="InfoEvent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ProjectStart" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="Semester_Project" Member="Project" ThisKey="Id" OtherKey="SemesterId" Type="Project" />
       <Association Name="Semester_Task" Member="Tasks" ThisKey="Id" OtherKey="SemesterId" Type="Task" />
     </Type>
