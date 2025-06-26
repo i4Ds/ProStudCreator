@@ -189,7 +189,6 @@ namespace ProStudCreator
                     {
                         ProjectId = project.Id,
                         ResponsibleUser = project.Advisor1,
-                        Supervisor = db.UserDepartmentMap.Single(u => u.IsDepartmentManager && u.Department == project.Department),
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.FinishProject),
                         DueDate = project.GetGradeDeliveryDate(db)
                     });
@@ -248,7 +247,6 @@ namespace ProStudCreator
                             ResponsibleUser = project.Advisor1,
                             FirstReminded = DateTime.Now,
                             TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.RegisterGrades),
-                            Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                         });
 
             //mark registered tasks as done
@@ -273,7 +271,6 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.CheckWebsummary),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -297,7 +294,6 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.CheckBillingStatus),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -321,7 +317,6 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.SetProjectLanguage),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -346,7 +341,6 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.UploadResults),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
 
             //mark registered tasks as done
@@ -373,7 +367,6 @@ namespace ProStudCreator
                     ResponsibleUser = project.Advisor1,
                     FirstReminded = DateTime.Now,
                     TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.InfoStartProject),
-                    Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                 });
 
             db.SubmitChanges();
@@ -397,7 +390,6 @@ namespace ProStudCreator
                         ResponsibleUser = project.Advisor1,
                         FirstReminded = DateTime.Now,
                         TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.InfoFinishProject),
-                        Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                     });
             }
 
@@ -1417,7 +1409,6 @@ namespace ProStudCreator
                     ResponsibleUser = project.Advisor1,
                     FirstReminded = DateTime.Now,
                     TaskType = db.TaskTypes.Single(t => t.Id == (int)Type.DoubleCheckMarKomBrochureData),
-                    Supervisor = db.UserDepartmentMap.Single(i => i.IsDepartmentManager && i.Department == project.Department)
                 });
 
             db.SubmitChanges();
@@ -1517,16 +1508,23 @@ namespace ProStudCreator
                     foreach (var task in tasks)
                     {
                         if (task.FirstReminded.HasValue 
-                            && task.Supervisor != null 
                             && task.TaskType.DaysBetweenReminds > 0 
+                            && task.ResponsibleUser != null
                             && (DateTime.Now - task.FirstReminded).Value.Days / task.TaskType.DaysBetweenReminds > 2 
                             && task.TaskTypeId == (int)Type.FinishProject)
                         {
-                            var ma = new MailAddress(task.Supervisor.Mail);
-                            mail.From = ma;
-                            if (!mail.CC.Contains(ma))
+                            var departmentManagers = db.UserDepartmentMap.Where(u => u.Department == task.ResponsibleUser.Department
+                                && u.IsDepartmentManager
+                                && u.IsActive);
+
+                            foreach (var dm in departmentManagers)
                             {
-                                mail.CC.Add(ma);
+                                var ma = new MailAddress(dm.Mail);
+                                mail.From = ma;
+                                if (!mail.CC.Contains(ma))
+                                {
+                                    mail.CC.Add(ma);
+                                }
                             }
                         }
 
@@ -1578,39 +1576,23 @@ namespace ProStudCreator
             SendMail(mail);
         }
 
-        public static void SendDebugMail(string body, string subject = "ProStud")
-        {
-            var mail = new MailMessage { From = new MailAddress("noreply@fhnw.ch") };
-            mail.To.Add(new MailAddress(Global.WebAdmin));
-            mail.Subject = $"DEBUG: {subject}";
-            mail.Body = body;
-
-            using (var smtpClient = new SmtpClient())
-            {
-                smtpClient.Send(mail);
-            }
-        }
-
         public static void SendMail(MailMessage mail, bool webAdminCC = true)
         {
-#if !DEBUG
             using (var smtpClient = new SmtpClient())
             {
+#if !DEBUG
                 if (webAdminCC)
                     mail.CC.Add(new MailAddress(Global.WebAdmin));
                 smtpClient.Send(mail);
-            }
 #else
-            using (var smtpClient = new SmtpClient())
-            {
                 mail.To.Clear();
                 mail.CC.Clear();
                 mail.Bcc.Clear();
                 mail.Subject = "DEBUG: " + mail.Subject;
                 mail.To.Add(Global.WebAdmin);
-                smtpClient.Send(mail);
-            }
+                //smtpClient.Send(mail);
 #endif
+            }
         }
     }
 }
