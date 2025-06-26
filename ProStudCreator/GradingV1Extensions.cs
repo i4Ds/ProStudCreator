@@ -1,5 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -10,65 +9,88 @@ using System.Text.RegularExpressions;
 
 namespace ProStudCreator
 {
-    public static class GradingV1Extensions
+    public partial class GradingV1
     {
+        public static string AStrategySchema =
+            "6: Innovatives Lösungskonzept, übertrifft die Erwartungen klar, effektive kreative Strategie\n" +
+            "5: Lösungskonzept und Strategie umfassend, klar, präzise und effektiv\n" + 
+            "4: Lösungskonzept und Strategie zielführend, Standardvorgehen\n" +
+            "3: Lösungskonzept nur teilweise nachvollziehbar, unklare Strategie\n" +
+            "2: Lösungskonzept nicht nachvollziehbar, keine Strategie\n" +
+            "1: Kein Lösungskonzept vorhanden";
 
-        private static double ComputeBlockAGrade(this GradingV1 _g)
+        public static string AProjectSummaryContentsSchema =
+            "6: Abgabe termingerecht, überdurchschnittliche/unerwartete Analyse der Aufgabenstellung, Erfassung sämtlicher Einzelfragen im thematischen Zusammenhang, wesentlicher eigener inhaltlicher Beitrag zur Umsetzung\n" +
+            "5: Abgabe termingerecht; Vollständige Durchdringung der Aufgabenstellung, gesamtheitlicher Lösungsansatz und eigenständige kreative Umsetzung\n" +
+            "4: Abgabe Termingerecht, Aufgabenstellung eins zu eins umgesetzt, Abgrenzung von Teilaufgaben\n" +
+            "3: Abgabe termingerecht, Umsetzung der Aufgabenstellung nur teilweise erkennbar, ungenügende Analyse, unpassender Lösungsatz\n" +
+            "2: Umsetzung der Aufgabenstellung nicht erkennbar und/oder Abgabe der Projektvereinbarung 0-2 Wochen nach Termin\n" +
+            "1: Keine Projektvereinbarung bis 2 Wochen nach Termin";
+
+        public static string AProjectSummaryPlanningSchema =
+            "6: Abgabe termingerecht, überdurchschnittliche und detaillierte Projektplanung, Arbeitsumfang realistisch abgeschätzt und abgebildet, genügend sinnvolle und klar messbare Meilensteine\n" +
+            "5: Abgabe termingerecht, umfängliche Projektplanung, Arbeitsumfang realitätsnah abgeschätzt und abgebildet, mit messabren Meilensteinen\n"+
+            "4: Abgabe termingerecht, Projektplanung enthält die wesentlichen Arbeitsschritte, Arbeitsumfang weitgehend realitätsnah abgeschätzt, teilweise messbare Meilensteine\n"+
+            "3: Abgabe termingerecht, Projektplanung enthält nicht alle Arbeitsschritte, Arbeitsumfang wird teilweise deutlich über-/unterschätzt, zu wenig oder nicht messbare Meilensteine\n"+
+            "2: Umsetzung der Projektplanung nicht erkennbar und/oder Abgabe der Projektvereinbarung 0-2 Wochen nach Termin\n"+
+            "1: Keine Projektvereinbarung bis 2 Wochen nach Termin";
+
+        private double ComputeBlockAGrade()
         {
-            var blockAGrade = (_g.AStrategy * _g.AStrategyWeight +
-                             _g.AProjectSummaryContents * _g.AProjectSummaryContentsWeight +
-                             _g.AProjectSummaryPlanning * _g.AProjectSummaryPlanningWeight) /
-                            (_g.AStrategyWeight + _g.AProjectSummaryContentsWeight + _g.AProjectSummaryPlanningWeight);
+            var blockAGrade = (AStrategy * AStrategyWeight +
+                             AProjectSummaryContents * AProjectSummaryContentsWeight +
+                             AProjectSummaryPlanning * AProjectSummaryPlanningWeight) /
+                            (AStrategyWeight + AProjectSummaryContentsWeight + AProjectSummaryPlanningWeight);
 
             return double.IsNaN(blockAGrade) ? 0 : blockAGrade;
         }
 
-        private static double ComputeBlockBGrade(this GradingV1 _g)
+        private double ComputeBlockBGrade()
         {
-            var blockBGrade = (_g.BTheoreticalWork * _g.BTheoreticalWorkWeight +
-                             _g.BPracticalWork * _g.BPracticalWorkWeight +
-                             _g.BEvaluation * _g.BEvaluationWeight +
-                             _g.BResults * _g.BResultsWeight +
-                             _g.BAutonomy * _g.BAutonomyWeight) /
-                            (_g.BTheoreticalWorkWeight + _g.BPracticalWorkWeight +
-                             _g.BEvaluationWeight + _g.BResultsWeight + _g.BAutonomyWeight);
+            var blockBGrade = (BTheoreticalWork * BTheoreticalWorkWeight +
+                             BPracticalWork * BPracticalWorkWeight +
+                             BEvaluation * BEvaluationWeight +
+                             BResults * BResultsWeight +
+                             BAutonomy * BAutonomyWeight) /
+                            (BTheoreticalWorkWeight + BPracticalWorkWeight +
+                             BEvaluationWeight + BResultsWeight + BAutonomyWeight);
 
             return double.IsNaN(blockBGrade) ? 0 : blockBGrade;
         }
 
-        private static double ComputeBlockCGrade(this GradingV1 _g)
+        private double ComputeBlockCGrade()
         {
-            var blockCGrade = (_g.CDocumentation * _g.CDocumentationWeight +
-                             _g.CDefense * _g.CDefenseWeight +
-                             _g.CPresentations * _g.CPresentationsWeight) /
-                            (_g.CDocumentationWeight + _g.CDefenseWeight + _g.CPresentationsWeight);
+            var blockCGrade = (CDocumentation * CDocumentationWeight +
+                             CDefense * CDefenseWeight +
+                             CPresentations * CPresentationsWeight) /
+                            (CDocumentationWeight + CDefenseWeight + CPresentationsWeight);
 
             return double.IsNaN(blockCGrade) ? 0 : blockCGrade;
         }
 
-        private static double ComputeBlockDGrade(this GradingV1 _g)
+        private double ComputeBlockDGrade()
         {
-            var blockDGrade = (_g.DCollaborationInternal * _g.DCollaborationInternalWeight +
-                             _g.DCollaborationExternal * _g.DCollaborationExternalWeight +
-                             _g.DMotivation * _g.DMotivationWeight) /
-                            (_g.DCollaborationInternalWeight + _g.DCollaborationExternalWeight + _g.DMotivationWeight);
+            var blockDGrade = (DCollaborationInternal * DCollaborationInternalWeight +
+                             DCollaborationExternal * DCollaborationExternalWeight +
+                             DMotivation * DMotivationWeight) /
+                            (DCollaborationInternalWeight + DCollaborationExternalWeight + DMotivationWeight);
 
             return double.IsNaN(blockDGrade) ? 0 : blockDGrade;
         }
 
-        public static double ComputePreBonus(this GradingV1 _g)
+        public double ComputePreBonus()
         {
-            var blockAGrade = _g.ComputeBlockAGrade();
-            var blockBGrade = _g.ComputeBlockBGrade();
-            var blockCGrade = _g.ComputeBlockCGrade();
-            var blockDGrade = _g.ComputeBlockDGrade();
+            var blockAGrade = ComputeBlockAGrade();
+            var blockBGrade = ComputeBlockBGrade();
+            var blockCGrade = ComputeBlockCGrade();
+            var blockDGrade = ComputeBlockDGrade();
 
             return (blockAGrade * 1 + blockBGrade * 4 + blockCGrade * 2 + blockDGrade * 1) / 8;
         }
 
-        public static double ComputeFinalGrade(this GradingV1 _g)
+        public double ComputeFinalGrade()
         {
-            return Math.Min(6.0, _g.ComputePreBonus() + _g.EBonus);
+            return Math.Min(6.0, ComputePreBonus() + EBonus);
         }
 
         public static GradingV1 CreateDefault(bool _isP6, bool _externalCustomer)

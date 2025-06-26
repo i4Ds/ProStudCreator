@@ -1840,7 +1840,7 @@ namespace ProStudCreator
 
         private GradingV1 CreateDefaultGradingV1()
         {
-            return GradingV1Extensions.CreateDefault(pageProject.LogProjectType.P6,
+            return GradingV1.CreateDefault(pageProject.LogProjectType.P6,
                     pageProject.ClientType != (int)ClientType.Internal);
         }
 

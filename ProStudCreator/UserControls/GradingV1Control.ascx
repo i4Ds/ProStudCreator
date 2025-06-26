@@ -209,13 +209,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ClientIDMode="Static" ID="txtAStrategyWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtAStrategy" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Innovatives Lösungskonzept, übertrifft die Erwartungen klar, effektive kreative Strategie<br />
-                                5: Lösungskonzept und Strategie umfassend, klar, präzise und effektiv<br />
-                                4: Lösungskonzept und Strategie zielführend, Standardvorgehen<br />
-                                3: Lösungskonzept nur teilweise nachvollziehbar, unklare Strategie<br />
-                                2: Lösungskonzept nicht nachvollziehbar, keine Strategie<br />
-                                1: Kein Lösungskonzept vorhanden
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.AStrategySchema.Replace("\n", "<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtAStrategyComment"></asp:TextBox></td>
                         </tr>
@@ -229,13 +223,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtAProjectSummaryContentsWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtAProjectSummaryContents" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Abgabe termingerecht, überdurchschnittliche/unerwartete Analyse der Aufgabenstellung, Erfassung sämtlicher Einzelfragen im thematischen Zusammenhang, wesentlicher eigener inhaltlicher Beitrag zur Umsetzung<br />
-                                5: Abgabe termingerecht; Vollständige Durchdringung der Aufgabenstellung, gesamtheitlicher Lösungsansatz und eigenständige kreative Umsetzung<br />
-                                4: Abgabe Termingerecht, Aufgabenstellung eins zu eins umgesetzt, Abgrenzung von Teilaufgaben<br />
-                                3: Abgabe termingerecht, Umsetzung der Aufgabenstellung nur teilweise erkennbar, ungenügende Analyse, unpassender Lösungsatz<br />
-                                2: Umsetzung der Aufgabenstellung nicht erkennbar und/oder Abgabe der Projektvereinbarung 0-2 Wochen nach Termin<br />
-                                1: Keine Projektvereinbarung bis 2 Wochen nach Termin
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.AProjectSummaryContentsSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtAProjectSummaryContentsComment"></asp:TextBox></td>
                         </tr>
@@ -249,12 +237,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtAProjectSummaryPlanningWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtAProjectSummaryPlanning" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Abgabe termingerecht, überdurchschnittliche und detaillierte Projektplanung, Arbeitsumfang realistisch abgeschätzt und abgebildet, genügend sinnvolle und klar messbare Meilensteine<br />
-                                5: Abgabe termingerecht, umfängliche Projektplanung, Arbeitsumfang realitätsnah abgeschätzt und abgebildet, mit messabren Meilensteinen<br />
-                                4: Abgabe termingerecht, Projektplanung enthält die wesentlichen Arbeitsschritte, Arbeitsumfang weitgehend realitätsnah abgeschätzt, teilweise messbare Meilensteine<br />
-                                3: Abgabe termingerecht, Projektplanung enthält nicht alle Arbeitsschritte, Arbeitsumfang wird teilweise deutlich über-/unterschätzt, zu wenig oder nicht messbare Meilensteine<br />
-                                2: Umsetzung der Projektplanung nicht erkennbar und/oder Abgabe der Projektvereinbarung 0-2 Wochen nach Termin<br />
-                                1: Keine Projektvereinbarung bis 2 Wochen nach Termin
+                            <td class="small"><%= ProStudCreator.GradingV1.AProjectSummaryPlanningSchema.Replace("\n","<br/>") %>
                             </td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtAProjectSummaryPlanningComment"></asp:TextBox></td>
