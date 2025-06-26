@@ -7,12 +7,12 @@
         function isContentStud(currentObject) {
             var txtBoxValue = currentObject.value;
             var term = "@students.fhnw.ch";
-            var term2 = "@fhnw.ch";
+            //var term2 = "@fhnw.ch";
             var index = txtBoxValue.indexOf(term);
-            var index2 = txtBoxValue.indexOf(term2);
+            //var index2 = txtBoxValue.indexOf(term2);
             if (currentObject.value != "") {
-                if (index == -1 && index2 == -1) {
-                    alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch oder @fhnw.ch endet");
+                if (index == -1 /*&& index2 == -1*/) {
+                    alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch endet");
                     currentObject.style.borderColor = 'red';
                 } else {
                     currentObject.style.borderColor = 'green';
