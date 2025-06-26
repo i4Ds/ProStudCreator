@@ -4955,8 +4955,6 @@ namespace ProStudCreator
 		
 		private EntitySet<Project> _Projects1;
 		
-		private EntitySet<Task> _Tasks;
-		
 		private EntitySet<Task> _Tasks1;
 		
 		private EntityRef<Department> _Department;
@@ -5001,7 +4999,6 @@ namespace ProStudCreator
 		{
 			this._Projects = new EntitySet<Project>(new Action<Project>(this.attach_Projects), new Action<Project>(this.detach_Projects));
 			this._Projects1 = new EntitySet<Project>(new Action<Project>(this.attach_Projects1), new Action<Project>(this.detach_Projects1));
-			this._Tasks = new EntitySet<Task>(new Action<Task>(this.attach_Tasks), new Action<Task>(this.detach_Tasks));
 			this._Tasks1 = new EntitySet<Task>(new Action<Task>(this.attach_Tasks1), new Action<Task>(this.detach_Tasks1));
 			this._Department = default(EntityRef<Department>);
 			OnCreated();
@@ -5337,19 +5334,6 @@ namespace ProStudCreator
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserDepartmentMap_Task", Storage="_Tasks", ThisKey="Id", OtherKey="SupervisorId")]
-		public EntitySet<Task> Tasks
-		{
-			get
-			{
-				return this._Tasks;
-			}
-			set
-			{
-				this._Tasks.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserDepartmentMap_Task1", Storage="_Tasks1", ThisKey="Id", OtherKey="ResponsibleUserId")]
 		public EntitySet<Task> Tasks1
 		{
@@ -5439,18 +5423,6 @@ namespace ProStudCreator
 		{
 			this.SendPropertyChanging();
 			entity.Advisor2 = null;
-		}
-		
-		private void attach_Tasks(Task entity)
-		{
-			this.SendPropertyChanging();
-			entity.Supervisor = this;
-		}
-		
-		private void detach_Tasks(Task entity)
-		{
-			this.SendPropertyChanging();
-			entity.Supervisor = null;
 		}
 		
 		private void attach_Tasks1(Task entity)
@@ -5618,8 +5590,6 @@ namespace ProStudCreator
 		
 		private System.Nullable<System.DateTime> _DueDate;
 		
-		private System.Nullable<int> _Supervisor;
-		
 		private System.Nullable<int> _ResponsibleUser;
 		
 		private System.Nullable<System.DateTime> _LastReminded;
@@ -5631,8 +5601,6 @@ namespace ProStudCreator
 		private System.Nullable<System.DateTime> _FirstReminded;
 		
 		private EntityRef<TaskType> _TaskType1;
-		
-		private EntityRef<UserDepartmentMap> _UserDepartmentMap;
 		
 		private EntityRef<UserDepartmentMap> _UserDepartmentMap1;
 		
@@ -5652,8 +5620,6 @@ namespace ProStudCreator
     partial void OnProjectIdChanged();
     partial void OnDueDateChanging(System.Nullable<System.DateTime> value);
     partial void OnDueDateChanged();
-    partial void OnSupervisorIdChanging(System.Nullable<int> value);
-    partial void OnSupervisorIdChanged();
     partial void OnResponsibleUserIdChanging(System.Nullable<int> value);
     partial void OnResponsibleUserIdChanged();
     partial void OnLastRemindedChanging(System.Nullable<System.DateTime> value);
@@ -5669,7 +5635,6 @@ namespace ProStudCreator
 		public Task()
 		{
 			this._TaskType1 = default(EntityRef<TaskType>);
-			this._UserDepartmentMap = default(EntityRef<UserDepartmentMap>);
 			this._UserDepartmentMap1 = default(EntityRef<UserDepartmentMap>);
 			this._Project1 = default(EntityRef<Project>);
 			this._Semester = default(EntityRef<Semester>);
@@ -5760,30 +5725,6 @@ namespace ProStudCreator
 					this._DueDate = value;
 					this.SendPropertyChanged("DueDate");
 					this.OnDueDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Supervisor", DbType="Int")]
-		public System.Nullable<int> SupervisorId
-		{
-			get
-			{
-				return this._Supervisor;
-			}
-			set
-			{
-				if ((this._Supervisor != value))
-				{
-					if (this._UserDepartmentMap.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSupervisorIdChanging(value);
-					this.SendPropertyChanging();
-					this._Supervisor = value;
-					this.SendPropertyChanged("SupervisorId");
-					this.OnSupervisorIdChanged();
 				}
 			}
 		}
@@ -5926,40 +5867,6 @@ namespace ProStudCreator
 						this._TaskType = default(int);
 					}
 					this.SendPropertyChanged("TaskType");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserDepartmentMap_Task", Storage="_UserDepartmentMap", ThisKey="SupervisorId", OtherKey="Id", IsForeignKey=true)]
-		public UserDepartmentMap Supervisor
-		{
-			get
-			{
-				return this._UserDepartmentMap.Entity;
-			}
-			set
-			{
-				UserDepartmentMap previousValue = this._UserDepartmentMap.Entity;
-				if (((previousValue != value) 
-							|| (this._UserDepartmentMap.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserDepartmentMap.Entity = null;
-						previousValue.Tasks.Remove(this);
-					}
-					this._UserDepartmentMap.Entity = value;
-					if ((value != null))
-					{
-						value.Tasks.Add(this);
-						this._Supervisor = value.Id;
-					}
-					else
-					{
-						this._Supervisor = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Supervisor");
 				}
 			}
 		}
