@@ -1,5 +1,7 @@
 ﻿using AjaxControlToolkit;
 using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.Ajax.Utilities;
+using NPOI.SS.Formula.Functions;
 using ProStudCreator.UserControls;
 using System;
 using System.Data;
@@ -21,9 +23,9 @@ namespace ProStudCreator
     public partial class ProjectInfoPage : Page
     {
         private readonly ProStudentCreatorDBDataContext db = new ProStudentCreatorDBDataContext();
-        private int? id;
+        public int? id { get; set; }
         private Project pageProject;
-        
+
         private readonly string dropTypeImpossibleValue = "dropTypeImpossibleValue";
         private readonly string dropDurationImpossibleValue = "dropDurationImpossibleValue";
         private readonly string dropStudyCourseImpossibleValue = "dropStudyCourseImpossibleValue";
@@ -53,10 +55,6 @@ namespace ProStudCreator
                 Response.End();
             }
 
-            gridProjectAttachs.DataSource = db.Attachements.Where(item => item.ProjectId == pageProject.Id && !item.Deleted)
-                .Select(i => GetProjectSingleAttachment(i));
-            gridProjectAttachs.DataBind();
-
             if (Page.IsPostBack)
             {
                 id = int.Parse(Request.QueryString["id"]);
@@ -70,6 +68,54 @@ namespace ProStudCreator
             {
                 UpdateUIFromProjectObject();
             }
+
+            UpdateProjectAttachments();
+
+            lnkOpenPDFEvaluation1.Visible = pageProject.Student1GradingV1 != null;
+            lnkOpenPDFEvaluation1.HRef = "PDF-Grading?dl=true&id=" + id + "&student=1";
+            lnkOpenPDFEvaluation2.Visible = pageProject.Student2GradingV1 != null;
+            lnkOpenPDFEvaluation2.HRef = "PDF-Grading?dl=true&id=" + id + "&student=2";
+        }
+
+        private static readonly Guid gradingStudent1GUID = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+        private static readonly Guid gradingStudent2GUID = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2);
+
+        private void UpdateProjectAttachments()
+        {
+            var listOfAttachments = db.Attachements
+                .Where(item => item.ProjectId == pageProject.Id && !item.Deleted)
+                .Select(attach => new ProjectSingleAttachment
+                {
+                    Guid = attach.ROWGUID,
+                    BaseVersionId = attach.ProjectId,
+                    Name = attach.FileName,
+                    Size = FixupSize((long)(attach.UploadSize ?? 0)),
+                    FileType = GetFileTypeImgPath(attach.FileName)
+                })
+                .ToList();
+
+            if (pageProject.Student2GradingV1 != null)
+                listOfAttachments.Insert(0, new ProjectSingleAttachment
+                {
+                    Guid = gradingStudent2GUID,
+                    BaseVersionId = pageProject.Id,
+                    Name = $"Bewertungsformular {pageProject.GetStudent2FullName()}.pdf",
+                    Size = "-",
+                    FileType = GetFileTypeImgPath(".pdf")
+                });
+
+            if (pageProject.Student1GradingV1 != null)
+                listOfAttachments.Insert(0, new ProjectSingleAttachment
+                {
+                    Guid = gradingStudent1GUID,
+                    BaseVersionId = pageProject.Id,
+                    Name = $"Bewertungsformular {pageProject.GetStudent1FullName()}.pdf",
+                    Size = "-",
+                    FileType = GetFileTypeImgPath(".pdf")
+                });
+
+            gridProjectAttachs.DataSource = listOfAttachments;
+            gridProjectAttachs.DataBind();
         }
 
         #region Form
@@ -222,7 +268,8 @@ namespace ProStudCreator
                         Student2LastNameAdmin.Text = pageProject.LogStudent2LastName ?? "";
                         Student2MailAdmin.Text = pageProject.LogStudent2Mail ?? "";
                         DivStudentsAdmin.Visible = true;
-                    } else
+                    }
+                    else
                     {
                         //show ?
                         Student1Name.Text = "?";
@@ -479,7 +526,8 @@ namespace ProStudCreator
                         if (pageProject.UserHasDepartmentManagerRights())
                         {
                             DropExpert.DataSource = db.Experts.Where(i => i.Active).OrderBy(a => a.Name).Select(x =>
-                                new {
+                                new
+                                {
                                     Id = x.id,
                                     Mail = x.Mail,
                                     DropDownString = string.Format("{0} | {1}", x.Name, x.Knowhow).Replace(" ", HttpUtility.HtmlDecode("&nbsp;"))
@@ -491,7 +539,7 @@ namespace ProStudCreator
                             DropExpert.DataBind();
                             DropExpert.Items.Insert(0, new ListItem("-", dropExpertImpossibleValue));
                             DropExpert.SelectedValue = pageProject.Expert?.id.ToString() ?? dropExpertImpossibleValue;
-                            
+
                             SetExpertMail();
 
                             DivExpertAdmin.Visible = true;
@@ -646,7 +694,7 @@ namespace ProStudCreator
                             NumGradeStudent2.Text = "Noten können nur vom Hauptbetreuer gesetzt werden.";
                             NumGradeStudent2.ForeColor = System.Drawing.Color.Red;
                         }
-                        
+
                         NumGradeStudent1.Visible = NumGradeStudent2.Visible = true;
                     }
                     break;
@@ -936,7 +984,7 @@ namespace ProStudCreator
                 LabelClientTitle.Visible = drpClientTitleAdmin.Visible =
                     LabelClientName.Visible = txtClientNameAdmin.Visible =
                         LabelClientEmail.Visible = txtClientEmailAdmin.Visible =
-                            LabelClientPhoneNumber.Visible = txtClientPhoneNumberAdmin.Visible = 
+                            LabelClientPhoneNumber.Visible = txtClientPhoneNumberAdmin.Visible =
                                 LabelClientDepartment.Visible = txtClientDepartmentAdmin.Visible =
                                     LabelClientStreet.Visible = txtClientStreetAdmin.Visible =
                                         LabelClientPLZ.Visible = txtClientPLZAdmin.Visible =
@@ -952,7 +1000,7 @@ namespace ProStudCreator
                             drpClientTitleAdmin.Visible =
                                 txtClientNameAdmin.Visible =
                                     txtClientEmailAdmin.Visible =
-                                        txtClientPhoneNumberAdmin.Visible = 
+                                        txtClientPhoneNumberAdmin.Visible =
                                             txtClientDepartmentAdmin.Visible =
                                                 txtClientStreetAdmin.Visible =
                                                     txtClientPLZAdmin.Visible =
@@ -967,7 +1015,7 @@ namespace ProStudCreator
                             LabelClientTitle.Visible =
                                 LabelClientName.Visible =
                                     LabelClientEmail.Visible =
-                                        LabelClientPhoneNumber.Visible = 
+                                        LabelClientPhoneNumber.Visible =
                                             LabelClientDepartment.Visible =
                                                 LabelClientStreet.Visible =
                                                     LabelClientPLZ.Visible =
@@ -982,7 +1030,7 @@ namespace ProStudCreator
                         LabelClientTitle.Visible =
                             LabelClientName.Visible =
                                 LabelClientEmail.Visible =
-                                    LabelClientPhoneNumber.Visible = 
+                                    LabelClientPhoneNumber.Visible =
                                         LabelClientDepartment.Visible =
                                             LabelClientStreet.Visible =
                                                 LabelClientPLZ.Visible =
@@ -1024,7 +1072,7 @@ namespace ProStudCreator
 
         private void SaveChanges()
         {
-            switch(pageProject.State)
+            switch (pageProject.State)
             {
                 case ProjectState.Published:
 
@@ -1075,7 +1123,7 @@ namespace ProStudCreator
                     }
                     break;
                 case ProjectState.Ongoing:
-                    
+
                     if (pageProject.UserHasAdvisor2Rights())
                     {
                         //Name
@@ -1097,7 +1145,7 @@ namespace ProStudCreator
                         pageProject.LogDefenceRoom = string.IsNullOrWhiteSpace(TextBoxLabelPresentationRoom.Text)
                             ? null
                             : TextBoxLabelPresentationRoom.Text;
-                        
+
 
                         //Language
                         switch (DropLanguage.SelectedValue)
@@ -1206,11 +1254,11 @@ namespace ProStudCreator
 
         private string GenerateValidationMessageForSave()
         {
-            switch(pageProject.State)
+            switch (pageProject.State)
             {
                 case ProjectState.Published:
                     return null;
-                    
+
                 case ProjectState.Ongoing:
                     //Presentation
                     if (string.IsNullOrWhiteSpace(TextBoxLabelPresentationDate.Text) ^ string.IsNullOrWhiteSpace(TextBoxLabelPresentationTime.Text))
@@ -1220,7 +1268,7 @@ namespace ProStudCreator
 
                     if (!string.IsNullOrWhiteSpace(TextBoxLabelPresentationDate.Text) && !string.IsNullOrWhiteSpace(TextBoxLabelPresentationTime.Text))
                     {
-                        if(!DateTime.TryParseExact($"{TextBoxLabelPresentationDate.Text} {TextBoxLabelPresentationTime.Text}", "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date))
+                        if (!DateTime.TryParseExact($"{TextBoxLabelPresentationDate.Text} {TextBoxLabelPresentationTime.Text}", "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date))
                             return "Bitte geben Sie ein valides Präsentationsdatum an.";
 
                         if (date < pageProject.Semester?.StartDate || date > pageProject.Semester?.StartDate + TimeSpan.FromDays(360))
@@ -1414,7 +1462,7 @@ namespace ProStudCreator
                     return "Bitte geben Sie die Note korrekt an (z.B. 4 oder 4.5)";
                 }
             }
-            
+
             //Client
             if (radioClientType.SelectedIndex != (int)ClientType.Internal)
             {
@@ -1453,7 +1501,7 @@ namespace ProStudCreator
             {
                 return $"Das Projekt hat kein Institut. Bitte kontaktiere {Global.WebAdmin}";
             }
-            
+
             return null;
         }
 
@@ -1483,18 +1531,6 @@ namespace ProStudCreator
         #endregion
 
         #region Attachments
-
-        private ProjectSingleAttachment GetProjectSingleAttachment(Attachements attach)
-        {
-            return new ProjectSingleAttachment
-            {
-                Guid = attach.ROWGUID,
-                BaseVersionId = attach.ProjectId,
-                Name = attach.FileName,
-                Size = FixupSize((long)(attach.UploadSize ?? 0)),
-                FileType = GetFileTypeImgPath(attach.FileName)
-            };
-        }
 
         private string GetFileTypeImgPath(string filename)
         {
@@ -1542,15 +1578,15 @@ namespace ProStudCreator
             }
 
             using (var s = e.GetStreamContents())
-            if (db.Attachements.Any(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted))
-            {
-                SaveFileInDb(db.Attachements.Single(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted), s);
-            }
-            else
-            {
-                var attachement = CreateNewAttach(e.FileSize, e.FileName);
-                SaveFileInDb(attachement, s);
-            }
+                if (db.Attachements.Any(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted))
+                {
+                    SaveFileInDb(db.Attachements.Single(a => a.ProjectId == pageProject.Id && a.FileName == e.FileName && !a.Deleted), s);
+                }
+                else
+                {
+                    var attachement = CreateNewAttach(e.FileSize, e.FileName);
+                    SaveFileInDb(attachement, s);
+                }
 
             divDownloadBtn.Visible = true;
 
@@ -1623,10 +1659,14 @@ namespace ProStudCreator
 
         protected void GridProjectAttachs_OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType != DataControlRowType.DataRow) return;
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
+
             // var project = db.Projects.Single(item => item.Id == ((ProjectSingleAttachment)e.Row.DataItem).BaseVersionId);
 
-            if (!pageProject.UserHasAdvisor2Rights())
+            var guid = ((ProjectSingleAttachment)e.Row.DataItem).Guid;
+
+            if (!pageProject.UserHasAdvisor2Rights() || guid == gradingStudent1GUID || guid == gradingStudent2GUID)
                 e.Row.Cells[e.Row.Cells.Count - 1].Visible = false;
 
             try
@@ -1648,18 +1688,22 @@ namespace ProStudCreator
 
         protected void GridProjectAttachs_OnRowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName != "deleteProjectAttach") return;
+            if (e.CommandName != "deleteProjectAttach")
+                return;
+
             var guid = new Guid(e.CommandArgument.ToString());
+
+            if (guid == gradingStudent1GUID || guid == gradingStudent2GUID)
+                return;
+
+
             var attach = db.Attachements.Single(a => a.ROWGUID == guid);
             attach.DeletedDate = DateTime.Now;
             attach.Deleted = true;
             attach.DeletedUser = ShibUser.GetEmail();
             db.SubmitChanges();
 
-
-            gridProjectAttachs.DataSource = db.Attachements.Where(item => item.ProjectId == pageProject.Id && !item.Deleted)
-                .Select(i => GetProjectSingleAttachment(i));
-            gridProjectAttachs.DataBind();
+            UpdateProjectAttachments();
 
             updateProjectAttachements.Update();
             divDownloadBtn.Visible = gridProjectAttachs.Rows.Count > 0;
@@ -1668,7 +1712,13 @@ namespace ProStudCreator
 
         protected void GridProjectAttachs_OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Redirect("ProjectFilesDownload?guid=" + (Guid)gridProjectAttachs.SelectedValue);
+            var selectedGuid = (Guid)gridProjectAttachs.SelectedValue;
+            if (selectedGuid == gradingStudent1GUID)
+                Response.Redirect("PDF-Grading?dl=true&id=" + id + "&student=1");
+            else if (selectedGuid == gradingStudent2GUID)
+                Response.Redirect("PDF-Grading?dl=true&id=" + id + "&student=2");
+            else
+                Response.Redirect("ProjectFilesDownload?guid=" + selectedGuid);
         }
 
         protected void DownloadFiles_OnClick(object sender, EventArgs e)
@@ -1800,7 +1850,7 @@ namespace ProStudCreator
 
             if (OpenedGradingFor.Value == "1")
             {
-                if(pageProject.Student1GradingV1 == null)
+                if (pageProject.Student1GradingV1 == null)
                     pageProject.Student1GradingV1 = CreateDefaultGradingV1();
                 gradingControl.SaveFormFields(pageProject.Student1GradingV1);
                 db.SubmitChanges();

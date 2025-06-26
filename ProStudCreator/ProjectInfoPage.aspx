@@ -259,9 +259,9 @@
                         <div class="col-md-2">
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent1Admin" CssClass="form-control"></asp:TextBox>
                         </div>
-                        <div class="col-md-4 alignbottom">
+                        <div class="col-md-4 alignbottom" style="padding-top:0px;">
                             <asp:Button runat="server" OnClick="Student1OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
-                            <a runat="server" onclick=""></a>
+                            <a runat="server" title="PDF anzeigen" id="lnkOpenPDFEvaluation1" style="margin-top:0px;" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank"></a>
                         </div>
                     </div>
                     <div runat="server" id="DivGradeStudent2" class="form-group">
@@ -270,8 +270,9 @@
                         <div class="col-md-2">
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent2Admin" CssClass="form-control"></asp:TextBox>
                         </div>
-                        <div class="col-md-4 alignbottom">
+                        <div class="col-md-4 alignbottom" style="padding-top:0px;">
                             <asp:Button runat="server" OnClick="Student2OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
+                            <a runat="server" title="PDF anzeigen" id="lnkOpenPDFEvaluation2" style="margin-top:0px;" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank"></a>
                         </div>
                     </div>
                     <div class="form-group" style="text-align: left" runat="server" visible="false" id="DivGradeWarning">

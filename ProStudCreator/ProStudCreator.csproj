@@ -217,7 +217,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="pictures\Arial-Unicode-Bold.ttf" />
+    <Content Include="pictures\Arial-Unicode.ttf" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
+    <Content Include="PDF-Grading.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
@@ -363,6 +366,13 @@
       <DependentUpon>Ablauf.aspx</DependentUpon>
     </Compile>
     <Compile Include="GradingV1Extensions.cs" />
+    <Compile Include="PDF-Grading.aspx.cs">
+      <DependentUpon>PDF-Grading.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PDF-Grading.aspx.designer.cs">
+      <DependentUpon>PDF-Grading.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GradingV1Control.ascx.cs">
       <DependentUpon>GradingV1Control.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

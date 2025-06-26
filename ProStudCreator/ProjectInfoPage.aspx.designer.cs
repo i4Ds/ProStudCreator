@@ -636,6 +636,15 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox NumGradeStudent1Admin;
 
         /// <summary>
+        /// lnkOpenPDFEvaluation1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkOpenPDFEvaluation1;
+
+        /// <summary>
         /// DivGradeStudent2 control.
         /// </summary>
         /// <remarks>
@@ -670,6 +679,15 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox NumGradeStudent2Admin;
+
+        /// <summary>
+        /// lnkOpenPDFEvaluation2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkOpenPDFEvaluation2;
 
         /// <summary>
         /// DivGradeWarning control.
