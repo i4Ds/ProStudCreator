@@ -17,30 +17,24 @@ namespace ProStudCreator.UserControls
             }
         }
 
-        private Project _project;
-        public Project Project
-        {
-            get => _project;
-            set
-            {
-                _project = value;
-                lblProjectTitle.Text = _project.Name;
-
-                if(_project.Advisor2 == null)
-                    lblAdvisor.Text = _project.Advisor1.Name;
-                else
-                    lblAdvisor.Text = $"{_project.Advisor1.Name}, {_project.Advisor2.Name}";
-
-                lblExpert.Text = _project.Expert?.Name ?? "-";
-            }
-        }
-
         public void Initialize()
         {
         }
 
-        public void LoadFormFields(GradingV1 _grading)
+        public void LoadFormFields(Project _project, string _projectName, bool _underNDA, GradingV1 _grading)
         {
+            lblProjectTitle.Text = _projectName;
+
+            if (_project.Advisor2 == null)
+                lblAdvisor.Text = _project.Advisor1.Name;
+            else
+                lblAdvisor.Text = $"{_project.Advisor1.Name}, {_project.Advisor2.Name}";
+
+            lblExpert.Text = _project.Expert?.Name ?? "-";
+
+            chkUnderNDA.Checked = _underNDA;
+            chkNotUnderNDA.Checked = !_underNDA;
+
             txtCriticalAcclaim.Text = _grading.CriticalAcclaim;
 
             // Block A fields
@@ -123,8 +117,10 @@ namespace ProStudCreator.UserControls
             UpdateCalculatedGrades();
         }
 
-        public void SaveFormFields(GradingV1 _grading)
+        public void SaveFormFields(out bool _underNDA, GradingV1 _grading)
         {
+            _underNDA = chkUnderNDA.Checked;
+
             _grading.CriticalAcclaim = txtCriticalAcclaim.Text;
 
             // Block A fields

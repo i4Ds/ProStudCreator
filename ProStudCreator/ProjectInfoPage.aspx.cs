@@ -1802,8 +1802,7 @@ namespace ProStudCreator
             OpenedGradingFor.Value = "1";
             PopupTitle.Text = $"Bewertung von {pageProject.GetStudent1FullName()}";
             gradingControl.StudentName = pageProject.GetStudent1FullName();
-            gradingControl.Project = pageProject;
-            gradingControl.LoadFormFields(pageProject.Student1GradingV1 ?? CreateDefaultGradingV1());
+            gradingControl.LoadFormFields(pageProject, ProjectTitleAdmin.Text, chkNDA.Checked, pageProject.Student1GradingV1 ?? CreateDefaultGradingV1());
 
             if (pageProject.Student2GradingV1 != null && pageProject.LogStudent2Mail != null)
             {
@@ -1822,8 +1821,7 @@ namespace ProStudCreator
             PopupTitle.Text = $"Bewertung von {pageProject.GetStudent2FullName()}";
 
             gradingControl.StudentName = pageProject.GetStudent2FullName();
-            gradingControl.Project = pageProject;
-            gradingControl.LoadFormFields(pageProject.Student2GradingV1 ?? CreateDefaultGradingV1());
+            gradingControl.LoadFormFields(pageProject, ProjectTitleAdmin.Text, chkNDA.Checked, pageProject.Student2GradingV1 ?? CreateDefaultGradingV1());
 
             if (pageProject.Student1GradingV1 != null && pageProject.LogStudent1Mail != null)
             {
@@ -1850,18 +1848,21 @@ namespace ProStudCreator
             {
                 if (pageProject.Student1GradingV1 == null)
                     pageProject.Student1GradingV1 = CreateDefaultGradingV1();
-                gradingControl.SaveFormFields(pageProject.Student1GradingV1);
+
+                gradingControl.SaveFormFields(out var underNDA, pageProject.Student1GradingV1);
                 db.SubmitChanges();
 
+                chkNDA.Checked = underNDA;
                 NumGradeStudent1Admin.Text = gradingControl.ComputeFinalGrade().ToString("0.0", CultureInfo.InvariantCulture);
             }
             if (OpenedGradingFor.Value == "2")
             {
                 if (pageProject.Student2GradingV1 == null)
                     pageProject.Student2GradingV1 = CreateDefaultGradingV1();
-                gradingControl.SaveFormFields(pageProject.Student2GradingV1);
+                gradingControl.SaveFormFields(out var underNDA, pageProject.Student2GradingV1);
                 db.SubmitChanges();
 
+                chkNDA.Checked = underNDA;
                 NumGradeStudent2Admin.Text = gradingControl.ComputeFinalGrade().ToString("0.0", CultureInfo.InvariantCulture);
             }
         }
@@ -1874,10 +1875,10 @@ namespace ProStudCreator
         protected void CopyGradingV1_Click(object sender, EventArgs e)
         {
             if (OpenedGradingFor.Value == "1" && pageProject.Student2GradingV1 != null)
-                gradingControl.LoadFormFields(pageProject.Student2GradingV1);
+                gradingControl.LoadFormFields(pageProject, ProjectTitleAdmin.Text, chkNDA.Checked, pageProject.Student2GradingV1);
 
             if (OpenedGradingFor.Value == "2" && pageProject.Student1GradingV1 != null)
-                gradingControl.LoadFormFields(pageProject.Student1GradingV1);
+                gradingControl.LoadFormFields(pageProject, ProjectTitleAdmin.Text, chkNDA.Checked, pageProject.Student1GradingV1);
 
             PopupExtender.Show();
         }

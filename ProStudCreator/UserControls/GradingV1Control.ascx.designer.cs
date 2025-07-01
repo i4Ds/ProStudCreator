@@ -69,6 +69,24 @@ namespace ProStudCreator.UserControls
         protected global::System.Web.UI.WebControls.Label lblFinalGradeFrontPage;
 
         /// <summary>
+        /// chkNotUnderNDA control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton chkNotUnderNDA;
+
+        /// <summary>
+        /// chkUnderNDA control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton chkUnderNDA;
+
+        /// <summary>
         /// txtAStrategyWeight control.
         /// </summary>
         /// <remarks>

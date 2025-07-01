@@ -151,12 +151,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:RadioButton runat="server" Text="Grundsätzlich zur Veröffentlichung geeignet (nach Absprache mit dem Auftraggeber)" GroupName="OverviewNDA" /><br />
+                                <asp:RadioButton ID="chkNotUnderNDA" runat="server" Text="Grundsätzlich zur Veröffentlichung geeignet (nach Absprache mit dem Auftraggeber)" GroupName="OverviewNDA" /><br />
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <asp:RadioButton runat="server" Text="Aus Gründen der Vertraulichkeit nicht zur Veröffentlichung und Einsichtnahme geeignet" GroupName="OverviewNDA" />
+                                <asp:RadioButton ID="chkUnderNDA" runat="server" Text="Aus Gründen der Vertraulichkeit nicht zur Veröffentlichung und Einsichtnahme geeignet" GroupName="OverviewNDA" />
                             </td>
                         </tr>
                     </table>
