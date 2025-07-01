@@ -150,7 +150,7 @@ namespace ProStudCreator
                     fontBold));
 
                 t.AddCell(new Paragraph("Experte:", fontBold));
-                t.AddCell(new Paragraph(project.Expert?.Name ?? "?", fontBold));
+                t.AddCell(new Paragraph(project.Expert?.Name ?? "", fontBold));
 
                 foreach (var r in t.Rows)
                     r.GetCells()[1].HorizontalAlignment = PdfPCell.ALIGN_CENTER;

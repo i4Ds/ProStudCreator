@@ -31,7 +31,7 @@ namespace ProStudCreator.UserControls
                 else
                     lblAdvisor.Text = $"{_project.Advisor1.Name}, {_project.Advisor2.Name}";
 
-                lblExpert.Text = _project.Expert?.Name ?? "?";
+                lblExpert.Text = _project.Expert?.Name ?? "-";
             }
         }
 
