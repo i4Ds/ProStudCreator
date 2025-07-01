@@ -237,8 +237,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtAProjectSummaryPlanningWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtAProjectSummaryPlanning" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small"><%= ProStudCreator.GradingV1.AProjectSummaryPlanningSchema.Replace("\n","<br/>") %>
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.AProjectSummaryPlanningSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtAProjectSummaryPlanningComment"></asp:TextBox></td>
                         </tr>
@@ -280,13 +279,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBTheoreticalWorkWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtBTheoreticalWork" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Neuartiger Lösungsansatz, der die üblichen theoretischen Grundlagenkenntnisse von Studierenden klar übertrifft, sehr gut und umfassend umgesetzt<br />
-                                5: Problem umfassend in allen Aspekten gelöst<br />
-                                4: Problem mit bekannten Konzepten und Tools in seinen wesentlichen Aspekten gelöst<br />
-                                3: Unzureichender theoretischer Hintergrund, teilweise falsche Argumentation<br />
-                                2: Theoretischer Hintergrund nicht ersichtlich, keine logische Argumentation<br />
-                                1: Keine Bearbeitung eines theoretischen Hintergrundes
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.BTheoreticalWorkSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtBTheoreticalWorkComment"></asp:TextBox></td>
                         </tr>
@@ -300,13 +293,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBPracticalWorkWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtBPracticalWork" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Äusserst umfassender und effizienter Einsatz der verfügbaren Mittel und Verfahren, Entwicklung problemspezifischer neuer Methoden<br />
-                                5: Die in Frage kommenden Verfahren werden in korrekter Gewichtung umfassend und effektiv eingesetzt<br />
-                                4: Ausgewählte Standardverfahren und Vorgehensweisen werden zuverlässig eingesetzt<br />
-                                3: Eingesetzte Verfahren nur teilweise angemessen, Durchführung unzureichend<br />
-                                2: Keine oder falsche Verfahren angewendet, keine oder unbrauchbare Durchführung<br />
-                                1: Mutwillig falscher Einsatz von Verfahren mit resultierenden Schäden an Personal und/oder Geräten
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.BPracticalWorkSchema.Replace("\n","<br/>") %> </td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtBPracticalWorkComment"></asp:TextBox></td>
                         </tr>
@@ -319,13 +306,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBEvaluationWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtBEvaluation" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Sämtliche Fragestellungen aus der PV beantwortet, Ergebnisse umfassend und kritisch analysiert, klare Schlussfolgerungen gezogen und Vorschläge für Umsetzung und Vertiefung erarbeitet<br />
-                                5: Bis auf wenige Details alle Fragestellungen der PV beantwortet, vollständige Analyse der Ergebnisse, ausgerichtet auf deren Umsetzung<br />
-                                4: Die wichtigsten Fragestellungen der PV beantwortet, Analyse beschränkt sich auf Vergleich mit Aufgabenstellung, keine weiterführenden Aussagen<br />
-                                3: Fragestellungen der PV nur teilweise beantwortet, Ergebnisse unvollständig analysiert, teilweise falsche Schlussfolgerungen<br />
-                                2: Fragestellungen der PV kaum beantwortet, nicht in der Lage, die Ergebnisse einzuordnen und zu bewerten<br />
-                                1: Keine Bewertung der Ergebnisse durchgeführt und dokumentiert
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.BEvaluationSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtBEvaluationComment"></asp:TextBox></td>
                         </tr>
@@ -338,13 +319,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBResultsWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtBResults" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Ziel übertroffen, zusätzlicher  unerwarteter Kundennutzen und Erkenntnisgewinn<br />
-                                5: Ziel vollumfänglich erreicht<br />
-                                4: Ziel im Wesentlichen erreicht, Einzelaspekte ergänzungsbedürftig<br />
-                                3: Weniger als die Hälfte der Ziele erreicht<br />
-                                2: Die meisten Ziele wurden nicht erreicht, Ergebnisse nicht brauchbar<br />
-                                1: Kein Ziel wurde erreicht
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.BResultsSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtBResultsComment"></asp:TextBox></td>
                         </tr>
@@ -357,13 +332,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtBAutonomyWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtBAutonomy" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Sehr geringer Betreuungsaufwand. Kritik und Anregungen von Betreuenden und Aussenstehenden werden kritisch hinterfragt, selbstständig weiterentwickelt und bestmöglichst umgesetzt.<br />
-                                5: Geringer Betreuungsaufwand. Kritik und Anregungen von Betreuenden und Aussenstehenden werden umfänglich und gut umgesetzt.<br />
-                                4: Durchschnittlicher Betreuungsaufwand. Kritik und Anregungen von Betreuenden werden weitgehend umgesetzt.<br />
-                                3: Überdurchschnittlicher Betreungsaufwand. Anregungen werden nur teilweise umgesetzt oder es muss daran erinnert werden.<br />
-                                2: Hoher Betreungsaufwand. Auch nach mehrmaliger Erinnerung nur einfachste Anregungen umgesetzt.<br />
-                                1: Trotz sehr hohem Betreuungsaufwand wurden selbst einfache Anregungen nicht umgesetzt.
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.BAutonomySchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtBAutonomyComment"></asp:TextBox></td>
                         </tr>
@@ -407,13 +376,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtCDocumentationWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtCDocumentation" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Bericht nachvollziehbar, sehr gute Leseführung, Inhalte logisch strukturiert, sehr umfassen informativ, formal sowie sprachlich und gestalterisch herausragend<br />
-                                5: Bericht inhaltlich vollständig, gut nachvollziehbar, formal korrekt, sprachlich und gestalterisch ansprechend<br />
-                                4: Alle wesentlichen Aspekte dokumentiert, wenig Leseführung, inhaltlich und sprachlich mehrheitlich verständlich<br />
-                                3: Nur ein Teil der wesentlichen Aspekte dokumentiert, anstrengend zu lesen, Darstellung verbesserungswürdig<br />
-                                2: Wesentliche Aspekte nicht dokumentiert, Bericht unstrukturiert, Darstellung mangelhaft, formal ungenügend<br />
-                                1: Keine Dokumentation zum Abgabetermin vorhanden
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.CDocumentationSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtCDocumentationComment"></asp:TextBox></td>
                         </tr>
@@ -427,13 +390,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0" max="2" step="0.5" ID="txtCDefenseWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtCDefense" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Alle Fragen richtig und souverän beantwortet, Frage in Kontext eingeordnet, eine Venetzung der Fachinhalte ist klar ersichtlich
-                                                    5: Alle Fragen korrekt und auf die Arbeit bezogen beantwortet
-                                                    4: Fragen zögernd, aber im Wesentlichen korrekt beantwortet, manchmal Probleme bei spezifischen Details
-                                                    3: Fragen teilweise falsch beantwortet, kein Detailwissen vohanden
-                                                    2: Überwiegende Mehrzahl der Fragen nicht oder nicht korrekt beantwortet, die übrigen nur mangelhaft
-                                                    1: Nicht auf Fragen eingegangen, keine richtige Antwort
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.CDefenseSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtCDefenseComment"></asp:TextBox></td>
                         </tr>
@@ -446,13 +403,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtCPresentationsWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtCPresentations" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Inhaltlich vollständiger und logisch aufgebauter Vortrag,  grafisch sehr gut gestaltet (unterstützend) und souverän vorgetragen, Fragen korrekt und umfassend beantwortet<br />
-                                5: Vortrag inhaltlich vollständig, Aufbau und Präsentation logisch und ansprechend, Fragen korrekt beantwortet<br />
-                                4: Im Vortrag relevante Inhalte behandelt, Einschränkungen in Aufbau (inkl. Folien) und Präsentationstechnik, Fragen gut beantwortet<br />
-                                3: Vortrag mit inhaltlichen Lücken, Aufbau unklar / unlogisch, Fragen nur teilweise richtig beantwortet<br />
-                                2: Vortrag inhaltlich unzureichend, Präsentation mangelhaft, Fragen nicht oder kaum beantwortet<br />
-                                1: Vortrag mit falschem/viel zu wenig Inhalt, Präsentation sehr schwach, keine Fragen beantwortet
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.CPresentationsSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtCPresentationsComment"></asp:TextBox></td>
                         </tr>
@@ -494,14 +445,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtDCollaborationInternalWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtDCollaborationInternal" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">Eine gute Zusammenarbeit und Kommunikation beinhaltet die Einladung zu Sitzung mit Traktandenlisten, das Führen eines Sitzungsprotokolls mit Dokumentation der wichtigen Beschlüsse, das kommentierte Nachbessern von Zeitplänen sowie die Aktivierung von internem Wissen. Der/die Studierende setzte dies in folgendem Masse um:<br />
-                                6: Äusserst selbständig<br />
-                                5: Angemessen<br />
-                                4: Ausreichend<br />
-                                3: Auf Anregung<br />
-                                2: Nach mehrmaligem Nachfragen<br />
-                                1: Nicht/unzureichend
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.DCollaborationInternalSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtDCollaborationInternalComment"></asp:TextBox></td>
                         </tr>
@@ -515,14 +459,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0" max="2" step="0.5" ID="txtDCollaborationExternalWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtDCollaborationExternal" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">Eine gute Zusammenarbeit und Kommunikation beinhaltet die Einladung zu Sitzung mit Traktandenlisten, das Führen eines Sitzungsprotokolls mit Dokumentation der wichtigen Beschlüsse, das kommentierte Nachbessern von Zeitplänen sowie die Aktivierung von internem Wissen. Der/die Studierende setzte dies in folgendem Masse um:<br />
-                                6: Äusserst selbständig<br />
-                                5: Angemessen<br />
-                                4: Ausreichend<br />
-                                3: Auf Anregung<br />
-                                2: Nach mehrmaligem Nachfragen<br />
-                                1: Nicht/unzureichend
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.DCollaborationExternalSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtDCollaborationExternalComment"></asp:TextBox></td>
                         </tr>
@@ -535,13 +472,7 @@
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0.5" max="2" step="0.5" ID="txtDMotivationWeight" CssClass="form-control"></asp:TextBox></td>
                             <td>
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="1" max="6" step="0.1" ID="txtDMotivation" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">6: Persönlicher Einsatz hervorragend, Arbeitsumfang ausserordentlich hoch<br />
-                                5: Hoher persönlicher Einsatz, überdurchschnittlicher Arbeitsumfang<br />
-                                4: Persönlicher Einsatz gerade noch ausreichend, Arbeitsumfang durchschnittlich<br />
-                                3: Unzureichender persönlicher Einsatz, Arbeitsumfang unterdurchschnittlich<br />
-                                2: Nicht motiviert, Einsatz mangelhaft, Arbeitsumfang unzureichend<br />
-                                1: Demotiviert / destruktiv, Einsatz nicht vorhanden, kaum Arbeiten geleistet
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.DMotivationSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtDMotivationComment"></asp:TextBox></td>
                         </tr>
@@ -590,10 +521,7 @@
                             </td>
                             <td colspan="2">
                                 <asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="txtENewTopic" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">10: Mit der Thematik noch nie Kontakt gehabt<br />
-                                5: Thematik bekannt (z.B. durch Unterricht)<br />
-                                0: Mit Thema vertraut (z.B. durch Semesterarbeit)
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.ENewTopicSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtENewTopicComment"></asp:TextBox></td>
                         </tr>
@@ -604,10 +532,7 @@
                             </td>
                             <td colspan="2">
                                 <asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="txtEDifficulty" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">10: Ausserordentlich hoch<br />
-                                5: Überdurchschnittlich<br />
-                                0: Standard
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.EDifficultySchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtEDifficultyComment"></asp:TextBox></td>
                         </tr>
@@ -619,10 +544,7 @@
                             </td>
                             <td colspan="2">
                                 <asp:TextBox runat="server" TextMode="Number" min="0" max="10" step="5" ID="txtEEnvironment" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">10: Ausserordentlich schwierig<br />
-                                5: Schwierig<br />
-                                0: Standard
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.EEnvironmentSchema.Replace("\n","<br/>") %></td>
                             <td>
                                 <asp:TextBox runat="server" TextMode="MultiLine" Columns="30" Rows="6" ID="txtEEnvironmentComment"></asp:TextBox></td>
                         </tr>
@@ -635,9 +557,7 @@
                             </td>
                             <td class="bonusCell" colspan="2">
                                 <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="OnGradeChanged" TextMode="Number" min="0" max="0.2" step="0.1" ID="txtEBonus" CssClass="form-control"></asp:TextBox></td>
-                            <td class="small">Absolute Korrektur;<br />
-                                Anwendung z. B. bei mehreren Partnern mit unterschiedlichen Schwerpunkten; komplexer Datenanalyse; neuen, noch nicht erprobten Tools u.Ä.
-                            </td>
+                            <td class="small"><%= ProStudCreator.GradingV1.EBonusSchema.Replace("\n","<br/>") %></td>
                             <td></td>
                         </tr>
 
