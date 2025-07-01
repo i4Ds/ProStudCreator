@@ -255,22 +255,22 @@
                 <ContentTemplate>
                     <div runat="server" id="DivGradeStudent1" class="form-group">
                         <asp:Label runat="server" Text="Note:" CssClass="control-label col-md-3" ID="LabelGradeStudent1"></asp:Label>
-                        <asp:Label runat="server" ID="NumGradeStudent1" CssClass="col-md-6 alignbottom"></asp:Label>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
+                            <asp:Label runat="server" ID="NumGradeStudent1" CssClass="alignbottom">Die Noten können erst eingetragen werden, wenn die Felder: Durchführungssprache, Websummary und Verrechnungsstatus ausgefüllt sind.</asp:Label>
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent1Admin" CssClass="form-control"></asp:TextBox>
                         </div>
-                        <div class="col-md-4 alignbottom" style="padding-top:0px;">
+                        <div class="col-md-3 alignbottom" style="padding-top:0px;">
                             <asp:Button runat="server" OnClick="Student1OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
                             <a runat="server" title="PDF anzeigen" id="lnkOpenPDFEvaluation1" style="margin-top:0px;" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank"></a>
                         </div>
                     </div>
                     <div runat="server" id="DivGradeStudent2" class="form-group">
                         <asp:Label runat="server" Text="Note:" CssClass="control-label col-md-3" ID="LabelGradeStudent2"></asp:Label>
-                        <asp:Label runat="server" ID="NumGradeStudent2" CssClass="col-md-6 alignbottom"></asp:Label>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
+                            <asp:Label runat="server" ID="NumGradeStudent2" CssClass="alignbottom">Die Noten können erst eingetragen werden, wenn die Felder: Durchführungssprache, Websummary und Verrechnungsstatus ausgefüllt sind.</asp:Label>
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent2Admin" CssClass="form-control"></asp:TextBox>
                         </div>
-                        <div class="col-md-4 alignbottom" style="padding-top:0px;">
+                        <div class="col-md-3 alignbottom" style="padding-top:0px;">
                             <asp:Button runat="server" OnClick="Student2OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
                             <a runat="server" title="PDF anzeigen" id="lnkOpenPDFEvaluation2" style="margin-top:0px;" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank"></a>
                         </div>

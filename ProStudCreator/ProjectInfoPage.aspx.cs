@@ -921,10 +921,8 @@ namespace ProStudCreator
                 {
                     NumGradeStudent1Admin.Visible = NumGradeStudent2Admin.Visible = false;
                     NumGradeStudent1.Visible = NumGradeStudent2.Visible = true;
-                    NumGradeStudent1.Text = "Die Noten können erst eingetragen werden, wenn die Felder: Durchführungssprache, Websummary und Verrechnungsstatus ausgefüllt sind.";
-                    NumGradeStudent2.Text = "Die Noten können erst eingetragen werden, wenn die Felder: Durchführungssprache, Websummary und Verrechnungsstatus ausgefüllt sind.";
-                    NumGradeStudent1.ForeColor = System.Drawing.Color.Red;
-                    NumGradeStudent2.ForeColor = System.Drawing.Color.Red;
+                    NumGradeStudent1.ForeColor = Color.Red;
+                    NumGradeStudent2.ForeColor = Color.Red;
                 }
 
                 DivGradeWarning.Visible = true;
