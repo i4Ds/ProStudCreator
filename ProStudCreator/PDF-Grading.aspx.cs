@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.UI;
 
@@ -245,7 +246,7 @@ namespace ProStudCreator
                 var t = new PdfPTable(5) { SpacingAfter = 15f, WidthPercentage = 100f };
                 t.SetWidths(new float[] { 5, 25, 10, 10, 50 });
 
-                t.AddCell(new Paragraph("", fontBold));
+                t.AddCell("");
                 t.AddCell(new Paragraph("Name:", fontBold));
                 t.AddCell(new Paragraph("Gewich-\ntung", fontBoldBlue));
                 t.AddCell(new Paragraph("Note", fontBoldBlue));
@@ -255,15 +256,13 @@ namespace ProStudCreator
                 t.Rows.Last().GetCells()[2].HorizontalAlignment = Element.ALIGN_CENTER;
                 t.Rows.Last().GetCells()[3].HorizontalAlignment = Element.ALIGN_CENTER;
 
+                //block 1
                 {
                     t.AddCell(new Paragraph("1", fontBold));
-
-                    var header = new PdfPCell(new Paragraph("ORGANISATION, PLANUNG, METHODIK", fontBold));
-                    header.BackgroundColor = new BaseColor(0xD8, 0xE4, 0xBC);
-                    header.Colspan = 4;
-                    header.HorizontalAlignment = Element.ALIGN_CENTER;
-                    t.AddCell(header);
-                    t.Rows.Last().GetCells()[0].BackgroundColor = new BaseColor(0xD8,0xE4,0xBC);
+                    t.AddCell(new PdfPCell(new Paragraph("ORGANISATION, PLANUNG, METHODIK", fontBold))
+                    {
+                        Colspan = 4
+                    });
 
                     t.AddCell(new Paragraph("1.1", fontRegular));
                     t.AddCell(new Paragraph()
@@ -286,24 +285,309 @@ namespace ProStudCreator
                     t.AddCell(new Paragraph(grading.AProjectSummaryPlanningWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
                     t.AddCell(new Paragraph(grading.AProjectSummaryPlanning.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
                     t.AddCell(new Paragraph(GradingV1.AProjectSummaryPlanningSchema, fontSmall));
+
+                    t.AddCell("");
+                    t.AddCell(new PdfPCell(new Paragraph("Blocknote 1 - Gewicht: 1", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph("1", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.ComputeBlockAGrade().ToString("0.0", CultureInfo.InvariantCulture), fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell("");
                 }
 
-                foreach (var r in t.Rows.Skip(1))
+                //block 2
+                {
+                    t.AddCell(new Paragraph("2", fontBold));
+                    t.AddCell(new PdfPCell(new Paragraph("FACHLICHES, ANWENDUNG VON WISSEN, SELBSTÄNDIGKEIT", fontBold))
+                    {
+                        Colspan = 4
+                    });
+
+                    t.AddCell(new Paragraph("2.1", fontRegular));
+                    t.AddCell(new Paragraph()
+                    {
+                        new Chunk("Theoretische Arbeit\n", fontBoldItalic),
+                        new Chunk("Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Theorie oder Praxis verschoben werden.", fontSmallItalic),
+                    });
+                    t.AddCell(new Paragraph(grading.BTheoreticalWorkWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.BTheoreticalWork.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.BTheoreticalWorkSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("2.2", fontRegular));
+                    t.AddCell(new Paragraph()
+                    {
+                        new Chunk("Praktische Arbeit\n", fontBoldItalic),
+                        new Chunk("Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Theorie oder Praxis verschoben werden.", fontSmallItalic),
+                    });
+                    t.AddCell(new Paragraph(grading.BPracticalWorkWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.BPracticalWork.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.BPracticalWorkSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("2.3", fontRegular));
+                    t.AddCell(new Paragraph("Analyse von Ergebnissen", fontBoldItalic));
+                    t.AddCell(new Paragraph(grading.BEvaluationWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.BEvaluation.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.BEvaluationSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("2.4", fontRegular));
+                    t.AddCell(new Paragraph("Zielerreichung", fontBoldItalic));
+                    t.AddCell(new Paragraph(grading.BResultsWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.BResults.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.BResultsSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("2.5", fontRegular));
+                    t.AddCell(new Paragraph("Selbstständigkeit/Betreuungsintensität", fontBoldItalic));
+                    t.AddCell(new Paragraph(grading.BAutonomyWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.BAutonomy.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.BAutonomySchema, fontSmall));
+
+                    t.AddCell("");
+                    t.AddCell(new PdfPCell(new Paragraph("Blocknote 2 - Gewicht: 4", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph("4", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.ComputeBlockBGrade().ToString("0.0", CultureInfo.InvariantCulture), fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell("");
+                }
+
+                //block 3
+                {
+                    t.AddCell(new Paragraph("3", fontBold));
+                    t.AddCell(new PdfPCell(new Paragraph("DOKUMENTATION, WISSENSTRANSFER", fontBold))
+                    {
+                        Colspan = 4
+                    });
+
+                    t.AddCell(new Paragraph("3.1", fontRegular));
+                    t.AddCell(new Paragraph("Bericht/Dokumentation", fontBoldItalic));
+                    t.AddCell(new Paragraph(grading.CDocumentationWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.CDocumentation.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.CDocumentationSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("3.2", fontRegular));
+                    t.AddCell(new Paragraph()
+                    {
+                        new Chunk("Verteidigung (P6)\n", fontBoldItalic),
+                        new Chunk("(Bei P5 Gewicht auf 0 setzen)", fontSmallItalic),
+                    });
+                    t.AddCell(new Paragraph(grading.CDefenseWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.CDefense.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.CDefenseSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("3.3", fontRegular));
+                    t.AddCell(new Paragraph("Präsentationen (Zwischen- und Schlusspräsentation, P5 und P6)", fontBoldItalic));
+                    t.AddCell(new Paragraph(grading.CPresentationsWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.CPresentations.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.CPresentationsSchema, fontSmall));
+
+                    t.AddCell("");
+                    t.AddCell(new PdfPCell(new Paragraph("Blocknote 3 - Gewicht: 2", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph("2", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.ComputeBlockCGrade().ToString("0.0", CultureInfo.InvariantCulture), fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell("");
+                }
+
+                //block 4
+                {
+                    t.AddCell(new Paragraph("4", fontBold));
+                    t.AddCell(new PdfPCell(new Paragraph("KOMMUNIKATION, MOTIVATION", fontBold))
+                    {
+                        Colspan = 4
+                    });
+
+                    t.AddCell(new Paragraph("4.1", fontRegular));
+                    t.AddCell(new Paragraph()
+                    {
+                        new Chunk("Zusammenarbeit und Kommunikation intern\n", fontBoldItalic),
+                        new Chunk("Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Intern oder Extern verschoben werden.", fontSmallItalic),
+                    });
+                    t.AddCell(new Paragraph(grading.DCollaborationInternalWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.DCollaborationInternal.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.DCollaborationInternalSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("4.2", fontRegular));
+                    t.AddCell(new Paragraph()
+                    {
+                        new Chunk("Zusammenarbeit und Kommunikation extern\n", fontBoldItalic),
+                        new Chunk("Die Gewichtung soll der Ausrichtung des Projekts entsprechend Richtung Intern oder Extern verschoben werden.", fontSmallItalic),
+                    });
+                    t.AddCell(new Paragraph(grading.DCollaborationExternalWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.DCollaborationExternal.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.DCollaborationExternalSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("4.3", fontRegular));
+                    t.AddCell(new Paragraph("Motivation, pers. Einsatz, Umfang", fontBoldItalic));
+                    t.AddCell(new Paragraph(grading.DMotivationWeight.ToString(CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(grading.DMotivation.ToString("0.0", CultureInfo.InvariantCulture), fontRegularBlue));
+                    t.AddCell(new Paragraph(GradingV1.DMotivationSchema, fontSmall));
+
+                    t.AddCell("");
+                    t.AddCell(new PdfPCell(new Paragraph("Blocknote 4 - Gewicht: 1", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph("1", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.ComputeBlockDGrade().ToString("0.0", CultureInfo.InvariantCulture), fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xE6, 0xB8, 0xB7)
+                    });
+                    t.AddCell("");
+                }
+
+                //pre bonus
+                {
+                    t.AddCell("");
+                    t.AddCell(new PdfPCell(new Paragraph("Zwischennote vor Bonus", fontBoldItalic))
+                    {
+                        BackgroundColor = new BaseColor(0xB1, 0xA0, 0xC7),
+                        VerticalAlignment = Element.ALIGN_MIDDLE
+                    });
+
+                    var header = new PdfPCell(new Paragraph(grading.ComputePreBonus().ToString("0.0", CultureInfo.InvariantCulture), fontBold));
+                    header.BackgroundColor = new BaseColor(0xB1, 0xA0, 0xC7);
+                    header.Colspan = 2;
+                    header.HorizontalAlignment = Element.ALIGN_CENTER;
+                    header.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    t.AddCell(header);
+                    t.AddCell("");
+                }
+
+                //bonus block
+                {
+                    t.AddCell(new Paragraph("5", fontBold));
+                    t.AddCell(new PdfPCell(new Paragraph("BONUS", fontBold))
+                    {
+                        Colspan = 4
+                    });
+
+                    t.AddCell(new Paragraph("", fontRegular));
+                    t.AddCell(new Paragraph("Neue Thematik", fontBoldItalic));
+                    t.AddCell(new PdfPCell(new Paragraph(grading.ENewTopic.ToString(CultureInfo.InvariantCulture), fontRegularBlue))
+                    {
+                        Colspan = 2
+                    });
+                    t.AddCell(new Paragraph(GradingV1.ENewTopicSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("", fontRegular));
+                    t.AddCell(new Paragraph("Schwierigkeitsgrad", fontBoldItalic));
+                    t.AddCell(new PdfPCell(new Paragraph(grading.EDifficulty.ToString(CultureInfo.InvariantCulture), fontRegularBlue))
+                    {
+                        Colspan = 2
+                    });
+                    t.AddCell(new Paragraph(GradingV1.EDifficultySchema, fontSmall));
+
+                    t.AddCell(new Paragraph("", fontRegular));
+                    t.AddCell(new Paragraph()
+                    {
+                        new Chunk("Umfeld\n", fontBoldItalic),
+                        new Chunk("(Projektpartner, Lieferanten usw.)", fontSmallItalic),
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.EEnvironment.ToString(CultureInfo.InvariantCulture), fontRegularBlue))
+                    {
+                        Colspan = 2
+                    });
+                    t.AddCell(new Paragraph(GradingV1.EEnvironmentSchema, fontSmall));
+
+                    t.AddCell(new Paragraph("", fontRegular));
+                    t.AddCell(new PdfPCell(new Paragraph()
+                    {
+                        new Chunk("Bonus\n", fontBoldItalic),
+                        new Chunk("absolute Notenkorrektur\nfestgelegt durch Betreuer aufgrund der Bonuspunkte (Wert wird nicht berechnet)", fontSmallItalic),
+                    })
+                    {
+                        BackgroundColor = new BaseColor(0xB1, 0xA0, 0xC7)
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.EBonus.ToString("0.0", CultureInfo.InvariantCulture), fontBoldItalic))
+                    {
+                        Colspan = 2
+                    });
+                    t.AddCell(new Paragraph(GradingV1.EBonusSchema, fontSmall));
+                }
+
+                //final grade
+                {
+                    t.AddCell(new Paragraph("", fontRegular));
+                    t.AddCell(new PdfPCell(new Paragraph("GESAMTNOTE", fontHeading))
+                    {
+                        BackgroundColor = new BaseColor(0xff, 0, 0),
+                        MinimumHeight = 20f,
+                        VerticalAlignment = Element.ALIGN_MIDDLE
+                    });
+                    t.AddCell(new PdfPCell(new Paragraph(grading.ComputeFinalGrade().ToString("0.0", CultureInfo.InvariantCulture), fontHeading))
+                    {
+                        Colspan = 2,
+                        BackgroundColor = new BaseColor(0xff, 0, 0),
+                        MinimumHeight = 20f,
+                        VerticalAlignment = Element.ALIGN_MIDDLE,
+                        HorizontalAlignment = Element.ALIGN_CENTER
+                    });
+                    t.AddCell("");
+                }
+
+                foreach (var r in t.Rows.Skip(1).Take(t.Rows.Count - 2))
                 {
                     var cells = r.GetCells();
                     cells[0].VerticalAlignment = Element.ALIGN_MIDDLE;
                     cells[0].HorizontalAlignment = Element.ALIGN_CENTER;
+                    cells[0].MinimumHeight = 20f;
                     if (cells[2] == null)
                     {
                         //section overview
+                        cells[1].VerticalAlignment = Element.ALIGN_MIDDLE;
+                        cells[1].HorizontalAlignment = Element.ALIGN_CENTER;
+                        cells[0].BackgroundColor =
+                            cells[1].BackgroundColor = new BaseColor(0xD8, 0xE4, 0xBC);
                     }
-                    else
+                    else if (cells[3] != null)
                     {
-                        //regular row
-                        cells[2].BackgroundColor = new BaseColor(0xd9, 0xd9, 0xd9);
-                        cells[3].BackgroundColor = new BaseColor(0xd9, 0xd9, 0xd9);
+                        if (cells[4].Phrase.Any())
+                        {
+                            //regular row
+                            cells[2].BackgroundColor = new BaseColor(0xd9, 0xd9, 0xd9);
+                            cells[3].BackgroundColor = new BaseColor(0xd9, 0xd9, 0xd9);
+                        }
+                        else
+                        {
+                            //summary row
+                            foreach (var cell in cells)
+                                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                        }
+
                         cells[2].HorizontalAlignment = Element.ALIGN_CENTER;
                         cells[3].HorizontalAlignment = Element.ALIGN_CENTER;
+                    }
+                    else if (cells[3] == null && cells[4].Phrase.Any()) // && cells[1].BackgroundColor == null)
+                    {
+                        //bonus rows
+                        cells[2].VerticalAlignment = Element.ALIGN_MIDDLE;
+                        cells[2].HorizontalAlignment = Element.ALIGN_CENTER;
+                        cells[2].BackgroundColor = new BaseColor(0xd9, 0xd9, 0xd9);
                     }
                 }
 

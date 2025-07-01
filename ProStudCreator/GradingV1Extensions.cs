@@ -144,7 +144,7 @@ namespace ProStudCreator
             "Absolute Korrektur;\n" +
             "Anwendung z. B. bei mehreren Partnern mit unterschiedlichen Schwerpunkten; komplexer Datenanalyse; neuen, noch nicht erprobten Tools u.Ä.";
 
-        private double ComputeBlockAGrade()
+        public double ComputeBlockAGrade()
         {
             var blockAGrade = (AStrategy * AStrategyWeight +
                              AProjectSummaryContents * AProjectSummaryContentsWeight +
@@ -154,7 +154,7 @@ namespace ProStudCreator
             return double.IsNaN(blockAGrade) ? 0 : blockAGrade;
         }
 
-        private double ComputeBlockBGrade()
+        public double ComputeBlockBGrade()
         {
             var blockBGrade = (BTheoreticalWork * BTheoreticalWorkWeight +
                              BPracticalWork * BPracticalWorkWeight +
@@ -167,7 +167,7 @@ namespace ProStudCreator
             return double.IsNaN(blockBGrade) ? 0 : blockBGrade;
         }
 
-        private double ComputeBlockCGrade()
+        public double ComputeBlockCGrade()
         {
             var blockCGrade = (CDocumentation * CDocumentationWeight +
                              CDefense * CDefenseWeight +
@@ -177,7 +177,7 @@ namespace ProStudCreator
             return double.IsNaN(blockCGrade) ? 0 : blockCGrade;
         }
 
-        private double ComputeBlockDGrade()
+        public double ComputeBlockDGrade()
         {
             var blockDGrade = (DCollaborationInternal * DCollaborationInternalWeight +
                              DCollaborationExternal * DCollaborationExternalWeight +
