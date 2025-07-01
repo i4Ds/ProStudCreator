@@ -14,9 +14,6 @@
     </asp:PlaceHolder>
     <webopt:BundleReference runat="server" Path="~/Content/css"/>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-    <%--<asp:ContentPlaceHolder ID="Stylesheets" runat="server">
-        <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
-    </asp:ContentPlaceHolder>--%>
 </head>
 <body>
 <form runat="server">

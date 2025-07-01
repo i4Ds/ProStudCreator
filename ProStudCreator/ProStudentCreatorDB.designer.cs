@@ -22,7 +22,7 @@ namespace ProStudCreator
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Database1")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="ProStudCreator")]
 	public partial class ProStudentCreatorDBDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -69,13 +69,10 @@ namespace ProStudCreator
     partial void InsertTopic(Topic instance);
     partial void UpdateTopic(Topic instance);
     partial void DeleteTopic(Topic instance);
+    partial void InsertGradingV1(GradingV1 instance);
+    partial void UpdateGradingV1(GradingV1 instance);
+    partial void DeleteGradingV1(GradingV1 instance);
     #endregion
-		
-		public ProStudentCreatorDBDataContext() : 
-				base(global::ProStudCreator.Properties.Settings.Default.Database1ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
 		
 		public ProStudentCreatorDBDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -204,10 +201,18 @@ namespace ProStudCreator
 				return this.GetTable<Topic>();
 			}
 		}
+		
+		public System.Data.Linq.Table<GradingV1> GradingV1s
+		{
+			get
+			{
+				return this.GetTable<GradingV1>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
-	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged, IComparable<Department>
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -466,12 +471,7 @@ namespace ProStudCreator
 			this.SendPropertyChanging();
 			entity.Department = null;
 		}
-
-        public int CompareTo(Department other)
-        {
-			return this._Id.CompareTo(other._Id);
-        }
-    }
+	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProjectTeamSize")]
 	public partial class ProjectTeamSize : INotifyPropertyChanging, INotifyPropertyChanged
@@ -1502,11 +1502,16 @@ namespace ProStudCreator
 		private bool _SubmitToStudyCourseDS;
 		
 		private System.Nullable<byte> _LogStudyCourse;
-
-        private int? _LogStudyCourseStudent1;
-        private int? _LogStudyCourseStudent2;
-
-        private string _Topics;
+		
+		private string _Topics;
+		
+		private System.Nullable<int> _LogStudyCourseStudent1;
+		
+		private System.Nullable<int> _LogStudyCourseStudent2;
+		
+		private System.Nullable<int> _Student1GradingV1Id;
+		
+		private System.Nullable<int> _Student2GradingV1Id;
 		
 		private EntitySet<Project> _Projects;
 		
@@ -1537,6 +1542,10 @@ namespace ProStudCreator
 		private EntityRef<UserDepartmentMap> _Advisor1;
 		
 		private EntityRef<UserDepartmentMap> _Advisor2;
+		
+		private EntityRef<GradingV1> _Student1GradingV1;
+		
+		private EntityRef<GradingV1> _Student2GradingV1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1692,6 +1701,14 @@ namespace ProStudCreator
     partial void OnLogStudyCourseChanged();
     partial void OnTopicsChanging(string value);
     partial void OnTopicsChanged();
+    partial void OnLogStudyCourseStudent1Changing(System.Nullable<int> value);
+    partial void OnLogStudyCourseStudent1Changed();
+    partial void OnLogStudyCourseStudent2Changing(System.Nullable<int> value);
+    partial void OnLogStudyCourseStudent2Changed();
+    partial void OnStudent1GradingV1IdChanging(System.Nullable<int> value);
+    partial void OnStudent1GradingV1IdChanged();
+    partial void OnStudent2GradingV1IdChanging(System.Nullable<int> value);
+    partial void OnStudent2GradingV1IdChanged();
     #endregion
 		
 		public Project()
@@ -1711,6 +1728,8 @@ namespace ProStudCreator
 			this._LogProjectType = default(EntityRef<ProjectType>);
 			this._Advisor1 = default(EntityRef<UserDepartmentMap>);
 			this._Advisor2 = default(EntityRef<UserDepartmentMap>);
+			this._Student1GradingV1 = default(EntityRef<GradingV1>);
+			this._Student2GradingV1 = default(EntityRef<GradingV1>);
 			OnCreated();
 		}
 		
@@ -3221,45 +3240,8 @@ namespace ProStudCreator
 				}
 			}
 		}
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent1", DbType = "Int NULL")]
-        public int? LogStudyCourseStudent1
-        {
-            get
-            {
-                return this._LogStudyCourseStudent1;
-            }
-            set
-            {
-                if ((this._LogStudyCourseStudent1 != value))
-                {
-                   
-                    this.SendPropertyChanging();
-                    this._LogStudyCourseStudent1 = value;
-                    this.SendPropertyChanged("LogStudyCourseStudent1");
-                }
-            }
-        }
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_LogStudyCourseStudent2", DbType = "Int NULL")]
-        public int? LogStudyCourseStudent2
-        {
-            get
-            {
-                return this._LogStudyCourseStudent2;
-            }
-            set
-            {
-                if ((this._LogStudyCourseStudent2 != value))
-                {
-                    this.SendPropertyChanging();
-                    this._LogStudyCourseStudent2 = value;
-                    this.SendPropertyChanged("LogStudyCourseStudent2");
-                }
-            }
-        }
-
-
-        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourse", DbType="TinyInt")]
 		public System.Nullable<byte> LogStudyCourse
 		{
 			get
@@ -3295,6 +3277,94 @@ namespace ProStudCreator
 					this._Topics = value;
 					this.SendPropertyChanged("Topics");
 					this.OnTopicsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourseStudent1", DbType="int")]
+		public System.Nullable<int> LogStudyCourseStudent1
+		{
+			get
+			{
+				return this._LogStudyCourseStudent1;
+			}
+			set
+			{
+				if ((this._LogStudyCourseStudent1 != value))
+				{
+					this.OnLogStudyCourseStudent1Changing(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourseStudent1 = value;
+					this.SendPropertyChanged("LogStudyCourseStudent1");
+					this.OnLogStudyCourseStudent1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogStudyCourseStudent2", DbType="int ")]
+		public System.Nullable<int> LogStudyCourseStudent2
+		{
+			get
+			{
+				return this._LogStudyCourseStudent2;
+			}
+			set
+			{
+				if ((this._LogStudyCourseStudent2 != value))
+				{
+					this.OnLogStudyCourseStudent2Changing(value);
+					this.SendPropertyChanging();
+					this._LogStudyCourseStudent2 = value;
+					this.SendPropertyChanged("LogStudyCourseStudent2");
+					this.OnLogStudyCourseStudent2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Student1GradingV1Id", DbType="int")]
+		public System.Nullable<int> Student1GradingV1Id
+		{
+			get
+			{
+				return this._Student1GradingV1Id;
+			}
+			set
+			{
+				if ((this._Student1GradingV1Id != value))
+				{
+					if (this._Student1GradingV1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnStudent1GradingV1IdChanging(value);
+					this.SendPropertyChanging();
+					this._Student1GradingV1Id = value;
+					this.SendPropertyChanged("Student1GradingV1Id");
+					this.OnStudent1GradingV1IdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Student2GradingV1Id", DbType="int")]
+		public System.Nullable<int> Student2GradingV1Id
+		{
+			get
+			{
+				return this._Student2GradingV1Id;
+			}
+			set
+			{
+				if ((this._Student2GradingV1Id != value))
+				{
+					if (this._Student2GradingV1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnStudent2GradingV1IdChanging(value);
+					this.SendPropertyChanging();
+					this._Student2GradingV1Id = value;
+					this.SendPropertyChanged("Student2GradingV1Id");
+					this.OnStudent2GradingV1IdChanged();
 				}
 			}
 		}
@@ -3742,6 +3812,74 @@ namespace ProStudCreator
 						this._Advisor2Id = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Advisor2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GradingV1_Project", Storage="_Student1GradingV1", ThisKey="Student1GradingV1Id", OtherKey="Id", IsForeignKey=true)]
+		public GradingV1 Student1GradingV1
+		{
+			get
+			{
+				return this._Student1GradingV1.Entity;
+			}
+			set
+			{
+				GradingV1 previousValue = this._Student1GradingV1.Entity;
+				if (((previousValue != value) 
+							|| (this._Student1GradingV1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Student1GradingV1.Entity = null;
+						previousValue.Projects.Remove(this);
+					}
+					this._Student1GradingV1.Entity = value;
+					if ((value != null))
+					{
+						value.Projects.Add(this);
+						this._Student1GradingV1Id = value.Id;
+					}
+					else
+					{
+						this._Student1GradingV1Id = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Student1GradingV1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GradingV1_Project1", Storage="_Student2GradingV1", ThisKey="Student2GradingV1Id", OtherKey="Id", IsForeignKey=true)]
+		public GradingV1 Student2GradingV1
+		{
+			get
+			{
+				return this._Student2GradingV1.Entity;
+			}
+			set
+			{
+				GradingV1 previousValue = this._Student2GradingV1.Entity;
+				if (((previousValue != value) 
+							|| (this._Student2GradingV1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Student2GradingV1.Entity = null;
+						previousValue.Projects1.Remove(this);
+					}
+					this._Student2GradingV1.Entity = value;
+					if ((value != null))
+					{
+						value.Projects1.Add(this);
+						this._Student2GradingV1Id = value.Id;
+					}
+					else
+					{
+						this._Student2GradingV1Id = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Student2GradingV1");
 				}
 			}
 		}
@@ -6133,6 +6271,1348 @@ namespace ProStudCreator
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GradingV1")]
+	public partial class GradingV1 : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _CriticalAcclaim;
+		
+		private bool _ExpertConfirmed;
+		
+		private double _AStrategy;
+		
+		private double _AStrategyWeight;
+		
+		private string _AStrategyComment;
+		
+		private double _AProjectSummaryContents;
+		
+		private double _AProjectSummaryContentsWeight;
+		
+		private string _AProjectSummaryContentsComment;
+		
+		private double _AProjectSummaryPlanning;
+		
+		private double _AProjectSummaryPlanningWeight;
+		
+		private string _AProjectSummaryPlanningComment;
+		
+		private double _BTheoreticalWork;
+		
+		private double _BTheoreticalWorkWeight;
+		
+		private string _BTheoreticalWorkComment;
+		
+		private double _BPracticalWork;
+		
+		private double _BPracticalWorkWeight;
+		
+		private string _BPracticalWorkComment;
+		
+		private double _BEvaluation;
+		
+		private double _BEvaluationWeight;
+		
+		private string _BEvaluationComment;
+		
+		private double _BResults;
+		
+		private double _BResultsWeight;
+		
+		private string _BResultsComment;
+		
+		private double _BAutonomy;
+		
+		private double _BAutonomyWeight;
+		
+		private string _BAutonomyComment;
+		
+		private double _CDocumentation;
+		
+		private double _CDocumentationWeight;
+		
+		private string _CDocumentationComment;
+		
+		private double _CDefense;
+		
+		private double _CDefenseWeight;
+		
+		private string _CDefenseComment;
+		
+		private double _CPresentations;
+		
+		private double _CPresentationsWeight;
+		
+		private string _CPresentationsComment;
+		
+		private double _DCollaborationInternal;
+		
+		private double _DCollaborationInternalWeight;
+		
+		private string _DCollaborationInternalComment;
+		
+		private double _DCollaborationExternal;
+		
+		private double _DCollaborationExternalWeight;
+		
+		private string _DCollaborationExternalComment;
+		
+		private double _DMotivation;
+		
+		private double _DMotivationWeight;
+		
+		private string _DMotivationComment;
+		
+		private int _ENewTopic;
+		
+		private string _ENewTopicComment;
+		
+		private int _EDifficulty;
+		
+		private string _EDifficultyComment;
+		
+		private int _EEnvironment;
+		
+		private string _EEnvironmentComment;
+		
+		private double _EBonus;
+		
+		private EntitySet<Project> _Projects;
+		
+		private EntitySet<Project> _Projects1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCriticalAcclaimChanging(string value);
+    partial void OnCriticalAcclaimChanged();
+    partial void OnExpertConfirmedChanging(bool value);
+    partial void OnExpertConfirmedChanged();
+    partial void OnAStrategyChanging(double value);
+    partial void OnAStrategyChanged();
+    partial void OnAStrategyWeightChanging(double value);
+    partial void OnAStrategyWeightChanged();
+    partial void OnAStrategyCommentChanging(string value);
+    partial void OnAStrategyCommentChanged();
+    partial void OnAProjectSummaryContentsChanging(double value);
+    partial void OnAProjectSummaryContentsChanged();
+    partial void OnAProjectSummaryContentsWeightChanging(double value);
+    partial void OnAProjectSummaryContentsWeightChanged();
+    partial void OnAProjectSummaryContentsCommentChanging(string value);
+    partial void OnAProjectSummaryContentsCommentChanged();
+    partial void OnAProjectSummaryPlanningChanging(double value);
+    partial void OnAProjectSummaryPlanningChanged();
+    partial void OnAProjectSummaryPlanningWeightChanging(double value);
+    partial void OnAProjectSummaryPlanningWeightChanged();
+    partial void OnAProjectSummaryPlanningCommentChanging(string value);
+    partial void OnAProjectSummaryPlanningCommentChanged();
+    partial void OnBTheoreticalWorkChanging(double value);
+    partial void OnBTheoreticalWorkChanged();
+    partial void OnBTheoreticalWorkWeightChanging(double value);
+    partial void OnBTheoreticalWorkWeightChanged();
+    partial void OnBTheoreticalWorkCommentChanging(string value);
+    partial void OnBTheoreticalWorkCommentChanged();
+    partial void OnBPracticalWorkChanging(double value);
+    partial void OnBPracticalWorkChanged();
+    partial void OnBPracticalWorkWeightChanging(double value);
+    partial void OnBPracticalWorkWeightChanged();
+    partial void OnBPracticalWorkCommentChanging(string value);
+    partial void OnBPracticalWorkCommentChanged();
+    partial void OnBEvaluationChanging(double value);
+    partial void OnBEvaluationChanged();
+    partial void OnBEvaluationWeightChanging(double value);
+    partial void OnBEvaluationWeightChanged();
+    partial void OnBEvaluationCommentChanging(string value);
+    partial void OnBEvaluationCommentChanged();
+    partial void OnBResultsChanging(double value);
+    partial void OnBResultsChanged();
+    partial void OnBResultsWeightChanging(double value);
+    partial void OnBResultsWeightChanged();
+    partial void OnBResultsCommentChanging(string value);
+    partial void OnBResultsCommentChanged();
+    partial void OnBAutonomyChanging(double value);
+    partial void OnBAutonomyChanged();
+    partial void OnBAutonomyWeightChanging(double value);
+    partial void OnBAutonomyWeightChanged();
+    partial void OnBAutonomyCommentChanging(string value);
+    partial void OnBAutonomyCommentChanged();
+    partial void OnCDocumentationChanging(double value);
+    partial void OnCDocumentationChanged();
+    partial void OnCDocumentationWeightChanging(double value);
+    partial void OnCDocumentationWeightChanged();
+    partial void OnCDocumentationCommentChanging(string value);
+    partial void OnCDocumentationCommentChanged();
+    partial void OnCDefenseChanging(double value);
+    partial void OnCDefenseChanged();
+    partial void OnCDefenseWeightChanging(double value);
+    partial void OnCDefenseWeightChanged();
+    partial void OnCDefenseCommentChanging(string value);
+    partial void OnCDefenseCommentChanged();
+    partial void OnCPresentationsChanging(double value);
+    partial void OnCPresentationsChanged();
+    partial void OnCPresentationsWeightChanging(double value);
+    partial void OnCPresentationsWeightChanged();
+    partial void OnCPresentationsCommentChanging(string value);
+    partial void OnCPresentationsCommentChanged();
+    partial void OnDCollaborationInternalChanging(double value);
+    partial void OnDCollaborationInternalChanged();
+    partial void OnDCollaborationInternalWeightChanging(double value);
+    partial void OnDCollaborationInternalWeightChanged();
+    partial void OnDCollaborationInternalCommentChanging(string value);
+    partial void OnDCollaborationInternalCommentChanged();
+    partial void OnDCollaborationExternalChanging(double value);
+    partial void OnDCollaborationExternalChanged();
+    partial void OnDCollaborationExternalWeightChanging(double value);
+    partial void OnDCollaborationExternalWeightChanged();
+    partial void OnDCollaborationExternalCommentChanging(string value);
+    partial void OnDCollaborationExternalCommentChanged();
+    partial void OnDMotivationChanging(double value);
+    partial void OnDMotivationChanged();
+    partial void OnDMotivationWeightChanging(double value);
+    partial void OnDMotivationWeightChanged();
+    partial void OnDMotivationCommentChanging(string value);
+    partial void OnDMotivationCommentChanged();
+    partial void OnENewTopicChanging(int value);
+    partial void OnENewTopicChanged();
+    partial void OnENewTopicCommentChanging(string value);
+    partial void OnENewTopicCommentChanged();
+    partial void OnEDifficultyChanging(int value);
+    partial void OnEDifficultyChanged();
+    partial void OnEDifficultyCommentChanging(string value);
+    partial void OnEDifficultyCommentChanged();
+    partial void OnEEnvironmentChanging(int value);
+    partial void OnEEnvironmentChanged();
+    partial void OnEEnvironmentCommentChanging(string value);
+    partial void OnEEnvironmentCommentChanged();
+    partial void OnEBonusChanging(double value);
+    partial void OnEBonusChanged();
+    #endregion
+		
+		public GradingV1()
+		{
+			this._Projects = new EntitySet<Project>(new Action<Project>(this.attach_Projects), new Action<Project>(this.detach_Projects));
+			this._Projects1 = new EntitySet<Project>(new Action<Project>(this.attach_Projects1), new Action<Project>(this.detach_Projects1));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CriticalAcclaim", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string CriticalAcclaim
+		{
+			get
+			{
+				return this._CriticalAcclaim;
+			}
+			set
+			{
+				if ((this._CriticalAcclaim != value))
+				{
+					this.OnCriticalAcclaimChanging(value);
+					this.SendPropertyChanging();
+					this._CriticalAcclaim = value;
+					this.SendPropertyChanged("CriticalAcclaim");
+					this.OnCriticalAcclaimChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpertConfirmed", DbType="Bit NOT NULL")]
+		public bool ExpertConfirmed
+		{
+			get
+			{
+				return this._ExpertConfirmed;
+			}
+			set
+			{
+				if ((this._ExpertConfirmed != value))
+				{
+					this.OnExpertConfirmedChanging(value);
+					this.SendPropertyChanging();
+					this._ExpertConfirmed = value;
+					this.SendPropertyChanged("ExpertConfirmed");
+					this.OnExpertConfirmedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AStrategy", DbType="Float NOT NULL")]
+		public double AStrategy
+		{
+			get
+			{
+				return this._AStrategy;
+			}
+			set
+			{
+				if ((this._AStrategy != value))
+				{
+					this.OnAStrategyChanging(value);
+					this.SendPropertyChanging();
+					this._AStrategy = value;
+					this.SendPropertyChanged("AStrategy");
+					this.OnAStrategyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AStrategyWeight", DbType="Float NOT NULL")]
+		public double AStrategyWeight
+		{
+			get
+			{
+				return this._AStrategyWeight;
+			}
+			set
+			{
+				if ((this._AStrategyWeight != value))
+				{
+					this.OnAStrategyWeightChanging(value);
+					this.SendPropertyChanging();
+					this._AStrategyWeight = value;
+					this.SendPropertyChanged("AStrategyWeight");
+					this.OnAStrategyWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AStrategyComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string AStrategyComment
+		{
+			get
+			{
+				return this._AStrategyComment;
+			}
+			set
+			{
+				if ((this._AStrategyComment != value))
+				{
+					this.OnAStrategyCommentChanging(value);
+					this.SendPropertyChanging();
+					this._AStrategyComment = value;
+					this.SendPropertyChanged("AStrategyComment");
+					this.OnAStrategyCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AProjectSummaryContents", DbType="Float NOT NULL")]
+		public double AProjectSummaryContents
+		{
+			get
+			{
+				return this._AProjectSummaryContents;
+			}
+			set
+			{
+				if ((this._AProjectSummaryContents != value))
+				{
+					this.OnAProjectSummaryContentsChanging(value);
+					this.SendPropertyChanging();
+					this._AProjectSummaryContents = value;
+					this.SendPropertyChanged("AProjectSummaryContents");
+					this.OnAProjectSummaryContentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AProjectSummaryContentsWeight", DbType="Float NOT NULL")]
+		public double AProjectSummaryContentsWeight
+		{
+			get
+			{
+				return this._AProjectSummaryContentsWeight;
+			}
+			set
+			{
+				if ((this._AProjectSummaryContentsWeight != value))
+				{
+					this.OnAProjectSummaryContentsWeightChanging(value);
+					this.SendPropertyChanging();
+					this._AProjectSummaryContentsWeight = value;
+					this.SendPropertyChanged("AProjectSummaryContentsWeight");
+					this.OnAProjectSummaryContentsWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AProjectSummaryContentsComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string AProjectSummaryContentsComment
+		{
+			get
+			{
+				return this._AProjectSummaryContentsComment;
+			}
+			set
+			{
+				if ((this._AProjectSummaryContentsComment != value))
+				{
+					this.OnAProjectSummaryContentsCommentChanging(value);
+					this.SendPropertyChanging();
+					this._AProjectSummaryContentsComment = value;
+					this.SendPropertyChanged("AProjectSummaryContentsComment");
+					this.OnAProjectSummaryContentsCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AProjectSummaryPlanning", DbType="Float NOT NULL")]
+		public double AProjectSummaryPlanning
+		{
+			get
+			{
+				return this._AProjectSummaryPlanning;
+			}
+			set
+			{
+				if ((this._AProjectSummaryPlanning != value))
+				{
+					this.OnAProjectSummaryPlanningChanging(value);
+					this.SendPropertyChanging();
+					this._AProjectSummaryPlanning = value;
+					this.SendPropertyChanged("AProjectSummaryPlanning");
+					this.OnAProjectSummaryPlanningChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AProjectSummaryPlanningWeight", DbType="Float NOT NULL")]
+		public double AProjectSummaryPlanningWeight
+		{
+			get
+			{
+				return this._AProjectSummaryPlanningWeight;
+			}
+			set
+			{
+				if ((this._AProjectSummaryPlanningWeight != value))
+				{
+					this.OnAProjectSummaryPlanningWeightChanging(value);
+					this.SendPropertyChanging();
+					this._AProjectSummaryPlanningWeight = value;
+					this.SendPropertyChanged("AProjectSummaryPlanningWeight");
+					this.OnAProjectSummaryPlanningWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AProjectSummaryPlanningComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string AProjectSummaryPlanningComment
+		{
+			get
+			{
+				return this._AProjectSummaryPlanningComment;
+			}
+			set
+			{
+				if ((this._AProjectSummaryPlanningComment != value))
+				{
+					this.OnAProjectSummaryPlanningCommentChanging(value);
+					this.SendPropertyChanging();
+					this._AProjectSummaryPlanningComment = value;
+					this.SendPropertyChanged("AProjectSummaryPlanningComment");
+					this.OnAProjectSummaryPlanningCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BTheoreticalWork", DbType="Float NOT NULL")]
+		public double BTheoreticalWork
+		{
+			get
+			{
+				return this._BTheoreticalWork;
+			}
+			set
+			{
+				if ((this._BTheoreticalWork != value))
+				{
+					this.OnBTheoreticalWorkChanging(value);
+					this.SendPropertyChanging();
+					this._BTheoreticalWork = value;
+					this.SendPropertyChanged("BTheoreticalWork");
+					this.OnBTheoreticalWorkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BTheoreticalWorkWeight", DbType="Float NOT NULL")]
+		public double BTheoreticalWorkWeight
+		{
+			get
+			{
+				return this._BTheoreticalWorkWeight;
+			}
+			set
+			{
+				if ((this._BTheoreticalWorkWeight != value))
+				{
+					this.OnBTheoreticalWorkWeightChanging(value);
+					this.SendPropertyChanging();
+					this._BTheoreticalWorkWeight = value;
+					this.SendPropertyChanged("BTheoreticalWorkWeight");
+					this.OnBTheoreticalWorkWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BTheoreticalWorkComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string BTheoreticalWorkComment
+		{
+			get
+			{
+				return this._BTheoreticalWorkComment;
+			}
+			set
+			{
+				if ((this._BTheoreticalWorkComment != value))
+				{
+					this.OnBTheoreticalWorkCommentChanging(value);
+					this.SendPropertyChanging();
+					this._BTheoreticalWorkComment = value;
+					this.SendPropertyChanged("BTheoreticalWorkComment");
+					this.OnBTheoreticalWorkCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BPracticalWork", DbType="Float NOT NULL")]
+		public double BPracticalWork
+		{
+			get
+			{
+				return this._BPracticalWork;
+			}
+			set
+			{
+				if ((this._BPracticalWork != value))
+				{
+					this.OnBPracticalWorkChanging(value);
+					this.SendPropertyChanging();
+					this._BPracticalWork = value;
+					this.SendPropertyChanged("BPracticalWork");
+					this.OnBPracticalWorkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BPracticalWorkWeight", DbType="Float NOT NULL")]
+		public double BPracticalWorkWeight
+		{
+			get
+			{
+				return this._BPracticalWorkWeight;
+			}
+			set
+			{
+				if ((this._BPracticalWorkWeight != value))
+				{
+					this.OnBPracticalWorkWeightChanging(value);
+					this.SendPropertyChanging();
+					this._BPracticalWorkWeight = value;
+					this.SendPropertyChanged("BPracticalWorkWeight");
+					this.OnBPracticalWorkWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BPracticalWorkComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string BPracticalWorkComment
+		{
+			get
+			{
+				return this._BPracticalWorkComment;
+			}
+			set
+			{
+				if ((this._BPracticalWorkComment != value))
+				{
+					this.OnBPracticalWorkCommentChanging(value);
+					this.SendPropertyChanging();
+					this._BPracticalWorkComment = value;
+					this.SendPropertyChanged("BPracticalWorkComment");
+					this.OnBPracticalWorkCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BEvaluation", DbType="Float NOT NULL")]
+		public double BEvaluation
+		{
+			get
+			{
+				return this._BEvaluation;
+			}
+			set
+			{
+				if ((this._BEvaluation != value))
+				{
+					this.OnBEvaluationChanging(value);
+					this.SendPropertyChanging();
+					this._BEvaluation = value;
+					this.SendPropertyChanged("BEvaluation");
+					this.OnBEvaluationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BEvaluationWeight", DbType="Float NOT NULL")]
+		public double BEvaluationWeight
+		{
+			get
+			{
+				return this._BEvaluationWeight;
+			}
+			set
+			{
+				if ((this._BEvaluationWeight != value))
+				{
+					this.OnBEvaluationWeightChanging(value);
+					this.SendPropertyChanging();
+					this._BEvaluationWeight = value;
+					this.SendPropertyChanged("BEvaluationWeight");
+					this.OnBEvaluationWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BEvaluationComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string BEvaluationComment
+		{
+			get
+			{
+				return this._BEvaluationComment;
+			}
+			set
+			{
+				if ((this._BEvaluationComment != value))
+				{
+					this.OnBEvaluationCommentChanging(value);
+					this.SendPropertyChanging();
+					this._BEvaluationComment = value;
+					this.SendPropertyChanged("BEvaluationComment");
+					this.OnBEvaluationCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BResults", DbType="Float NOT NULL")]
+		public double BResults
+		{
+			get
+			{
+				return this._BResults;
+			}
+			set
+			{
+				if ((this._BResults != value))
+				{
+					this.OnBResultsChanging(value);
+					this.SendPropertyChanging();
+					this._BResults = value;
+					this.SendPropertyChanged("BResults");
+					this.OnBResultsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BResultsWeight", DbType="Float NOT NULL")]
+		public double BResultsWeight
+		{
+			get
+			{
+				return this._BResultsWeight;
+			}
+			set
+			{
+				if ((this._BResultsWeight != value))
+				{
+					this.OnBResultsWeightChanging(value);
+					this.SendPropertyChanging();
+					this._BResultsWeight = value;
+					this.SendPropertyChanged("BResultsWeight");
+					this.OnBResultsWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BResultsComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string BResultsComment
+		{
+			get
+			{
+				return this._BResultsComment;
+			}
+			set
+			{
+				if ((this._BResultsComment != value))
+				{
+					this.OnBResultsCommentChanging(value);
+					this.SendPropertyChanging();
+					this._BResultsComment = value;
+					this.SendPropertyChanged("BResultsComment");
+					this.OnBResultsCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BAutonomy", DbType="Float NOT NULL")]
+		public double BAutonomy
+		{
+			get
+			{
+				return this._BAutonomy;
+			}
+			set
+			{
+				if ((this._BAutonomy != value))
+				{
+					this.OnBAutonomyChanging(value);
+					this.SendPropertyChanging();
+					this._BAutonomy = value;
+					this.SendPropertyChanged("BAutonomy");
+					this.OnBAutonomyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BAutonomyWeight", DbType="Float NOT NULL")]
+		public double BAutonomyWeight
+		{
+			get
+			{
+				return this._BAutonomyWeight;
+			}
+			set
+			{
+				if ((this._BAutonomyWeight != value))
+				{
+					this.OnBAutonomyWeightChanging(value);
+					this.SendPropertyChanging();
+					this._BAutonomyWeight = value;
+					this.SendPropertyChanged("BAutonomyWeight");
+					this.OnBAutonomyWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BAutonomyComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string BAutonomyComment
+		{
+			get
+			{
+				return this._BAutonomyComment;
+			}
+			set
+			{
+				if ((this._BAutonomyComment != value))
+				{
+					this.OnBAutonomyCommentChanging(value);
+					this.SendPropertyChanging();
+					this._BAutonomyComment = value;
+					this.SendPropertyChanged("BAutonomyComment");
+					this.OnBAutonomyCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CDocumentation", DbType="Float NOT NULL")]
+		public double CDocumentation
+		{
+			get
+			{
+				return this._CDocumentation;
+			}
+			set
+			{
+				if ((this._CDocumentation != value))
+				{
+					this.OnCDocumentationChanging(value);
+					this.SendPropertyChanging();
+					this._CDocumentation = value;
+					this.SendPropertyChanged("CDocumentation");
+					this.OnCDocumentationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CDocumentationWeight", DbType="Float NOT NULL")]
+		public double CDocumentationWeight
+		{
+			get
+			{
+				return this._CDocumentationWeight;
+			}
+			set
+			{
+				if ((this._CDocumentationWeight != value))
+				{
+					this.OnCDocumentationWeightChanging(value);
+					this.SendPropertyChanging();
+					this._CDocumentationWeight = value;
+					this.SendPropertyChanged("CDocumentationWeight");
+					this.OnCDocumentationWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CDocumentationComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string CDocumentationComment
+		{
+			get
+			{
+				return this._CDocumentationComment;
+			}
+			set
+			{
+				if ((this._CDocumentationComment != value))
+				{
+					this.OnCDocumentationCommentChanging(value);
+					this.SendPropertyChanging();
+					this._CDocumentationComment = value;
+					this.SendPropertyChanged("CDocumentationComment");
+					this.OnCDocumentationCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CDefense", DbType="Float NOT NULL")]
+		public double CDefense
+		{
+			get
+			{
+				return this._CDefense;
+			}
+			set
+			{
+				if ((this._CDefense != value))
+				{
+					this.OnCDefenseChanging(value);
+					this.SendPropertyChanging();
+					this._CDefense = value;
+					this.SendPropertyChanged("CDefense");
+					this.OnCDefenseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CDefenseWeight", DbType="Float NOT NULL")]
+		public double CDefenseWeight
+		{
+			get
+			{
+				return this._CDefenseWeight;
+			}
+			set
+			{
+				if ((this._CDefenseWeight != value))
+				{
+					this.OnCDefenseWeightChanging(value);
+					this.SendPropertyChanging();
+					this._CDefenseWeight = value;
+					this.SendPropertyChanged("CDefenseWeight");
+					this.OnCDefenseWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CDefenseComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string CDefenseComment
+		{
+			get
+			{
+				return this._CDefenseComment;
+			}
+			set
+			{
+				if ((this._CDefenseComment != value))
+				{
+					this.OnCDefenseCommentChanging(value);
+					this.SendPropertyChanging();
+					this._CDefenseComment = value;
+					this.SendPropertyChanged("CDefenseComment");
+					this.OnCDefenseCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CPresentations", DbType="Float NOT NULL")]
+		public double CPresentations
+		{
+			get
+			{
+				return this._CPresentations;
+			}
+			set
+			{
+				if ((this._CPresentations != value))
+				{
+					this.OnCPresentationsChanging(value);
+					this.SendPropertyChanging();
+					this._CPresentations = value;
+					this.SendPropertyChanged("CPresentations");
+					this.OnCPresentationsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CPresentationsWeight", DbType="Float NOT NULL")]
+		public double CPresentationsWeight
+		{
+			get
+			{
+				return this._CPresentationsWeight;
+			}
+			set
+			{
+				if ((this._CPresentationsWeight != value))
+				{
+					this.OnCPresentationsWeightChanging(value);
+					this.SendPropertyChanging();
+					this._CPresentationsWeight = value;
+					this.SendPropertyChanged("CPresentationsWeight");
+					this.OnCPresentationsWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CPresentationsComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string CPresentationsComment
+		{
+			get
+			{
+				return this._CPresentationsComment;
+			}
+			set
+			{
+				if ((this._CPresentationsComment != value))
+				{
+					this.OnCPresentationsCommentChanging(value);
+					this.SendPropertyChanging();
+					this._CPresentationsComment = value;
+					this.SendPropertyChanged("CPresentationsComment");
+					this.OnCPresentationsCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DCollaborationInternal", DbType="Float NOT NULL")]
+		public double DCollaborationInternal
+		{
+			get
+			{
+				return this._DCollaborationInternal;
+			}
+			set
+			{
+				if ((this._DCollaborationInternal != value))
+				{
+					this.OnDCollaborationInternalChanging(value);
+					this.SendPropertyChanging();
+					this._DCollaborationInternal = value;
+					this.SendPropertyChanged("DCollaborationInternal");
+					this.OnDCollaborationInternalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DCollaborationInternalWeight", DbType="Float NOT NULL")]
+		public double DCollaborationInternalWeight
+		{
+			get
+			{
+				return this._DCollaborationInternalWeight;
+			}
+			set
+			{
+				if ((this._DCollaborationInternalWeight != value))
+				{
+					this.OnDCollaborationInternalWeightChanging(value);
+					this.SendPropertyChanging();
+					this._DCollaborationInternalWeight = value;
+					this.SendPropertyChanged("DCollaborationInternalWeight");
+					this.OnDCollaborationInternalWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DCollaborationInternalComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string DCollaborationInternalComment
+		{
+			get
+			{
+				return this._DCollaborationInternalComment;
+			}
+			set
+			{
+				if ((this._DCollaborationInternalComment != value))
+				{
+					this.OnDCollaborationInternalCommentChanging(value);
+					this.SendPropertyChanging();
+					this._DCollaborationInternalComment = value;
+					this.SendPropertyChanged("DCollaborationInternalComment");
+					this.OnDCollaborationInternalCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DCollaborationExternal", DbType="Float NOT NULL")]
+		public double DCollaborationExternal
+		{
+			get
+			{
+				return this._DCollaborationExternal;
+			}
+			set
+			{
+				if ((this._DCollaborationExternal != value))
+				{
+					this.OnDCollaborationExternalChanging(value);
+					this.SendPropertyChanging();
+					this._DCollaborationExternal = value;
+					this.SendPropertyChanged("DCollaborationExternal");
+					this.OnDCollaborationExternalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DCollaborationExternalWeight", DbType="Float NOT NULL")]
+		public double DCollaborationExternalWeight
+		{
+			get
+			{
+				return this._DCollaborationExternalWeight;
+			}
+			set
+			{
+				if ((this._DCollaborationExternalWeight != value))
+				{
+					this.OnDCollaborationExternalWeightChanging(value);
+					this.SendPropertyChanging();
+					this._DCollaborationExternalWeight = value;
+					this.SendPropertyChanged("DCollaborationExternalWeight");
+					this.OnDCollaborationExternalWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DCollaborationExternalComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string DCollaborationExternalComment
+		{
+			get
+			{
+				return this._DCollaborationExternalComment;
+			}
+			set
+			{
+				if ((this._DCollaborationExternalComment != value))
+				{
+					this.OnDCollaborationExternalCommentChanging(value);
+					this.SendPropertyChanging();
+					this._DCollaborationExternalComment = value;
+					this.SendPropertyChanged("DCollaborationExternalComment");
+					this.OnDCollaborationExternalCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DMotivation", DbType="Float NOT NULL")]
+		public double DMotivation
+		{
+			get
+			{
+				return this._DMotivation;
+			}
+			set
+			{
+				if ((this._DMotivation != value))
+				{
+					this.OnDMotivationChanging(value);
+					this.SendPropertyChanging();
+					this._DMotivation = value;
+					this.SendPropertyChanged("DMotivation");
+					this.OnDMotivationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DMotivationWeight", DbType="Float NOT NULL")]
+		public double DMotivationWeight
+		{
+			get
+			{
+				return this._DMotivationWeight;
+			}
+			set
+			{
+				if ((this._DMotivationWeight != value))
+				{
+					this.OnDMotivationWeightChanging(value);
+					this.SendPropertyChanging();
+					this._DMotivationWeight = value;
+					this.SendPropertyChanged("DMotivationWeight");
+					this.OnDMotivationWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DMotivationComment", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string DMotivationComment
+		{
+			get
+			{
+				return this._DMotivationComment;
+			}
+			set
+			{
+				if ((this._DMotivationComment != value))
+				{
+					this.OnDMotivationCommentChanging(value);
+					this.SendPropertyChanging();
+					this._DMotivationComment = value;
+					this.SendPropertyChanged("DMotivationComment");
+					this.OnDMotivationCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENewTopic", DbType="Int NOT NULL")]
+		public int ENewTopic
+		{
+			get
+			{
+				return this._ENewTopic;
+			}
+			set
+			{
+				if ((this._ENewTopic != value))
+				{
+					this.OnENewTopicChanging(value);
+					this.SendPropertyChanging();
+					this._ENewTopic = value;
+					this.SendPropertyChanged("ENewTopic");
+					this.OnENewTopicChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENewTopicComment", DbType="NVarChar(MAX)")]
+		public string ENewTopicComment
+		{
+			get
+			{
+				return this._ENewTopicComment;
+			}
+			set
+			{
+				if ((this._ENewTopicComment != value))
+				{
+					this.OnENewTopicCommentChanging(value);
+					this.SendPropertyChanging();
+					this._ENewTopicComment = value;
+					this.SendPropertyChanged("ENewTopicComment");
+					this.OnENewTopicCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EDifficulty", DbType="Int NOT NULL")]
+		public int EDifficulty
+		{
+			get
+			{
+				return this._EDifficulty;
+			}
+			set
+			{
+				if ((this._EDifficulty != value))
+				{
+					this.OnEDifficultyChanging(value);
+					this.SendPropertyChanging();
+					this._EDifficulty = value;
+					this.SendPropertyChanged("EDifficulty");
+					this.OnEDifficultyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EDifficultyComment", DbType="NVarChar(MAX)")]
+		public string EDifficultyComment
+		{
+			get
+			{
+				return this._EDifficultyComment;
+			}
+			set
+			{
+				if ((this._EDifficultyComment != value))
+				{
+					this.OnEDifficultyCommentChanging(value);
+					this.SendPropertyChanging();
+					this._EDifficultyComment = value;
+					this.SendPropertyChanged("EDifficultyComment");
+					this.OnEDifficultyCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EEnvironment", DbType="Int NOT NULL")]
+		public int EEnvironment
+		{
+			get
+			{
+				return this._EEnvironment;
+			}
+			set
+			{
+				if ((this._EEnvironment != value))
+				{
+					this.OnEEnvironmentChanging(value);
+					this.SendPropertyChanging();
+					this._EEnvironment = value;
+					this.SendPropertyChanged("EEnvironment");
+					this.OnEEnvironmentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EEnvironmentComment", DbType="NVarChar(MAX)")]
+		public string EEnvironmentComment
+		{
+			get
+			{
+				return this._EEnvironmentComment;
+			}
+			set
+			{
+				if ((this._EEnvironmentComment != value))
+				{
+					this.OnEEnvironmentCommentChanging(value);
+					this.SendPropertyChanging();
+					this._EEnvironmentComment = value;
+					this.SendPropertyChanged("EEnvironmentComment");
+					this.OnEEnvironmentCommentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EBonus", DbType="Float NOT NULL")]
+		public double EBonus
+		{
+			get
+			{
+				return this._EBonus;
+			}
+			set
+			{
+				if ((this._EBonus != value))
+				{
+					this.OnEBonusChanging(value);
+					this.SendPropertyChanging();
+					this._EBonus = value;
+					this.SendPropertyChanged("EBonus");
+					this.OnEBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GradingV1_Project", Storage="_Projects", ThisKey="Id", OtherKey="Student1GradingV1Id")]
+		public EntitySet<Project> Projects
+		{
+			get
+			{
+				return this._Projects;
+			}
+			set
+			{
+				this._Projects.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GradingV1_Project1", Storage="_Projects1", ThisKey="Id", OtherKey="Student2GradingV1Id")]
+		public EntitySet<Project> Projects1
+		{
+			get
+			{
+				return this._Projects1;
+			}
+			set
+			{
+				this._Projects1.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Projects(Project entity)
+		{
+			this.SendPropertyChanging();
+			entity.Student1GradingV1 = this;
+		}
+		
+		private void detach_Projects(Project entity)
+		{
+			this.SendPropertyChanging();
+			entity.Student1GradingV1 = null;
+		}
+		
+		private void attach_Projects1(Project entity)
+		{
+			this.SendPropertyChanging();
+			entity.Student2GradingV1 = this;
+		}
+		
+		private void detach_Projects1(Project entity)
+		{
+			this.SendPropertyChanging();
+			entity.Student2GradingV1 = null;
 		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Database1" Class="ProStudentCreatorDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True" SettingsObjectName="ProStudCreator.Properties.Settings" SettingsPropertyName="Database1ConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ProStudCreator" Class="ProStudentCreatorDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.Departments" Member="Departments">
     <Type Name="Department">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -66,12 +65,6 @@
       <Column Name="ClientCompany" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="ClientPerson" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="ClientMail" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="TypeDesignUX" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="TypeHW" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="TypeCGIP" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="TypeMlAlg" Storage="_TypeMathAlg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="TypeAppWeb" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="TypeDBBigData" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="P1TypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="P1TeamSizeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="P2TypeId" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
@@ -98,8 +91,6 @@
       <Column Name="LanguageGerman" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="LanguageEnglish" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="DurationOneSemester" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="TypeSysSec" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="TypeSE" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="ImgDescription" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="PreviousProjectID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ClientAddressStreet" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
@@ -145,6 +136,8 @@
       <Column Name="Topics" Type="System.String" DbType="nvarchar(200)" CanBeNull="false" />
       <Column Name="LogStudyCourseStudent1" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Column Name="LogStudyCourseStudent2" Type="System.Int32" DbType="int " CanBeNull="true" />
+      <Column Name="Student1GradingV1Id" Type="System.Int32" DbType="int" CanBeNull="true" />
+      <Column Name="Student2GradingV1Id" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Association Name="Project_Project" Member="Projects" ThisKey="Id" OtherKey="PreviousProjectID" Type="Project" />
       <Association Name="Project_Attachements" Member="Attachements" ThisKey="Id" OtherKey="ProjectId" Type="Attachements" />
       <Association Name="Project_Task" Member="Tasks" ThisKey="Id" OtherKey="ProjectId" Type="Task" />
@@ -160,6 +153,8 @@
       <Association Name="ProjectType_Project2" Member="LogProjectType" ThisKey="LogProjectTypeID" OtherKey="Id" Type="ProjectType" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Project" Member="Advisor1" ThisKey="Advisor1Id" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Project1" Member="Advisor2" ThisKey="Advisor2Id" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
+      <Association Name="GradingV1_Project" Member="Student1GradingV1" ThisKey="Student1GradingV1Id" OtherKey="Id" Type="GradingV1" IsForeignKey="true" />
+      <Association Name="GradingV1_Project1" Member="Student2GradingV1" ThisKey="Student2GradingV1Id" OtherKey="Id" Type="GradingV1" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="" Member="Semester">
@@ -268,6 +263,64 @@
       <Column Name="SecondText" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="Tooltip" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Color" Type="System.String" DbType="NChar(6)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GradingV1" Member="GradingV1s">
+    <Type Name="GradingV1">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CriticalAcclaim" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ExpertConfirmed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AStrategy" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AStrategyWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AStrategyComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AProjectSummaryContents" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AProjectSummaryContentsWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AProjectSummaryContentsComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AProjectSummaryPlanning" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AProjectSummaryPlanningWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="AProjectSummaryPlanningComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BTheoreticalWork" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BTheoreticalWorkWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BTheoreticalWorkComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BPracticalWork" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BPracticalWorkWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BPracticalWorkComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BEvaluation" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BEvaluationWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BEvaluationComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BResults" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BResultsWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BResultsComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BAutonomy" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BAutonomyWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="BAutonomyComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CDocumentation" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CDocumentationWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CDocumentationComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CDefense" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CDefenseWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CDefenseComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CPresentations" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CPresentationsWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="CPresentationsComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DCollaborationInternal" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DCollaborationInternalWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DCollaborationInternalComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DCollaborationExternal" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DCollaborationExternalWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DCollaborationExternalComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DMotivation" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DMotivationWeight" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="DMotivationComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ENewTopic" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ENewTopicComment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EDifficulty" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EDifficultyComment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EEnvironment" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EEnvironmentComment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EBonus" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="GradingV1_Project" Member="Projects" ThisKey="Id" OtherKey="Student1GradingV1Id" Type="Project" />
+      <Association Name="GradingV1_Project1" Member="Projects1" ThisKey="Id" OtherKey="Student2GradingV1Id" Type="Project" />
     </Type>
   </Table>
 </Database>
