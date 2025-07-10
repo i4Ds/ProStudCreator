@@ -19,8 +19,9 @@ namespace ProStudCreator.error
             var dep = ShibUser.GetDepartment(db);
             if (!(dep is null))
             {
-                var depManager = db.UserDepartmentMap.SingleOrDefault(u => u.Department == dep && u.IsDepartmentManager)?.Mail ?? Global.WebAdmin;
-                responsibleDepartmentManager = depManager;
+                var depManagers = db.UserDepartmentMap.Where(u => u.Department == dep && u.IsDepartmentManager);
+                if(depManagers.Any())
+                    responsibleDepartmentManager = string.Join(", ", depManagers.Select(u => u.Mail));
             }
 
             errorMsg += "Login:\t" + (ShibUser.GetEmail() ?? "(Nicht verfügbar)") + "\n";
