@@ -73,6 +73,7 @@ namespace ProStudCreator
             "Anzahl Semester",
             "Durchführungssprache",
             "Studiengang",
+            "Geheimhaltung",
             "Experte",
             "Experte E-Mail",
             "Experte Bezahlt",
@@ -351,6 +352,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(pLang);
             row.CreateCell(i++).SetCellValue(pSC);
+            row.CreateCell(i++).SetCellValue(p.UnderNDA ? "Projekt unter NDA" : "");
             row.CreateCell(i++).SetCellValue(p.Expert?.Name ?? "");
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString() ?? "");
