@@ -47,7 +47,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path drop | Out-Null
 
-          # Explicit list; no wildcards (FilterByItems throws on '*')
+          # Explicit list; no wildcards
           $exclude = 'App_Data\Database1.mdf;App_Data\Database1_log.ldf;App_Data\aspnet-ProStudCreator-20140818043155.mdf;App_Data\aspnet-ProStudCreator-20140818043155_log.ldf'
 
           $pkgPath = Join-Path (Get-Location) 'drop\ProStud.zip'
@@ -55,8 +55,8 @@ jobs:
             '/t:Package',
             "/p:Configuration=$env:CONFIGURATION",
             "/p:PackageLocation=$pkgPath",
-            "/p:ExcludeFilesFromPackage=$exclude",
-            "/p:ExcludeFilesFromDeployment=$exclude"
+            "/p:ExcludeFilesFromPackage=`"$exclude`"",
+            "/p:ExcludeFilesFromDeployment=`"$exclude`""
           )
           & msbuild "$env:WEBPROJ_FILE" @msbuildArgs
 
@@ -87,8 +87,8 @@ jobs:
             "/p:PublishProfile=$pubProfilePath",
             "/p:Password=$env:WEBDEPLOY_PASSWORD",
             "/p:AllowUntrustedCertificate=$allow",
-            "/p:ExcludeFilesFromDeployment=$exclude",
-            "/p:ExcludeFilesFromPackage=$exclude",
+            "/p:ExcludeFilesFromDeployment=`"$exclude`"",
+            "/p:ExcludeFilesFromPackage=`"$exclude`"",
             '/m'
           )
           & msbuild "$env:WEBPROJ_FILE" @msbuildArgs
