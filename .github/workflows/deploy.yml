@@ -49,6 +49,7 @@ jobs:
           msbuild "$env:WEBPROJ_FILE" `
             /t:Package `
             /p:Configuration=$env:CONFIGURATION `
+            /p:ExcludeFilesFromDeployment="App_Data\*.mdf;App_Data\*_log.ldf" `
             /p:PackageLocation="$(Get-Location)\drop\ProStud.zip"
 
       - name: Upload package artifact
@@ -73,4 +74,5 @@ jobs:
             /p:PublishProfile="$pubProfilePath" `
             /p:Password="$env:WEBDEPLOY_PASSWORD" `
             /p:AllowUntrustedCertificate=$allow `
+            /p:ExcludeFilesFromDeployment="App_Data\*.mdf;App_Data\*_log.ldf" `
             /m
