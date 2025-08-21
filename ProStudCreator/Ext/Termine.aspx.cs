@@ -68,7 +68,7 @@ namespace ProStudCreator.Ext
                 var semInfoEvent = semester?.InfoEvent?.ToString("g", CultureInfo.CurrentCulture) ?? "?";
                 var semProAppApp = semester?.ProAppApplication ?? "?";
                 var semProjAllo = semester?.ProjectAllocation ?? "?";
-                var semProjectStart = semester?.ProjectStart ?? "?";
+                var semProjectStart = semester?.StartDate.ToShortDateString() ?? "?";
                 var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
                 var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "";
                 var semSubIP6 = semester?.SubmissionIP6Normal ?? "?";
