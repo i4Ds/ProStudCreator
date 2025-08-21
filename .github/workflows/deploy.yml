@@ -46,11 +46,13 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: |
           New-Item -ItemType Directory -Force -Path drop | Out-Null
-          msbuild "$env:WEBPROJ_FILE" `
-            /t:Package `
-            /p:Configuration=$env:CONFIGURATION `
-            /p:ExcludeFilesFromDeployment="App_Data\*.mdf;App_Data\*_log.ldf" `
-            /p:PackageLocation="$(Get-Location)\drop\ProStud.zip"
+          $msbuildArgs = @(
+            '/t:Package',
+            "/p:Configuration=$env:CONFIGURATION",
+            '/p:ExcludeFilesFromDeployment=App_Data\*.mdf;App_Data\*_log.ldf',
+            "/p:PackageLocation=$(Join-Path (Get-Location) 'drop\ProStud.zip')"
+          )
+          & msbuild "$env:WEBPROJ_FILE" @msbuildArgs
 
       - name: Upload package artifact
         if: github.ref != 'refs/heads/main'
@@ -68,11 +70,14 @@ jobs:
           if (-not "$env:WEBDEPLOY_PASSWORD") { Write-Error "Missing secret WEBDEPLOY_PASSWORD"; exit 1 }
           $allow = if ($env:ALLOW_UNTRUSTED -eq "true") {"True"} else {"False"}
           $pubProfilePath = Join-Path $env:PUBLISH_PROFILES_DIR ($env:PUBLISH_PROFILE_NAME + ".pubxml")
-          msbuild "$env:WEBPROJ_FILE" `
-            /p:Configuration=$env:CONFIGURATION `
-            /p:DeployOnBuild=true `
-            /p:PublishProfile="$pubProfilePath" `
-            /p:Password="$env:WEBDEPLOY_PASSWORD" `
-            /p:AllowUntrustedCertificate=$allow `
-            /p:ExcludeFilesFromDeployment="App_Data\*.mdf;App_Data\*_log.ldf" `
-            /m
+
+          $msbuildArgs = @(
+            "/p:Configuration=$env:CONFIGURATION",
+            '/p:DeployOnBuild=true',
+            "/p:PublishProfile=$pubProfilePath",
+            "/p:Password=$env:WEBDEPLOY_PASSWORD",
+            "/p:AllowUntrustedCertificate=$allow",
+            '/p:ExcludeFilesFromDeployment=App_Data\*.mdf;App_Data\*_log.ldf',
+            '/m'
+          )
+          & msbuild "$env:WEBPROJ_FILE" @msbuildArgs
