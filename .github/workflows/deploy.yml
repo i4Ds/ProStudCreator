@@ -2,8 +2,8 @@ name: Build & Deploy (main → IIS via Web Deploy)
 
 on:
   push:
-    branches: [ "main", "391-devops-pipeline" ]   # allow CI on your test branch too
-  workflow_dispatch: {}                            # lets you run it manually on any branch
+    branches: [ "main", "391-devops-pipeline" ]
+  workflow_dispatch: {}
 
 jobs:
   build-and-deploy:
