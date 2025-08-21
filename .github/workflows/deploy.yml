@@ -1,0 +1,76 @@
+name: Build & Deploy (main → IIS via Web Deploy)
+
+on:
+  push:
+    branches: [ "main", "391-devops-pipeline" ]   # allow CI on your test branch too
+  workflow_dispatch: {}                            # lets you run it manually on any branch
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+
+    env:
+      CONFIGURATION: Release
+      ALLOW_UNTRUSTED: true
+      SOLUTION_FILE: ProStudCreator.sln
+      WEBPROJ_FILE: ProStudCreator/ProStudCreator.csproj
+      PUBLISH_PROFILE_NAME: ProStudCreator
+      PUBLISH_PROFILES_DIR: ProStudCreator/Properties/PublishProfiles
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore "$env:SOLUTION_FILE"
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install Web Deploy (choco)
+        run: choco install webdeploy --no-progress -y
+
+      # Optional: quick reachability probe from runner to WMSVC
+      - name: Connectivity check (non-fatal)
+        run: Test-NetConnection server1086.cs.technik.fhnw.ch -Port 50300
+        continue-on-error: true
+
+      - name: Build solution (Release)
+        run: msbuild "$env:SOLUTION_FILE" /t:Build /p:Configuration=$env:CONFIGURATION /m
+
+      # --- SAFE TEST PATH (any non-main branch): build a Web Deploy package only ---
+      - name: Package only (non-main)
+        if: github.ref != 'refs/heads/main'
+        run: |
+          New-Item -ItemType Directory -Force -Path drop | Out-Null
+          msbuild "$env:WEBPROJ_FILE" `
+            /t:Package `
+            /p:Configuration=$env:CONFIGURATION `
+            /p:PackageLocation="$(Get-Location)\drop\ProStud.zip"
+
+      - name: Upload package artifact
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: WebDeployPackage
+          path: drop/ProStud.zip
+
+      # --- REAL DEPLOY (main only) ---
+      - name: Deploy with MSBuild + PublishProfile
+        if: github.ref == 'refs/heads/main'
+        env:
+          WEBDEPLOY_PASSWORD: ${{ secrets.WEBDEPLOY_PASSWORD }}
+        run: |
+          if (-not "$env:WEBDEPLOY_PASSWORD") { Write-Error "Missing secret WEBDEPLOY_PASSWORD"; exit 1 }
+          $allow = if ($env:ALLOW_UNTRUSTED -eq "true") {"True"} else {"False"}
+          $pubProfilePath = Join-Path $env:PUBLISH_PROFILES_DIR ($env:PUBLISH_PROFILE_NAME + ".pubxml")
+          msbuild "$env:WEBPROJ_FILE" `
+            /p:Configuration=$env:CONFIGURATION `
+            /p:DeployOnBuild=true `
+            /p:PublishProfile="$pubProfilePath" `
+            /p:Password="$env:WEBDEPLOY_PASSWORD" `
+            /p:AllowUntrustedCertificate=$allow `
+            /m
