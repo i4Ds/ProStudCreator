@@ -184,6 +184,7 @@
       <Column Name="GradeIP5Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="GradeIP6Deadline" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="InfoEvent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ProjectStart" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="Semester_Project" Member="Project" ThisKey="Id" OtherKey="SemesterId" Type="Project" />
       <Association Name="Semester_Task" Member="Tasks" ThisKey="Id" OtherKey="SemesterId" Type="Task" />
     </Type>
@@ -222,7 +223,6 @@
       <Column Name="CanReserveProjects" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="UserDepartmentMap_Project" Member="Projects" ThisKey="Id" OtherKey="Advisor1Id" Type="Project" />
       <Association Name="UserDepartmentMap_Project1" Member="Projects1" ThisKey="Id" OtherKey="Advisor2Id" Type="Project" />
-      <Association Name="UserDepartmentMap_Task" Member="Tasks" ThisKey="Id" OtherKey="SupervisorId" Type="Task" />
       <Association Name="UserDepartmentMap_Task1" Member="Tasks1" ThisKey="Id" OtherKey="ResponsibleUserId" Type="Task" />
       <Association Name="Department_UserDepartmentMap" Member="Department" ThisKey="DepartmentId" OtherKey="Id" Type="Department" IsForeignKey="true" />
     </Type>
@@ -241,14 +241,12 @@
       <Column Name="TaskTypeId" Storage="_TaskType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ProjectId" Storage="_Project" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="DueDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="SupervisorId" Storage="_Supervisor" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ResponsibleUserId" Storage="_ResponsibleUser" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LastReminded" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Done" Type="System.Boolean" DbType="bit" CanBeNull="false" />
       <Column Name="SemesterId" Type="System.Int32" DbType="int" CanBeNull="true" />
       <Column Name="FirstReminded" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="TaskType_Task" Member="TaskType" Storage="_TaskType1" ThisKey="TaskTypeId" OtherKey="Id" Type="TaskType" IsForeignKey="true" />
-      <Association Name="UserDepartmentMap_Task" Member="Supervisor" Storage="_UserDepartmentMap" ThisKey="SupervisorId" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
       <Association Name="UserDepartmentMap_Task1" Member="ResponsibleUser" Storage="_UserDepartmentMap1" ThisKey="ResponsibleUserId" OtherKey="Id" Type="UserDepartmentMap" IsForeignKey="true" />
       <Association Name="Project_Task" Member="Project" Storage="_Project1" ThisKey="ProjectId" OtherKey="Id" Type="Project" IsForeignKey="true" />
       <Association Name="Semester_Task" Member="Semester" ThisKey="SemesterId" OtherKey="Id" Type="Semester" IsForeignKey="true" />

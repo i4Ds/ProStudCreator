@@ -1540,8 +1540,8 @@ namespace ProStudCreator
                     db.SubmitChanges();
 
                     var mail = new MailMessage();
-                    var departmentMngr = db.UserDepartmentMap.FirstOrDefault(u => u.IsDepartmentManager && u.Department == pageProject.Department);
-                    if (departmentMngr is null)
+                    var departmentMngrs = db.UserDepartmentMap.Where(u => u.IsDepartmentManager && u.Department == pageProject.Department);
+                    if (!departmentMngrs.Any())
                     {
                         mail.To.Add(Global.WebAdmin);
                         mail.From = new MailAddress("noreply@fhnw.ch");
@@ -1551,14 +1551,15 @@ namespace ProStudCreator
                     }
                     else
                     {
-                        mail.To.Add(departmentMngr.Mail);
+                        foreach(var dm in departmentMngrs)
+                            mail.To.Add(dm.Mail);
                         mail.From = new MailAddress("noreply@fhnw.ch");
                         mail.Subject = $"Neues Projekt eingereicht";
                         mail.IsBodyHtml = true;
 
                         var mailMessage = new StringBuilder();
                         mailMessage.Append("<div style=\"font-family: Arial\">");
-                        mailMessage.Append($"<p style=\"font-size: 110%\">Hallo {HttpUtility.HtmlEncode(departmentMngr.Name.Split(' ')[0])}</p>"
+                        mailMessage.Append($"<p style=\"font-size: 110%\">Hallo</p>"
                             + "<p>Ein neues Projekt wurde eingereicht:</p>"
                             + $"<p><a href=\"https://www.cs.technik.fhnw.ch/prostud/ProjectEditPage?id={pageProject.Id}\">{HttpUtility.HtmlEncode(pageProject.Name)}</a></p>"
                             + "<br/>"

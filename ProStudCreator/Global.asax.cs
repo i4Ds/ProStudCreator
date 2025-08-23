@@ -24,7 +24,7 @@ namespace ProStudCreator
         public static readonly string WebAdmin = "delberin.ali@fhnw.ch";
         public static readonly string ProjectOwner = "dominik.gruntz@fhnw.ch";
         public static readonly string GradeAdmin = "admin.technik@fhnw.ch";
-        public static readonly string PayExpertAdmin = "hannelore.gerber@fhnw.ch";
+        //public static readonly string PayExpertAdmin = "hannelore.gerber@fhnw.ch";
         public static readonly string InvoiceCustomersAdmin = WebAdmin; // if active change to: "hannelore.gerber@fhnw.ch";
         public static readonly string MarKomAdmin = "marketing.technik@fhnw.ch";
 
