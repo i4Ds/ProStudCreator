@@ -20,10 +20,8 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore ProStudCreator.sln
 
-      - name: Build (Release)
-        run: >
-          msbuild ProStudCreator/ProStudCreator/ProStudCreator.csproj
-          /p:Configuration=Release
+      - name: Build solution (Release)
+        run: msbuild ProStudCreator.sln /p:Configuration=Release
 
   deploy:
     needs: build
@@ -33,13 +31,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: NuGet/setup-nuget@v2
       - uses: microsoft/setup-msbuild@v2
+
       - name: Restore NuGet packages
         run: nuget restore ProStudCreator.sln
 
       - name: Build & Deploy via .pubxml
         shell: cmd
         run: |
-          msbuild ProStudCreator/ProStudCreator/ProStudCreator.csproj ^
+          msbuild ProStudCreator/ProStudCreator.csproj ^
             /p:Configuration=Release ^
             /p:DeployOnBuild=true ^
             /p:PublishProfile=ProStud_Prod ^
