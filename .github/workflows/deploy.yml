@@ -18,7 +18,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
 
       - name: Restore NuGet packages
-        run: nuget restore ProStudCreator/ProStudCreator.sln
+        run: nuget restore ProStudCreator.sln
 
       - name: Build (Release)
         run: >
@@ -34,7 +34,8 @@ jobs:
       - uses: NuGet/setup-nuget@v2
       - uses: microsoft/setup-msbuild@v2
       - name: Restore NuGet packages
-        run: nuget restore ProStudCreator/ProStudCreator.sln
+        run: nuget restore ProStudCreator.sln
+
       - name: Build & Deploy via .pubxml
         shell: cmd
         run: |
