@@ -1,94 +1,46 @@
-name: Build & Deploy (main → IIS via Web Deploy)
+name: Build & Deploy (ProStud)
 
 on:
   push:
-    branches: [ "main", "391-devops-pipeline" ]
-  workflow_dispatch: {}
+    branches: [ main, 391-devops-pipeline ]
+  workflow_dispatch:
+
+concurrency:
+  group: prod-deploy
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: windows-latest
-
-    env:
-      CONFIGURATION: Release
-      ALLOW_UNTRUSTED: true
-      SOLUTION_FILE: ProStudCreator.sln
-      WEBPROJ_FILE: ProStudCreator/ProStudCreator.csproj
-      PUBLISH_PROFILE_NAME: ProStudCreator
-      PUBLISH_PROFILES_DIR: ProStudCreator/Properties/PublishProfiles
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
+      - uses: actions/checkout@v4
+      - uses: NuGet/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v2
 
       - name: Restore NuGet packages
-        run: nuget restore "$env:SOLUTION_FILE"
+        run: nuget restore ProStudCreator/ProStudCreator.sln
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Build (Release)
+        run: >
+          msbuild ProStudCreator/ProStudCreator/ProStudCreator.csproj
+          /p:Configuration=Release
 
-      - name: Install Web Deploy (choco)
-        run: choco install webdeploy --no-progress -y
-
-      - name: Connectivity check (non-fatal)
-        run: Test-NetConnection server1086.cs.technik.fhnw.ch -Port 50300
-        continue-on-error: true
-
-      - name: Build solution (Release)
-        run: msbuild "$env:SOLUTION_FILE" /t:Build /p:Configuration=$env:CONFIGURATION /m
-
-      # ---------- SAFE TEST PATH (non-main) ----------
-      - name: Package only (non-main)
-        if: github.ref != 'refs/heads/main'
-        shell: pwsh
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'  # only deploy from main
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NuGet/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v2
+      - name: Restore NuGet packages
+        run: nuget restore ProStudCreator/ProStudCreator.sln
+      - name: Build & Deploy via .pubxml
+        shell: cmd
         run: |
-          New-Item -ItemType Directory -Force -Path drop | Out-Null
-
-          # Explicit list; no wildcards
-          $exclude = 'App_Data\Database1.mdf;App_Data\Database1_log.ldf;App_Data\aspnet-ProStudCreator-20140818043155.mdf;App_Data\aspnet-ProStudCreator-20140818043155_log.ldf'
-
-          $pkgPath = Join-Path (Get-Location) 'drop\ProStud.zip'
-          $msbuildArgs = @(
-            '/t:Package',
-            "/p:Configuration=$env:CONFIGURATION",
-            "/p:PackageLocation=$pkgPath",
-            "/p:ExcludeFilesFromPackage=`"$exclude`"",
-            "/p:ExcludeFilesFromDeployment=`"$exclude`""
-          )
-          & msbuild "$env:WEBPROJ_FILE" @msbuildArgs
-
-      - name: Upload package artifact
-        if: github.ref != 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: WebDeployPackage
-          path: drop/ProStud.zip
-
-      # ---------- REAL DEPLOY (main only) ----------
-      - name: Deploy with MSBuild + PublishProfile
-        if: github.ref == 'refs/heads/main'
-        env:
-          WEBDEPLOY_PASSWORD: ${{ secrets.WEBDEPLOY_PASSWORD }}
-        shell: pwsh
-        run: |
-          if (-not "$env:WEBDEPLOY_PASSWORD") { Write-Error "Missing secret WEBDEPLOY_PASSWORD"; exit 1 }
-          $allow = if ($env:ALLOW_UNTRUSTED -eq "true") { "True" } else { "False" }
-          $pubProfilePath = Join-Path $env:PUBLISH_PROFILES_DIR ($env:PUBLISH_PROFILE_NAME + '.pubxml')
-
-          # Same explicit exclusions for deploy phase
-          $exclude = 'App_Data\Database1.mdf;App_Data\Database1_log.ldf;App_Data\aspnet-ProStudCreator-20140818043155.mdf;App_Data\aspnet-ProStudCreator-20140818043155_log.ldf'
-
-          $msbuildArgs = @(
-            "/p:Configuration=$env:CONFIGURATION",
-            '/p:DeployOnBuild=true',
-            "/p:PublishProfile=$pubProfilePath",
-            "/p:Password=$env:WEBDEPLOY_PASSWORD",
-            "/p:AllowUntrustedCertificate=$allow",
-            "/p:ExcludeFilesFromDeployment=`"$exclude`"",
-            "/p:ExcludeFilesFromPackage=`"$exclude`"",
-            '/m'
-          )
-          & msbuild "$env:WEBPROJ_FILE" @msbuildArgs
+          msbuild ProStudCreator/ProStudCreator/ProStudCreator.csproj ^
+            /p:Configuration=Release ^
+            /p:DeployOnBuild=true ^
+            /p:PublishProfile=ProStud_Prod ^
+            /p:UserName="${{ secrets.DEPLOY_USERNAME }}" ^
+            /p:Password="${{ secrets.DEPLOY_PASSWORD }}"
