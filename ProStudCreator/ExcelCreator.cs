@@ -784,7 +784,7 @@ namespace ProStudCreator
             AddName(workbook, "_FilterDatabase", $"{worksheetGrades.SheetName}!$A$7:$G$7");
 
             workbook.SetSheetOrder("Konfig", 0);
-            workbook.SetSheetHidden(0, SheetState.Hidden);
+            workbook.SetSheetHidden(0, true);
             workbook.Write(outStream);
         }
 

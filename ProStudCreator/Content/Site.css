@@ -365,19 +365,18 @@ h4 {
     margin-top: 64px;
 }
 
-    h4:first-of-type {
-        margin-top: initial;
-    }
-
+h4:first-of-type {
+    margin-top: initial;
+}
 
 h3 {
     font-style: italic;
     margin-top: 64px;
 }
 
-    h3:first-of-type {
-        margin-top: initial;
-    }
+h3:first-of-type {
+    margin-top: initial;
+}
 
 small {
     color: #aaa;
@@ -711,4 +710,9 @@ del {
 
 .btn-colored {
     opacity: 1 !important;
+}
+
+.PopupBackground {
+    background-color: #000;
+    opacity: 0.4;
 }

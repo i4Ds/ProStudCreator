@@ -636,6 +636,15 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox NumGradeStudent1Admin;
 
         /// <summary>
+        /// lnkOpenPDFEvaluation1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkOpenPDFEvaluation1;
+
+        /// <summary>
         /// DivGradeStudent2 control.
         /// </summary>
         /// <remarks>
@@ -672,6 +681,15 @@ namespace ProStudCreator
         protected global::System.Web.UI.WebControls.TextBox NumGradeStudent2Admin;
 
         /// <summary>
+        /// lnkOpenPDFEvaluation2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkOpenPDFEvaluation2;
+
+        /// <summary>
         /// DivGradeWarning control.
         /// </summary>
         /// <remarks>
@@ -688,6 +706,78 @@ namespace ProStudCreator
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
+
+        /// <summary>
+        /// OpenedGradingFor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField OpenedGradingFor;
+
+        /// <summary>
+        /// PopupTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PopupTitle;
+
+        /// <summary>
+        /// gradingControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::ProStudCreator.UserControls.GradingV1Control gradingControl;
+
+        /// <summary>
+        /// CopyGradingV1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CopyGradingV1;
+
+        /// <summary>
+        /// GradingPopupCloseOk control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GradingPopupCloseOk;
+
+        /// <summary>
+        /// GradingPopupCloseCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GradingPopupCloseCancel;
+
+        /// <summary>
+        /// DummyPopupTarget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DummyPopupTarget;
+
+        /// <summary>
+        /// PopupExtender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender PopupExtender;
 
         /// <summary>
         /// BillAddressPlaceholder control.
