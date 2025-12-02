@@ -1,0 +1,46 @@
+name: Build & Deploy (ProStud)
+
+on:
+  push:
+    branches: [ main, 391-devops-pipeline ]
+  workflow_dispatch:
+
+concurrency:
+  group: prod-deploy
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NuGet/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore ProStudCreator.sln
+
+      - name: Build solution (Release)
+        run: msbuild ProStudCreator.sln /p:Configuration=Release
+
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'  # only deploy from main
+    steps:
+      - uses: actions/checkout@v4
+      - uses: NuGet/setup-nuget@v2
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore ProStudCreator.sln
+
+      - name: Build & Deploy via .pubxml
+        shell: cmd
+        run: |
+          msbuild ProStudCreator/ProStudCreator.csproj ^
+            /p:Configuration=Release ^
+            /p:DeployOnBuild=true ^
+            /p:PublishProfile=ProStud_Prod ^
+            /p:UserName="${{ secrets.DEPLOY_USERNAME }}" ^
+            /p:Password="${{ secrets.DEPLOY_PASSWORD }}"
