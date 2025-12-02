@@ -726,7 +726,10 @@ namespace ProStudCreator
         public static void Submit(this Project _p, ProStudentCreatorDBDataContext _db)
         {
             if (!CheckTransitionSubmit(_p, _db)) HandleInvalidState(_p, "Submit");
-            
+
+            //Assign semester if it hasn't been set yet
+            if (_p.Semester == null)
+                _p.Semester = Semester.NextSemester(_db);
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Submitted;
             _db.SubmitChanges();
