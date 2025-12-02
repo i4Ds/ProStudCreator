@@ -30,7 +30,7 @@ namespace ProStudCreator
         public static Semester LastSemester(ProStudentCreatorDBDataContext db)
         {
             var currentSemester = ActiveSemester(DateTime.Now, db);
-            var safeDate = currentSemester.StartDate.AddDays(-7);
+            var safeDate = currentSemester.StartDate.AddDays(-7); 
             return ActiveSemester(safeDate, db);
         }
 
@@ -72,7 +72,9 @@ namespace ProStudCreator
 
         public static Semester LastSemester(Semester semester, ProStudentCreatorDBDataContext db)
         {
-            return ActiveSemester(semester.StartDate.AddDays(-7), db);
+            if (semester == null) return null;
+            var probe = semester.StartDate.AddDays(-7).AddSeconds(-1);
+            return ActiveSemester(probe, db);
         }
 
         public static Semester ActiveSemester(DateTime date, ProStudentCreatorDBDataContext db)
