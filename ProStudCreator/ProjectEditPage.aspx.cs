@@ -808,7 +808,13 @@ namespace ProStudCreator
             if (!string.IsNullOrEmpty(radioInvoiceType.SelectedValue))
             {
                 project.InvoiceType = radioInvoiceType.SelectedValue;
-                project.InvoiceContact = (project.InvoiceType == "Email") ? txtClientEmail.Text.Trim() : null;
+
+                var email = txtClientEmail.Text.Trim();
+
+                if (project.InvoiceType == "Email" && !string.IsNullOrWhiteSpace(email))
+                    project.InvoiceContact = email;
+                else
+                    project.InvoiceContact = null;
 
                 // ✅ Save selection in Session to persist across postbacks
                 Session["SelectedInvoiceType"] = project.InvoiceType;
