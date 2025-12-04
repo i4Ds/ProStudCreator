@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -734,6 +734,7 @@ namespace ProStudCreator
             
             _p.ModificationDate = DateTime.Now;
             _p.State = ProjectState.Submitted;
+            _p.Semester = Semester.NextSemester(_db);
             _db.SubmitChanges();
         }
 
