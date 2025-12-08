@@ -1,4 +1,4 @@
-﻿<%@ Page Title="IP5/IP6 Projekte" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="Ablauf.aspx.cs" Inherits="ProStudCreator.Ablauf" %>
+<%@ Page Title="IP5/IP6 Projekte" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="True" CodeBehind="Ablauf.aspx.cs" Inherits="ProStudCreator.Ablauf" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="well usernSettings">
@@ -11,7 +11,7 @@
                 <ul>
                     <li>Information, dass pro Student/-in eine individuelle Note festgelegt wird.</li>
                     <li>Bitte kommuniziere, wie Du informiert werden möchtest (z.B. jede Woche ein kurzes Treffen).</li>
-                    <li>Terminplan besprechen (Abgabetermin, Ausstellung, Projektwoche, Präsentation/Verteidigung, z.B. Inhaltsverzeichnis der Doku nach einem Drittel, ...)</li>
+                    <li>Terminplan besprechen (Zwischenpräsentation, Abgabetermin, Ausstellung, Projektwoche, Präsentation/Verteidigung, z.B. Inhaltsverzeichnis der Doku nach einem Drittel, ...)</li>
                     <li>Ein Hinweis, dass auf dem Netzwerkshare (\\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene) Unterlagen zu finden sind (wie z.B. das Projekthandbuch oder Infos zur Webseite welche die Studierenden am Ende des Projektes bereitstellen müssen).</li>
                     <li>Ein Hinweis auf die <a href="https://pik.igs.htu.fhnw.ch/" >Plattform Informationskompetenz</a> auf der viele Informationen zum Schreiben von Berichten (inkl. Vorlagen) zu finden sind.</li>
 <!--
@@ -30,10 +30,9 @@
                 </ul>
             </li>
             <li>Falls sich eine ungenügende Note abzeichnet, sind für den Rekursfall <a href="FAQ#rekurs">einige Dinge</a> zu beachten. Melde Dich möglichst früh bei uns.</li>
-            <li>Nur für P6-Projekte: Titeländerungen können bis <%: (ProStudCreator.Global.AllowTitleChangesBeforeSubmission.Days/7) %> Wochen vor Abgabe auf der jeweiligen Projekt-Infoseite vorgenommen werden.</li>
-            <li>Die Studierenden erstellen das obligatorische Websummary. Auf dem Netzwerkshare gibts dazu einen Leitfaden (\\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene).</li>
-            <li>Die Studierenden stellen Ihr IP6 an der Ausstellung mit einem <a href="Content/Poster_TemplateI_150923.pptx" class="ppt">Poster</a> vor. Poster
-                können vom Empfang in A0-Grösse gedruckt werden.</li>
+            <li>Nur P6: Titeländerungen können bis <%: (ProStudCreator.Global.AllowTitleChangesBeforeSubmission.Days/7) %> Wochen vor Abgabe auf der jeweiligen Projekt-Infoseite vorgenommen werden.</li>
+            <li>Die Studierenden erstellen das obligatorische Websummary. Auf dem Netzwerkshare gibts dazu einen Leitfaden (<%: ConfigurationManager.AppSettings["infoMaterialsUrl"] %>).</li>
+            <li>Nur P6: Die Studierenden stellen Ihr P6 an der Ausstellung mit einem Poster vor. Die Vorlage dafür ist in <%: ConfigurationManager.AppSettings["infoMaterialsUrl"] %> zu finden. Die Poster können vom Empfang in A0-Grösse gedruckt werden.</li>
             <li>Schlusspräsentation:
                 <ul>
                     <li>IP5: Lasse die Studierenden ein Schlusspräsentation organisieren (Raum, Termin) oder organisiere die Schlusspräsentation selbst. Die Präsentation im IP5 wird verlangt, da sie der Vorbereitung auf die Schlusspräsentation und Verteidigung der Bachelorarbeit dient.</li>

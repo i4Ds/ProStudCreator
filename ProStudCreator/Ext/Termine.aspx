@@ -1,4 +1,4 @@
-﻿<%@ Page Title="IP5/IP6 Projekte" Language="C#" AutoEventWireup="True" CodeBehind="Termine.aspx.cs" Inherits="ProStudCreator.Ext.Termine" %>
+<%@ Page Title="IP5/IP6 Projekte" Language="C#" AutoEventWireup="True" CodeBehind="Termine.aspx.cs" Inherits="ProStudCreator.Ext.Termine" %>
 
 <!DOCTYPE html>
 <html lang="de">
@@ -62,7 +62,7 @@
                     <a href="../Content/Projekteingabe_Firma.pdf" target="_blank" class="pdf">Formular für Projekte von externen Auftraggebern.</a>
                 </p>
                 <p>
-                    Handbuch und Vorlagen unter \\fsemu18.edu.ds.fhnw.ch\e_18_data11$\E1811_Info\E1811_Info_I\Projektschiene\
+                    Handbuch und Vorlagen unter <%: ConfigurationManager.AppSettings["infoMaterialsUrl"] %>
                 </p>
             </div>
         </div>
