@@ -159,13 +159,10 @@
                             <asp:DropDownList runat="server" ID="dropPreviousProject" DataValueField="Id" DataTextField="Name" AutoPostBack="true" CausesValidation="false" CssClass="form-control dropPreviousProject" OnSelectedIndexChanged="DropPreviousProject_SelectedIndexChanged" />
                             <asp:Label runat="server" ID="dropPreviousProjectLabel" CssClass="form-control" Style="width: 75%;" Visible="false"></asp:Label>
                         </div>
+                        <asp:Label runat="server" ID="Label1" visible="false"><small>Bewirkt die automatische Zuteilung des Teams des Vorgängerprojektes zu diesem P6 Projekt!</small></asp:Label>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <div class="form-group">
-                <asp:Label runat="server" CssClass="control-label col-md-3" Text=""></asp:Label>
-                <asp:Label runat="server" ID="PreviousProjectInfoLabel" CssClass="col-md-9" Text="Bewirkt die automatische Zuteilung des Teams des Vorgängerprojektes zu diesem IP6 Projekt!"></asp:Label>
-            </div>
             <hr />
             <div class="form-group">
                 <asp:Label runat="server" CssClass="control-label col-md-3" Text="Hauptbetreuung:"></asp:Label>
@@ -209,6 +206,10 @@
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="dropSemester" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="dropPreviousProject" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPOneType" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPTwoType" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPOneTeamSize" EventName="SelectedIndexChanged" />
+                    <asp:AsyncPostBackTrigger ControlID="dropPTwoTeamSize" EventName="SelectedIndexChanged" />
                 </Triggers>
                 <ContentTemplate>
                     <div class="form-group">
@@ -232,6 +233,10 @@
                             <asp:DropDownList runat="server" ID="dropPTwoTeamSize" DataValueField="Id" DataTextField="Description" CssClass="form-control" OnSelectedIndexChanged="TeamSize_SelectedIndexChanged" AutoPostBack="true" />
                             <asp:Label runat="server" ID="PTwoTeamSizeLabel" CssClass="form-control ellipsisLabel" Visible="false"></asp:Label>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label col-md-3"></span>
+                        <asp:Label CssClass="col-md-6" runat="server" ID="DescribeP5P6ScopeDifferenceHint" visible="false"><small>Bitte den Scope-Unterschied P5/P6 bzw. Einzel-/Zweierprojekt beschreiben</small></asp:Label>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -372,6 +377,7 @@
                 <asp:Label runat="server" Text="Geheimhaltung:" CssClass="control-label col-md-3"></asp:Label>
                 <div class="col-md-6">
                     <asp:CheckBox runat="server" ID="chkNDA" CssClass="form-control" ToolTip="NDA-Projekte werden nicht in öffentlichen Broschüren aufgeführt" Text=" Projekt/Auftraggeber unter NDA" />
+                    <small>NDA-Projekte werden nicht in öffentlichen Broschüren aufgeführt. Daten und Code werden auch in regulären Projekten nicht veröffentlicht.</small>
                 </div>
             </div>
 

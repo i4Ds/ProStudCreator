@@ -179,7 +179,7 @@ namespace ProStudCreator
             var foot = "";
             if (language == Language.English)
             {
-                foot += " Computer Science/" + CurrentProject.Department.DepartmentName + "/Student projects " +
+                foot += "Computer Science/" + CurrentProject.Department.DepartmentName + "/Student projects " +
                     CurrentProject?.Semester?.Name ?? Semester.NextSemester(db).Name;
                 return foot;
             }

@@ -73,6 +73,7 @@ namespace ProStudCreator
             "Anzahl Semester",
             "Durchführungssprache",
             "Studiengang",
+            "Geheimhaltung",
             "Experte",
             "Experte E-Mail",
             "Experte Bezahlt",
@@ -351,6 +352,7 @@ namespace ProStudCreator
             row.CreateCell(i++).SetCellValue(GetProjectDuration(p));
             row.CreateCell(i++).SetCellValue(pLang);
             row.CreateCell(i++).SetCellValue(pSC);
+            row.CreateCell(i++).SetCellValue(p.UnderNDA ? "Projekt unter NDA" : "");
             row.CreateCell(i++).SetCellValue(p.Expert?.Name ?? "");
             row.CreateCell(i++).SetCellValue(p.Expert?.Mail ?? "");
             row.CreateCell(i++).SetCellValue(p.LogExpertPaid.ToString() ?? "");
@@ -782,7 +784,7 @@ namespace ProStudCreator
             AddName(workbook, "_FilterDatabase", $"{worksheetGrades.SheetName}!$A$7:$G$7");
 
             workbook.SetSheetOrder("Konfig", 0);
-            workbook.SetSheetHidden(0, SheetState.Hidden);
+            workbook.SetSheetHidden(0, true);
             workbook.Write(outStream);
         }
 

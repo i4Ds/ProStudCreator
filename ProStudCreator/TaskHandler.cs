@@ -1608,7 +1608,7 @@ namespace ProStudCreator
                 mail.Bcc.Clear();
                 mail.Subject = "DEBUG: " + mail.Subject;
                 mail.To.Add(Global.WebAdmin);
-                smtpClient.Send(mail);
+                //smtpClient.Send(mail);
             }
 #endif
         }

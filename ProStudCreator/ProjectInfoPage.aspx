@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="Projekt Information" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProjectInfoPage.aspx.cs" Inherits="ProStudCreator.ProjectInfoPage" EnableEventValidation="false" %>
 <%@ Register TagPrefix="UserControl" TagName="ProjectTopicImageControl" Src="~/UserControls/ProjectTopicImageControl.ascx" %>
+<%@ Register TagPrefix="UserControl" TagName="GradingV1Control" Src="~/UserControls/GradingV1Control.ascx" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 <asp:Content ID="ProjectInofpageContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -7,12 +8,12 @@
         function isContentStud(currentObject) {
             var txtBoxValue = currentObject.value;
             var term = "@students.fhnw.ch";
-            var term2 = "@fhnw.ch";
+            //var term2 = "@fhnw.ch";
             var index = txtBoxValue.indexOf(term);
-            var index2 = txtBoxValue.indexOf(term2);
+            //var index2 = txtBoxValue.indexOf(term2);
             if (currentObject.value != "") {
-                if (index == -1 && index2 == -1) {
-                    alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch oder @fhnw.ch endet");
+                if (index == -1 /*&& index2 == -1*/) {
+                    alert("Geben Sie eine E-Mail Adresse an, welche mit @students.fhnw.ch endet");
                     currentObject.style.borderColor = 'red';
                 } else {
                     currentObject.style.borderColor = 'green';
@@ -254,25 +255,53 @@
                 <ContentTemplate>
                     <div runat="server" id="DivGradeStudent1" class="form-group">
                         <asp:Label runat="server" Text="Note:" CssClass="control-label col-md-3" ID="LabelGradeStudent1"></asp:Label>
-                        <asp:Label runat="server" ID="NumGradeStudent1" CssClass="col-md-6 alignbottom"></asp:Label>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <asp:Label runat="server" ID="NumGradeStudent1" CssClass="alignbottom">Die Noten können erst eingetragen werden, wenn die Felder: Durchführungssprache, Websummary und Verrechnungsstatus ausgefüllt sind.</asp:Label>
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent1Admin" CssClass="form-control"></asp:TextBox>
+                        </div>
+                        <div class="col-md-3 alignbottom" style="padding-top:0px;">
+                            <asp:Button runat="server" OnClick="Student1OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
+                            <a runat="server" title="PDF anzeigen" id="lnkOpenPDFEvaluation1" style="margin-top:0px;" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank"></a>
                         </div>
                     </div>
                     <div runat="server" id="DivGradeStudent2" class="form-group">
                         <asp:Label runat="server" Text="Note:" CssClass="control-label col-md-3" ID="LabelGradeStudent2"></asp:Label>
-                        <asp:Label runat="server" ID="NumGradeStudent2" CssClass="col-md-6 alignbottom"></asp:Label>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <asp:Label runat="server" ID="NumGradeStudent2" CssClass="alignbottom">Die Noten können erst eingetragen werden, wenn die Felder: Durchführungssprache, Websummary und Verrechnungsstatus ausgefüllt sind.</asp:Label>
                             <asp:TextBox runat="server" TextMode="Number" min="1" max="6" step="0.1" ID="NumGradeStudent2Admin" CssClass="form-control"></asp:TextBox>
+                        </div>
+                        <div class="col-md-3 alignbottom" style="padding-top:0px;">
+                            <asp:Button runat="server" OnClick="Student2OpenGradingPopup_Click" Text="Bewertungsformular öffnen" />
+                            <a runat="server" title="PDF anzeigen" id="lnkOpenPDFEvaluation2" style="margin-top:0px;" class="btn btn-default btnHeight glyphicon glyph-pdf" target="_blank"></a>
                         </div>
                     </div>
                     <div class="form-group" style="text-align: left" runat="server" visible="false" id="DivGradeWarning">
-                        <asp:Label runat="server" ID="Label1" CssClass="col-md-6 col-md-offset-3" Text="Hinweis: Bitte das Projekt nach dem Eintragen der Noten abschliessen, damit die Noten an die Administration gesendet werden können."></asp:Label>
+                        <asp:Label runat="server" ID="Label1" CssClass="col-md-6 col-md-offset-3"><small>Hinweis: Bitte das Projekt nach dem Eintragen der Noten abschliessen, damit die Noten an die Administration gesendet werden können.</small></asp:Label>
                     </div>
+
+
+                    <div id="GradingV1Popup" style="display: none; height:80%; width:80%; padding: 16px; background-color: #f5f5f5;">
+                        <asp:HiddenField runat="server" ID="OpenedGradingFor" />
+                        <div style="position:relative;height:100%;width:100%;left:0px;top:0px;padding-bottom:96px;">
+                            <h3><asp:Label runat="server" ID="PopupTitle">Bewertungsformular</asp:Label></h3>
+                            <UserControl:GradingV1Control runat="server" ID="gradingControl" />
+                            <div style="display: flex;width: 100%;align-items: center;margin-top: 32px;margin-bottom: 12px;">
+                                <div style="flex: 0 1 auto; text-align: left;">
+                                    <asp:Button ID="CopyGradingV1" OnClick="CopyGradingV1_Click" runat="server" Text="Bewertung von XYZ kopieren" />
+                                </div>
+                                <div style="flex: 1 1 0; display: flex; justify-content: center; gap: 12px;">
+                                    <asp:Button ID="GradingPopupCloseOk" OnClick="GradingPopupCloseOk_Click" runat="server" Text="Ok" />
+                                    <asp:Button ID="GradingPopupCloseCancel" OnClick="GradingPopupCloseCancel_Click" runat="server" Text="Abbrechen" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <asp:Button style="display:none;" runat="server" id="DummyPopupTarget" />
+                    <ajaxToolkit:ModalPopupExtender runat="server" TargetControlID="DummyPopupTarget" BackgroundCssClass="PopupBackground" PopupDragHandleControlID="PopupTitle" PopupControlID="GradingV1Popup" RepositionMode="RepositionOnWindowResizeAndScroll" ID="PopupExtender" />
+
                 </ContentTemplate>
             </asp:UpdatePanel>
             <hr />
-
             <asp:PlaceHolder runat="server" ID="BillAddressPlaceholder">
                 <h3>Kundeninformationen</h3>
                 <asp:UpdatePanel runat="server" ID="updateClientCompany" UpdateMode="Conditional">
@@ -370,10 +399,14 @@
                 <div class="form-group" style="text-align: left">
                     <asp:Label runat="server" Text="Geheimhaltung:" CssClass="control-label col-md-3"></asp:Label>
                     <div class="col-md-6">
-                        <asp:CheckBox runat="server" ID="chkNDA" CssClass="form-control" ToolTip="NDA-Projekte werden nicht in öffentlichen Broschüren aufgeführt" Text=" Projekt/Auftraggeber unter NDA" />
+                        <asp:UpdatePanel runat="server">
+                            <ContentTemplate>
+                                <asp:CheckBox runat="server" ID="chkNDA" CssClass="form-control" ToolTip="NDA-Projekte werden nicht in öffentlichen Broschüren aufgeführt" Text=" Projekt/Auftraggeber unter NDA" />
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                     </div>
                 </div>
-                <h6>Mit * markierte Felder sind Pflichtfelder.</h6>
+                <small>Mit * markierte Felder sind Pflichtfelder.</small>
             </asp:PlaceHolder>
         </div>
         <div style="clear: both"></div>
@@ -393,7 +426,7 @@
         <div class="well contentDesign form-horizontal" style="background-color: #ffffff">
             <asp:UpdatePanel runat="server" ID="updateProjectAttachements" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <asp:Label runat="server" Text="Projekt Artefakte (Dokumentation, Präsentation, Code):" CssClass="control-label col-md-3"></asp:Label>
+                    <asp:Label runat="server" Text="Projekt Artefakte (Doku, Code, Excel-Bewertungsformular, ...):" CssClass="control-label col-md-3"></asp:Label>
                     <div class="form-group col-md-9">
                         <asp:GridView runat="server" Width="100%" ID="gridProjectAttachs" EmptyDataText="Noch keine Dokumente hochgeladen." ItemType="ProStudCreator.ProjectSingleAttachment" EnableModelValidation="False" ValidateRequestMode="Disabled" OnSelectedIndexChanged="GridProjectAttachs_OnSelectedIndexChanged" CellPadding="4" EnableViewState="False" GridLines="None" AutoGenerateColumns="False" ForeColor="#333333" AllowSorting="False" OnRowCommand="GridProjectAttachs_OnRowCommand" OnRowDataBound="GridProjectAttachs_OnRowDataBound" DataKeyNames="Guid">
                             <Columns>
@@ -412,12 +445,10 @@
                     </div>
                     <div style="clear: both"></div>
                     <div runat="server" id="divFileUpload">
-                        <hr />
-                        <asp:Label runat="server" Text="Upload Projekt Artefakte:" CssClass="control-label col-md-3"></asp:Label>
-                        <div class="form-group">
+                        <div class="col-md-offset-3">
                             <ajax:AjaxFileUpload runat="server" MaxFileSize="-1" OnUploadComplete="OnUploadComplete" ClearFileListAfterUpload="True" AutoStartUpload="True" ID="fileUpProjectAttach" AllowedFileTypes="7z,aac,avi,bz2,csv,doc,docx,gif,gz,htm,html,jpeg,jpg,md,mp3,mp4,ods,odt,ogg,pdf,png,ppt,pptx,svg,tar,tgz,txt,xls,xlsx,xml,zip" OnClientUploadCompleteAll="doPostBack" MaximumNumberOfFiles="-1"  />
-                            <small class="col-md-offset-4">Dokumente mit gleichem Namen werden überschriben.</small>
                         </div>
+                        <small class="col-md-offset-3">Dokumente mit gleichem Namen werden überschriben.</small>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
