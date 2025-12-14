@@ -52,9 +52,9 @@ namespace ProStudCreator
                 "Infoveranstaltung / Start ProApp",
                 "Anmeldeschluss ProApp",
                 "Projektzuteilung",
+                "Projektstart",
                 "Abgabe IP5",
                 "Notenabgabe IP5",
-                "Abgabe IP5 (Lang)",
                 "Abgabe IP6",
                 "Ausstellung Bachelorthesen",
                 "Verteidigung",
@@ -71,9 +71,9 @@ namespace ProStudCreator
                 var semInfoEvent = semester?.InfoEvent?.ToString("g", CultureInfo.CurrentCulture) ?? "?";
                 var semProAppApp = semester?.ProAppApplication ?? "?";
                 var semProjAllo = semester?.ProjectAllocation ?? "?";
+                var semProjectStart = semester?.ProjectStart ?? "?";
                 var semSubIP5N = semester?.SubmissionIP5FullPartTime ?? "?";
                 var semGradeIP5N = semester?.GradeIP5Deadline.ToString("g", CultureInfo.CurrentCulture) ?? "?";
-                var semSubIP5L = semester?.SubmissionIP5Accompanying ?? "";
                 var semSubIP6 = semester?.SubmissionIP6Normal ?? "?";
                 var semDefense = semester?.DefenseIP6Start == null ? "?" : $"{semester?.DefenseIP6Start ?? "?"} bis {semester?.DefenseIP6End ?? "?"}";
                 var semGradeIP6 = semester?.GradeIP6Deadline.ToString("g", CultureInfo.CurrentCulture) ?? "?";
@@ -95,9 +95,9 @@ namespace ProStudCreator
                     semInfoEvent,
                     semProAppApp,
                     semProjAllo,
+                    semProjectStart,
                     semSubIP5N,
                     semGradeIP5N,
-                    semSubIP5L,
                     semSubIP6,
                     semExhib,
                     semDefense,
