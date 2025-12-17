@@ -3987,6 +3987,8 @@ namespace ProStudCreator
 		
 		private System.Nullable<System.DateTime> _InfoEvent;
 		
+		private string _ProjectStart;
+		
 		private EntitySet<Project> _Project;
 		
 		private EntitySet<Task> _Tasks;
@@ -4035,6 +4037,8 @@ namespace ProStudCreator
     partial void OnGradeIP6DeadlineChanged();
     partial void OnInfoEventChanging(System.Nullable<System.DateTime> value);
     partial void OnInfoEventChanged();
+    partial void OnProjectStartChanging(string value);
+    partial void OnProjectStartChanged();
     #endregion
 		
 		public Semester()
@@ -4440,6 +4444,26 @@ namespace ProStudCreator
 					this._InfoEvent = value;
 					this.SendPropertyChanged("InfoEvent");
 					this.OnInfoEventChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectStart", DbType="NVarChar(50)")]
+		public string ProjectStart
+		{
+			get
+			{
+				return this._ProjectStart;
+			}
+			set
+			{
+				if ((this._ProjectStart != value))
+				{
+					this.OnProjectStartChanging(value);
+					this.SendPropertyChanging();
+					this._ProjectStart = value;
+					this.SendPropertyChanged("ProjectStart");
+					this.OnProjectStartChanged();
 				}
 			}
 		}
