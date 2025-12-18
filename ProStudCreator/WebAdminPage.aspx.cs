@@ -194,9 +194,9 @@ namespace ProStudCreator
                 var fsGradeIP5 = Semester.StartOfWeek(y, 30).AddDays(4);
                 sbSemDates.Append($"<li>Notenabgabe IP5: {fsGradeIP5:d}</li>");
 
-                // Abgabe IP5 (lang) / IP6
+                // Abgabe IP6
                 var fsSubIP6Norm = Semester.StartOfWeek(y, 33).AddDays(4);
-                sbSemDates.Append($"<li>Abgabe IP5 (long) / IP6: {fsSubIP6Norm:d}</li>");
+                sbSemDates.Append($"<li>Abgabe IP6: {fsSubIP6Norm:d}</li>");
 
                 // Ausstellung Thesis
                 var fsExhibThesis = Semester.StartOfWeek(y, 33).AddDays(4);
@@ -210,9 +210,9 @@ namespace ProStudCreator
                 var fsDefenseEnd = Semester.StartOfWeek(y, 37).AddDays(4);
                 sbSemDates.Append($"<li>Verteidigung End: {fsDefenseEnd:d}</li>");
 
-                // Notenabgabe IP5 (lang) / IP6
+                // Notenabgabe IP6
                 var fsGradeIP6 = Semester.StartOfWeek(y, 38);
-                sbSemDates.Append($"<li>Notenabgabe IP5 (lang) / IP6: {fsGradeIP6:d}</li>");
+                sbSemDates.Append($"<li>Notenabgabe IP6: {fsGradeIP6:d}</li>");
 
                 sbSemDates.Append("</ul></li>");
 
@@ -255,9 +255,9 @@ namespace ProStudCreator
                 var hsGradeIP5 = Semester.StartOfWeek(y + 1, 7).AddDays(4);
                 sbSemDates.Append($"<li>Notenabgabe IP5: {hsGradeIP5:d}</li>");
 
-                // Abgabe IP5 (lang) / IP6
+                // Abgabe IP6
                 var hsSubIP6Norm = Semester.StartOfWeek(y + 1, 12).AddDays(4);
-                sbSemDates.Append($"<li>Abgabe IP5 (long) / IP6: {hsSubIP6Norm:d}</li>");
+                sbSemDates.Append($"<li>Abgabe IP6: {hsSubIP6Norm:d}</li>");
 
                 // Ausstellung Thesis
                 var hsExhibThesis = "keine";
@@ -271,9 +271,9 @@ namespace ProStudCreator
                 var hsDefenseEnd = Semester.StartOfWeek(y + 1, 17).AddDays(4);
                 sbSemDates.Append($"<li>Verteidigung End: {hsDefenseEnd:d}</li>");
 
-                // Notenabgabe IP5 (lang) / IP6
+                // Notenabgabe IP6
                 var hsGradeIP6 = Semester.StartOfWeek(y + 1, 18);
-                sbSemDates.Append($"<li>Notenabgabe IP5 (lang) / IP6: {hsGradeIP6:d}</li>");
+                sbSemDates.Append($"<li>Notenabgabe IP6: {hsGradeIP6:d}</li>");
 
                 sbSemDates.Append("</ul></li>");
 
