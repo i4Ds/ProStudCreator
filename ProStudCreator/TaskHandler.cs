@@ -701,7 +701,7 @@ namespace ProStudCreator
                     mailMessage.Append(
                         "<div style=\"font-family: Arial\">" +
                         "<p>Liebe Betreuerinnen und Betreuer<p>" +
-                        $"<p>Die Deadline für die Notenabgabe der IP5 (lang) und IP6 für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP6Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
+                        $"<p>Die Deadline für die Notenabgabe der Informatikprojekte P6 für das Semester {task.Semester.Name} ist am {task.Semester.GradeIP6Deadline.ToString("dd.MM.yyyy HH:mm")}.</p>" +
                         "<p>Ich möchte Sie bitten, bis zur Deadline die Noten einzutragen und die Projekte abzuschliessen. " +
                         "Artefakte (wie Bericht, Notenblatt, etc.) könnnen auch nach dem Abschliessen noch hochgeladen werden.</p>" +                        "<br/>" +
                         "<br/>" +

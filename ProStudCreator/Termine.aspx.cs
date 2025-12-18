@@ -58,7 +58,7 @@ namespace ProStudCreator
                 "Abgabe IP6",
                 "Ausstellung Bachelorthesen",
                 "Verteidigung",
-                "Notenabgabe IP5 (Lang) / IP6"
+                "Notenabgabe IP6"
             })
             dt.Columns.Add(header);
 
