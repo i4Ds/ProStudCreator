@@ -107,25 +107,12 @@ namespace ProStudCreator
                 ExpertList.SetExperts(db.Experts.Where(ex => true));
             }
 
-            gvDates.DataSource = CalculateDates();
-            gvDates.DataBind();
-
             //----------- wozu?
             //GVTasks.DataSource = AllTasks();
             //GVTasks.DataBind();
 
 
             Session["LastPage"] = "adminpage";
-        }
-
-        private IEnumerable<object> CalculateDates()
-        {
-            for (var year = DateTime.Now.Year; year <= DateTime.Now.Year + 3; year++)
-            {
-                yield return new { Name = $"{year % 100:D2}FS", StartDate = Semester.StartOfWeek(year, 8).ToString("yyyy-MM-dd"), EndDate = Semester.StartOfWeek(year, 24).AddDays(5).ToString("yyyy-MM-dd"), SubmissionUntil = Semester.StartOfWeek(year - 1, 47).AddDays(2).ToString("yyyy-MM-dd"), ProjectAllocation = $"Ende 01.{year}", SubmissionIP5 = Semester.StartOfWeek(year, 24).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP5Lang = Semester.StartOfWeek(year, 33).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP6 = Semester.StartOfWeek(year, 33).AddDays(4).ToString("dd.MM.yyyy"), DefenseStart = Semester.StartOfWeek(year, 36).ToString("dd.MM.yyyy"), DefenseEnd = Semester.StartOfWeek(year, 37).AddDays(4).ToString("dd.MM.yyyy"), Exhibition = "?", DayBeforeNext = Semester.StartOfWeek(year, 24).AddDays(6).ToString("yyyy-MM-dd") };
-
-                yield return new { Name = $"{year % 100:D2}HS", StartDate = Semester.StartOfWeek(year, 38).ToString("yyyy-MM-dd"), EndDate = Semester.StartOfWeek(year + 1, 3).AddDays(5).ToString("yyyy-MM-dd"), SubmissionUntil = Semester.StartOfWeek(year, 21).AddDays(2).ToString("yyyy-MM-dd"), ProjectAllocation = $"Anfang 07.{year}", SubmissionIP5 = Semester.StartOfWeek(year + 1, 3).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP5Lang = Semester.StartOfWeek(year + 1, 12).AddDays(4).ToString("dd.MM.yyyy"), SubmissionIP6 = Semester.StartOfWeek(year + 1, 12).AddDays(4).ToString("dd.MM.yyyy"), DefenseStart = Semester.StartOfWeek(year + 1, 16).ToString("dd.MM.yyyy"), DefenseEnd = Semester.StartOfWeek(year + 1, 17).AddDays(4).ToString("dd.MM.yyyy"), Exhibition = "keine", DayBeforeNext = Semester.StartOfWeek(year + 1, 3).AddDays(6).ToString("yyyy-MM-dd") };
-            }
         }
 
         private IQueryable<Project> GetSelectedProjects()
