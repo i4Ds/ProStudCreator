@@ -200,26 +200,6 @@
                             <a href="https://www.fhnw.ch/de/studium/informatik/organisatorisches" target="_blank">Termine & Stundenpläne</a>
                             </asp:Label>
                             <div class="col-sm-3"></div>
-                            <asp:GridView ID="gvDates" CssClass="col-sm-3" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="True" Width="100%">
-                                <%--<Columns>
-                                    <asp:BoundField DataField="project" HeaderText="Projekt" SortExpression="Project" ItemStyle-Width="60%" />
-                                    <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="taskOrganiseExpert" HeaderText="Tasks" ItemStyle-Width="20px" />
-                                    <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="taskOrganiseDate" ItemStyle-Width="20px" />
-                                    <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="taskOrganiseRoom" ItemStyle-Width="20px" />
-                                    <asp:ImageField ControlStyle-CssClass="img-rounded imageHeight" DataImageUrlField="taskPayExpert" ItemStyle-Width="20px" />
-                                </Columns>--%>
-                                <EditRowStyle BackColor="#2461BF" />
-                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                <RowStyle BackColor="#EFF3FB" />
-                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                            </asp:GridView>
-
                         </div>
                     </div>
                 </div>
