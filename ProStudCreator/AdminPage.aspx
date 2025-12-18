@@ -197,7 +197,7 @@
                         <div class="form-group">
                             <asp:Label runat="server" Text="Semesterdaten:" CssClass="control-label col-sm-3"></asp:Label>
                             <asp:Label runat="server" CssClass="col-sm-3 alignbottom">
-                            <a href="https://www.fhnw.ch/de/studium/technik/termine" target="_blank">Termine & Stundenpläne</a>
+                            <a href="https://www.fhnw.ch/de/studium/informatik/organisatorisches" target="_blank">Termine & Stundenpläne</a>
                             </asp:Label>
                             <div class="col-sm-3"></div>
                             <asp:GridView ID="gvDates" CssClass="col-sm-3" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" AutoGenerateColumns="True" Width="100%">
